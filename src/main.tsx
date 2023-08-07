@@ -9,7 +9,11 @@ import "./index.css";
 // Esto hará muchas cosas pero una de ellas es cargar textos en los idiomas en los componentes. Si no
 // Se carga al inicio salen en ingles.
 import "@ui5/webcomponents-react/dist/Assets";
-import "./translations/i18n";
+import { ThemeProvider } from "@emotion/react";
+import { CssBaseline } from "@mui/material";
+import { BrowserRouter } from "react-router-dom";
+import "translations/i18n";
+import theme from "theme";
 
 import I18nProvider from "./translations/i18nContext";
 
@@ -20,7 +24,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <I18nProvider>
       <AuthProvider client_id={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-        <App />
+        <BrowserRouter>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <App />
+          </ThemeProvider>
+        </BrowserRouter>
       </AuthProvider>
     </I18nProvider>
   </React.StrictMode>

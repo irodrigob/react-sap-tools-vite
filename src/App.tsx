@@ -1,24 +1,10 @@
-import {
-  Avatar,
-  FlexBox,
-  FlexBoxAlignItems,
-  FlexBoxDirection,
-  FlexBoxJustifyContent,
-  Input,
-  InputPropTypes,
-  Label,
-  Link,
-  LinkDesign,
-  ShellBar,
-} from "@ui5/webcomponents-react";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import { useTranslations } from "./translations/i18nContext";
+import { AuthGuard } from "./auth/authGuard";
+import Demo from "./components/demo";
 
 function App() {
-  const [inputVal, setInputVal] = useState("");
-  const handleInput: InputPropTypes["onInput"] = (e) => {
-    setInputVal(e.target.value ?? "");
-  };
   const { getI18nText } = useTranslations();
 
   useEffect(() => {
@@ -26,32 +12,18 @@ function App() {
   }, []);
 
   return (
-    <>
-      <ShellBar
-        logo={<img src="/vite.svg" alt={"Vite Logo"} />}
-        primaryTitle="UI5 Web Components for React Template"
-        profile={<Avatar initials={"UI5"} />}
-      />
-      <FlexBox
-        direction={FlexBoxDirection.Column}
-        justifyContent={FlexBoxJustifyContent.Center}
-        alignItems={FlexBoxAlignItems.Center}
-      >
-        <Link
-          href="https://sap.github.io/ui5-webcomponents-react/"
-          target="_blank"
-          design={LinkDesign.Emphasized}
-        >
-          Getting Started with UI5 Web Component for React
-        </Link>
-        <Input
-          placeholder="Hello World"
-          onInput={handleInput}
-          value={inputVal}
-        />
-        <Label>{inputVal}</Label>
-      </FlexBox>
-    </>
+    <Suspense fallback={null}>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <AuthGuard>
+              <Demo />
+            </AuthGuard>
+          }
+        ></Route>
+      </Routes>
+    </Suspense>
   );
 }
 

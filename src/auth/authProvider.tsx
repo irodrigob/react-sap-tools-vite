@@ -7,12 +7,14 @@ import {
   useMemo,
   useEffect,
 } from "react";
-import { useTranslations } from "../translations/i18nContext";
+import { loadGSIScript } from "./hooks/useScript";
+import { Status } from "./types.d";
+import { GOOGLE_URL_SCRIPT } from "./constants";
 
 interface authContextInterface {
   clientId: string;
-  //status: STATUS;
-  //setStatus: (value: STATUS) => void;
+  status: Status;
+  setStatus: (value: Status) => void;
   session: any;
   setSession: (value: any) => void;
   scriptLoadSuccess: boolean;
@@ -23,8 +25,8 @@ interface authContextInterface {
 
 const AuthContext = createContext<authContextInterface>({
   clientId: "",
-  //status: STATUS.NO_AUTH,
-  //setStatus: () => {},
+  status: Status.pending,
+  setStatus: () => {},
   session: "",
   setSession: () => {},
   scriptLoadSuccess: false,
@@ -41,18 +43,15 @@ interface Props {
 export const AuthProvider: FC<Props> = (props: Props) => {
   const { client_id, children } = props;
   const [session, setSession] = useState<any>();
-  //const [status, setStatus] = useState<STATUS>(STATUS.NO_AUTH);
+  const [status, setStatus] = useState<Status>(Status.pending);
   const [scriptLoadSuccess, setScriptLoadSuccess] = useState(false);
   const [scriptLoadError, setScriptLoadError] = useState(false);
-  const { getI18nText } = useTranslations();
-
-  console.log(getI18nText("app.title"));
 
   //const { promptLogin } = useGoogle(client_id);
   /*************************************
    * Efectos
    ************************************/
-  /*
+
   useEffect(() => {
     loadGSIScript(
       () => {
@@ -70,10 +69,10 @@ export const AuthProvider: FC<Props> = (props: Props) => {
       if (scriptTag) document.body.removeChild(scriptTag);
     };
   }, []);
-*/
+
   const clientId = useMemo(() => {
-    return "";
-  }, []);
+    return client_id;
+  }, [client_id]);
 
   /*************************************
    * Funciones
@@ -84,27 +83,25 @@ export const AuthProvider: FC<Props> = (props: Props) => {
    * el estado
    * @param {object} credentials | Credenciales de la autentificación
    */
-
   const loginSuccess = (credentials: any) => {
-    //setStatus(STATUS.AUTH);
-    //setSession(credentials);
+    setStatus(Status.auth);
+    setSession(credentials);
   };
 
   /**
    * Captura cuando se produce un error al loguearse.
    */
-
   const loginError = () => {
-    //    setStatus(STATUS.NO_AUTH);
-    //   setSession(null);
+    setStatus(Status.noAuth);
+    setSession(null);
   };
 
   return (
     <AuthContext.Provider
       value={{
         clientId,
-        //status,
-        //setStatus,
+        status,
+        setStatus,
         session,
         setSession,
         scriptLoadSuccess,
