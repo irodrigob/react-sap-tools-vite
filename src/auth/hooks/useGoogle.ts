@@ -24,7 +24,7 @@ export default function useGoogle() {
   useEffect(() => {
     // El efecto solo se lanza cuando el status no es ni autorizado ni no autorizado. Ya que es cuando no se ha verificado el login todavía, ni se ha hecho
     // login desde el botón de acceso de google.
-    if (status == Status.pending) {
+    if (status == Status.pending || status == Status.loading) {
       // Aunque el script del GSI no esta cargado pongo el loading porque también forma parte del proceso
       // de verificación.
       setStatus(Status.loading);
@@ -35,7 +35,7 @@ export default function useGoogle() {
           .initTokenClient({
             client_id: clientId,
             scope: "openid profile email",
-            prompt: "select_account",
+            prompt: "none",
             callback: async (response: any) => {
               if (response.access_token) {
                 const userInfo = await axios

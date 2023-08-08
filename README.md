@@ -18,6 +18,8 @@ Para que la aplicación en React pueda utilizar las herramientas hay que instala
 
 Los sistemas que se van configurando se guardan en una base de datos asociado a tu cuenta de correo de Google, por ello lo primero que va hacer la aplicación es pedirte que hagas login con tu cuenta de Gmail.
 
+**NOTA IMPORTANTE:La primera vez el navegador seguramente bloquee la ventana que se abre para pedirte el usuario al que te quieres conectar. Hay que permitir las ventanas emergentes para poder usar la aplicación.**
+
 # Inicio de la aplicación
 
 La primera vez que entremos a la aplicación nos saldrá el botón para conectarnos con nuestra cuenta de google:
@@ -147,3 +149,6 @@ Por ello la parte Frontend esta desarrollado en React y como librerías destacad
 El backend esta creado en NextJS. El motivo de usarlo es porque tiene un ejemplos autoexplicativos de como usarlo como middleware para Graphql.
 
 Para más detalle de las liberías tan solo tenéis que mirar el `package.json` de los dos proyectos.
+
+
+

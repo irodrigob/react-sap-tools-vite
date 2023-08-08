@@ -1,21 +1,19 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import jwtDecode from "jwt-decode";
-import { useSession } from "../authProvider";
+import { useSession } from "auth/authProvider";
 
 /**
  * Botón de login estándar de google
  * @param {object} pButtonRef | Referencia a la etiquete donde se pintar el bottón
  */
-export function GoogleButtonLogin(props) {
+export function GoogleButtonLogin() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { clientId, scriptLoadSuccess, checkVerifiedLogged, loginSuccess } =
-    useSession();
-  const buttonRef = useRef(null);
-  const from = location.state?.from?.pathname || "/";
+  const { clientId, scriptLoadSuccess, loginSuccess } = useSession();
+  const buttonRef = useRef<HTMLDivElement>(null);
+  //const from = location.state?.from?.pathname || "/";
 
-  const handlerLogin = useCallback((response) => {
+  const handlerLogin = useCallback((response: any) => {
     loginSuccess(jwtDecode(response.credential));
 
     // De momento vamos al ráiz de la página
@@ -29,14 +27,14 @@ export function GoogleButtonLogin(props) {
    */
   useEffect(() => {
     if (scriptLoadSuccess) {
-      window.google?.accounts.id.initialize({
+      window.google.accounts.id.initialize({
         client_id: clientId,
         callback: handlerLogin,
         auto_select: true,
-        useOneTap: true,
       });
 
-      window.google?.accounts.id.renderButton(buttonRef.current, {
+      window.google.accounts.id.renderButton(buttonRef.current!, {
+        type: "standard",
         theme: "outline",
         size: "large",
       });

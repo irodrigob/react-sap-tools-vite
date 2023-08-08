@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef, ReactNode, FC } from "react";
-
+import { ReactNode, FC } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 import { useSession } from "./authProvider";
 import { Status } from "auth/types.d";
 import useGoogle from "auth/hooks/useGoogle";
@@ -19,12 +19,12 @@ interface Props {
 export const AuthGuard: FC<Props> = (props: Props) => {
   const { children } = props;
   const { status } = useSession();
-  //let location = useLocation();
+  let location = useLocation();
   const {} = useGoogle();
 
   if (status === Status.loading) return <VerifyLogin />;
-  /*else if (status == Status.NoAuth)
-    return <Navigate to="/login" state={{ from: location }} replace />;^*/
+  else if (status == Status.noAuth)
+    return <Navigate to="/login" state={{ from: location }} replace />;
 
   return children;
 };
