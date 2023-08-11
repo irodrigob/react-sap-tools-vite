@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
-import "./index.css";
+
+import { Provider } from "react-redux";
+import { ApolloProvider } from "@apollo/client";
+import { initializeApollo } from "shared/graphql/client";
 // Librerias para que junto al tema puesto en el index.html funcione el dark mode
 //import "@ui5/webcomponents-theming/dist/Assets.js";
 //import "@ui5/webcomponents/dist/generated/json-imports/Themes";
@@ -12,25 +14,35 @@ import "@ui5/webcomponents-react/dist/Assets";
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import "translations/i18n";
 import theme from "theme";
-
+import { store } from "shared/storage/storageConfiguration";
 import I18nProvider from "./translations/i18nContext";
+import App from "./App.tsx";
+import "./index.css";
 
 //import I18nProvider from "./translations/i18nContext";
 import { AuthProvider } from "./auth/authProvider";
 
+const apolloClient = initializeApollo();
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <I18nProvider>
-      <AuthProvider client_id={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-        <BrowserRouter>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <App />
-          </ThemeProvider>
-        </BrowserRouter>
-      </AuthProvider>
+      <Provider store={store}>
+        <ApolloProvider client={apolloClient}>
+          <AuthProvider client_id={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+            <BrowserRouter>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <App />
+                <ToastContainer />
+              </ThemeProvider>
+            </BrowserRouter>
+          </AuthProvider>
+        </ApolloProvider>
+      </Provider>
     </I18nProvider>
   </React.StrictMode>
 );

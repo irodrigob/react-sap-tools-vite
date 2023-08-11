@@ -1,15 +1,13 @@
-import { FC, useRef, useState } from "react";
+import { FC, useState } from "react";
 import { Popover } from "@ui5/webcomponents-react";
 import { Avatar } from "@ui5/webcomponents-react";
 import { useSession } from "auth/authProvider";
 import MenuProfile from "main/frontend/layout/appToolbar/userAvatar/menuProfile";
+import { createPortal } from "react-dom";
 
-interface Props {
-  slot?: string;
-}
 
-const UserAvatarContainer: FC<Props> = (props) => {
-  const { slot } = props
+const UserAvatarContainer: FC = () => {
+
   const [openMenu, setOpenMenu] = useState(false);
   const { session } = useSession();
   return (
@@ -22,7 +20,6 @@ const UserAvatarContainer: FC<Props> = (props) => {
         onClick={() => {
           setOpenMenu(true);
         }}
-        slot={slot}
       >
         <img src={session.picture} referrerPolicy="no-referrer" />
       </Avatar>

@@ -6,17 +6,17 @@ import "@ui5/webcomponents-icons/dist/menu2";
 import "@ui5/webcomponents-icons/dist/account";
 import "@ui5/webcomponents-icons/dist/settings";
 import { Grid } from "@mui/material";
-//import GeneralHelp from "main/frontend/layout/appBar/generalHelp/generalHelp";
-//import MsgManagerToolbarContainer from "messageManager/infraestructure/frontend/components/msgManagerToolbarContainer";
+import GeneralHelp from "main/frontend/layout/appToolbar/generalHelp/generalHelp";
+import MsgManagerToolbarContainer from "messageManager/infraestructure/frontend/components/msgManagerToolbarContainer";
 import UserAvatarContainer from "main/frontend/layout/appToolbar/userAvatar/userAvatarContainer";
 import { useSession } from "auth/authProvider";
-//import useMessageManager from "messageManager/infraestructure/frontend/hooks/useMessageManager";
+import useMessageManager from "messageManager/infraestructure/frontend/hooks/useMessageManager";
 //import BreadCrumbsNav from "main/frontend/breadCrumbs/breadCrumbsNav";
 //import AppSystemSelected from "systems/infraestructure/frontend/components/appSystemSelected/appSystemSelected";
 
 export default function AppToolbarContainer() {
     const { session } = useSession();
-    //const { messagesNumber } = useMessageManager();
+    const { messagesNumber } = useMessageManager();
 
     return (
         <>
@@ -55,9 +55,13 @@ export default function AppToolbarContainer() {
                                     justifyContent="flex-end"
                                     spacing={4}
                                 >
-
+                                    {messagesNumber > 0 && (
+                                        <Grid item>
+                                            <MsgManagerToolbarContainer />
+                                        </Grid>
+                                    )}
                                     <Grid item>
-
+                                        <GeneralHelp />
                                     </Grid>
                                     <Grid item>
                                         <UserAvatarContainer />
