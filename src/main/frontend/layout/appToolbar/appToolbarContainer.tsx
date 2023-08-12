@@ -1,4 +1,3 @@
-import { FC, ReactNode } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import "@ui5/webcomponents-icons/dist/sys-help";
@@ -12,7 +11,7 @@ import UserAvatarContainer from "main/frontend/layout/appToolbar/userAvatar/user
 import { useSession } from "auth/authProvider";
 import useMessageManager from "messageManager/infraestructure/frontend/hooks/useMessageManager";
 //import BreadCrumbsNav from "main/frontend/breadCrumbs/breadCrumbsNav";
-//import AppSystemSelected from "systems/infraestructure/frontend/components/appSystemSelected/appSystemSelected";
+import AppSystemSelected from "systems/infraestructure/frontend/components/appSystemSelected/appSystemSelected";
 
 export default function AppToolbarContainer() {
     const { session } = useSession();
@@ -38,7 +37,7 @@ export default function AppToolbarContainer() {
 
                                     </Grid>
                                     <Grid item xs={3} sm={3} md={3} lg={3} xl={3}>
-
+                                        <AppSystemSelected />
                                     </Grid>
                                     <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
 

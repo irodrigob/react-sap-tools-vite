@@ -11,7 +11,8 @@ import { initializeApollo } from "shared/graphql/client";
 // Esto hará muchas cosas pero una de ellas es cargar textos en los idiomas en los componentes. Si no
 // Se carga al inicio salen en ingles.
 import "@ui5/webcomponents-react/dist/Assets";
-import { ThemeProvider } from "@emotion/react";
+import { ThemeProvider as ThemeProviderMaterial } from "@mui/material/styles";
+import { ThemeProvider } from "@ui5/webcomponents-react";
 import { CssBaseline } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -21,6 +22,8 @@ import { store } from "shared/storage/storageConfiguration";
 import I18nProvider from "./translations/i18nContext";
 import App from "./App.tsx";
 import "./index.css";
+import GlobalProvider from "shared/context/globalDataContext";
+import SystemProvider from "systems/infraestructure/context/systemContext";
 
 //import I18nProvider from "./translations/i18nContext";
 import { AuthProvider } from "./auth/authProvider";
@@ -33,13 +36,19 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <Provider store={store}>
         <ApolloProvider client={apolloClient}>
           <AuthProvider client_id={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-            <BrowserRouter>
-              <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <App />
-                <ToastContainer />
-              </ThemeProvider>
-            </BrowserRouter>
+            <GlobalProvider>
+              <SystemProvider>
+                <BrowserRouter>
+                  <ThemeProviderMaterial theme={theme}>
+                    <ThemeProvider>
+
+                      <App />
+                      <ToastContainer />
+                    </ThemeProvider>
+                  </ThemeProviderMaterial>
+                </BrowserRouter>
+              </SystemProvider>
+            </GlobalProvider>
           </AuthProvider>
         </ApolloProvider>
       </Provider>
