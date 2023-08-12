@@ -11,9 +11,9 @@ import { initializeApollo } from "shared/graphql/client";
 // Esto hará muchas cosas pero una de ellas es cargar textos en los idiomas en los componentes. Si no
 // Se carga al inicio salen en ingles.
 import "@ui5/webcomponents-react/dist/Assets";
-import { ThemeProvider as ThemeProviderMaterial } from "@mui/material/styles";
+import { ThemeProvider as ThemeProviderMaterial } from '@emotion/react';
+import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from "@ui5/webcomponents-react";
-import { CssBaseline } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "translations/i18n";
@@ -24,9 +24,8 @@ import App from "./App.tsx";
 import "./index.css";
 import GlobalProvider from "shared/context/globalDataContext";
 import SystemProvider from "systems/infraestructure/context/systemContext";
-
-//import I18nProvider from "./translations/i18nContext";
 import { AuthProvider } from "./auth/authProvider";
+import Demo from "demo.tsx";
 
 const apolloClient = initializeApollo();
 
@@ -39,13 +38,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <GlobalProvider>
               <SystemProvider>
                 <BrowserRouter>
-                  <ThemeProviderMaterial theme={theme}>
-                    <ThemeProvider>
-
+                  <ThemeProvider>
+                    <ThemeProviderMaterial theme={theme}>
+                      <CssBaseline />
                       <App />
-                      <ToastContainer />
-                    </ThemeProvider>
-                  </ThemeProviderMaterial>
+                    </ThemeProviderMaterial>
+                  </ThemeProvider>
+                  <ToastContainer />
                 </BrowserRouter>
               </SystemProvider>
             </GlobalProvider>

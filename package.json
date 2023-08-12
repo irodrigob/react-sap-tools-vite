@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
+    "@types/gapi.auth2": "^0.0.57",
     "@types/google.accounts": "^0.0.8",
     "@types/node": "^20.4.10",
     "@types/react": "^18.2.19",

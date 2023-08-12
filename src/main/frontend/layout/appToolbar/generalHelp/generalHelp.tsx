@@ -2,8 +2,8 @@ import { useState, useEffect, FC } from "react";
 import { Link, List, StandardListItem, Icon, Avatar } from "@ui5/webcomponents-react";
 import "@ui5/webcomponents-icons/dist/sys-help";
 import { Popover } from "@ui5/webcomponents-react";
-//import AppsList from "sap/general/domain/entities/appsList";
-//import { useAppSelector } from "shared/storage/useStore";
+import AppsList from "sap/general/domain/entities/appsList";
+import { useAppSelector } from "shared/storage/useStore";
 const generalHelp = {
   appDesc: "General",
   urlHelp: "https://github.com/irodrigob/react-sap-tools",
@@ -12,9 +12,24 @@ const generalHelp = {
 const GeneralHelp: FC = () => {
   const [open, setOpen] = useState(false);
   const [listHelps, setListHelps] = useState([generalHelp]);
-  //const { appsList } = useAppSelector((state) => state.SAPGeneral);
+  const { appsList } = useAppSelector((state) => state.SAPGeneral);
 
-  /*
+  useEffect(() => {
+    if (Array.isArray(appsList) && appsList.length > 0) {
+      let newlistHelps = [generalHelp];
+
+      appsList.map((row: AppsList) => {
+        newlistHelps.push({
+          appDesc: row.appDesc,
+          urlHelp: row.urlHelp,
+        });
+      });
+      setListHelps(newlistHelps);
+    }
+  }, [appsList]);
+
+  return (
+    <>
       <Icon
         name="sys-help"
         interactive={true}
@@ -28,20 +43,6 @@ const GeneralHelp: FC = () => {
         onClick={() => {
           setOpen(true);
         }}
-      />
-  */
-  return (
-    <>
-      <Avatar
-        accessibleName="general help"
-        size="XS"
-        interactive={true}
-        id="generalHelp"
-        onClick={() => {
-          setOpen(true);
-        }}
-        icon="sys-help"
-        style={{ backgroundColor: "transparent" }}
       />
       <Popover
         opener="generalHelp"

@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from "react";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 import { useSession } from "auth/authProvider";
 import { Status } from "auth/types.d";
 
@@ -31,12 +32,13 @@ export default function useGoogle() {
 
       // Hay que esperar a que el script este totalmente cargado.
       if (scriptLoadSuccess) {
-        window.google?.accounts.oauth2
+        /* window.google?.accounts.oauth2
           .initTokenClient({
             client_id: clientId,
             scope: "openid profile email",
             prompt: "none",
             callback: async (response: any) => {
+              console.log(response)
               if (response.access_token) {
                 const userInfo = await axios
                   .get("https://www.googleapis.com/oauth2/v3/userinfo", {
@@ -54,7 +56,19 @@ export default function useGoogle() {
               }
             },
           })
-          .requestAccessToken();
+          .requestAccessToken();*/
+        window.google.accounts.id.initialize({
+          client_id: clientId,
+          auto_select: true,
+          cancel_on_tap_outside: false,
+
+          callback: async (response: any) => {
+            if (response.credential)
+              loginSuccess(jwtDecode(response.credential));
+            else loginError();
+          },
+        });
+        window.google.accounts.id.prompt();
       } else if (scriptLoadError) {
         loginError(scriptLoadError);
       }
