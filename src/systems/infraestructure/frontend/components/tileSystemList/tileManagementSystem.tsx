@@ -18,7 +18,7 @@ const TileManagementSystem: FC = () => {
         <CardHeader
           titleText={getI18nText("tileSystems.managementTile.title")}
         />
-        <FlexBox direction="Row" style={{ marginTop: "4.6rem" }}>
+        <FlexBox direction="Row" style={{ marginTop: "5.325rem" }}>
           <Tooltip title={getI18nText("tileSystems.managementTile.tooltipAdd")}>
             <Icon
               name="add"

@@ -24,11 +24,51 @@ const TileSystemListContainer: FC = () => {
     }
   }, [session, loadSystemList]);
 
-  return (
-    <>
-      <Grid container spacing={2} direction="row">
+  /*
+ <Grid container spacing={2} direction="row">
         <Grid>
           <TileManagementSystem />
+        </Grid>
+        {!loadingSystems &&
+          systemsList &&
+          systemsList.map((system: System) => {
+            return (
+              <Grid key={system._id}>
+                <TileSystem
+                  system={system}
+                  onClick={(system) => {
+                    processSelectedSystem(system);
+                  }}
+                />
+              </Grid>
+            );
+          })}
+
+        {loadingSystems && (
+          <Grid
+            xs={10}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <BusyIndicator
+              active
+              size="Large"
+              text={getI18nText("systemSelect.loading")}
+            />
+          </Grid>
+        )}
+      </Grid>
+      <DialogEditSystem />
+
+  */
+  return (
+    <>
+      <Grid container spacing={3} xs={12} direction="row" >
+        <Grid>
+          <span style={{ paddingLeft: "0.5rem" }}>
+            <TileManagementSystem />
+          </span>
         </Grid>
         {!loadingSystems &&
           systemsList &&

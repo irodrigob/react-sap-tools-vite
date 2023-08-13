@@ -1,4 +1,5 @@
-import aes from 'crypto-js/aes';
+import aes from "crypto-js/aes";
+import utf8 from "crypto-js/enc-utf8";
 
 export default class Encrypt {
   /**
@@ -7,10 +8,7 @@ export default class Encrypt {
    * @returns Texto cifrado
    */
   static encryptText = (sText: string): string => {
-    return aes.encrypt(
-      sText,
-      import.meta.env.VITE_SECRET_KEY
-    ).toString();
+    return aes.encrypt(sText, import.meta.env.VITE_SECRET_KEY).toString();
   };
   /**
    * Descifra el texto
@@ -18,9 +16,6 @@ export default class Encrypt {
    * @returns Texto descifrado
    */
   static decryptText(sKey: string): string {
-    return aes.decrypt(
-      sKey,
-      import.meta.env.VITE_SECRET_KEY
-    ).toString(CryptoJS.enc.Utf8);
+    return aes.decrypt(sKey, import.meta.env.VITE_SECRET_KEY).toString(utf8);
   }
 }

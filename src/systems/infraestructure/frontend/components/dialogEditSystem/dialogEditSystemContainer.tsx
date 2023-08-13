@@ -1,8 +1,6 @@
-import { useState, FC, ReactNode, useEffect, useCallback } from "react";
+import { useState, FC, useEffect, useCallback } from "react";
 import {
   Dialog,
-  Button,
-  Bar,
   Form,
   FormItem,
   CheckBox,
@@ -157,6 +155,7 @@ const DialogEditSystem: FC = () => {
   const closeDialog = useCallback(() => {
     systemActions.setOpenEditSystem(false);
     systemActions.setSystemEdit(null);
+    setBtnSaveDisabled(false);
   }, []);
 
   /*************************************

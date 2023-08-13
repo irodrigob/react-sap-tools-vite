@@ -16,7 +16,7 @@ interface Props {
 }
 
 const TileSystem: FC<Props> = (props) => {
-  const { system, onClick } = props;
+  const { system } = props;
   const { getI18nText } = useTranslations();
   const { processSelectedSystem, isSystemSelected } = useSystems();
   const systemSelected = isSystemSelected(system._id);
@@ -28,8 +28,8 @@ const TileSystem: FC<Props> = (props) => {
         titleText={
           systemSelected
             ? `${system.name} ${getI18nText(
-                "systemSelect.sufixSystemSelected"
-              )}`
+              "systemSelect.sufixSystemSelected"
+            )}`
             : system.name
         }
         interactive={true}

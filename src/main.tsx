@@ -16,16 +16,16 @@ import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from "@ui5/webcomponents-react";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import "translations/i18n";
 import theme from "theme";
 import { store } from "shared/storage/storageConfiguration";
 import I18nProvider from "./translations/i18nContext";
 import App from "./App.tsx";
-import "./index.css";
 import GlobalProvider from "shared/context/globalDataContext";
 import SystemProvider from "systems/infraestructure/context/systemContext";
 import { AuthProvider } from "./auth/authProvider";
-import Demo from "demo.tsx";
+
 
 const apolloClient = initializeApollo();
 
@@ -42,9 +42,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                     <ThemeProviderMaterial theme={theme}>
                       <CssBaseline />
                       <App />
+                      <ToastContainer />
                     </ThemeProviderMaterial>
                   </ThemeProvider>
-                  <ToastContainer />
                 </BrowserRouter>
               </SystemProvider>
             </GlobalProvider>
