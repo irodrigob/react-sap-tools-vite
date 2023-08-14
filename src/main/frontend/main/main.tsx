@@ -14,13 +14,11 @@ export default function Main() {
     document.title = getI18nText("app.title");
   }, []);
 
-  /*
-     {showSystemList && <TileSystemListContainer />}
-      {showListApps && <TileAppsListContainer />}
-  */
+
   return (
     <>
       {showSystemList && <TileSystemListContainer />}
+      {showListApps && <TileAppsListContainer />}
 
     </>
   );

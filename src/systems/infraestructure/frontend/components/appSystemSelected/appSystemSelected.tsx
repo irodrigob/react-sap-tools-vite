@@ -1,4 +1,3 @@
-import { FC } from "react";
 import { Label, Text, FlexBox } from "@ui5/webcomponents-react";
 import { useTranslations } from "translations/i18nContext";
 import { useAppSelector } from "shared/storage/useStore";

@@ -5,6 +5,12 @@ import { AuthGuard } from "./auth/authGuard";
 import MainLayout from "main/frontend/layout/mainLayout";
 import Main from "main/frontend/main/main";
 import Login from "auth/components/login";
+const LazyMainTransportOrder = lazy(
+  () =>
+    import(
+      "sap/transportOrder/infraestructure/frontend/components/userOrders/mainTransportOrder"
+    )
+);
 
 function App() {
   const { getI18nText } = useTranslations();
@@ -22,6 +28,14 @@ function App() {
             element={
               <AuthGuard>
                 <Main />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="/transportOrder"
+            element={
+              <AuthGuard>
+                <LazyMainTransportOrder />
               </AuthGuard>
             }
           />

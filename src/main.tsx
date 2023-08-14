@@ -38,13 +38,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <GlobalProvider>
               <SystemProvider>
                 <BrowserRouter>
-                  <ThemeProvider>
-                    <ThemeProviderMaterial theme={theme}>
+                  <ThemeProviderMaterial theme={theme}>
+                    <ThemeProvider>
                       <CssBaseline />
                       <App />
                       <ToastContainer />
-                    </ThemeProviderMaterial>
-                  </ThemeProvider>
+                    </ThemeProvider>
+                  </ThemeProviderMaterial>
                 </BrowserRouter>
               </SystemProvider>
             </GlobalProvider>

@@ -102,14 +102,14 @@ export default class SAPController {
    * Indicador si se tiene que mostrar el listado de aplicaciones
    * @param value | Booleano con la acción
    */
-  setShowListApps(value:boolean){
-     this.SAPGeneralActions.setLoadingListApps(value)
+  setShowListApps(value: boolean) {
+    this.SAPGeneralActions.setShowListApps(value);
   }
   /**
    * Indicador si se muestra el loader de leyendo aplicaciones
-   * @param value 
+   * @param value
    */
-  setLoadingListApps(value:boolean){
-    this.SAPGeneralActions.setLoadingListApps(value)
+  setLoadingListApps(value: boolean) {
+    this.SAPGeneralActions.setLoadingListApps(value);
   }
 }

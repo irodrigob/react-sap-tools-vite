@@ -15,6 +15,7 @@ import {
 } from "sap/transportOrder/infraestructure/types/transport";
 import { useAppSelector } from "shared/storage/useStore";
 import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage/sapTransportOrderActions";
+import DateUtils from "shared/utils/date/date";
 
 export default function useFilterValues() {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ export default function useFilterValues() {
   );
   const { getI18nText } = useTranslations();
   const sapTransportOrderActions = new SAPTransportOrderActions();
+  const dateUtils = new DateUtils()
 
   /**
    * Devuelve los valores
@@ -66,7 +68,7 @@ export default function useFilterValues() {
 
     // Fecha de liberación
     let previousDate: string = date.format(
-      date.addMonths(new Date(), -1),
+      dateUtils.addMonths(new Date(), -1),
       "DD.MM.YYYY"
     );
 
@@ -99,13 +101,13 @@ export default function useFilterValues() {
         releaseDateFrom:
           filtersValues.releaseDateFrom != ""
             ? [
-                date.transform(
-                  filtersValues.releaseDateFrom as string,
-                  "DD.MM.YYYY",
-                  "YYYY-MM-DD"
-                ),
-                "00:00:00",
-              ].join("T")
+              date.transform(
+                filtersValues.releaseDateFrom as string,
+                "DD.MM.YYYY",
+                "YYYY-MM-DD"
+              ),
+              "00:00:00",
+            ].join("T")
             : null,
       };
     },
