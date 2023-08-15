@@ -39,7 +39,7 @@ const CellDescription = (instance: any) => {
 
   return (
     <>
-      {!editField && <Label>{rowOriginal.description}</Label>}
+      {!editField && <Label style={{ color: "var(--sapList_TextColor)" }}>{rowOriginal.description}</Label>}
       {editField && (
         <Input
           value={rowOriginal.description}

@@ -39,7 +39,7 @@ const CellUser = (instance: any) => {
 
   return (
     <>
-      {!editField && <Label>{rowOriginal.user}</Label>}
+      {!editField && <Label style={{ color: "var(--sapList_TextColor)" }}>{rowOriginal.user}</Label>}
       {editField && (
         <ComboBox
           value={rowOriginal.user}

@@ -1,8 +1,6 @@
 import { useCallback } from "react";
-import { useDispatch } from "react-redux";
 import { ValueState } from "@ui5/webcomponents-react";
 import { useTranslations } from "translations/i18nContext";
-import date from "date-and-time";
 import {
   STATUS,
   TYPE,
@@ -18,7 +16,7 @@ import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage
 import DateUtils from "shared/utils/date/date";
 
 export default function useFilterValues() {
-  const dispatch = useDispatch();
+
 
   const { toolbarFiltersState, toolbarFilters } = useAppSelector(
     (state) => state.SAPTransportOrder
@@ -67,7 +65,7 @@ export default function useFilterValues() {
     ];
 
     // Fecha de liberación
-    let previousDate: string = date.format(
+    let previousDate: string = dateUtils.format(
       dateUtils.addMonths(new Date(), -1),
       "DD.MM.YYYY"
     );
@@ -101,7 +99,7 @@ export default function useFilterValues() {
         releaseDateFrom:
           filtersValues.releaseDateFrom != ""
             ? [
-              date.transform(
+              dateUtils.transform(
                 filtersValues.releaseDateFrom as string,
                 "DD.MM.YYYY",
                 "YYYY-MM-DD"
