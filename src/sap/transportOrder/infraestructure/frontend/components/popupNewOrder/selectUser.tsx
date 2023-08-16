@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { ComboBox, ComboBoxItem } from "@ui5/webcomponents-react";
 
 import { useAppSelector } from "shared/storage/useStore";

@@ -40,7 +40,7 @@ const OrdersTreeTable: FC = () => {
         }}
         selectionMode="MultiSelect"
         selectionBehavior="RowSelector"
-        onRowExpandChange={(event: any) => {
+        onRowExpandChange={() => {
           //setRowExpanded(event.detail.row.original);
           // console.log(event);
         }}

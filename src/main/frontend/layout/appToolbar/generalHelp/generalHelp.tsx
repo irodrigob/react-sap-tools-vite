@@ -1,5 +1,5 @@
 import { useState, useEffect, FC } from "react";
-import { Link, List, StandardListItem, Icon, Avatar } from "@ui5/webcomponents-react";
+import { Link, List, StandardListItem, Icon } from "@ui5/webcomponents-react";
 import "@ui5/webcomponents-icons/dist/sys-help";
 import { Popover } from "@ui5/webcomponents-react";
 import AppsList from "sap/general/domain/entities/appsList";

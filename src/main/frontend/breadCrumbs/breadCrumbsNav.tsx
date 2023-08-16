@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   Breadcrumbs,
   BreadcrumbsItem,
-  BreadcrumbsDomRef,
 } from "@ui5/webcomponents-react";
 import { useAppSelector } from "shared/storage/useStore";
 import { useSystemData } from "systems/infraestructure/context/systemContext";
@@ -65,7 +64,7 @@ export default function BreadCrumbsNav() {
             id: app.frontendPage,
             text: app.appDesc,
             level: 3,
-            navigation: () => {},
+            navigation: () => { },
           });
       }
     }

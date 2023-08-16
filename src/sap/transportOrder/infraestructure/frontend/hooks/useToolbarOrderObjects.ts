@@ -1,7 +1,5 @@
-import { useCallback } from "react";
 import useOrderObjects from "sap/transportOrder/infraestructure/frontend/hooks/useOrderObjects";
 import { OrderObjectsKey } from "sap/transportOrder/infraestructure/types/transport";
-import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage/sapTransportOrderActions";
 import useMessages, {
   MessageType,
 } from "shared/infraestructure/hooks/useMessages";
@@ -11,7 +9,6 @@ export default function useToolbarOrderObjects(
   setOpenDeleteObjects: (value: boolean) => void
 ) {
   const { checkOrderTypeMoveOrders, checkOrderEditable } = useOrderObjects();
-  const sapTransportOrderActions = new SAPTransportOrderActions();
   const { showMessage } = useMessages();
   const { getI18nText } = useTranslations();
 

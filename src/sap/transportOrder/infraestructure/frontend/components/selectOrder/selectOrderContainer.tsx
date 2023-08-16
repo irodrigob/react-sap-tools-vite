@@ -1,8 +1,7 @@
-import { FC, useEffect, useMemo } from "react";
+import { FC, useEffect } from "react";
 import { ValueState } from "@ui5/webcomponents-react";
 import useSelectOrder from "sap/transportOrder/infraestructure/frontend/hooks/useSelectOrder";
 import InputSelectOrder from "./inputSelectOrder";
-import OrdersList from "./ordersList";
 import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage/sapTransportOrderActions";
 
 interface Props {

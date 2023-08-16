@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import {
   FieldsOrdersTreeTable,
   FieldsTaskTreeTable,
@@ -17,7 +17,7 @@ import { OrderObjectSelected } from "sap/transportOrder/infraestructure/types/tr
 export default function useCellActions() {
   const { changeDataOrder, releaseOrders } = useTransportOrder();
   const { showMessage, updateMessage, updateResultError } = useMessages();
-  const { getI18nText, language } = useTranslations();
+  const { getI18nText } = useTranslations();
   const {
     updateDataModel,
     transferEditingRow2ModelData,

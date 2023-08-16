@@ -6,12 +6,10 @@ import { useAppSelector } from "shared/storage/useStore";
 import OrderObject from "sap/transportOrder/domain/entities/orderObject";
 import { useTranslations } from "translations/i18nContext";
 import CellOrderLocked from "sap/transportOrder/infraestructure/frontend/components/orderObjects/cellOrderLocked";
-import CellActions from "sap/transportOrder/infraestructure/frontend/components/orderObjects/cellActions";
 import {
   OrderObjectsKey,
   OrderObjectKey,
 } from "sap/transportOrder/infraestructure/types/transport";
-import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage/sapTransportOrderActions";
 import useOrderObjects from "sap/transportOrder/infraestructure/frontend/hooks/useOrderObjects";
 
 export default function useOrderObjectsTable() {
@@ -24,7 +22,6 @@ export default function useOrderObjectsTable() {
   const [objectsSelected, setObjectsSelected] = useState<OrderObjectsKey>([]);
   const [openMoveObjects, setOpenMoveObjects] = useState(false);
   const [openDeleteObjects, setOpenDeleteObjects] = useState(false);
-  const sapTransportOrderActions = new SAPTransportOrderActions();
   const { reloadObjectOrders, processDeleteOrderObjects } = useOrderObjects();
 
   const orderObjectsTable = useMemo(() => {

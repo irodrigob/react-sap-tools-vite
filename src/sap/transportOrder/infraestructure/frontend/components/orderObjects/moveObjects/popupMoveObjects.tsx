@@ -2,7 +2,6 @@ import { FC, useCallback, useEffect, useState } from "react";
 import { Dialog, ValueState } from "@ui5/webcomponents-react";
 import { useTranslations } from "translations/i18nContext";
 import FooterDialog from "shared/frontend/components/footerDialog";
-import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage/sapTransportOrderActions";
 import MoveObjectsContainer from "./moveObjectsContainer";
 import { OrderObjectsKey } from "sap/transportOrder/infraestructure/types/transport";
 import useMessages, {
@@ -17,7 +16,6 @@ interface Props {
 }
 const PopupMoveObjects: FC<Props> = (props: Props) => {
   const { objectsSelected, open: openMoveObjects, onClose } = props;
-  const sapTransportOrderActions = new SAPTransportOrderActions();
   const { getI18nText } = useTranslations();
   const [orderValueState, setOrderValueState] = useState<ValueState>(
     ValueState.None

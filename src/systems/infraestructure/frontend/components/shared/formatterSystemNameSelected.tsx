@@ -1,4 +1,3 @@
-import { FC } from "react";
 import { useTranslations } from "translations/i18nContext";
 
 interface Props {

@@ -37,7 +37,6 @@ import {
 import { OrderObjectKey } from "sap/transportOrder/infraestructure/types/transport";
 import { SelectableOrders } from "sap/transportOrder/domain/entities/selectableOrders";
 import { STATUS } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder";
-import Properties from "shared/utils/types/properties";
 
 export default class SAPTransportOrderApplication {
   private transportOrderRepository: TransportOrderRepository;
@@ -105,7 +104,7 @@ export default class SAPTransportOrderApplication {
       );
 
       // Se añade un sistema en blanco al inicio para que el select en pantalla lo procese
-      let values = this.addInitialSystemTransport(response);
+      this.addInitialSystemTransport(response);
 
       // Se guerda el resultado en el modelo y se devuelve
       this.sapTransportOrderActions.setSystemsTransportCopy(response);

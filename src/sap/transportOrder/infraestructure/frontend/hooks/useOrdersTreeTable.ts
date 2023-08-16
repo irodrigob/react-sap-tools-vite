@@ -1,11 +1,7 @@
 import { useMemo, useCallback, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { AnalyticalTableColumnDefinition } from "@ui5/webcomponents-react";
 import CellActions from "sap/transportOrder/infraestructure/frontend/components/analyticTableEnhacement/cellActions";
-import {
-  FieldsOrdersTreeTable,
-  FieldsTaskTreeTable,
-} from "sap/transportOrder/infraestructure/types/transport";
+import { FieldsOrdersTreeTable } from "sap/transportOrder/infraestructure/types/transport";
 import CellDescription from "sap/transportOrder/infraestructure/frontend/components/analyticTableEnhacement/cellDescription";
 import CellUser from "sap/transportOrder/infraestructure/frontend/components/analyticTableEnhacement/cellUser";
 import { useTranslations } from "translations/i18nContext";

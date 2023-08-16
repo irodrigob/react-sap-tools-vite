@@ -1,4 +1,3 @@
-import { store } from "shared/storage/storageConfiguration";
 import {
   Message,
   Messages,

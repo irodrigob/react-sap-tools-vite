@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useState, FC } from "react";
 import {
-  Panel,
   AnalyticalTable,
   FlexBox,
   Title,
 } from "@ui5/webcomponents-react";
 import { useTranslations } from "translations/i18nContext";
-import { useAppSelector } from "shared/storage/useStore";
+
 import { OrderObjectsKey } from "sap/transportOrder/infraestructure/types/transport";
 
 interface Props {
@@ -15,7 +14,7 @@ interface Props {
 
 const ObjectsSelected: FC<Props> = (props: Props) => {
   const { objectsSelected } = props;
-  const { getI18nText, language } = useTranslations();
+  const { getI18nText } = useTranslations();
   /*const { objectsToProcess } = useAppSelector(
     (state) => state.SAPTransportOrder
   );*/

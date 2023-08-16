@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { MessageBox, MessageBoxActions, Text } from "@ui5/webcomponents-react";
+import { MessageBox, MessageBoxActions } from "@ui5/webcomponents-react";
 import { useTranslations } from "translations/i18nContext";
 //
 interface Props {

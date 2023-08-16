@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import {
   Toolbar,
   ToolbarSeparator,
@@ -36,7 +36,7 @@ const ToolbarTable: FC<Props> = (props) => {
     setOpenMoveObjects,
     setOpenDeleteObjects,
   } = props;
-  const { getI18nText, language } = useTranslations();
+  const { getI18nText } = useTranslations();
   const { ordersObjectsSelected } = useAppSelector(
     (state) => state.SAPTransportOrder
   );

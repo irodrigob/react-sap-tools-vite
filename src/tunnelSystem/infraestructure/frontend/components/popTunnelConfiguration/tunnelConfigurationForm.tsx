@@ -34,9 +34,7 @@ const TunnelConfigurationForm: FC<Props> = (props) => {
   const {
     control,
     handleSubmit,
-    reset,
     setValue,
-    formState: { errors },
     watch,
   } = useForm<FormValues>();
   const { session } = useSession();
@@ -136,7 +134,6 @@ const TunnelConfigurationForm: FC<Props> = (props) => {
               defaultValue=""
               render={({
                 field: { onChange, value },
-                fieldState: { error },
               }) => (
                 <FlexBox direction="Column">
                   <TextField

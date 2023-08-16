@@ -3,8 +3,6 @@ import { Popover } from "@ui5/webcomponents-react";
 import { Avatar } from "@ui5/webcomponents-react";
 import { useSession } from "auth/authProvider";
 import MenuProfile from "main/frontend/layout/appToolbar/userAvatar/menuProfile";
-import { createPortal } from "react-dom";
-
 
 const UserAvatarContainer: FC = () => {
 

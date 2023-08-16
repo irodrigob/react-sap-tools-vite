@@ -1,12 +1,10 @@
 import { FC } from "react";
 import { SideNavigationItem } from "@ui5/webcomponents-react";
 import SAPController from "sap/general/infraestructure/controller/sapController";
-import { useTranslations } from "translations/i18nContext";
 
 const SidebarListSapApps: FC = () => {
   const sapController = new SAPController();
   const appsList = sapController.getAppList();
-  const { getI18nText } = useTranslations();
 
   return (
     <>

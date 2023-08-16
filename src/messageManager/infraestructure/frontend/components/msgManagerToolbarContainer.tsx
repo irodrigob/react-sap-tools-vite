@@ -2,8 +2,6 @@ import { FC, useEffect, useState } from "react";
 import { ValueState } from "@ui5/webcomponents-react";
 import {
   MessageViewButton,
-  Button,
-  FlexBox,
   Popover,
 } from "@ui5/webcomponents-react";
 import MessagesList from "./msgManagerList";
@@ -11,7 +9,7 @@ import useMessageManager from "messageManager/infraestructure/frontend/hooks/use
 
 const MsgManagerToolbarContainer: FC = () => {
   const [msgType, setMsgType] = useState(ValueState.None);
-  const { messages, messagesNumber, unreadMessage, determineGlobalValueState } =
+  const { messages, messagesNumber, determineGlobalValueState } =
     useMessageManager();
   const [openMessageView, setOpenMessageView] = useState(false);
 

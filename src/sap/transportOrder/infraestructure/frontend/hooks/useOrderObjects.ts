@@ -25,12 +25,9 @@ export default function useOrderObjects() {
   const sapTransportOrderActions = new SAPTransportOrderActions();
   const transportOrderController = new SAPTransportOrderController();
   const { getI18nText, language } = useTranslations();
-  const {
-    orderObjects,
-    ordersObjectsSelected,
-    objectsToProcess,
-    orderListTree,
-  } = useAppSelector((state) => state.SAPTransportOrder);
+  const { orderObjects, ordersObjectsSelected, orderListTree } = useAppSelector(
+    (state) => state.SAPTransportOrder
+  );
   const { showResultError, updateMessage, updateResultError, showMessage } =
     useMessages();
   const { deleteObjectsModel } = useDataManagerObjects();
@@ -134,8 +131,8 @@ export default function useOrderObjects() {
         } else {
           // Esto no debería de ocurrir porque cualquier excepcion se captura en la clase de aplicación.
           // Aún asi dejo la lectura del error y ver como gestionarlo
-          let responseError = (responsePromise as PromiseRejectedResult)
-            ?.reason;
+          //let responseError = (responsePromise as PromiseRejectedResult)
+          //  ?.reason;
         }
 
         if (deletedOrderObjects.length > 0) {

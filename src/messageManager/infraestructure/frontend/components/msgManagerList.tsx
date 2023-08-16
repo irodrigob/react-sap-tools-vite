@@ -15,7 +15,7 @@ const MessagesList: FC<Props> = (props) => {
 
   return (
     <MessageView showDetailsPageHeader={true}>
-      {props.messages.map((row: Message, index) => {
+      {messages.map((row: Message, index) => {
         return (
           <MessageItem
             key={`MSG_${index}`}

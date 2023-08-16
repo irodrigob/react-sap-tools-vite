@@ -4,9 +4,6 @@ import {
   ValueValidation,
   ReturnUserValidations,
 } from "sap/transportOrder/infraestructure/types/transport";
-import useMessages, {
-  MessageType,
-} from "shared/infraestructure/hooks/useMessages";
 import { useTranslations } from "translations/i18nContext";
 import { useAppSelector } from "shared/storage/useStore";
 

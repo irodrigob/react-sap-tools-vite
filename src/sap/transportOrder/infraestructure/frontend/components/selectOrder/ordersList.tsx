@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import {
   List,
-  StandardListItem,
   CustomListItem,
   FlexBox,
   Text,
@@ -14,7 +13,7 @@ import { OrdersData } from "sap/transportOrder/infraestructure/types/selectOrder
 import { SelectableOrder } from "sap/transportOrder/domain/entities/selectableOrders";
 import ArrayUtils from "shared/utils/array/arrayUtils";
 import { useTranslations } from "translations/i18nContext";
-import { ListItemClickEventDetail } from "@ui5/webcomponents/dist/List";
+import { ListItemClickEventDetail } from "@ui5/webcomponents/dist/List.js";
 
 interface Props {
   showTasks: boolean;

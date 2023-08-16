@@ -15,11 +15,11 @@ import { useTranslations } from "translations/i18nContext";
 import { useAppSelector } from "shared/storage/useStore";
 import ArrayUtils from "shared/utils/array/arrayUtils";
 import { SelectableOrder } from "sap/transportOrder/domain/entities/selectableOrders";
-import { InputSuggestionItemSelectEventDetail } from "@ui5/webcomponents/dist/Input";
+import { InputSuggestionItemSelectEventDetail } from "@ui5/webcomponents/dist/Input.js";
 import { OrdersData } from "sap/transportOrder/infraestructure/types/selectOrder";
 import OrderSuggestionsItems from "./orderSuggestionsItems";
 import OrdersList from "./ordersList";
-import { TextField } from "@mui/material";
+
 
 interface Props {
   showTasks: boolean;

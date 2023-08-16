@@ -1,12 +1,9 @@
 import { useState, FC, ReactNode, useEffect } from "react";
 import {
   Dialog,
-  Button,
-  Bar,
   Form,
   FormItem,
   Text,
-  CheckBox,
   FlexBox,
   Link,
 } from "@ui5/webcomponents-react";
@@ -43,7 +40,6 @@ const PopupTunnelConfiguration: FC<Props> = (props) => {
     handleSubmit,
     reset,
     setValue,
-    formState: { errors },
     watch,
   } = useForm<FormValues>();
   const { session } = useSession();
@@ -146,8 +142,7 @@ const PopupTunnelConfiguration: FC<Props> = (props) => {
               control={control}
               defaultValue=""
               render={({
-                field: { onChange, value },
-                fieldState: { error },
+                field: { onChange, value }
               }) => (
                 <FlexBox direction="Column">
                   <TextField

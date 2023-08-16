@@ -2,8 +2,6 @@ import { FC } from "react";
 import {
   RadioButton,
   FlexBox,
-  Ui5CustomEvent,
-  RadioButtonDomRef,
 } from "@ui5/webcomponents-react";
 import "@ui5/webcomponents/dist/features/InputElementsFormSupport.js";
 import { useTranslations } from "translations/i18nContext";

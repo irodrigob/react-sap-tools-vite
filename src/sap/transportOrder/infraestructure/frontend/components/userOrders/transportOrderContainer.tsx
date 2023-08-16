@@ -5,8 +5,6 @@ import {
   FlexibleColumnLayout,
   FCLLayout,
 } from "@ui5/webcomponents-react";
-
-import { useTranslations } from "translations/i18nContext";
 import FiltersOrdersTable from "sap/transportOrder/infraestructure/frontend/components/filtersOrdersTable/filtersOrdersTable";
 import useTransportOrder from "sap/transportOrder/infraestructure/frontend/hooks/useTransportOrder";
 import OrdersTreeTable from "./ordersTreeTable";
@@ -14,7 +12,7 @@ import { useAppSelector } from "shared/storage/useStore";
 import OrderObjectsContainer from "sap/transportOrder/infraestructure/frontend/components/orderObjects/orderObjectsContainer";
 
 const TransportOrderContainer: FC = () => {
-  const { getI18nText } = useTranslations();
+
   const { systemSelected } = useAppSelector((state) => state.System);
   const { systemChanged } = useAppSelector((state) => state.SAPTransportOrder);
   const { loadInitialData } = useTransportOrder();

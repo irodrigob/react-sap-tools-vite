@@ -63,7 +63,6 @@ const OrderObjectsTable: FC = () => {
           )}
 
           <ConfirmDeleteOrderObject
-            objectsSelected={objectsSelected}
             open={openDeleteObjects}
             onClose={() => {
               setOpenDeleteObjects(false);

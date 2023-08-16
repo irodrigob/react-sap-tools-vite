@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { FlexBox, Text, Label, CheckBox, Icon } from "@ui5/webcomponents-react";
+import { FlexBox, Text, Label, Icon } from "@ui5/webcomponents-react";
 import "@ui5/webcomponents-icons/dist/cloud-check";
 import "@ui5/webcomponents-icons/dist/decline";
 import { Tooltip } from "@mui/material";

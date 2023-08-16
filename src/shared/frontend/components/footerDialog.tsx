@@ -1,13 +1,8 @@
 import { FC } from "react";
 import {
-  Dialog,
   Button,
   Bar,
-  Form,
-  FormItem,
-  CheckBox,
 } from "@ui5/webcomponents-react";
-import { useTranslations } from "translations/i18nContext";
 
 interface Props {
   onEndButton: () => void;
@@ -27,7 +22,7 @@ const FooterDialog: FC<Props> = (props) => {
     textStartButton,
     textEndButton,
   } = props;
-  const { getI18nText } = useTranslations();
+
 
   return (
     <Bar

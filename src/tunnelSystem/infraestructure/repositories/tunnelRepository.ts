@@ -4,7 +4,6 @@ import Tunnel from "tunnelSystem/domain/entities/tunnel";
 import graphQLRepository from "shared/infraestructure/repository/graphQLRepository";
 import TunnelConfiguration from "tunnelSystem/domain/entities/configuration";
 import TunnelProvider from "tunnelSystem/domain/entities/provider";
-import { rejects } from "assert";
 
 export const QUERY_TUNNELS = gql`
   query Query($apiToken: String!) {

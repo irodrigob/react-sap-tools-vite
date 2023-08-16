@@ -45,7 +45,6 @@ const DialogEditSystem: FC = () => {
     reset,
     watch,
     setValue,
-    formState: { errors },
   } = useForm<FormValues>();
   const { session } = useSession();
   const { addSystem, updateSystem } = useSystems();
@@ -351,7 +350,7 @@ const DialogEditSystem: FC = () => {
               defaultValue={false}
               render={({
                 field: { onChange, value },
-                fieldState: { error },
+
               }) => (
                 <CheckBox
                   text={getI18nText("systems.labelUseConnectionTunnel")}
