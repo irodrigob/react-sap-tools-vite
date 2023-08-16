@@ -45,6 +45,13 @@ const ToolbarTable: FC = () => {
     textSearchOrders,
   } = useToolbarTable();
 
+  /*
+
+   style={{
+            ...(orderTaskSelected.length == 0 && { display: "none" }),
+          }}
+
+  */
   return (
     <>
       <Toolbar toolbarStyle="Clear">
@@ -64,9 +71,7 @@ const ToolbarTable: FC = () => {
           icon="duplicate"
           onClick={handlerTransportCopy}
           tooltip={getI18nText("transportOrder.toolbarAction.transportCopy")}
-          style={{
-            ...(orderTaskSelected.length == 0 && { display: "none" }),
-          }}
+
         />
         <Button
           icon="shipping-status"
@@ -74,9 +79,6 @@ const ToolbarTable: FC = () => {
           tooltip={getI18nText(
             "transportOrder.tableOrder.actions.releaseOrder"
           )}
-          style={{
-            ...(!determineVisibleBtnRelease && { display: "none" }),
-          }}
         />
         <ToolbarSeparator />
         <Button

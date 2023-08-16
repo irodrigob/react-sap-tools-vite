@@ -54,7 +54,7 @@ const PopupTransCopy: FC<Props> = (props) => {
   return (
     <Dialog
       open={open}
-      headerText={getI18nText("editSystem.titleAddSystem")}
+      headerText={getI18nText("transportOrder.transportCopy.popup.title")}
       footer={
         <FooterDialog
           textStartButton={getI18nText(
@@ -147,8 +147,8 @@ const PopupTransCopy: FC<Props> = (props) => {
                         >
                           {row.systemName == ""
                             ? getI18nText(
-                                "transportOrder.transportCopy.popup.placeholderSelectSystem"
-                              )
+                              "transportOrder.transportCopy.popup.placeholderSelectSystem"
+                            )
                             : `${row.systemName} - ${row.systemDesc}`}
                         </Option>
                       );

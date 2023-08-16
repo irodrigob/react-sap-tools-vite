@@ -54,7 +54,6 @@ const TileManagementSystem: FC = () => {
                 margin: "1rem",
                 width: "1.2rem",
                 height: "1.2rem",
-                color: "var(--sapButton_Lite_TextColor)",
               }}
               onClick={() => {
                 setOpenConfOptions(true);

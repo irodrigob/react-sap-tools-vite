@@ -1,12 +1,12 @@
 # Introducción
 
-[React SAP tools](https://react-sap-tools.vercel.app/) es un conjunto de herramientas para SAP, que como su nombre indica, creadas en React. Actualmente tanto las herramientas, solo hay una, como en su funcionalidad son muy básicas pero la idea es ir dandoles más funcionalidad e ir añadiendo nuevas herramientas.
+[React SAP tools](https://react-sap-tools-vite.vercel.app/) es un conjunto de herramientas para SAP, que como su nombre indica, creadas en React. Actualmente tanto las herramientas, solo hay una, como en su funcionalidad son muy básicas pero la idea es ir dandoles más funcionalidad e ir añadiendo nuevas herramientas.
 
 La herramienta actualmente disponible es la siguiente:
 
-* Transporte de ordenes
+- Transporte de ordenes
 
-En la Wiki del repositorio iré explicando el funcionamiento de la herramienta en general. 
+En la Wiki del repositorio iré explicando el funcionamiento de la herramienta en general.
 
 ## Prerequistos
 
@@ -24,55 +24,54 @@ Los sistemas que se van configurando se guardan en una base de datos asociado a 
 
 La primera vez que entremos a la aplicación nos saldrá el botón para conectarnos con nuestra cuenta de google:
 
-![alt login](https://github.com/irodrigob/react-sap-tools/blob/master/public/instrucciones/pantalla_login.png)
+![alt login](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/pantalla_login.png)
 
 Una vez conectados no saldrá la pantalla inicial:
 
-![alt pantalla inicial](https://github.com/irodrigob/react-sap-tools/blob/master/public/instrucciones/pantalla_inicial.png)
+![alt pantalla inicial](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/pantalla_inicial.png)
 
-Siempre nos aperecera una tile inicial, la de *Configuración*, donde podremos añadir un nuevo sistema y cambiar la configuración general de conexión a sistemas. En la imagen se ve dos sistemas ya con configurados.
+Siempre nos aperecera una tile inicial, la de _Configuración_, donde podremos añadir un nuevo sistema y cambiar la configuración general de conexión a sistemas. En la imagen se ve dos sistemas ya con configurados.
 
 El siguiente paso es añadir un sistema.
 
 ## Añadir un nuevo sistema.
 
-Para añadir un nuevo sistema hay que pulsar sobre el siguiente icono ![alt icono anyadir sistema](https://github.com/irodrigob/react-sap-tools/blob/master/public/instrucciones/icono_anyadir_sistema.png) en la tile de *Configuración*. Y nos aparecerá una ventana donde se introducirá los datos del sistema
+Para añadir un nuevo sistema hay que pulsar sobre el siguiente icono ![alt icono anyadir sistema](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_anyadir_sistema.png) en la tile de _Configuración_. Y nos aparecerá una ventana donde se introducirá los datos del sistema
 
-![alt añadir sistema](https://github.com/irodrigob/react-sap-tools/blob/master/public/instrucciones/anyadir_sistema.png)
+![alt añadir sistema](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/anyadir_sistema.png)
 
-En el `Host Servidor` tendremos que introducir la URL de conexión a nuestro servidor. Si no la conocemos podemos utilizar el [programa](https://github.com/irodrigob/abap-sap-tools-core/wiki#saber-la-url-del-servidor-de-sap) de utilidades en el core de las herramientas de SAP para saberlo. 
+En el `Host Servidor` tendremos que introducir la URL de conexión a nuestro servidor. Si no la conocemos podemos utilizar el [programa](https://github.com/irodrigob/abap-sap-tools-core/wiki#saber-la-url-del-servidor-de-sap) de utilidades en el core de las herramientas de SAP para saberlo.
 
 El checkbox `Usar tunel para conexión` le indicaremos que nos conectaremos al servidor a través de un tunel, más adelante se comenta su funcionamiento.
 
 Una vez introducido todos los datos hay que pulsar sobre el botón de `Grabar`.
 
-La contraseña se cifra, usando AES, en base de datos y solo se descrifra en el momento de hacer la conexión a SAP. Con lo cual cualquier que inspeccione las llamadas no verá nunca la contraseña legible.
+La contraseña se cifra, usando AES, en base de datos y solo se descrifra en el momento de hacer la conexión a SAP. Con lo cual cualquier que inspeccione las llamadas no se verá nunca la contraseña legible.
 
 ## Modificando un sistema
 
-Para modificar un sistema tenemos que ir a la tile del sistema y pulsar sobre el siguiennte icono: ![alt icono editar sistema](https://github.com/irodrigob/react-sap-tools/blob/master/public/instrucciones/icono_editar_sistema.png) y se nos abrirá la edición del sistema.
+Para modificar un sistema tenemos que ir a la tile del sistema y pulsar sobre el siguiennte icono: ![alt icono editar sistema](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_editar_sistema.png) y se nos abrirá la edición del sistema.
 
 Una vez modificado pulsaremos sobre el botón de `Grabar`.
 
 ## Borrar un sistema
 
-Para borrar un sistema tenemos que pulsar sobre el icono de borrar: ![alt icono borrar sistema](https://github.com/irodrigob/react-sap-tools/blob/master/public/instrucciones/icono_borrar_sistema.png) y nos preguntará si estamos seguro de borrarlo, y en caso de responder afirmativamente se borrará el sistema.
+Para borrar un sistema tenemos que pulsar sobre el icono de borrar: ![alt icono borrar sistema](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_borrar_sistema.png) y nos preguntará si estamos seguro de borrarlo, y en caso de responder afirmativamente se borrará el sistema.
 
 ## Conectado con un sistema
 
 Para seleccionar un sistema tenemos que pulsar sobre el área donde esta el nombre del sistema
 
-![alt seleccionar sistema](https://github.com/irodrigob/react-sap-tools/blob/master/public/instrucciones/seleccion_sistema.png)
+![alt seleccionar sistema](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/seleccion_sistema.png)
 
 Una vez seleccionado nos aparecera el listado de aplicaciones configurados para dicho sistema:
 
-![alt listado aplicaciones](https://github.com/irodrigob/react-sap-tools/blob/master/public/instrucciones/listado_aplicaciones.png)
+![alt listado aplicaciones](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/listado_aplicaciones.png)
 
 Y además en la barra superior nos aparecerá el sistema seleccionado y una navegación donde se podrá volver
 a seleccionar otro sistema:
 
-![alt toolbar sistema seleccionado.](https://github.com/irodrigob/react-sap-tools/blob/master/public/instrucciones/toolbar_sistema_seleccionado.png)
-
+![alt toolbar sistema seleccionado.](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/toolbar_sistema_seleccionado.png)
 
 # Tunneling
 
@@ -85,7 +84,7 @@ Para imitar esa funcionalidad hay una herramienta llamada [Ngrok](https://ngrok.
 
 A destacar que en la versión gratuita solo es posible crear un tunel y la url cambia cada vez que nos conectemos. Esto es importante a la hora de decidir como vamos a conectarnos.
 
-## Configuración 
+## Configuración
 
 Antes de poderlo utilizarlo hay que hacer dos pasos para obtener las credenciales para poder crear y consulta los tuneles.
 
@@ -93,11 +92,11 @@ El primero paso es generar el token de autentificación desde el [dashboard](htt
 
 Por último hay que generar la [API Token](https://dashboard.ngrok.com/api) necesaria para poder consultar los tuneles establecidos por el usuario. Hay que tener en cuenta que en la versión gratuita la url de los tuneles son dinámicas.
 
-Para crearla hay que darle al botón *+ New API Key*, ponerle el nombre y nos generará una clave que tendremos que copiarnos en un lugar seguro ya que no será posible consultarla a posteriore. 
+Para crearla hay que darle al botón _+ New API Key_, ponerle el nombre y nos generará una clave que tendremos que copiarnos en un lugar seguro ya que no será posible consultarla a posteriore.
 
-Con los dos token generados hay que informarlos en la configuración de la aplicación: ![icono de configuración](https://github.com/irodrigob/react-sap-tools/blob/master/public/instrucciones/icono_configuracion.png) que esta en la tile de `Configuración`:
+Con los dos token generados hay que informarlos en la configuración de la aplicación: ![icono de configuración](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_configuracion.png) que esta en la tile de `Configuración`:
 
-![configuracion tunel](https://github.com/irodrigob/react-sap-tools/blob/master/public/instrucciones/configuracion_tunel.png)
+![configuracion tunel](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/configuracion_tunel.png)
 
 ### Como conectarse
 
@@ -105,13 +104,13 @@ Para conectarse se puede hacer de dos maneras: Usando docker o el instalable. Am
 
 #### Usando docker
 
-Para usar Docker, si no se tiene instalado, hay que descargarlo de su [página oficial](https://docs.docker.com/get-docker/). La instalación es muy sencilla, y cualquier problema es sencillo solucionarlo. 
+Para usar Docker, si no se tiene instalado, hay que descargarlo de su [página oficial](https://docs.docker.com/get-docker/). La instalación es muy sencilla, y cualquier problema es sencillo solucionarlo.
 
-Si hemos configurado el sistema para que use tunel ngrok en la tile de sistema nos aparecerá el siguiente icono: ![alt icono descarga tunel](https://github.com/irodrigob/react-sap-tools/blob/master/public/instrucciones/icono_descarga_tunel.png). Este icono lo que hará es descargarnos un autoejecutable donde arrancará de manera automática el ngrok con los datos de conexión al sistema. Este fichero no es necesario volver a descargarlo salvo que se cambie alguno de los token de autentificación a Ngrok.
+Si hemos configurado el sistema para que use tunel ngrok en la tile de sistema nos aparecerá el siguiente icono: ![alt icono descarga tunel](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_descarga_tunel.png). Este icono lo que hará es descargarnos un autoejecutable donde arrancará de manera automática el ngrok con los datos de conexión al sistema. Este fichero no es necesario volver a descargarlo salvo que se cambie alguno de los token de autentificación a Ngrok.
 
 #### Usando instalable
 
-Desde la [página inicial](https://dashboard.ngrok.com/get-started/setup) nos descargamos el programa para hacer un tunel. Es un fichero zip que solo tenemos que descomprimirlo en la ubicación que queramos. Lo siguiente es añadir el token tal como se indica en las instrucciones: 
+Desde la [página inicial](https://dashboard.ngrok.com/get-started/setup) nos descargamos el programa para hacer un tunel. Es un fichero zip que solo tenemos que descomprimirlo en la ubicación que queramos. Lo siguiente es añadir el token tal como se indica en las instrucciones:
 
 ```bash
 ngrok config add-authtoken <token que se indica en la página>
@@ -120,7 +119,7 @@ ngrok config add-authtoken <token que se indica en la página>
 Para hacer el tunel yo recomiendo usar el powershell de Windows, quien use Windows, porque permite copiar la URL que genera al hacer el tunel. Si nuestro servidor es `http://vhcalnplci.dummy.nodomain:8000` el tunel se crearía así:
 
 ```bash
- .\ngrok.exe http http://vhcalnplci.dummy.nodomain:8000    
+ .\ngrok.exe http http://vhcalnplci.dummy.nodomain:8000
 ```
 
 Esto generará un tunel y tan solo tenemos que copiar la URL para luego configurarlo en nuestro sistema. Si no conocemos la URL de nuestro sistema podemos utilizar el [programa](https://github.com/irodrigob/abap-sap-tools-core/wiki#saber-la-url-del-servidor-de-sap) de utilidades en el core de las herramientas de SAP para saberlo.
@@ -134,7 +133,7 @@ Esta opción es más tediosa si se quiere que funcione todo de manera automátic
 
 # Herramientas
 
-Las herramientas las explicaré en la [Wiki](https://github.com/irodrigob/react-sap-tools/wiki) para tenerlo mejor organizado.
+Las herramientas las explicaré en la [Wiki](https://github.com/irodrigob/react-sap-tools-vite/wiki) para tenerlo mejor organizado.
 
 # Arquitectura
 
@@ -142,13 +141,10 @@ La aplicación la he tenido que dividir en dos partes: Frontend y Backend. El mo
 
 Por ello la parte Frontend esta desarrollado en React y como librerías destacadas uso:
 
-* `Material-ui`. No quería utilizarla pero para algunos temas como la barra de herramientas superior y construir un layout vía Grid me ha parecido mucho más sencillo y practico usarla.
-* `UI5 Web components`. Había hecho alguna cosa en UI5 anteriormente y quería probar la versión para React. En general muy contento de utilizarla.
-* `Cliente GraphQL`.  El backend es un servidor de GraphQL por ello toda la comunicación se hace a través de un cliente GraphQL.
+- `Material-ui`. No quería utilizarla pero para algunos temas como la barra de herramientas superior y construir un layout vía Grid me ha parecido mucho más sencillo y practico usarla.
+- `UI5 Web components`. Había hecho alguna cosa en UI5 anteriormente y quería probar la versión para React. En general muy contento de utilizarla.
+- `Cliente GraphQL`. El backend es un servidor de GraphQL por ello toda la comunicación se hace a través de un cliente GraphQL.
 
 El backend esta creado en NextJS. El motivo de usarlo es porque tiene un ejemplos autoexplicativos de como usarlo como middleware para Graphql.
 
 Para más detalle de las liberías tan solo tenéis que mirar el `package.json` de los dos proyectos.
-
-
-

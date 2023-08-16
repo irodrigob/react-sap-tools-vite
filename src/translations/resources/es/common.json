@@ -146,7 +146,8 @@
                 "editAutoAssign": "Auto asignarse orden",
                 "releaseOrder": "Liberar orden/tarea",
                 "deleteOrder": "Borrar orden/tarea",
-                "orderObjects": "Objetos orden/tarea"
+                "selectOneOrder": "Seleccione al menos una orden/tarea"
+
             }
         },
         "orderTypes": {

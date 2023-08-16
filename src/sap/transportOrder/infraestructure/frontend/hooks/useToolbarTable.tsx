@@ -107,11 +107,20 @@ export default function useToolbarTable() {
    * Gestiona el proceso de transporte de copias
    */
   const handlerTransportCopy = useCallback(() => {
-    sapTransportOrderActions.setDescriptionTransportCopy(
-      orderTaskSelected[0].description
-    );
+    if (orderTaskSelected.length > 0) {
+      sapTransportOrderActions.setDescriptionTransportCopy(
+        orderTaskSelected[0].description
+      );
 
-    setOpenPopupTransCopy(true);
+      setOpenPopupTransCopy(true);
+    }
+    else {
+      showMessage(
+        getI18nText("transportOrder.tableOrder.actions.selectOneOrder"),
+        MessageType.info
+      )
+    }
+
   }, [orderTaskSelected]);
 
   /**
@@ -119,9 +128,16 @@ export default function useToolbarTable() {
    */
   const handlerReleaseOrder = useCallback(
     () => () => {
-      setOpenConfirmeRelease(true);
+      if (orderTaskSelected.length > 0) {
+        setOpenConfirmeRelease(true);
+      } else {
+        showMessage(
+          getI18nText("transportOrder.tableOrder.actions.selectOneOrder"),
+          MessageType.info
+        )
+      }
     },
-    []
+    [orderTaskSelected]
   );
 
   /**
