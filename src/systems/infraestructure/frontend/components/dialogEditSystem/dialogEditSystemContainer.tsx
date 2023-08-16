@@ -53,8 +53,7 @@ const DialogEditSystem: FC = () => {
   const systemController = new SystemController();
   const watchUseTunnelConnection = watch("use_connection_tunnel");
   const { tunnelConfiguration } = useSystemData();
-  const { showResultError } = useMessages();
-  const { showMessage } = useMessages();
+  const { showMessage, updateMessage, updateResultError } = useMessages();
   const { openEditSystem, systemEdit, operationEdit } = useAppSelector(
     (state) => state.System
   );
@@ -74,6 +73,12 @@ const DialogEditSystem: FC = () => {
           ? SystemFormatters.formatterHost(data.url_manual_tunnel)
           : "",
     };
+    let toastID = showMessage(
+      getI18nText("editSystem.saveInProcess", {
+        newSystem: data.name,
+      }),
+      MessageType.info, { autoClose: false, isLoading: true }
+    );
 
     systemController
       .createNewSystem(newSystem)
@@ -82,7 +87,8 @@ const DialogEditSystem: FC = () => {
         if (response.isSuccess) {
           addSystem(response.getValue() as System);
           // Mensaje de sistema añadido
-          showMessage(
+          updateMessage(
+            toastID,
             getI18nText("editSystem.saveSuccess", {
               newSystem: (response.getValue() as System).name,
             }),
@@ -94,12 +100,21 @@ const DialogEditSystem: FC = () => {
           // Cierre de la ventana
           closeDialog();
         } else if (response.isFailure) {
-          showResultError(response.getErrorValue() as ErrorGraphql);
+          updateResultError(
+            toastID,
+            response.getErrorValue() as ErrorGraphql
+          );
         }
       });
   };
 
   const editSystem = (data: FormValues) => {
+    let toastID = showMessage(
+      getI18nText("editSystem.saveInProcess", {
+        newSystem: data.name,
+      }),
+      MessageType.info, { autoClose: false, isLoading: true }
+    );
     systemController
       .updateSystem(
         new System(
@@ -120,7 +135,8 @@ const DialogEditSystem: FC = () => {
       .then((response: responseSystemRepo) => {
         if (response.isSuccess) {
           let updatedSystem = response.getValue() as System;
-          showMessage(
+          updateMessage(
+            toastID,
             getI18nText("editSystem.saveSuccess", {
               newSystem: updatedSystem.name,
             }),
@@ -132,7 +148,10 @@ const DialogEditSystem: FC = () => {
 
           updateSystem(updatedSystem); // Actualización del modelo interno
         } else if (response.isFailure) {
-          showResultError(response.getErrorValue() as ErrorGraphql);
+          updateResultError(
+            toastID,
+            response.getErrorValue() as ErrorGraphql
+          );
         }
       });
   };
@@ -142,12 +161,7 @@ const DialogEditSystem: FC = () => {
    ************************************/
   const onSubmitForm = (data: FormValues) => {
     setBtnSaveDisabled(true);
-    showMessage(
-      getI18nText("editSystem.saveInProcess", {
-        newSystem: data.name,
-      }),
-      MessageType.info
-    );
+
     if (operationEdit == "Add") createSystem(data);
     else editSystem(data);
   };

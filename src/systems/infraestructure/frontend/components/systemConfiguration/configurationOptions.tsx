@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { TabContainer, Tab, Dialog } from "@ui5/webcomponents-react";
 import "@ui5/webcomponents-icons/dist/menu";
 import TunnelConfigurationForm from "tunnelSystem/infraestructure/frontend/components/popTunnelConfiguration/tunnelConfigurationForm";
@@ -12,7 +12,6 @@ interface Props {
 
 const ConfigurationOptions: FC<Props> = (props) => {
   const { open, onCloseButton } = props;
-  const [openPopupTunnel, setOpenPopupTunnel] = useState(false);
   const { getI18nText } = useTranslations();
 
   return (
@@ -22,7 +21,7 @@ const ConfigurationOptions: FC<Props> = (props) => {
       footer={<FooterDialog onCloseButton={onCloseButton} />}
       style={{ width: "50rem" }}
     >
-      <TabContainer data-ui5-compact-size>
+      <TabContainer data-ui5-compact-size tabLayout="Inline">
         <Tab
           icon="menu"
           selected

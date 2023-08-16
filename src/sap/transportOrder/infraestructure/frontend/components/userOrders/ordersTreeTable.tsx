@@ -11,7 +11,6 @@ const OrdersTreeTable: FC = () => {
   const {
     columnsTreeTable,
     expandedRows,
-    orderListTree,
     setRowSelected,
     loadingOrders,
     autoResetExpanded,

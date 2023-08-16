@@ -101,7 +101,8 @@
             "labelApiToken": "Token API",
             "saveSuccess": "Configuración actualizada",
             "urlAuthToken": "https://dashboard.ngrok.com/get-started/your-authtoken",
-            "urlApiToken": "https://dashboard.ngrok.com/api"
+            "urlApiToken": "https://dashboard.ngrok.com/api",
+            "noDataChanged":"No se han modificado datos"
         }
     },
     "systemConfiguration": {

@@ -1,12 +1,10 @@
-import { useState, FC, ReactNode, useEffect } from "react";
+import { useState, FC, useEffect } from "react";
 import {
-  Dialog,
   Button,
   Bar,
   Form,
   FormItem,
   Text,
-  CheckBox,
   FlexBox,
   Link,
 } from "@ui5/webcomponents-react";
@@ -14,7 +12,6 @@ import TextField from "@mui/material/TextField";
 import { useSession } from "auth/authProvider";
 import { useForm, Controller } from "react-hook-form";
 import { useTranslations } from "translations/i18nContext";
-import FooterDialog from "shared/frontend/components/footerDialog";
 import Encrypt from "shared/utils/encrypt/encrypt";
 import useMessages, {
   MessageType,
@@ -44,63 +41,72 @@ const TunnelConfigurationForm: FC<Props> = (props) => {
   } = useForm<FormValues>();
   const { session } = useSession();
   const { tunnelConfiguration, setTunnelConfiguration } = useSystemData();
-  const [btnSaveDisabled, setBtnSaveDisabled] = useState(true);
+  const [configurationChanged, setConfigurationChanged] = useState(false);
+  const [btnDisabled, setBtnDisabled] = useState(false);
   const tunnelController = new TunnelController();
   const watchAuthToken = watch("authToken");
   const watchApiToken = watch("apiToken");
-  const { showMessage } = useMessages();
+  const { showMessage, updateMessage, updateResultError } = useMessages();
 
   /*************************************
    * Funciones
    ************************************/
   const onSubmitForm = (data: FormValues) => {
-    setBtnSaveDisabled(true);
+    if (configurationChanged) {
+      setBtnDisabled(true)
 
-    showMessage(
-      getI18nText("tunneling.editConfiguration.saveInProcess"),
-      MessageType.info
-    );
+      let toastID = showMessage(
+        getI18nText("tunneling.editConfiguration.saveInProcess"),
+        MessageType.info,
+        { autoClose: false, isLoading: true }
+      );
 
-    tunnelController
-      .editConfiguration(
-        new TunnelConfiguration(
-          tunnelConfiguration._id,
-          tunnelConfiguration.user != ""
-            ? tunnelConfiguration.user
-            : session.email,
-          data.authToken != "" ? Encrypt.encryptText(data.authToken) : "",
-          data.authToken != ""
-            ? data.apiToken != ""
-              ? Encrypt.encryptText(data.apiToken)
-              : ""
-            : "",
-
-          "NGROK"
+      tunnelController
+        .editConfiguration(
+          new TunnelConfiguration(
+            tunnelConfiguration._id,
+            tunnelConfiguration.user != ""
+              ? tunnelConfiguration.user
+              : session.email,
+            data.authToken != "" ? Encrypt.encryptText(data.authToken) : "",
+            data.authToken != ""
+              ? data.apiToken != ""
+                ? Encrypt.encryptText(data.apiToken)
+                : ""
+              : "",
+            "NGROK"
+          )
         )
-      )
-      .then((response: responseTunnelConfigRepo) => {
-        if (response.isSuccess) {
-          // Mensaje de sistema añadido
-          showMessage(
-            getI18nText("tunneling.editConfiguration.saveSuccess"),
-            MessageType.success
-          );
+        .then((response: responseTunnelConfigRepo) => {
+          if (response.isSuccess) {
 
-          setTunnelConfiguration(response.getValue() as TunnelConfiguration);
+            updateMessage(
+              toastID,
+              getI18nText("tunneling.editConfiguration.saveSuccess"),
+              MessageType.success
+            );
 
-          // Reseteo los valores del form
-          // reset();
-        } else if (response.isFailure) {
-          showMessage(
-            getI18nText("editSystem.errorCallServiceNew", {
-              errorService: (
-                response.getErrorValue() as ErrorGraphql
-              ).getError().singleMessage,
-            }),
-            MessageType.error
-          );
-        }
-      });
+            setTunnelConfiguration(response.getValue() as TunnelConfiguration);
+
+            setConfigurationChanged(false)
+
+            // Reseteo los valores del form
+            // reset();
+          } else if (response.isFailure) {
+            updateResultError(
+              toastID,
+              response.getErrorValue() as ErrorGraphql
+            );
+
+          }
+        }).finally(() => { setBtnDisabled(false) });
+    }
+    else {
+      showMessage(
+        getI18nText("tunneling.editConfiguration.noDataChanged"),
+        MessageType.info
+      );
+    }
   };
 
   /*************************************
@@ -115,13 +121,13 @@ const TunnelConfigurationForm: FC<Props> = (props) => {
       watchApiToken != tunnelConfiguration.apiToken ||
       watchAuthToken != tunnelConfiguration.authToken
     )
-      setBtnSaveDisabled(false);
-    else setBtnSaveDisabled(true);
+      setConfigurationChanged(true);
+    else setConfigurationChanged(false);
   }, [watchApiToken, watchAuthToken]);
 
   return (
     <>
-      <Form columnsL={1} columnsM={1} columnsXL={1} columnsS={1}>
+      <Form columnsL={1} columnsM={1} columnsXL={1} columnsS={1} labelSpanS={12} labelSpanM={12} labelSpanL={12} labelSpanXL={12}>
         <FormItem
           children={
             <Controller
@@ -237,7 +243,7 @@ const TunnelConfigurationForm: FC<Props> = (props) => {
         endContent={
           <Button
             onClick={handleSubmit(onSubmitForm)}
-            disabled={btnSaveDisabled}
+            disabled={btnDisabled}
           >
             {getI18nText("systemConfiguration.btnSave")}
           </Button>
