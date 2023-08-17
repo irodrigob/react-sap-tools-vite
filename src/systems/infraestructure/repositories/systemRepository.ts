@@ -15,6 +15,8 @@ export const MAIN_SYSTEMS_FIELDS = gql`
     sap_password
     use_connection_tunnel
     url_manual_tunnel
+    client
+    language
   }
 `;
 
@@ -75,6 +77,8 @@ export default class SystemRepository
         row.host,
         row.sap_user,
         row.sap_password,
+        row.client,
+        row.language,
         row.use_connection_tunnel,
         row.url_manual_tunnel
       );
@@ -92,6 +96,8 @@ export default class SystemRepository
           sap_user: newSystem.sap_user,
           use_connection_tunnel: newSystem.use_connection_tunnel,
           url_manual_tunnel: newSystem.url_manual_tunnel,
+          client: newSystem.client,
+          language: newSystem.language,
         },
       },
     });
@@ -103,6 +109,8 @@ export default class SystemRepository
       response.data.newSystem.host,
       response.data.newSystem.sap_user,
       response.data.newSystem.sap_password,
+      response.data.newSystem.client,
+      response.data.newSystem.language,
       response.data.newSystem.use_connection_tunnel,
       response.data.newSystem.url_manual_tunnel
     );
@@ -120,6 +128,8 @@ export default class SystemRepository
           sap_user: system.sap_user,
           use_connection_tunnel: system.use_connection_tunnel,
           url_manual_tunnel: system.url_manual_tunnel,
+          client: system.client,
+          language: system.language,
         },
       },
     });
@@ -130,6 +140,8 @@ export default class SystemRepository
       response.data.updateSystem.host,
       response.data.updateSystem.sap_user,
       response.data.updateSystem.sap_password,
+      response.data.updateSystem.client,
+      response.data.updateSystem.language,
       response.data.updateSystem.use_connection_tunnel,
       response.data.updateSystem.url_manual_tunnel
     );
@@ -149,8 +161,9 @@ export default class SystemRepository
       deletedSystem.host,
       deletedSystem.sap_user,
       deletedSystem.sap_password,
+      deletedSystem.client,
+      deletedSystem.language,
       deletedSystem.use_connection_tunnel,
-
       deletedSystem.url_manual_tunnel
     );
   }

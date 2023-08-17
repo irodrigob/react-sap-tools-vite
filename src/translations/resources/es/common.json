@@ -74,7 +74,9 @@
         "labelConnectTunnel": "Auto conexión a través del tunnel",
         "labelURLManualTunnel": "URL Tunel conexión",
         "labelActions": "Acciones",
-        "btnClose": "Cerrar"
+        "btnClose": "Cerrar",
+        "labelClient":"Mandante",
+        "labelLanguage":"Idioma"
     },
     "systemList": {
         "title": "Listado de sistemas",

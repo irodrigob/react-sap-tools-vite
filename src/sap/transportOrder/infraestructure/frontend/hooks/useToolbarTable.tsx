@@ -36,7 +36,7 @@ export default function useToolbarTable() {
   const [openPopupTransCopy, setOpenPopupTransCopy] = useState(false);
   const [openPopupNewOrder, setOpenPopupNewOrder] = useState(false);
   const { showMessage, updateResultError, updateMessage } = useMessages();
-  const { getI18nText, language } = useTranslations();
+  const { getI18nText } = useTranslations();
   const sapTransportOrderController = new SAPTransportOrderController();
   const { addNewOrder } = useDataManager();
 
@@ -173,7 +173,6 @@ export default function useToolbarTable() {
 
       sapTransportOrderController
         .newOrder(
-          language,
           new NewOrder(data.description, data.type, data.user)
         )
         .then((response) => {

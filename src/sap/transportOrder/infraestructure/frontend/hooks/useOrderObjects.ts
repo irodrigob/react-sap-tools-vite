@@ -24,7 +24,7 @@ import { SAPMessageType } from "messageManager/infraestructure/types/msgManagerT
 export default function useOrderObjects() {
   const sapTransportOrderActions = new SAPTransportOrderActions();
   const transportOrderController = new SAPTransportOrderController();
-  const { getI18nText, language } = useTranslations();
+  const { getI18nText } = useTranslations();
   const { orderObjects, ordersObjectsSelected, orderListTree } = useAppSelector(
     (state) => state.SAPTransportOrder
   );
@@ -64,7 +64,7 @@ export default function useOrderObjects() {
       if (ordersToSearch.length > 0) {
         sapTransportOrderActions.setOrderObjects(newOrderObjects);
         transportOrderController
-          .getOrderObjects(language, ordersToSearch)
+          .getOrderObjects(ordersToSearch)
           .then((response) => {
             // Una cosa curiosa, y es que tengo que hacer una copia de objeto porque el newOrderObjects en este punto
             // es inmutable, creo que es porque lo añado en el redux.
@@ -110,7 +110,7 @@ export default function useOrderObjects() {
     );
     let promises: Promise<responseDeleteOrderObject>[] = [];
     objects.forEach((row: OrderObjectKey) => {
-      promises.push(transportOrderController.deleteOrderObject(language, row));
+      promises.push(transportOrderController.deleteOrderObject(row));
     });
     Promise.allSettled(promises).then((responsesPromise) => {
       let deletedOrderObjects: OrderObjectsKey = [];
@@ -251,7 +251,7 @@ export default function useOrderObjects() {
     uniqueOrders.push({ order: orderTo });
 
     transportOrderController
-      .moveOrderObjects(language, orderTo, orderObjects)
+      .moveOrderObjects(orderTo, orderObjects)
       .then((response) => {
         if (response.isSuccess) {
           let responseReturn = response.getValue() as ReturnsDTO;

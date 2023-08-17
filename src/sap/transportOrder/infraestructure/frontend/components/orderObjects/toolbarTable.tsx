@@ -62,7 +62,7 @@ const ToolbarTable: FC<Props> = (props) => {
         }}
       />
       {ordersObjectsSelected.length == 1 && (
-        <Title>
+        <Title level="H4">
           {ordersObjectsSelected[0].order} -{" "}
           {ordersObjectsSelected[0].description}
         </Title>

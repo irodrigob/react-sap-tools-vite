@@ -80,14 +80,12 @@ export default class SAPTransportOrderController {
    * Lista de sistemas a los cuales se puede transportar
    * @param language | Idioma
    */
-  async getSystemsTransport(
-    language: string
-  ): Promise<responseSystemsTransport> {
+  async getSystemsTransport(): Promise<responseSystemsTransport> {
     return this.transportOrderApplication.getSystemsTransport(
       this.appStore.getState().SAPTransportOrder.URLOData,
       this.appStore.getState().System.systemSelected.sap_user,
       this.appStore.getState().System.systemSelected.sap_password,
-      language
+      this.appStore.getState().System.systemSelected.language
     );
   }
   /**
@@ -100,14 +98,13 @@ export default class SAPTransportOrderController {
   async doTransportCopy(
     systemTransport: string,
     description: string,
-    orders: Orders,
-    language: string
+    orders: Orders
   ) {
     return this.transportOrderApplication.doTransportCopy(
       this.appStore.getState().SAPTransportOrder.URLOData,
       this.appStore.getState().System.systemSelected.sap_user,
       this.appStore.getState().System.systemSelected.sap_password,
-      language,
+      this.appStore.getState().System.systemSelected.language,
       systemTransport,
       description,
       orders
@@ -119,15 +116,12 @@ export default class SAPTransportOrderController {
    * @param language | Idioma
    * @returns | Resultado del proceso
    */
-  async UpdateOrder(
-    orderData: UpdateOrder,
-    language: string
-  ): Promise<responseUpdateOrder> {
+  async UpdateOrder(orderData: UpdateOrder): Promise<responseUpdateOrder> {
     return this.transportOrderApplication.updateOrder(
       this.appStore.getState().SAPTransportOrder.URLOData,
       this.appStore.getState().System.systemSelected.sap_user,
       this.appStore.getState().System.systemSelected.sap_password,
-      language,
+      this.appStore.getState().System.systemSelected.language,
       orderData
     );
   }
@@ -146,12 +140,12 @@ export default class SAPTransportOrderController {
    * @param language | Idioma
    * @param orders | Ordenes
    */
-  async releaseOrders(orders: Orders, language: string) {
+  async releaseOrders(orders: Orders) {
     return this.transportOrderApplication.releaseOrders(
       this.appStore.getState().SAPTransportOrder.URLOData,
       this.appStore.getState().System.systemSelected.sap_user,
       this.appStore.getState().System.systemSelected.sap_password,
-      language,
+      this.appStore.getState().System.systemSelected.language,
       orders
     );
   }
@@ -161,15 +155,12 @@ export default class SAPTransportOrderController {
    * @param orders | Ordenes
    * @returns | Resultado del transporte de copias
    */
-  async getOrderObjects(
-    language: string,
-    orders: Orders
-  ): Promise<responseGetOrderObjects> {
+  async getOrderObjects(orders: Orders): Promise<responseGetOrderObjects> {
     return this.transportOrderApplication.getOrderObjects(
       this.appStore.getState().SAPTransportOrder.URLOData,
       this.appStore.getState().System.systemSelected.sap_user,
       this.appStore.getState().System.systemSelected.sap_password,
-      language,
+      this.appStore.getState().System.systemSelected.language,
       orders
     );
   }
@@ -179,15 +170,12 @@ export default class SAPTransportOrderController {
    * @param order | Orden
    * @returns | Resultado del transporte de copias
    */
-  async deleteOrder(
-    language: string,
-    order: string
-  ): Promise<responseDeleteOrders> {
+  async deleteOrder(order: string): Promise<responseDeleteOrders> {
     return this.transportOrderApplication.deleteOrder(
       this.appStore.getState().SAPTransportOrder.URLOData,
       this.appStore.getState().System.systemSelected.sap_user,
       this.appStore.getState().System.systemSelected.sap_password,
-      language,
+      this.appStore.getState().System.systemSelected.language,
       order
     );
   }
@@ -197,12 +185,12 @@ export default class SAPTransportOrderController {
    * @param order | Orden
    * @returns | Resultado del transporte de copias
    */
-  async newOrder(language: string, order: NewOrder): Promise<responseNewOrder> {
+  async newOrder(order: NewOrder): Promise<responseNewOrder> {
     return this.transportOrderApplication.newOrder(
       this.appStore.getState().SAPTransportOrder.URLOData,
       this.appStore.getState().System.systemSelected.sap_user,
       this.appStore.getState().System.systemSelected.sap_password,
-      language,
+      this.appStore.getState().System.systemSelected.language,
       order
     );
   }
@@ -213,14 +201,13 @@ export default class SAPTransportOrderController {
    * @returns | Resultado del transporte de copias
    */
   async deleteOrderObject(
-    language: string,
     objectData: OrderObjectKey
   ): Promise<responseDeleteOrderObject> {
     return this.transportOrderApplication.deleteOrderObject(
       this.appStore.getState().SAPTransportOrder.URLOData,
       this.appStore.getState().System.systemSelected.sap_user,
       this.appStore.getState().System.systemSelected.sap_password,
-      language,
+      this.appStore.getState().System.systemSelected.language,
       objectData
     );
   }
@@ -248,7 +235,6 @@ export default class SAPTransportOrderController {
    * @returns | Resultado del transporte de copias
    */
   async moveOrderObjects(
-    language: string,
     orderTo: string,
     orderObjects: OrderObjectsKey
   ): Promise<responseMoveOrderObjects> {
@@ -256,7 +242,7 @@ export default class SAPTransportOrderController {
       this.appStore.getState().SAPTransportOrder.URLOData,
       this.appStore.getState().System.systemSelected.sap_user,
       this.appStore.getState().System.systemSelected.sap_password,
-      language,
+      this.appStore.getState().System.systemSelected.language,
       orderTo,
       orderObjects
     );

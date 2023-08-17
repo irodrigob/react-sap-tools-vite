@@ -108,7 +108,7 @@ const InputSelectOrder: FC<Props> = (props: Props) => {
 
   return (
     <FlexBox direction="Column">
-      <Title level="H2" style={{ paddingBottom: "1rem" }}>
+      <Title level="H4" style={{ paddingBottom: "1rem" }}>
         {getI18nText("transportOrder.selectOrder.lblSelectOrder")}
       </Title>
       <Input

@@ -80,7 +80,7 @@ const ObjectsSelected: FC<Props> = (props: Props) => {
 
   return (
     <FlexBox direction="Column" style={{ paddingBottom: "2rem" }}>
-      <Title level="H2" style={{ paddingBottom: "1rem" }}>
+      <Title level="H4" style={{ paddingBottom: "1rem" }}>
         {getI18nText(
           "transportOrder.orderObjects.moveObjects.panelObjectsSelected"
         )}

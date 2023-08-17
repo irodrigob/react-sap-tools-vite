@@ -38,7 +38,7 @@ export default function useTransportOrder() {
   const sapController = new SAPController();
   const systemController = new SystemController();
   const transportOrderController = new SAPTransportOrderController();
-  const { getI18nText, language } = useTranslations();
+  const { getI18nText } = useTranslations();
   const {
     showResultError,
     showMessage,
@@ -83,7 +83,7 @@ export default function useTransportOrder() {
 
           // Leemos los sistemas a los que se puede hacer el transport de copia
           transportOrderController
-            .getSystemsTransport(language)
+            .getSystemsTransport()
             .then((resultSystemsTransport) => {
               if (resultSystemsTransport.isFailure) {
                 showResultError(
@@ -137,8 +137,7 @@ export default function useTransportOrder() {
           data.description,
           orderTaskSelected.map((row: FieldsOrdersTreeTable) => {
             return { order: row.orderTask };
-          }),
-          language
+          })
         )
         .then((response) => {
           if (response.isSuccess) {
@@ -175,8 +174,7 @@ export default function useTransportOrder() {
           orderData.orderTask,
           orderData.description,
           orderData.user
-        ),
-        language
+        )
       );
     },
     []
@@ -206,36 +204,31 @@ export default function useTransportOrder() {
         { autoClose: false, isLoading: true }
       );
 
-      transportOrderController
-        .releaseOrders(orders, language)
-        .then((response) => {
-          if (response.isSuccess) {
-            // Como al actualiar la tabla se desmarca las filas seleccionadas y me desajusta la toolbar de acciones. Por ello
-            // las desmarco para que se resetee todo bien.
-            sapTransportOrderActions.setOrderTaskSelected([]);
+      transportOrderController.releaseOrders(orders).then((response) => {
+        if (response.isSuccess) {
+          // Como al actualiar la tabla se desmarca las filas seleccionadas y me desajusta la toolbar de acciones. Por ello
+          // las desmarco para que se resetee todo bien.
+          sapTransportOrderActions.setOrderTaskSelected([]);
 
-            let returnRelease = response.getValue() as releaseOrdersDTOArray;
+          let returnRelease = response.getValue() as releaseOrdersDTOArray;
 
-            messageManagerController.addFromSAPArrayReturn(
-              returnRelease.map((row) => {
-                return row.return;
-              })
-            );
+          messageManagerController.addFromSAPArrayReturn(
+            returnRelease.map((row) => {
+              return row.return;
+            })
+          );
 
-            updateDataFromReleaseOrder(returnRelease);
+          updateDataFromReleaseOrder(returnRelease);
 
-            updateMessage(
-              toastID,
-              getI18nText("transportOrder.releaseOrders.releaseCompleted"),
-              MessageType.success
-            );
-          } else {
-            updateResultError(
-              toastID,
-              response.getErrorValue() as ErrorGraphql
-            );
-          }
-        });
+          updateMessage(
+            toastID,
+            getI18nText("transportOrder.releaseOrders.releaseCompleted"),
+            MessageType.success
+          );
+        } else {
+          updateResultError(toastID, response.getErrorValue() as ErrorGraphql);
+        }
+      });
     },
     [orderListTree]
   );

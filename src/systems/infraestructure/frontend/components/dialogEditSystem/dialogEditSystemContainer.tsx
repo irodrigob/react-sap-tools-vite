@@ -33,12 +33,14 @@ type FormValues = {
   host: string;
   sap_user: string;
   sap_password: string;
+  client: string;
+  langu: string;
   use_connection_tunnel: boolean;
   url_manual_tunnel: string;
 };
 
 const DialogEditSystem: FC = () => {
-  const { getI18nText } = useTranslations();
+  const { getI18nText, language } = useTranslations();
   const {
     control,
     handleSubmit,
@@ -66,6 +68,8 @@ const DialogEditSystem: FC = () => {
       sap_user: data.sap_user,
       sap_password:
         data.sap_password != "" ? Encrypt.encryptText(data.sap_password) : "",
+      client: data.client,
+      language: data.langu,
       use_connection_tunnel: data.use_connection_tunnel,
       url_manual_tunnel:
         data.use_connection_tunnel && tunnelConfiguration.authToken == ""
@@ -125,6 +129,8 @@ const DialogEditSystem: FC = () => {
           data.sap_password != (systemEdit?.sap_password as string)
             ? Encrypt.encryptText(data.sap_password)
             : data.sap_password,
+          data.client,
+          data.langu,
           data.use_connection_tunnel,
           data.use_connection_tunnel && tunnelConfiguration.authToken == ""
             ? data.url_manual_tunnel
@@ -197,6 +203,14 @@ const DialogEditSystem: FC = () => {
       operationEdit == "Add"
         ? false
         : (systemEdit?.use_connection_tunnel as boolean)
+    );
+    setValue(
+      "client",
+      operationEdit == "Add" ? "" : (systemEdit?.client as string)
+    );
+    setValue(
+      "langu",
+      operationEdit == "Add" ? language.toLocaleUpperCase() : (systemEdit?.language as string)
     );
   }, [systemEdit, operationEdit]);
 
@@ -287,7 +301,35 @@ const DialogEditSystem: FC = () => {
             />
           }
         />
-
+        <FormItem
+          children={
+            <Controller
+              name="client"
+              control={control}
+              defaultValue=""
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  required
+                  label={getI18nText("systems.labelClient")}
+                  variant="filled"
+                  value={value}
+                  onChange={onChange}
+                  error={!!error}
+                  helperText={error ? error.message : null}
+                  sx={{
+                    width: "15em",
+                    fontFamily: "var(--sapFontFamily)",
+                    fontSize: "var(--sapFontSize)",
+                  }}
+                />
+              )}
+              rules={{ required: getI18nText("general.fieldMandatory") }}
+            />
+          }
+        />
         <FormItem
           children={
             <Controller
@@ -336,6 +378,38 @@ const DialogEditSystem: FC = () => {
                   helperText={error ? error.message : null}
                   sx={{ width: "15em" }}
                   type="password"
+                />
+              )}
+              rules={{ required: getI18nText("general.fieldMandatory") }}
+            />
+          }
+        />
+        <FormItem
+          children={
+            <Controller
+              name="langu"
+              control={control}
+              defaultValue=""
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <TextField
+                  required
+                  label={getI18nText("systems.labelLanguage")}
+                  variant="filled"
+                  value={value}
+                  onChange={(e) => {
+                    e.target.value = e.target.value.toUpperCase();
+                    onChange(e);
+                  }}
+                  error={!!error}
+                  helperText={error ? error.message : null}
+                  sx={{
+                    width: "15em",
+                    fontFamily: "var(--sapFontFamily)",
+                    fontSize: "var(--sapFontSize)",
+                  }}
                 />
               )}
               rules={{ required: getI18nText("general.fieldMandatory") }}
