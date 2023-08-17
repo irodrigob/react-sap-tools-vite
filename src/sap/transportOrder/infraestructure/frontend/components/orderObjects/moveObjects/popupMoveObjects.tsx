@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { Dialog, ValueState } from "@ui5/webcomponents-react";
 import { useTranslations } from "translations/i18nContext";
 import FooterDialog from "shared/frontend/components/footerDialog";

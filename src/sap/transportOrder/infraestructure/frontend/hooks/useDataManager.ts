@@ -229,15 +229,10 @@ export default function useDataManager() {
    */
   const updateDataEditingRow = useCallback(
     <K extends keyof EditableRowsField>(
-      row: FieldsOrdersTreeTable | FieldsTaskTreeTable,
       field: K,
       value: EditableRowsField[K]
     ): void => {
       let newValues = { ...rowDataForUpdate };
-      //newValues.id = row.id;
-
-      /*  if (row.levelTree == "task")
-        newValues.parent_id = (row as FieldsTaskTreeTable).parent_id;*/
 
       Properties.set(newValues, field, value);
       sapTransportOrderActions.setRowDataForUpdate(newValues);

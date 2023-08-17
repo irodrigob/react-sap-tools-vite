@@ -1,4 +1,3 @@
-import i18n from "i18next";
 import React, { useState, useContext, createContext, FC } from "react";
 import { useTranslation } from "react-i18next";
 
