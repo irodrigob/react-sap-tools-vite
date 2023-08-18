@@ -37,6 +37,7 @@ import {
 import { OrderObjectKey } from "sap/transportOrder/infraestructure/types/transport";
 import { SelectableOrders } from "sap/transportOrder/domain/entities/selectableOrders";
 import { STATUS } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder";
+import { DataConnectionSystem } from "systems/infraestructure/types/system";
 
 export default class SAPTransportOrderApplication {
   private transportOrderRepository: TransportOrderRepository;
@@ -51,25 +52,19 @@ export default class SAPTransportOrderApplication {
 
   /**
    * Llama al servicio al metadata del core
-   * @param sapUser | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Password SAP
+   * @param dataConnection | Datos conexión sistema
    * @param user | Usuario SAP
    * @param paramsService | Parametros del servicio
    * @returns | Array con la lista de ordenes del usuario
    */
   async getUserOrdersList(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
+    dataConnection: DataConnectionSystem,
     user: string,
     paramsService: FiltersOrdersGraphQL
   ): Promise<responseUserOrdersList> {
     try {
       let response = await this.transportOrderRepository.getUserOrdersList(
-        system,
-        sapUser,
-        sapPassword,
+        dataConnection,
         user,
         paramsService
       );
@@ -84,23 +79,14 @@ export default class SAPTransportOrderApplication {
 
   /**
    * Lista de sistemas a los cuales se puede transportar
-   * @param system | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Password SAP
-   * @param language | Idioma
+   * @param dataConnection | Datos conexión sistema
    */
   async getSystemsTransport(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string
+    dataConnection: DataConnectionSystem
   ): Promise<responseSystemsTransport> {
     try {
       let response = await this.transportOrderRepository.getSystemsTransport(
-        system,
-        sapUser,
-        sapPassword,
-        language
+        dataConnection
       );
 
       // Se añade un sistema en blanco al inicio para que el select en pantalla lo procese
@@ -118,30 +104,21 @@ export default class SAPTransportOrderApplication {
   }
   /**
    * Realiza el transport de copia de las ordenes/tareas pasadas
-   * @param system | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Password SAP
-   * @param language | Idioma
+   * @param dataConnection | Datos conexión sistema
    * @param systemTransport | Sistema a transportar
    * @param description | Descripción de la orden
    * @param orders | Ordenes
    * @returns | Resultado del transporte de copias
    */
   async doTransportCopy(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     systemTransport: string,
     description: string,
     orders: Orders
   ): Promise<responseDoTransportCopy> {
     try {
       let response = await this.transportOrderRepository.doTransportCopy(
-        system,
-        sapUser,
-        sapPassword,
-        language,
+        dataConnection,
         systemTransport,
         description,
         orders
@@ -183,28 +160,17 @@ export default class SAPTransportOrderApplication {
   }
   /**
    * Actualiza los datos de una orden
-   * @param system | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Passowrd
-   * @param language | Idioma
-   * @param xCsrfToken | Token autentificación
+   * @param dataConnection | Datos conexión sistema
    * @param orderData | Datos de la orden
    * @returns | Resultado del proceso
    */
   async updateOrder(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
-
+    dataConnection: DataConnectionSystem,
     orderData: UpdateOrder
   ): Promise<responseUpdateOrder> {
     try {
       await this.transportOrderRepository.updateOrder(
-        system,
-        sapUser,
-        sapPassword,
-        language,
+        dataConnection,
         orderData
       );
       // Como es un PUT la actualización SAP no devuelve datos por ello devuelvo un undefinied, porque el void no me deja.
@@ -217,20 +183,14 @@ export default class SAPTransportOrderApplication {
   }
   /**
    * Lista de usuarios SAP que pueden estar en una orden de transporte
-   * @param system | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Password SAP
+   * @param dataConnection | Datos conexión sistema
    */
   async getSystemsUsers(
-    system: string,
-    sapUser: string,
-    sapPassword: string
+    dataConnection: DataConnectionSystem
   ): Promise<responseSystemsUsers> {
     try {
       let response = await this.transportOrderRepository.getSystemsUsers(
-        system,
-        sapUser,
-        sapPassword
+        dataConnection
       );
       return Result.ok(response);
     } catch (error) {
@@ -241,26 +201,17 @@ export default class SAPTransportOrderApplication {
   }
   /**
    * Libera las ordenes pasadas por parámetro
-   * @param system | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Password SAP
-   * @param language | Idioma
+   * @param dataConnection | Datos conexión sistema
    * @param orders | Ordenes
    * @returns | Resultado del transporte de copias
    */
   async releaseOrders(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     orders: Orders
   ): Promise<responseReleaseOrders> {
     try {
       let response = await this.transportOrderRepository.releaseOrders(
-        system,
-        sapUser,
-        sapPassword,
-        language,
+        dataConnection,
         orders
       );
       return Result.ok(response);
@@ -272,26 +223,17 @@ export default class SAPTransportOrderApplication {
   }
   /**
    * Devuelve los objetos de un ordenes/tareas
-   * @param system | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Password SAP
-   * @param language | Idioma
+   * @param dataConnection | Datos conexión sistema
    * @param orders | Ordenes
    * @returns | Resultado del transporte de copias
    */
   async getOrderObjects(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     orders: Orders
   ): Promise<responseGetOrderObjects> {
     try {
       let response = await this.transportOrderRepository.getOrderObjects(
-        system,
-        sapUser,
-        sapPassword,
-        language,
+        dataConnection,
         orders
       );
 
@@ -304,28 +246,16 @@ export default class SAPTransportOrderApplication {
   }
   /**
    * Borra las ordenes o tareas
-   * @param system | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Password SAP
-   * @param language | Idioma
+   * @param dataConnection | Datos conexión sistema
    * @param orders | Ordenes
    * @returns | Objetos de las ordenes
    */
   async deleteOrder(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     order: string
   ): Promise<responseDeleteOrders> {
     try {
-      await this.transportOrderRepository.deleteOrder(
-        system,
-        sapUser,
-        sapPassword,
-        language,
-        order
-      );
+      await this.transportOrderRepository.deleteOrder(dataConnection, order);
       // Como es un DELETE la actualización SAP no devuelve datos por ello devuelvo un undefinied, porque el void no me deja.
       return Result.ok(undefined);
     } catch (error) {
@@ -336,26 +266,17 @@ export default class SAPTransportOrderApplication {
   }
   /**
    * Crea una nueva orden
-   * @param system | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Password SAP
-   * @param language | Idioma
+   * @param dataConnection | Datos conexión sistema
    * @param order | Objeto con la orden
    * @returns | Datos de la orden y tarea(en caso de crearse) creados
    */
   async newOrder(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     order: NewOrder
   ): Promise<responseNewOrder> {
     try {
       let response = await this.transportOrderRepository.newOrder(
-        system,
-        sapUser,
-        sapPassword,
-        language,
+        dataConnection,
         order
       );
 
@@ -402,26 +323,17 @@ export default class SAPTransportOrderApplication {
   }
   /**
    * Borra un objeto de la orden
-   * @param system | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Password SAP
-   * @param language | Idioma
+   * @param dataConnection | Datos conexión sistema
    * @param objectData | Objeto de la orden
    * @returns | Objetos de las ordenes
    */
   async deleteOrderObject(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     objectData: OrderObjectKey
   ): Promise<responseDeleteOrderObject> {
     try {
       let response = await this.transportOrderRepository.deleteOrderObject(
-        system,
-        sapUser,
-        sapPassword,
-        language,
+        dataConnection,
         objectData
       );
       // Como es un DELETE la actualización SAP no devuelve datos por ello devuelvo un undefinied, porque el void no me deja.
@@ -436,18 +348,13 @@ export default class SAPTransportOrderApplication {
    * Obtiene las ordenes seleccionables. Es decir, la que se pueden usar para desarrollar.
    * Se llama al repositorio de obtener las ordenes pero pasandole las modificables
    * y el tipo de orden pasado por parámetro
-   * @param sapUser | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Password SAP
+   *@param dataConnection | Datos conexión sistema
    * @param user | Usuario SAP
    * @param paramsService | Parametros del servicio
    * @returns | Array con la lista de ordenes del usuario
    */
   async getSelectableOrders(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    user: string,
+    dataConnection: DataConnectionSystem,
     orderType: string
   ): Promise<responseSelectableOrders> {
     // el completeProjects a false es para que SAP no me incluya todas las tareas de la orden. Esto hace que incluya las liberadas
@@ -460,10 +367,8 @@ export default class SAPTransportOrderApplication {
 
     try {
       let response = await this.transportOrderRepository.getUserOrdersList(
-        system,
-        sapUser,
-        sapPassword,
-        user,
+        dataConnection,
+        dataConnection.sap_user,
         paramServices
       );
 
@@ -491,28 +396,19 @@ export default class SAPTransportOrderApplication {
   }
   /**
    * Mueve los objetos de una orden a otra
-   * @param system | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Password SAP
-   * @param language | Idioma
+   * @param dataConnection | Datos conexión sistema
    * @param orderObjects | orden y objetos a mover
    * @param orderTo | Orden destino
    * @returns | Resultado del proceso
    */
   async moveOrderObjects(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     orderTo: string,
     orderObjects: OrderObjectsKey
   ): Promise<responseMoveOrderObjects> {
     try {
       let response = await this.transportOrderRepository.moveOrderObjects(
-        system,
-        sapUser,
-        sapPassword,
-        language,
+        dataConnection,
         orderTo,
         orderObjects
       );

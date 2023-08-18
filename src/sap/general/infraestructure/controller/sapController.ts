@@ -11,6 +11,7 @@ import AppsList from "sap/general/domain/entities/appsList";
 import AppStore from "shared/storage/appStore";
 import SAPGeneralActions from "sap/general/infraestructure/storage/SAPGeneralActions";
 import SystemActions from "systems/infraestructure/storage/systemActions";
+import { DataConnectionSystem } from "systems/infraestructure/types/system";
 
 export default class SAPController {
   private appStore: AppStore;
@@ -111,5 +112,18 @@ export default class SAPController {
    */
   setLoadingListApps(value: boolean) {
     this.SAPGeneralActions.setLoadingListApps(value);
+  }
+  /**
+   * Devuelve los datos de conexión al sistema
+   * @returns Objetos con los datos de conexión al sistema
+   */
+  getDataForConnection(): DataConnectionSystem {
+    return {
+      host: this.appStore.getState().SAPTransportOrder.URLOData,
+      sap_user: this.appStore.getState().System.systemSelected.sap_user,
+      sap_password: this.appStore.getState().System.systemSelected.sap_password,
+      client: this.appStore.getState().System.systemSelected.client,
+      language: this.appStore.getState().System.systemSelected.language,
+    };
   }
 }

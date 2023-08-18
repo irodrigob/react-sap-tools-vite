@@ -19,6 +19,7 @@ import {
   OrderObjectsKey,
 } from "sap/transportOrder/infraestructure/types/transport";
 import { ReturnsDTO } from "shared/dto/generalDTO";
+import { DataConnectionSystem } from "systems/infraestructure/types/system";
 
 export const MAIN_ORDERS_FIELDS = gql`
   fragment MainOrdersFields on userOrder {
@@ -46,7 +47,9 @@ export const QUERY_USER_ORDERS = gql`
     $system: String!
     $sap_user: String!
     $sap_password: String!
-    $user: String!
+    $user: String!    
+    $language:String!
+    $client:String!
     $orderStatus: [inputStatus]
     $orderTypes: [inputTypes]
     $releaseDateFrom: String
@@ -55,7 +58,9 @@ export const QUERY_USER_ORDERS = gql`
     getUserOrder(
       system: $system
       sap_user: $sap_user
-      sap_password: $sap_password
+      sap_password: $sap_password      
+      language:$language
+      client:$client!
       user: $user
       orderStatus: $orderStatus
       orderTypes: $orderTypes
@@ -73,13 +78,15 @@ export const QUERY_SYSTEMS_TRANSPORT = gql`
     $system: String!
     $sap_user: String!
     $sap_password: String!
-    $langu: String!
+    $language: String!
+    $client: String!
   ) {
     getSystemsTransport(
       system: $system
       sap_user: $sap_user
       sap_password: $sap_password
-      langu: $langu
+      language: $langu
+      client: $client
     ) {
       systemName
       systemDesc
@@ -105,11 +112,19 @@ export const UPDATE_ORDER = gql`
 `;
 
 export const QUERY_SYSTEMS_USERS = gql`
-  query Query($system: String!, $sap_user: String!, $sap_password: String!) {
+  query Query(
+    $system: String!
+    $sap_user: String!
+    $sap_password: String!
+    $language: String!
+    $client: String!
+  ) {
     getSystemsUsers(
       system: $system
       sap_user: $sap_user
       sap_password: $sap_password
+      language: $language
+      client: $client
     ) {
       user
       userDesc
@@ -123,14 +138,16 @@ export const RELEASE_ORDER = gql`
     $sap_user: String!
     $sap_password: String!
     $orders: [inputOrders]
-    $langu: String!
+    $language: String!
+    $client: String!
   ) {
     releaseOrders(
       system: $system
       sap_user: $sap_user
       sap_password: $sap_password
       orders: $orders
-      langu: $langu
+      language: $language
+      client: $client
     ) {
       order
       status
@@ -150,14 +167,16 @@ export const ORDER_OBJECTS = gql`
     $sap_user: String!
     $sap_password: String!
     $orders: [inputOrders]
-    $langu: String!
+    $language: String!
+    $client: String!
   ) {
     getOrderObjects(
       system: $system
       sap_user: $sap_user
       sap_password: $sap_password
       orders: $orders
-      langu: $langu
+      language: $language
+      client: $client
     ) {
       order
       as4pos
@@ -214,9 +233,7 @@ export default class TransportOrderRepository
   implements TransportOrderRepositoryInterface
 {
   async getUserOrdersList(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
+    dataConnection: DataConnectionSystem,
     user: string,
     paramsService: FiltersOrdersGraphQL
   ): Promise<userOrdersDTO[]> {
@@ -224,9 +241,11 @@ export default class TransportOrderRepository
       query: QUERY_USER_ORDERS,
       fetchPolicy: "network-only",
       variables: {
-        system: system,
-        sap_user: sapUser,
-        sap_password: sapPassword,
+        system: dataConnection.host,
+        sap_user: dataConnection.sap_user,
+        sap_password: dataConnection.sap_password,
+        language: dataConnection.language,
+        client: dataConnection.client,
         user: user,
         ...paramsService,
       },
@@ -234,19 +253,17 @@ export default class TransportOrderRepository
     return response.data.getUserOrder;
   }
   async getSystemsTransport(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string
+    dataConnection: DataConnectionSystem
   ): Promise<SystemsTransport[]> {
     const response = await this._apolloClient.query({
       query: QUERY_SYSTEMS_TRANSPORT,
       fetchPolicy: "network-only",
       variables: {
-        system: system,
-        sap_user: sapUser,
-        sap_password: sapPassword,
-        langu: language,
+        system: dataConnection.host,
+        sap_user: dataConnection.sap_user,
+        sap_password: dataConnection.sap_password,
+        language: dataConnection.language,
+        client: dataConnection.client,
       },
     });
     return response.data.getSystemsTransport.map((row: any) => {
@@ -255,10 +272,7 @@ export default class TransportOrderRepository
   }
 
   async doTransportCopy(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     systemTransport: string,
     description: string,
     orders: Orders
@@ -268,10 +282,11 @@ export default class TransportOrderRepository
       fetchPolicy: "network-only",
       variables: {
         input: {
-          system: system,
-          sap_user: sapUser,
-          sap_password: sapPassword,
-          langu: language,
+          system: dataConnection.host,
+          sap_user: dataConnection.sap_user,
+          sap_password: dataConnection.sap_password,
+          language: dataConnection.language,
+          client: dataConnection.client,
           orders: orders,
           systemTransport: systemTransport,
           description: description,
@@ -281,20 +296,18 @@ export default class TransportOrderRepository
     return response.data.doTransportCopy;
   }
   async updateOrder(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     orderData: UpdateOrder
   ): Promise<void> {
     const response = await this._apolloClient.mutate({
       mutation: UPDATE_ORDER,
       variables: {
         input: {
-          system: system,
-          sap_user: sapUser,
-          sap_password: sapPassword,
-          langu: language,
+          system: dataConnection.host,
+          sap_user: dataConnection.sap_user,
+          sap_password: dataConnection.sap_password,
+          language: dataConnection.language,
+          client: dataConnection.client,
           order: orderData.order,
           description: orderData.description,
           user: orderData.user,
@@ -304,56 +317,52 @@ export default class TransportOrderRepository
     return response.data.updateOrder;
   }
   async getSystemsUsers(
-    system: string,
-    sapUser: string,
-    sapPassword: string
+    dataConnection: DataConnectionSystem
   ): Promise<SystemUsers> {
     const response = await this._apolloClient.query({
       query: QUERY_SYSTEMS_USERS,
       fetchPolicy: "network-only",
       variables: {
-        system: system,
-        sap_user: sapUser,
-        sap_password: sapPassword,
+        system: dataConnection.host,
+        sap_user: dataConnection.sap_user,
+        sap_password: dataConnection.sap_password,
+        language: dataConnection.language,
+        client: dataConnection.client,
       },
     });
     return response.data.getSystemsUsers;
   }
   async releaseOrders(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     orders: Orders
   ): Promise<releaseOrdersDTOArray> {
     const response = await this._apolloClient.query({
       query: RELEASE_ORDER,
       fetchPolicy: "network-only",
       variables: {
-        system: system,
-        sap_user: sapUser,
-        sap_password: sapPassword,
-        langu: language,
+        system: dataConnection.host,
+        sap_user: dataConnection.sap_user,
+        sap_password: dataConnection.sap_password,
+        language: dataConnection.language,
+        client: dataConnection.client,
         orders: orders,
       },
     });
     return response.data.releaseOrders;
   }
   async getOrderObjects(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     orders: Orders
   ): Promise<OrderObjectsDTO> {
     const response = await this._apolloClient.query({
       query: ORDER_OBJECTS,
       fetchPolicy: "network-only",
       variables: {
-        system: system,
-        sap_user: sapUser,
-        sap_password: sapPassword,
-        langu: language,
+        system: dataConnection.host,
+        sap_user: dataConnection.sap_user,
+        sap_password: dataConnection.sap_password,
+        language: dataConnection.language,
+        client: dataConnection.client,
         orders: orders,
       },
     });
@@ -361,20 +370,18 @@ export default class TransportOrderRepository
     return response.data.getOrderObjects;
   }
   async deleteOrder(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     order: string
   ): Promise<DeleteOrdersDTO> {
     const response = await this._apolloClient.mutate({
       mutation: DELETE_ORDER,
       variables: {
         input: {
-          system: system,
-          sap_user: sapUser,
-          sap_password: sapPassword,
-          langu: language,
+          system: dataConnection.host,
+          sap_user: dataConnection.sap_user,
+          sap_password: dataConnection.sap_password,
+          language: dataConnection.language,
+          client: dataConnection.client,
           order: order,
         },
       },
@@ -382,20 +389,18 @@ export default class TransportOrderRepository
     return response.data.deleteOrder;
   }
   async newOrder(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     order: NewOrder
   ): Promise<userOrdersDTO> {
     const response = await this._apolloClient.mutate({
       mutation: NEW_ORDER,
       variables: {
         input: {
-          system: system,
-          sap_user: sapUser,
-          sap_password: sapPassword,
-          langu: language,
+          system: dataConnection.host,
+          sap_user: dataConnection.sap_user,
+          sap_password: dataConnection.sap_password,
+          language: dataConnection.language,
+          client: dataConnection.client,
           description: order.description,
           type: order.type,
           user: order.user,
@@ -405,20 +410,18 @@ export default class TransportOrderRepository
     return response.data.newOrder;
   }
   async deleteOrderObject(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     objectData: OrderObjectKey
   ): Promise<OrderObjectKey> {
     const response = await this._apolloClient.mutate({
       mutation: DELETE_ORDER_OBJECT,
       variables: {
         input: {
-          system: system,
-          sap_user: sapUser,
-          sap_password: sapPassword,
-          langu: language,
+          system: dataConnection.host,
+          sap_user: dataConnection.sap_user,
+          sap_password: dataConnection.sap_password,
+          language: dataConnection.language,
+          client: dataConnection.client,
           order: objectData.order,
           pgmid: objectData.pgmid,
           object: objectData.object,
@@ -429,10 +432,7 @@ export default class TransportOrderRepository
     return response.data.deleteOrderObject;
   }
   async moveOrderObjects(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string,
+    dataConnection: DataConnectionSystem,
     orderTo: string,
     orderObjects: OrderObjectsKey
   ): Promise<ReturnsDTO> {
@@ -440,10 +440,11 @@ export default class TransportOrderRepository
       mutation: MOVE_ORDER_OBJECTS,
       variables: {
         input: {
-          system: system,
-          sap_user: sapUser,
-          sap_password: sapPassword,
-          langu: language,
+          system: dataConnection.host,
+          sap_user: dataConnection.sap_user,
+          sap_password: dataConnection.sap_password,
+          language: dataConnection.language,
+          client: dataConnection.client,
           orderTo: orderTo,
           orderObjects: orderObjects.map((row) => {
             return {
