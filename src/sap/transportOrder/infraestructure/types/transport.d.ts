@@ -1,6 +1,7 @@
 import { ValueState } from "@ui5/webcomponents-react";
 import Object from "sap/transportOrder/domain/entities/object";
 import OrderObjectBase from "sap/transportOrder/domain/entities/orderObjectBase";
+import OrderObject from "sap/transportOrder/domain/entities/orderObject";
 
 export interface FilterType {
   code: string;

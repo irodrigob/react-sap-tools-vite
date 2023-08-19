@@ -9,35 +9,26 @@ import {
 import SAPGeneralRepository from "sap/general/infraestructure/repositories/SAPGeneralRepository";
 import UserInfo from "sap/general/domain/entities/userInfo";
 import AppsList from "sap/general/domain/entities/appsList";
-import SAPFormatters from "sap/general/infraestructure/utils/formatters";
 import SAPGeneralActions from "sap/general/infraestructure/storage/SAPGeneralActions";
-import AppStore from "shared/storage/appStore";
+import { DataConnectionSystem } from "systems/infraestructure/types/system";
 
 export default class SAPGeneralApplication {
-  private appStore: AppStore;
   private SAPGeneralActions: SAPGeneralActions;
   private SAPGeneralRepository: SAPGeneralRepository;
   constructor() {
-    this.appStore = new AppStore();
     this.SAPGeneralRepository = new SAPGeneralRepository();
     this.SAPGeneralActions = new SAPGeneralActions();
   }
   /**
    * Llama al servicio al metadata del core
-   * @param system | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Password SAP
+   *@param dataConnection | Datos conexión sistema
    */
   async callMetaData(
-    system: string,
-    sapUser: string,
-    sapPassword: string
+    dataConnection: DataConnectionSystem
   ): Promise<responseMetadata> {
     try {
       let response = await this.SAPGeneralRepository.callMetadataCore(
-        system,
-        sapUser,
-        sapPassword
+        dataConnection
       );
       return Result.ok<responseMetadata>(response);
     } catch (error) {
@@ -48,20 +39,14 @@ export default class SAPGeneralApplication {
   }
   /**
    * Obtiene información del usuario de conexión
-   * @param sapUser | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Password SAP
+   * @param dataConnection | Datos conexión sistema
    */
   async readUserInfo(
-    system: string,
-    sapUser: string,
-    sapPassword: string
+    dataConnection: DataConnectionSystem
   ): Promise<responseGetUserInfoRepo> {
     try {
       let response = await this.SAPGeneralRepository.getUserInfo(
-        system,
-        sapUser,
-        sapPassword
+        dataConnection
       );
       this.SAPGeneralActions.setUserInfo(response);
 
@@ -74,34 +59,21 @@ export default class SAPGeneralApplication {
   }
   /**
    * Obtiene la lista de aplicaciones configuradas
-   * @param sapUser | Sistema
-   * @param sapUser | Usuario SAP
-   * @param sapPassword | Password SAP
-   * @param language | Idioma
+   * @param dataConnection | Datos conexión sistema
    */
   async readAppsList(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string
+    dataConnection: DataConnectionSystem
   ): Promise<responseGetAppsList> {
     try {
       let response = await this.SAPGeneralRepository.getAppsList(
-        system,
-        sapUser,
-        sapPassword,
-        language
+        dataConnection
       );
       this.SAPGeneralActions.setAppsList(response);
       this.SAPGeneralActions.setLoadingListApps(false);
 
       // Por cada aplicación llamo a su metadata
       response.forEach((row) => {
-        let urlConnect = SAPFormatters.buildSAPUrl2Connect(
-          this.appStore.getState().System.systemSelected.host,
-          row.service
-        );
-        this.callMetaData(urlConnect, sapUser, sapPassword);
+        this.callMetaData(dataConnection);
       });
 
       return Result.ok<AppsList[]>(response);

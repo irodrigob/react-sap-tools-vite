@@ -76,10 +76,10 @@ export default function useTransportOrder() {
     // Lista inicial de las ordenes del usuario
     transportOrderController
       .getUserOrdersList(paramsService)
-      .then((resultgetOrderList) => {
+      .then((resultGetOrderList) => {
         sapTransportOrderActions.setLoadingOrders(false);
-        if (resultgetOrderList.isSuccess) {
-          postLoadUserOrder(resultgetOrderList.getValue() as userOrdersDTO[]);
+        if (resultGetOrderList.isSuccess) {
+          postLoadUserOrder(resultGetOrderList.getValue() as userOrdersDTO[]);
 
           // Leemos los sistemas a los que se puede hacer el transport de copia
           transportOrderController
@@ -92,7 +92,7 @@ export default function useTransportOrder() {
               }
             });
         } else {
-          showResultError(resultgetOrderList.getErrorValue() as ErrorGraphql);
+          showResultError(resultGetOrderList.getErrorValue() as ErrorGraphql);
         }
       });
 

@@ -4,6 +4,7 @@ import {
   FieldsTaskTreeTable,
   EditableRowsField,
   RowsExpanded,
+  OrderObjects,
 } from "sap/transportOrder/infraestructure/types/transport";
 import { useAppSelector } from "shared/storage/useStore";
 import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage/sapTransportOrderActions";
@@ -46,84 +47,84 @@ const isOrderTaskDeletable = (
 
 export default function useDataManager() {
   const sapTransportOrderActions = new SAPTransportOrderActions();
-  const { rowDataForUpdate, orderListTree } = useAppSelector(
-    (state) => state.SAPTransportOrder
-  );
+  const { rowDataForUpdate, orderListTree, ordersObjectsSelected } =
+    useAppSelector((state) => state.SAPTransportOrder);
 
   /**
    * Convierte la lista de ordenes del usuario en una jerarquía
    * @param userOrdersList Lista de ordenes del usuario
    * @returns Arbol con ordenes y tareas
    */
-  const adaptSAPOrders2TreeTable = (
-    userOrdersList: userOrdersDTO[]
-  ): FieldsOrdersTreeTable[] => {
-    let orderGrouped = ArrayUtils.groupBy<userOrdersDTO>(
-      userOrdersList,
-      (e) => e.order
-    );
+  const adaptSAPOrders2TreeTable = useCallback(
+    (userOrdersList: userOrdersDTO[]): FieldsOrdersTreeTable[] => {
+      let orderGrouped = ArrayUtils.groupBy<userOrdersDTO>(
+        userOrdersList,
+        (e) => e.order
+      );
 
-    let treeTable: FieldsOrdersTreeTable[] = [];
-    for (const order in orderGrouped) {
-      let orderData: FieldsOrdersTreeTable = {
-        row_editing: false,
-        row_deletable: false,
-        orderTask: order,
-        description: orderGrouped[order][0].orderDesc,
-        description_edit: true,
-        status: orderGrouped[order][0].orderStatus,
-        statusDesc: orderGrouped[order][0].orderStatusDesc,
-        type: orderGrouped[order][0].orderType,
-        typeDesc: orderGrouped[order][0].orderTypeDesc,
-        user: orderGrouped[order][0].orderUser,
-        hasObjects: orderGrouped[order][0]?.orderHasObjects
-          ? orderGrouped[order][0]?.orderHasObjects
-          : false,
-        levelTree: "order",
-        user_edit: true,
-        row_editable: true,
-        subRows: [],
-      };
-      // En la rutina se determina si la celda es editable, aunque por defecto que no puede ser edtiable.
-      // La rutina que se llama se aprovecha en otros procesos por lo que tengo que llamar justo después de inicializar
-      // las ordenes y tareas
-      orderData.row_editable = isOrderTaskEditable(orderData);
-      orderData.row_deletable = isOrderTaskDeletable(orderData);
+      let treeTable: FieldsOrdersTreeTable[] = [];
+      for (const order in orderGrouped) {
+        let orderData: FieldsOrdersTreeTable = {
+          row_editing: false,
+          row_deletable: false,
+          orderTask: order,
+          description: orderGrouped[order][0].orderDesc,
+          description_edit: true,
+          status: orderGrouped[order][0].orderStatus,
+          statusDesc: orderGrouped[order][0].orderStatusDesc,
+          type: orderGrouped[order][0].orderType,
+          typeDesc: orderGrouped[order][0].orderTypeDesc,
+          user: orderGrouped[order][0].orderUser,
+          hasObjects: orderGrouped[order][0]?.orderHasObjects
+            ? orderGrouped[order][0]?.orderHasObjects
+            : false,
+          levelTree: "order",
+          user_edit: true,
+          row_editable: true,
+          subRows: [],
+        };
+        // En la rutina se determina si la celda es editable, aunque por defecto que no puede ser edtiable.
+        // La rutina que se llama se aprovecha en otros procesos por lo que tengo que llamar justo después de inicializar
+        // las ordenes y tareas
+        orderData.row_editable = isOrderTaskEditable(orderData);
+        orderData.row_deletable = isOrderTaskDeletable(orderData);
 
-      // Datos de la tarea
-      orderGrouped[order].forEach((task: userOrdersDTO) => {
-        // Solo se añade las tareas que tienen numero informadas. Si esta en blanco
-        // son ordenes sin tareas.
-        if (task.task != "") {
-          let taskData: FieldsTaskTreeTable = {
-            row_editing: false,
-            row_deletable: false,
-            orderTask: task.task,
-            description: task.taskDesc,
-            description_edit: true,
-            status: task.taskStatus,
-            statusDesc: task.taskStatusDesc,
-            type: task.taskType,
-            typeDesc: task.taskTypeDesc,
-            user: task.taskUser,
-            user_edit: true,
-            row_editable: true,
-            parent_order: orderData.orderTask,
-            hasObjects: task?.taskHasObjects ? task.taskHasObjects : false,
-            levelTree: "task",
-          };
-          taskData.row_editable = isOrderTaskEditable(taskData);
-          taskData.row_deletable = isOrderTaskDeletable(taskData);
+        // Datos de la tarea
+        orderGrouped[order].forEach((task: userOrdersDTO) => {
+          // Solo se añade las tareas que tienen numero informadas. Si esta en blanco
+          // son ordenes sin tareas.
+          if (task.task != "") {
+            let taskData: FieldsTaskTreeTable = {
+              row_editing: false,
+              row_deletable: false,
+              orderTask: task.task,
+              description: task.taskDesc,
+              description_edit: true,
+              status: task.taskStatus,
+              statusDesc: task.taskStatusDesc,
+              type: task.taskType,
+              typeDesc: task.taskTypeDesc,
+              user: task.taskUser,
+              user_edit: true,
+              row_editable: true,
+              parent_order: orderData.orderTask,
+              hasObjects: task?.taskHasObjects ? task.taskHasObjects : false,
+              levelTree: "task",
+            };
+            taskData.row_editable = isOrderTaskEditable(taskData);
+            taskData.row_deletable = isOrderTaskDeletable(taskData);
 
-          orderData.subRows.push(taskData);
-        }
-      });
+            orderData.subRows.push(taskData);
+          }
+        });
 
-      treeTable.push(orderData as FieldsOrdersTreeTable);
-    }
+        treeTable.push(orderData as FieldsOrdersTreeTable);
+      }
 
-    return treeTable;
-  };
+      return treeTable;
+    },
+    []
+  );
 
   /**
    * Proceso post lectura de las ordenes del usuario. En este proceso
@@ -476,6 +477,42 @@ export default function useDataManager() {
     },
     []
   );
+  /**
+   * Actualiza el campo de tiene objetos en base a los objetos de la orden
+   * @param orderObject | Objetos de las ordenes
+   */
+  const udpateHasObjects = (orderObjects: OrderObjects) => {
+    let newOrderListTree = structuredClone(orderListTree);
+
+    orderObjects.forEach((orderObject) => {
+      let orderSelected = ordersObjectsSelected.find(
+        (row) => row.order == orderObject.order
+      );
+      if (orderSelected) {
+        let parentOrder =
+          orderSelected.parent_order == ""
+            ? (orderSelected?.order as string)
+            : (orderSelected?.parent_order as string);
+
+        let orderIndex = newOrderListTree.findIndex(
+          (row) => row.orderTask == parentOrder
+        );
+
+        if (orderSelected.parent_order == "") {
+          newOrderListTree[orderIndex].hasObjects =
+            orderObject.objects.length > 0 ? true : false;
+        } else {
+          let taskIndex = newOrderListTree[orderIndex].subRows.findIndex(
+            (row) => row.orderTask == orderSelected?.order
+          );
+          if (taskIndex != -1)
+            newOrderListTree[orderIndex].subRows[taskIndex].hasObjects =
+              orderObject.objects.length > 0 ? true : false;
+        }
+      }
+    });
+    sapTransportOrderActions.setOrderListTree(newOrderListTree);
+  };
 
   return {
     enableRowEditable,
@@ -492,5 +529,6 @@ export default function useDataManager() {
     adaptSAPOrders2TreeTable,
     addNewOrder,
     searchOrdersTableTree,
+    udpateHasObjects,
   };
 }

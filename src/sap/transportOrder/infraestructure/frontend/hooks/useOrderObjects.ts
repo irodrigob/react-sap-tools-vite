@@ -20,6 +20,7 @@ import ArrayUtils from "shared/utils/array/arrayUtils";
 import { ReturnsDTO } from "shared/dto/generalDTO";
 import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 import { SAPMessageType } from "messageManager/infraestructure/types/msgManagerTypes";
+import useDataManager from "./useDataManager";
 
 export default function useOrderObjects() {
   const sapTransportOrderActions = new SAPTransportOrderActions();
@@ -32,6 +33,7 @@ export default function useOrderObjects() {
     useMessages();
   const { deleteObjectsModel } = useDataManagerObjects();
   const messageManagerController = new MessageManagerController();
+  const { udpateHasObjects } = useDataManager();
 
   /**
    * Lectura de los objetos de las ordenes pasadas por parámetro. Este proceso
@@ -51,13 +53,16 @@ export default function useOrderObjects() {
         );
 
         ordersToSearch.push(order);
-        if (index == -1)
+        if (index == -1) {
           newOrderObjects.push({
             order: order.order,
             objects: [],
             loadingData: true,
           });
-        else newOrderObjects[index].loadingData = true;
+        } else {
+          newOrderObjects[index].loadingData = true;
+          newOrderObjects[index].objects = []; // Quito los objetos porque se van a refrescar
+        }
       });
 
       // Si hay que buscar ordenes guardo las nuevas ordenes y lanzo el proceso de lectura
@@ -93,6 +98,8 @@ export default function useOrderObjects() {
                 });
             }
             sapTransportOrderActions.setOrderObjects(postOrderObjects);
+            // Sincronizo si hay objetos en la orden en los procesos de lectura
+            udpateHasObjects(postOrderObjects);
           });
       }
     },
@@ -262,7 +269,7 @@ export default function useOrderObjects() {
           // Se muestra un error generico en caso de ir todo bien o de existir errores.
           if (
             responseReturn.findIndex(
-              (row) => (row.type = SAPMessageType.error)
+              (row) => row.type == SAPMessageType.error
             ) != -1
           )
             updateMessage(
@@ -270,7 +277,7 @@ export default function useOrderObjects() {
               getI18nText(
                 "transportOrder.orderObjects.moveObjects.moveWithErrors"
               ),
-              MessageType.success
+              MessageType.error
             );
           else
             updateMessage(

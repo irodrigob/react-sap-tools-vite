@@ -47,9 +47,9 @@ export const QUERY_USER_ORDERS = gql`
     $system: String!
     $sap_user: String!
     $sap_password: String!
-    $user: String!    
-    $language:String!
-    $client:String!
+    $user: String!
+    $language: String!
+    $client: String!
     $orderStatus: [inputStatus]
     $orderTypes: [inputTypes]
     $releaseDateFrom: String
@@ -58,9 +58,9 @@ export const QUERY_USER_ORDERS = gql`
     getUserOrder(
       system: $system
       sap_user: $sap_user
-      sap_password: $sap_password      
-      language:$language
-      client:$client!
+      sap_password: $sap_password
+      language: $language
+      client: $client
       user: $user
       orderStatus: $orderStatus
       orderTypes: $orderTypes
@@ -85,7 +85,7 @@ export const QUERY_SYSTEMS_TRANSPORT = gql`
       system: $system
       sap_user: $sap_user
       sap_password: $sap_password
-      language: $langu
+      language: $language
       client: $client
     ) {
       systemName

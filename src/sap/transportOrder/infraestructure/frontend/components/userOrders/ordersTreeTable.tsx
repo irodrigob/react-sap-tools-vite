@@ -17,9 +17,6 @@ const OrdersTreeTable: FC = () => {
     ordersTreeTable,
   } = useOrdersTreeTable();
 
-  /*************************************
-   * Memo
-   ************************************/
 
   return (
     <>

@@ -66,7 +66,7 @@ export default class SAPTransportOrderController {
     paramsService: FiltersOrdersGraphQL
   ): Promise<responseUserOrdersList> {
     return this.transportOrderApplication.getUserOrdersList(
-      this.sapController.getDataForConnection(),
+      this.getDataForConnection(),
       this.appStore.getState().System.systemSelected.sap_user,
       paramsService
     );
@@ -83,7 +83,7 @@ export default class SAPTransportOrderController {
    */
   async getSystemsTransport(): Promise<responseSystemsTransport> {
     return this.transportOrderApplication.getSystemsTransport(
-      this.sapController.getDataForConnection()
+      this.getDataForConnection()
     );
   }
   /**
@@ -98,7 +98,7 @@ export default class SAPTransportOrderController {
     orders: Orders
   ) {
     return this.transportOrderApplication.doTransportCopy(
-      this.sapController.getDataForConnection(),
+      this.getDataForConnection(),
       systemTransport,
       description,
       orders
@@ -112,7 +112,7 @@ export default class SAPTransportOrderController {
    */
   async UpdateOrder(orderData: UpdateOrder): Promise<responseUpdateOrder> {
     return this.transportOrderApplication.updateOrder(
-      this.sapController.getDataForConnection(),
+      this.getDataForConnection(),
       orderData
     );
   }
@@ -121,7 +121,7 @@ export default class SAPTransportOrderController {
    */
   async getSystemsUsers(): Promise<responseSystemsUsers> {
     return this.transportOrderApplication.getSystemsUsers(
-      this.sapController.getDataForConnection()
+      this.getDataForConnection()
     );
   }
   /**
@@ -130,7 +130,7 @@ export default class SAPTransportOrderController {
    */
   async releaseOrders(orders: Orders) {
     return this.transportOrderApplication.releaseOrders(
-      this.sapController.getDataForConnection(),
+      this.getDataForConnection(),
       orders
     );
   }
@@ -141,7 +141,7 @@ export default class SAPTransportOrderController {
    */
   async getOrderObjects(orders: Orders): Promise<responseGetOrderObjects> {
     return this.transportOrderApplication.getOrderObjects(
-      this.sapController.getDataForConnection(),
+      this.getDataForConnection(),
       orders
     );
   }
@@ -152,7 +152,7 @@ export default class SAPTransportOrderController {
    */
   async deleteOrder(order: string): Promise<responseDeleteOrders> {
     return this.transportOrderApplication.deleteOrder(
-      this.sapController.getDataForConnection(),
+      this.getDataForConnection(),
       order
     );
   }
@@ -163,7 +163,7 @@ export default class SAPTransportOrderController {
    */
   async newOrder(order: NewOrder): Promise<responseNewOrder> {
     return this.transportOrderApplication.newOrder(
-      this.sapController.getDataForConnection(),
+      this.getDataForConnection(),
       order
     );
   }
@@ -176,7 +176,7 @@ export default class SAPTransportOrderController {
     objectData: OrderObjectKey
   ): Promise<responseDeleteOrderObject> {
     return this.transportOrderApplication.deleteOrderObject(
-      this.sapController.getDataForConnection(),
+      this.getDataForConnection(),
       objectData
     );
   }
@@ -189,7 +189,7 @@ export default class SAPTransportOrderController {
     orderType: string
   ): Promise<responseSelectableOrders> {
     return this.transportOrderApplication.getSelectableOrders(
-      this.sapController.getDataForConnection(),
+      this.getDataForConnection(),
       orderType
     );
   }
@@ -205,9 +205,19 @@ export default class SAPTransportOrderController {
     orderObjects: OrderObjectsKey
   ): Promise<responseMoveOrderObjects> {
     return this.transportOrderApplication.moveOrderObjects(
-      this.sapController.getDataForConnection(),
+      this.getDataForConnection(),
       orderTo,
       orderObjects
     );
+  }
+  /**
+   * Devuelve los datos de conexión al sistema
+   * @returns Objetos con los datos de conexión al sistema
+   */
+  getDataForConnection(): DataConnectionSystem {
+    return {
+      ...this.sapController.getDataForConnection(),
+      host: this.appStore.getState().SAPTransportOrder.URLOData,
+    };
   }
 }

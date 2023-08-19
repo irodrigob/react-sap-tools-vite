@@ -48,9 +48,7 @@ export default class SAPController {
   async executeServicesSystemSelect(): Promise<responseMetadata> {
     // Primero se lee el metadata del core. Si este va bien se continuan con el resto de servicio
     let result = await this.SAPGeneralApplication.callMetaData(
-      this.appStore.getState().SAPGeneral.URLODataCore,
-      this.appStore.getState().System.systemSelected.sap_user,
-      this.appStore.getState().System.systemSelected.sap_password
+      this.getDataForConnection()
     );
     if (result.isSuccess) {
       this.systemActions.setConnectedToSystem(true);
@@ -72,11 +70,7 @@ export default class SAPController {
    * @returns | Promesa con el resultado del proceso
    */
   async readUserInfo(): Promise<responseGetUserInfoRepo> {
-    return this.SAPGeneralApplication.readUserInfo(
-      this.appStore.getState().SAPGeneral.URLODataCore,
-      this.appStore.getState().System.systemSelected.sap_user,
-      this.appStore.getState().System.systemSelected.sap_password
-    );
+    return this.SAPGeneralApplication.readUserInfo(this.getDataForConnection());
   }
   /**
    * Obtiene la lista de aplicaciones configuradas
@@ -85,12 +79,7 @@ export default class SAPController {
   async readAppsList(
     language: string = i18n.language
   ): Promise<responseGetAppsList> {
-    return this.SAPGeneralApplication.readAppsList(
-      this.appStore.getState().SAPGeneral.URLODataCore,
-      this.appStore.getState().System.systemSelected.sap_user,
-      this.appStore.getState().System.systemSelected.sap_password,
-      language
-    );
+    return this.SAPGeneralApplication.readAppsList(this.getDataForConnection());
   }
   /**
    * Devuelve la lista de aplicaciones del modelo
@@ -119,7 +108,7 @@ export default class SAPController {
    */
   getDataForConnection(): DataConnectionSystem {
     return {
-      host: this.appStore.getState().SAPTransportOrder.URLOData,
+      host: this.appStore.getState().SAPGeneral.URLODataCore,
       sap_user: this.appStore.getState().System.systemSelected.sap_user,
       sap_password: this.appStore.getState().System.systemSelected.sap_password,
       client: this.appStore.getState().System.systemSelected.client,

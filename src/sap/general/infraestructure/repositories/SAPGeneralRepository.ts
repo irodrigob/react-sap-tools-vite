@@ -4,13 +4,22 @@ import SAPRepositoryInterface from "sap/general/domain/interfaces/sapRepositoryI
 import UserInfo from "sap/general/domain/entities/userInfo";
 import AppsList from "sap/general/domain/entities/appsList";
 import { metadataDTO } from "../dto/metadataDTO";
+import { DataConnectionSystem } from "systems/infraestructure/types/system";
 
 export const QUERY_METADATA = gql`
-  query Query($system: String!, $sap_user: String!, $sap_password: String!) {
+  query Query(
+    $system: String!
+    $sap_user: String!
+    $sap_password: String!
+    $language: String!
+    $client: String!
+  ) {
     getMetadata(
       system: $system
       sap_user: $sap_user
       sap_password: $sap_password
+      language: $language
+      client: $client
     ) {
       content
     }
@@ -18,11 +27,19 @@ export const QUERY_METADATA = gql`
 `;
 
 export const QUERY_GET_USER_INFO = gql`
-  query Query($system: String!, $sap_user: String!, $sap_password: String!) {
+  query Query(
+    $system: String!
+    $sap_user: String!
+    $sap_password: String!
+    $language: String!
+    $client: String!
+  ) {
     getUserInfo(
       system: $system
       sap_user: $sap_user
       sap_password: $sap_password
+      language: $language
+      client: $client
     ) {
       username
       username_desc
@@ -35,13 +52,15 @@ export const QUERY_GET_APPS_LIST = gql`
     $system: String!
     $sap_user: String!
     $sap_password: String!
-    $langu: String!
+    $language: String!
+    $client: String!
   ) {
     getAppsList(
-      langu: $langu
       system: $system
       sap_user: $sap_user
       sap_password: $sap_password
+      language: $language
+      client: $client
     ) {
       app
       appDesc
@@ -58,35 +77,33 @@ export default class SAPGeneralRepository
   implements SAPRepositoryInterface
 {
   async callMetadataCore(
-    system: string,
-    sapUser: string,
-    sapPassword: string
+    dataConnection: DataConnectionSystem
   ): Promise<metadataDTO> {
     const response = await this._apolloClient.query({
       query: QUERY_METADATA,
       fetchPolicy: "network-only",
       variables: {
-        system: system,
-        sap_user: sapUser,
-        sap_password: sapPassword,
+        system: dataConnection.host,
+        sap_user: dataConnection.sap_user,
+        sap_password: dataConnection.sap_password,
+        client: dataConnection.client,
+        language: dataConnection.language,
       },
     });
     return {
       content: response.data.getMetadata.content,
     };
   }
-  async getUserInfo(
-    system: string,
-    sapUser: string,
-    sapPassword: string
-  ): Promise<UserInfo> {
+  async getUserInfo(dataConnection: DataConnectionSystem): Promise<UserInfo> {
     const response = await this._apolloClient.query({
       query: QUERY_GET_USER_INFO,
       fetchPolicy: "network-only",
       variables: {
-        system: system,
-        sap_user: sapUser,
-        sap_password: sapPassword,
+        system: dataConnection.host,
+        sap_user: dataConnection.sap_user,
+        sap_password: dataConnection.sap_password,
+        client: dataConnection.client,
+        language: dataConnection.language,
       },
     });
 
@@ -95,20 +112,16 @@ export default class SAPGeneralRepository
       response.data.getUserInfo.username_desc
     );
   }
-  async getAppsList(
-    system: string,
-    sapUser: string,
-    sapPassword: string,
-    language: string
-  ): Promise<AppsList[]> {
+  async getAppsList(dataConnection: DataConnectionSystem): Promise<AppsList[]> {
     const response = await this._apolloClient.query({
       query: QUERY_GET_APPS_LIST,
       fetchPolicy: "network-only",
       variables: {
-        system: system,
-        sap_user: sapUser,
-        sap_password: sapPassword,
-        langu: language,
+        system: dataConnection.host,
+        sap_user: dataConnection.sap_user,
+        sap_password: dataConnection.sap_password,
+        client: dataConnection.client,
+        language: dataConnection.language,
       },
     });
     return response.data.getAppsList.map((row: any) => {
