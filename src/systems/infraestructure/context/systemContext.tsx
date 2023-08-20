@@ -6,7 +6,7 @@ import TunnelProvider from "tunnelSystem/domain/entities/provider";
 type Systems = System[];
 type tunnelProviders = TunnelProvider[];
 
-export const DEFAULT_SYSTEM = new System("", "", "", "", "", "");
+export const DEFAULT_SYSTEM = new System("", "", "", "", "", "", "", "");
 export const DEFAULT_TUNNEL_CONF = new TunnelConfiguration("", "", "", "");
 export const DEFAULT_TUNNEL_PROVIDER = new TunnelProvider("", "");
 
@@ -33,23 +33,23 @@ interface systemContextInterface {
 
 const SystemContext = createContext<systemContextInterface>({
   systemsList: [],
-  setSystemsList: (value: Systems) => {},
+  setSystemsList: (value: Systems) => { },
   systemsReaded: false,
-  setSystemsReaded: (value: boolean) => {},
+  setSystemsReaded: (value: boolean) => { },
   tunnelConfiguration: DEFAULT_TUNNEL_CONF,
-  setTunnelConfiguration: (value: TunnelConfiguration) => {},
+  setTunnelConfiguration: (value: TunnelConfiguration) => { },
   tunnelProviders: [],
-  setTunnelProviders: (value: tunnelProviders) => {},
+  setTunnelProviders: (value: tunnelProviders) => { },
   loadingSystems: false,
-  setLoadingSystems: (value: boolean) => {},
+  setLoadingSystems: (value: boolean) => { },
   expandSidebar: false,
-  setExpandSidebar: (value: boolean) => {},
+  setExpandSidebar: (value: boolean) => { },
   showSidebar: false,
-  setShowSidebar: (value: boolean) => {},
+  setShowSidebar: (value: boolean) => { },
   showSystemList: false,
-  setShowSystemList: (value: boolean) => {},
+  setShowSystemList: (value: boolean) => { },
   loadSystemList: true,
-  setLoadSystemList: (value: boolean) => {},
+  setLoadSystemList: (value: boolean) => { },
 });
 
 interface Props {

@@ -3,7 +3,6 @@ import { AnalyticalTableColumnDefinition } from "@ui5/webcomponents-react";
 import { OrderObjectsTable } from "sap/transportOrder/infraestructure/types/transport";
 import useDataManagerObjects from "./useDataManagerObjects";
 import { useAppSelector } from "shared/storage/useStore";
-import OrderObject from "sap/transportOrder/domain/entities/orderObject";
 import { useTranslations } from "translations/i18nContext";
 import CellOrderLocked from "sap/transportOrder/infraestructure/frontend/components/orderObjects/cellOrderLocked";
 import {
@@ -29,7 +28,7 @@ export default function useOrderObjectsTable() {
 
     if (ordersObjectsSelected.length > 0) {
       ordersObjectsSelected.forEach((row) => {
-        let orderObject: OrderObject = orderObjects.find(
+        let orderObject = orderObjects.find(
           (orderRow) => orderRow.order == row.order
         );
         // Debería de existir porque se añade en base a las ordenes que se seleccionan

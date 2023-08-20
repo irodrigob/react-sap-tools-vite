@@ -12,7 +12,7 @@ export interface SystemRedux {
 }
 
 const initialState: SystemRedux = {
-  systemSelected: new System("", "", "", "", "", ""),
+  systemSelected: new System("", "", "", "", "", "", "", ""),
   connectedToSystem: false,
   URL2ConnectSystem: "",
   openEditSystem: false,

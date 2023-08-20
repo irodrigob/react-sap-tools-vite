@@ -15,7 +15,7 @@ import {
 } from "sap/transportOrder/infraestructure/types/transport";
 
 const ConfirmDeleteOrder: FC = () => {
-  const { getI18nText, language } = useTranslations();
+  const { getI18nText } = useTranslations();
   const { rowOrderCellAction, openConfirmeDelete } = useAppSelector(
     (state) => state.SAPTransportOrder
   );
@@ -37,7 +37,7 @@ const ConfirmDeleteOrder: FC = () => {
           );
 
           sapTransportOrderController
-            .deleteOrder(language, rowOrderCellAction?.orderTask as string)
+            .deleteOrder(rowOrderCellAction?.orderTask as string)
             .then((response) => {
               if (response.isSuccess) {
                 // No hay respuesta al ser un DELETE por ello si va todo bien saco un mensaje propio
@@ -51,8 +51,8 @@ const ConfirmDeleteOrder: FC = () => {
                 // Borrado de la orden/tarea en el modelo
                 deleteOrderModel(
                   rowOrderCellAction as
-                    | FieldsOrdersTreeTable
-                    | FieldsTaskTreeTable
+                  | FieldsOrdersTreeTable
+                  | FieldsTaskTreeTable
                 );
               } else {
                 updateResultError(

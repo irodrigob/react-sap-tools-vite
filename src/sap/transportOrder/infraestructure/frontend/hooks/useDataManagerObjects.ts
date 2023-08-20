@@ -5,7 +5,6 @@ import {
 } from "sap/transportOrder/infraestructure/types/transport";
 import Object from "sap/transportOrder/domain/entities/object";
 import { useAppSelector } from "shared/storage/useStore";
-import OrderObject from "sap/transportOrder/domain/entities/orderObject";
 import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage/sapTransportOrderActions";
 
 export default function useDataManagerObjects() {
@@ -63,18 +62,19 @@ export default function useDataManagerObjects() {
       let newOrderObjects = structuredClone(orderObjects);
 
       objects.forEach((object) => {
-        let objectModel: OrderObject = newOrderObjects.find(
+        let objectModel = newOrderObjects.find(
           (row) => row.order == object.order
         );
         if (objectModel) {
+          let indexObject = objectModel.objects.findIndex(
+            (row) =>
+              row.pgmid == object.pgmid &&
+              row.object == object.object &&
+              row.objName == object.objName
+          );
+
+          objectModel.objects.splice(indexObject, indexObject >= 0 ? 1 : 0);
         }
-        let indexObject = objectModel.objects.findIndex(
-          (row) =>
-            row.pgmid == object.pgmid &&
-            row.object == object.object &&
-            row.objName == object.objName
-        );
-        objectModel.objects.splice(indexObject, indexObject >= 0 ? 1 : 0);
       });
       sapTransportOrderActions.setOrderObjects(newOrderObjects);
     },
