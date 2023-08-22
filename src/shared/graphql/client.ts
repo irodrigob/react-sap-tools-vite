@@ -1,12 +1,16 @@
-import { ApolloClient, InMemoryCache, NormalizedCacheObject,HttpLink } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  NormalizedCacheObject,
+  HttpLink,
+} from "@apollo/client";
 
-let apolloClient:ApolloClient<NormalizedCacheObject>;
+let apolloClient: ApolloClient<NormalizedCacheObject>;
 
-function createIsomorphLink() {   
- 
+function createIsomorphLink() {
   return new HttpLink({
     uri:
-      import.meta.env.VITE_GOOGLE_CLIENT_ID === "production"
+      import.meta.env.VITE_ENVIRONMENT === "production"
         ? "https://react-sap-tools-server.vercel.app/api/graphql"
         : "http://localhost:3001/api/graphql",
     credentials: "same-origin",
