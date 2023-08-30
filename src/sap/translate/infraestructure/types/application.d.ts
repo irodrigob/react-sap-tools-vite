@@ -8,7 +8,10 @@ import {
   ResponseSaveObjectText,
 } from "sap/translate/infraestructure/types/translate";
 
-export type responseLanguages = Result<Languages> | Result<ErrorGraphql>;
-export type responseSelectableObjects =
+export type ResponseLanguages = Result<Languages> | Result<ErrorGraphql>;
+export type ResponseSelectableObjects =
+  | Result<SelectableObjects>
+  | Result<ErrorGraphql>;
+export type ReponseSaveTranslate =
   | Result<ResponseSaveObjectText>
   | Result<ErrorGraphql>;

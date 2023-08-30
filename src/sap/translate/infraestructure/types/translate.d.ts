@@ -7,7 +7,15 @@ import { ReturnDTO } from "shared/dto/generalDTO";
 export type Languages = Language[];
 export type SelectableObjects = SelectableObject[];
 export type ObjectsText = ObjectText[];
-export interface ResponseSaveObjectText {
-  objectText: ObjectTextToSaveDTO;
+export type ResponseSaveObjectText = {
+  objectText: ObjectsText;
   return: ReturnDTO;
-}
+};
+export type ParamsObjectTranslate = {
+  object: string;
+  objectName: string;
+  oLang: string;
+  tLang: [string];
+  order: string;
+  depthRefs: number;
+};
