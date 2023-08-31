@@ -39,7 +39,7 @@ import { SelectableOrders } from "sap/transportOrder/domain/entities/selectableO
 import { STATUS } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 
-export default class transportOrderApplication {
+export default class TransportOrderApplication {
   private transportOrderRepository: TransportOrderRepository;
   private appStore: AppStore;
   private sapTransportOrderActions: SAPTransportOrderActions;

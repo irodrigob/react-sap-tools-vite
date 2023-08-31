@@ -12,18 +12,21 @@ import type { newSystemDTO } from "systems/infraestructure/dto/systemDTO";
 import TunnelController from "tunnelSystem/infraestructure/controller/tunnelController";
 import TunnelConfiguration from "tunnelSystem/domain/entities/configuration";
 import AppStore from "shared/storage/appStore";
+import SystemActions from "systems/infraestructure/storage/systemActions";
 
 export default class SystemController {
   protected systemApplication: SystemApplication;
   protected systemValidations: SystemApplicationValidations;
   protected tunnelController: TunnelController;
   protected appStore: AppStore;
+  private systemActions: SystemActions;
 
   constructor() {
     this.systemApplication = new SystemApplication();
     this.systemValidations = new SystemApplicationValidations();
     this.tunnelController = new TunnelController();
     this.appStore = new AppStore();
+    this.systemActions = new SystemActions();
   }
   /**
    * Obtención de los usuarios de los sistemas
@@ -101,5 +104,12 @@ export default class SystemController {
    */
   getSystemSelected(): System {
     return this.appStore.getState().System.systemSelected;
+  }
+  /**
+   * Indica si se ha conectado a un sistema
+   * @param value | Verdadero o falso
+   */
+  setConnectedToSystem(value: boolean) {
+    this.systemActions.setConnectedToSystem(value);
   }
 }

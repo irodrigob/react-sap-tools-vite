@@ -6,18 +6,26 @@ import {
   responseGetUserInfoRepo,
   responseGetAppsList,
 } from "sap/general/infraestructure/types/general";
+import SAPFormatters from "sap/general/infraestructure/utils/formatters";
+import AppStore from "shared/storage/appStore";
 import SAPGeneralRepository from "sap/general/infraestructure/repositories/SAPGeneralRepository";
 import UserInfo from "sap/general/domain/entities/userInfo";
 import AppsList from "sap/general/domain/entities/appsList";
 import SAPGeneralActions from "sap/general/infraestructure/storage/SAPGeneralActions";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
+import SystemController from "systems/infraestructure/controller/systemController";
 
 export default class SAPGeneralApplication {
   private SAPGeneralActions: SAPGeneralActions;
   private SAPGeneralRepository: SAPGeneralRepository;
+  private appStore: AppStore;
+  private systemController: SystemController;
+
   constructor() {
     this.SAPGeneralRepository = new SAPGeneralRepository();
     this.SAPGeneralActions = new SAPGeneralActions();
+    this.appStore = new AppStore();
+    this.systemController = new SystemController();
   }
   /**
    * Llama al servicio al metadata del core
@@ -72,8 +80,10 @@ export default class SAPGeneralApplication {
       this.SAPGeneralActions.setLoadingListApps(false);
 
       // Por cada aplicación llamo a su metadata
+      let connectionApp = dataConnection;
       response.forEach((row) => {
-        this.callMetaData(dataConnection);
+        connectionApp.host = this.getURLConnectionApp(row.app);
+        this.callMetaData(connectionApp);
       });
 
       return Result.ok<AppsList[]>(response);
@@ -82,5 +92,29 @@ export default class SAPGeneralApplication {
         ErrorGraphql.create(error as ApolloError)
       );
     }
+  }
+  /**
+   * Devuelve la URL de conexión de una aplicación
+   * @param app | Aplicación
+   * @returns | URL de conexión
+   */
+  getURLConnectionApp(app: string): string {
+    let service =
+      this.appStore.getState().SAPGeneral.appsList.find((row) => row.app == app)
+        ?.service ?? "";
+
+    return this.buildSAPUrl2Connect(
+      this.systemController.getURL2ConnectSystem(),
+      service
+    );
+  }
+  /**
+   * Devuelve la URL completa para la conexión al sistema SAP
+   * @param host | Host del sistema
+   * @param service | Servicio
+   * @returns URL completa del servicio
+   */
+  buildSAPUrl2Connect(host: string, service?: string): string {
+    return SAPFormatters.buildSAPUrl2Connect(host, service);
   }
 }

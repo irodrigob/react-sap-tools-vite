@@ -1,6 +1,5 @@
 import i18n from "i18next";
 import { Result } from "shared/core/Result";
-import SAPFormatters from "sap/general/infraestructure/utils/formatters";
 import {
   responseMetadata,
   responseGetUserInfoRepo,
@@ -10,20 +9,20 @@ import SAPGeneralApplication from "sap/general/application/SAPGeneralApplication
 import AppsList from "sap/general/domain/entities/appsList";
 import AppStore from "shared/storage/appStore";
 import SAPGeneralActions from "sap/general/infraestructure/storage/SAPGeneralActions";
-import SystemActions from "systems/infraestructure/storage/systemActions";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
+import SystemController from "systems/infraestructure/controller/systemController";
 
 export default class SAPController {
   private appStore: AppStore;
   private SAPGeneralApplication: SAPGeneralApplication;
   private SAPGeneralActions: SAPGeneralActions;
-  private systemActions: SystemActions;
+  private systemController: SystemController;
 
   constructor() {
     this.SAPGeneralApplication = new SAPGeneralApplication();
     this.appStore = new AppStore();
     this.SAPGeneralActions = new SAPGeneralActions();
-    this.systemActions = new SystemActions();
+    this.systemController = new SystemController();
   }
 
   /**
@@ -33,7 +32,7 @@ export default class SAPController {
    * @returns URL completa del servicio
    */
   buildSAPUrl2Connect(host: string, service?: string): string {
-    return SAPFormatters.buildSAPUrl2Connect(host, service);
+    return this.SAPGeneralApplication.buildSAPUrl2Connect(host, service);
   }
   /**
    * Guarda en el modelo la URL base para conectarse a servicio Odat
@@ -51,7 +50,7 @@ export default class SAPController {
       this.getDataForConnection()
     );
     if (result.isSuccess) {
-      this.systemActions.setConnectedToSystem(true);
+      this.systemController.setConnectedToSystem(true);
 
       // Se llama al servicio de obtención de usuarios
       this.readUserInfo();
@@ -106,9 +105,11 @@ export default class SAPController {
    * Devuelve los datos de conexión al sistema
    * @returns Objetos con los datos de conexión al sistema
    */
-  getDataForConnection(): DataConnectionSystem {
+  getDataForConnection(app?: string): DataConnectionSystem {
     return {
-      host: this.appStore.getState().SAPGeneral.URLODataCore,
+      host: app
+        ? this.SAPGeneralApplication.getURLConnectionApp(app)
+        : this.appStore.getState().SAPGeneral.URLODataCore,
       sap_user: this.appStore.getState().System.systemSelected.sap_user,
       sap_password: this.appStore.getState().System.systemSelected.sap_password,
       client: this.appStore.getState().System.systemSelected.client,

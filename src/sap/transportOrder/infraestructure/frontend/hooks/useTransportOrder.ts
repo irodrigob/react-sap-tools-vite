@@ -55,8 +55,6 @@ export default function useTransportOrder() {
    * Proceso de lectura de datos de las ordenes del usuario
    */
   const loadInitialData = useCallback(() => {
-    let URLBaseConnect = systemController.getURL2ConnectSystem();
-
     sapTransportOrderActions.setLoadingOrders(true);
     transportOrderController.setSystemChanged(false);
 
@@ -66,12 +64,6 @@ export default function useTransportOrder() {
 
     // Parametros para poder llamar al servicio
     let paramsService = convertFilter2paramsGraphql(filterValues);
-
-    let url2Service = sapController.buildSAPUrl2Connect(
-      URLBaseConnect,
-      GATEWAY_CONF.ODATA_TRANSP_SERVICE
-    );
-    sapTransportOrderActions.setURLOData(url2Service);
 
     // Lista inicial de las ordenes del usuario
     transportOrderController

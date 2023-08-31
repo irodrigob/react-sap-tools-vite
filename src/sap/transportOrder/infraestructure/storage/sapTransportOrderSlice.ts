@@ -22,7 +22,6 @@ export interface SAPTransportOrderRedux {
   toolbarFilters: ToolbarFilters;
   toolbarFiltersState: ToolbarFiltersState;
   loadingOrders: boolean;
-  URLOData: string;
   orderList: userOrdersDTO[];
   orderListTree: FieldsOrdersTreeTable[];
   systemTransportCopy: string;
@@ -68,7 +67,6 @@ const initialState: SAPTransportOrderRedux = {
   toolbarFilters: initialtoolbarFilters,
   toolbarFiltersState: initialToolbarFiltersState,
   loadingOrders: false,
-  URLOData: "",
   orderList: [],
   orderListTree: [],
   systemTransportCopy: "",
@@ -112,9 +110,6 @@ export const SAPTransportOrderSlice = createSlice({
     },
     setLoadingOrders: (state, action: PayloadAction<boolean>) => {
       state.loadingOrders = action.payload;
-    },
-    setURLOData: (state, action: PayloadAction<string>) => {
-      state.URLOData = action.payload;
     },
     setOrderListTree: (
       state,
@@ -220,7 +215,6 @@ export const {
   setToolbarFilters,
   setToolbarFiltersState,
   setLoadingOrders,
-  setURLOData,
   setOrderListTree,
   setSystemsTransportCopy,
   setSystemTransportCopy,

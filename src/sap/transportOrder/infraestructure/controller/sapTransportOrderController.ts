@@ -1,4 +1,4 @@
-import transportOrderApplication from "sap/transportOrder/application/transportOrderApplication";
+import TransportOrderApplication from "sap/transportOrder/application/transportOrderApplication";
 import {
   responseUserOrdersList,
   responseSystemsTransport,
@@ -23,16 +23,17 @@ import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage
 import NewOrder from "sap/transportOrder/domain/entities/newOrder";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 import SAPController from "sap/general/infraestructure/controller/sapController";
+import { APP } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder";
 
 export default class SAPTransportOrderController {
   private appStore: AppStore;
-  private transportOrderApplication: transportOrderApplication;
+  private transportOrderApplication: TransportOrderApplication;
   private sapTransportOrderActions: SAPTransportOrderActions;
   private sapController: SAPController;
 
   constructor() {
     this.appStore = new AppStore();
-    this.transportOrderApplication = new transportOrderApplication();
+    this.transportOrderApplication = new TransportOrderApplication();
     this.sapTransportOrderActions = new SAPTransportOrderActions();
     this.sapController = new SAPController();
   }
@@ -216,8 +217,7 @@ export default class SAPTransportOrderController {
    */
   getDataForConnection(): DataConnectionSystem {
     return {
-      ...this.sapController.getDataForConnection(),
-      host: this.appStore.getState().SAPTransportOrder.URLOData,
+      ...this.sapController.getDataForConnection(APP),
     };
   }
 }

@@ -4,7 +4,6 @@ import {
   setToolbarFilters,
   setToolbarFiltersState,
   setLoadingOrders,
-  setURLOData,
   setOrderListTree,
   setSystemsTransportCopy,
   setSystemTransportCopy,
@@ -57,9 +56,6 @@ export default class SAPTransportOrderActions extends AppStore {
   }
   setLoadingOrders(value: boolean) {
     this.dispatch(setLoadingOrders(value));
-  }
-  setURLOData(value: string) {
-    this.dispatch(setURLOData(value));
   }
   setOrderListTree(value: FieldsOrdersTreeTable[]) {
     this.dispatch(setOrderListTree(value));
