@@ -36,12 +36,12 @@ export default interface TranslateRepositoryInterface {
    * Graba los textos traducidos
    * @param dataConnection | Datos conexión sistema
    * @param paramsTranslate | Parametros del objeto a traducción
-   * @param ObjectsText | Textos a traducir
-   * @returns | Array con las traducciones
+   * @param objectsText | Textos a traducir
+   * @returns | Array con las traducciones confirmadas en SAP y los mensajes del proceso
    */
   saveObjectTranslate(
     dataConnection: DataConnectionSystem,
     paramsTranslate: ParamsObjectTranslate,
-    ObjectsText: ObjectsText
+    objectsText: ObjectsText
   ): Promise<ResponseSaveObjectText>;
 }

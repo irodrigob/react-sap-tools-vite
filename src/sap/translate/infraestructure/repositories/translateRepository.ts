@@ -225,7 +225,7 @@ export default class TranslateRepository
   async saveObjectTranslate(
     dataConnection: DataConnectionSystem,
     paramsTranslate: ParamsObjectTranslate,
-    ObjectsText: ObjectsText
+    objectsText: ObjectsText
   ): Promise<ResponseSaveObjectText> {
     const response = await this._apolloClient.mutate({
       mutation: SET_OBJECT_TRANSLATE,
@@ -236,7 +236,7 @@ export default class TranslateRepository
           sap_password: dataConnection.sap_password,
           language: dataConnection.language,
           client: dataConnection.client,
-          objectText: ObjectsText,
+          objectText: objectsText,
           ...paramsTranslate,
         },
       },

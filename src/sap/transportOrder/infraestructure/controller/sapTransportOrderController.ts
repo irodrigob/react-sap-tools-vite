@@ -1,4 +1,4 @@
-import SAPTransportOrderApplication from "sap/transportOrder/application/SAPTransportOrderApplication";
+import transportOrderApplication from "sap/transportOrder/application/transportOrderApplication";
 import {
   responseUserOrdersList,
   responseSystemsTransport,
@@ -26,13 +26,13 @@ import SAPController from "sap/general/infraestructure/controller/sapController"
 
 export default class SAPTransportOrderController {
   private appStore: AppStore;
-  private transportOrderApplication: SAPTransportOrderApplication;
+  private transportOrderApplication: transportOrderApplication;
   private sapTransportOrderActions: SAPTransportOrderActions;
   private sapController: SAPController;
 
   constructor() {
     this.appStore = new AppStore();
-    this.transportOrderApplication = new SAPTransportOrderApplication();
+    this.transportOrderApplication = new transportOrderApplication();
     this.sapTransportOrderActions = new SAPTransportOrderActions();
     this.sapController = new SAPController();
   }
