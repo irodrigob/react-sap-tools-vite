@@ -5,6 +5,7 @@ import {
   setAppsList,
   setLoadingListApps,
   setShowListApps,
+  setSystemChanged,
 } from "sap/general/infraestructure/storage/SAPGeneralSlice";
 import UserInfo from "sap/general/domain/entities/userInfo";
 import AppsList from "sap/general/domain/entities/appsList";
@@ -24,5 +25,8 @@ export default class SAPGeneralActions extends AppStore {
   }
   setLoadingListApps(value: boolean) {
     this.dispatch(setLoadingListApps(value));
+  }
+  setSystemChanged(value: boolean) {
+    this.dispatch(setSystemChanged(value));
   }
 }

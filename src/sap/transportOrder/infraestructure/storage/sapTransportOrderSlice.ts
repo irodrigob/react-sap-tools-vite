@@ -18,7 +18,6 @@ import { initialrowDataForUpdate } from "./initialValues";
 import { SelectableOrders } from "sap/transportOrder/domain/entities/selectableOrders";
 
 export interface SAPTransportOrderRedux {
-  systemChanged: boolean;
   toolbarFilters: ToolbarFilters;
   toolbarFiltersState: ToolbarFiltersState;
   loadingOrders: boolean;
@@ -63,7 +62,6 @@ const initialToolbarFiltersState: ToolbarFiltersState = {
 };
 
 const initialState: SAPTransportOrderRedux = {
-  systemChanged: false,
   toolbarFilters: initialtoolbarFilters,
   toolbarFiltersState: initialToolbarFiltersState,
   loadingOrders: false,
@@ -96,9 +94,6 @@ export const SAPTransportOrderSlice = createSlice({
   name: "SAPTransportOrder",
   initialState: initialState,
   reducers: {
-    setSystemChanged: (state, action: PayloadAction<boolean>) => {
-      state.systemChanged = action.payload;
-    },
     setToolbarFilters: (state, action: PayloadAction<ToolbarFilters>) => {
       state.toolbarFilters = action.payload;
     },
@@ -211,7 +206,6 @@ export const SAPTransportOrderSlice = createSlice({
 });
 
 export const {
-  setSystemChanged,
   setToolbarFilters,
   setToolbarFiltersState,
   setLoadingOrders,

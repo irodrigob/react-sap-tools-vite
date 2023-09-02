@@ -47,9 +47,9 @@ export const QUERY_SELECTABLE_OBJECTS = gql`
       language: $language
       client: $client
     ) {
-      language
-      description
-      isSystemLanguage
+      pgmid
+      object
+      text
     }
   }
 `;

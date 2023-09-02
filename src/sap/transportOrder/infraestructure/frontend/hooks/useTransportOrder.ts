@@ -56,7 +56,7 @@ export default function useTransportOrder() {
    */
   const loadInitialData = useCallback(() => {
     sapTransportOrderActions.setLoadingOrders(true);
-    transportOrderController.setSystemChanged(false);
+    sapController.setSystemChanged(false);
 
     // Obtención de los filtros por defecto
     let filterValues = getDefaultFilters();

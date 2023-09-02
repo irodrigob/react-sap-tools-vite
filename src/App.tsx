@@ -11,6 +11,7 @@ const LazyMainTransportOrder = lazy(
       "sap/transportOrder/infraestructure/frontend/components/userOrders/mainTransportOrder"
     )
 );
+const LazyMainTranslate = lazy(() => import("sap/translate/infraestructure/frontend/components/mainTranslate"));
 
 function App() {
   const { getI18nText } = useTranslations();
@@ -36,6 +37,14 @@ function App() {
             element={
               <AuthGuard>
                 <LazyMainTransportOrder />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="/translate"
+            element={
+              <AuthGuard>
+                <LazyMainTranslate />
               </AuthGuard>
             }
           />

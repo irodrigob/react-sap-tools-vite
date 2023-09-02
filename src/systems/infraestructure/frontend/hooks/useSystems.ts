@@ -117,8 +117,8 @@ export default function useSystems() {
     // Limpiamos las variables del transporte de ordenes
     sapTransportOrderController.clearVariables();
 
-    // Si indica que se releen los datos de transportes
-    sapTransportOrderController.setSystemChanged(true);
+    // Si indica que el sistema se ha cambiado y la aplicación de SAP tiene que volver a releer los datos
+    sapController.setSystemChanged(true);
   }, []);
 
   /**

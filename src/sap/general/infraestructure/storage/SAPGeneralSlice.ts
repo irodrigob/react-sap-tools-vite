@@ -8,6 +8,7 @@ export interface SAPGeneralRedux {
   appsList: AppsList[];
   showListApps: boolean;
   loadingListApps: boolean;
+  systemChanged: boolean;
 }
 
 const initialState: SAPGeneralRedux = {
@@ -16,6 +17,7 @@ const initialState: SAPGeneralRedux = {
   appsList: [],
   showListApps: false,
   loadingListApps: false,
+  systemChanged: false,
 };
 
 export const SAPTransportOrderSlice = createSlice({
@@ -37,6 +39,9 @@ export const SAPTransportOrderSlice = createSlice({
     setLoadingListApps: (state, action: PayloadAction<boolean>) => {
       state.loadingListApps = action.payload;
     },
+    setSystemChanged: (state, action: PayloadAction<boolean>) => {
+      state.systemChanged = action.payload;
+    },
   },
 });
 
@@ -46,6 +51,7 @@ export const {
   setAppsList,
   setShowListApps,
   setLoadingListApps,
+  setSystemChanged,
 } = SAPTransportOrderSlice.actions;
 
 export default SAPTransportOrderSlice.reducer;

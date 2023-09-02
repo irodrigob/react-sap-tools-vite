@@ -72,13 +72,7 @@ export default class SAPTransportOrderController {
       paramsService
     );
   }
-  /**
-   * Actualiza si el sistema ha cambiado.
-   * @param change Valor si ha cambiado el sistema o no.
-   */
-  setSystemChanged(change: boolean = true) {
-    this.sapTransportOrderActions.setSystemChanged(change);
-  }
+
   /**
    * Lista de sistemas a los cuales se puede transportar
    */

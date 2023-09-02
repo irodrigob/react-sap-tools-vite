@@ -116,4 +116,11 @@ export default class SAPController {
       language: this.appStore.getState().System.systemSelected.language,
     };
   }
+  /**
+   * Actualiza si el sistema ha cambiado.
+   * @param change Valor si ha cambiado el sistema o no.
+   */
+  setSystemChanged(change: boolean = true) {
+    this.SAPGeneralActions.setSystemChanged(change);
+  }
 }

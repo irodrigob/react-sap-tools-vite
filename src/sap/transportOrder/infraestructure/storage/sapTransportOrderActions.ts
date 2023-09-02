@@ -1,6 +1,5 @@
 import AppStore from "shared/storage/appStore";
 import {
-  setSystemChanged,
   setToolbarFilters,
   setToolbarFiltersState,
   setLoadingOrders,
@@ -45,9 +44,6 @@ import { initialrowDataForUpdate } from "./initialValues";
 import { SelectableOrders } from "sap/transportOrder/domain/entities/selectableOrders";
 
 export default class SAPTransportOrderActions extends AppStore {
-  setSystemChanged(value: boolean) {
-    this.dispatch(setSystemChanged(value));
-  }
   setToolbarFilters(value: ToolbarFilters) {
     this.dispatch(setToolbarFilters(value));
   }

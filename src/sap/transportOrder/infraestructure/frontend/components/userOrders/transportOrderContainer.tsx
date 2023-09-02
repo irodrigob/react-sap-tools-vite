@@ -14,10 +14,12 @@ import OrderObjectsContainer from "sap/transportOrder/infraestructure/frontend/c
 const TransportOrderContainer: FC = () => {
 
   const { systemSelected } = useAppSelector((state) => state.System);
-  const { systemChanged } = useAppSelector((state) => state.SAPTransportOrder);
   const { loadInitialData } = useTransportOrder();
   const { showOrderObjects } = useAppSelector(
     (state) => state.SAPTransportOrder
+  );
+  const { systemChanged } = useAppSelector(
+    (state) => state.SAPGeneral
   );
   const [layout, setLayout] = useState(FCLLayout.OneColumn);
 
