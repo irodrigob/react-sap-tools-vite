@@ -294,6 +294,11 @@
             "orderNotExist": "La orden {{order}} no existe"
         }
     },
+    "translate":{
+        "filters":{
+            "labelOriginLanguage":"Idiona origen"
+        }
+    },
     "messageManager": {
         "tooltipMessageIcon": "Mensajes",
         "lblAllMessages": "Todo"

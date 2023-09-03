@@ -15,7 +15,7 @@ export type ParamsObjectTranslate = {
   object: string;
   objectName: string;
   oLang: string;
-  tLang: [string];
+  tLang: string[];
   order: string;
   depthRefs: number;
 };

@@ -3,6 +3,7 @@ import {
   Languages,
   ObjectsText,
   SelectableObjects,
+  ParamsObjectTranslate,
 } from "sap/translate/infraestructure/types/translate";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import TranslateController from "sap/translate/infraestructure/controller/translateController";
@@ -10,8 +11,10 @@ import SAPController from "sap/general/infraestructure/controller/sapController"
 import useMessages, {
   MessageType,
 } from "shared/infraestructure/hooks/useMessages";
+import { useTranslations } from "translations/i18nContext";
 
 export default function useTranslate() {
+  const { getI18nText } = useTranslations();
   const translateController = new TranslateController();
   const [languages, setLanguages] = useState<Languages>([]);
   const [selectableObjects, setSelectableObjects] = useState<SelectableObjects>(
@@ -20,10 +23,22 @@ export default function useTranslate() {
   const [loadingLanguages, setLoadingLanguages] = useState(false);
   const [loadingSelectableLanguages, setLoadingSelectableLanguages] =
     useState(false);
+  const [paramsObjectsTranslate, setParamsObjectsTranslate] =
+    useState<ParamsObjectTranslate>({
+      depthRefs: 1,
+      object: "",
+      objectName: "",
+      oLang: "",
+      order: "",
+      tLang: [],
+    });
   const sapController = new SAPController();
   const { showResultError, showMessage, updateMessage, updateResultError } =
     useMessages();
 
+  /**
+   * Lectura inicial de datos
+   */
   const loadInitialData = useCallback(() => {
     sapController.setSystemChanged(false);
 
@@ -31,6 +46,9 @@ export default function useTranslate() {
     loadSelectableObjects();
   }, []);
 
+  /**
+   * Lectura de los lenguajes que se puede seleccionar
+   */
   const loadLanguages = useCallback(() => {
     setLoadingLanguages(true);
     translateController.getLanguages().then((resultLanguages) => {
@@ -42,6 +60,9 @@ export default function useTranslate() {
       }
     });
   }, []);
+  /**
+   * Lectura de los objetos que se pueden traduccir
+   */
   const loadSelectableObjects = useCallback(() => {
     setLoadingSelectableLanguages(true);
     translateController
@@ -68,5 +89,7 @@ export default function useTranslate() {
     loadInitialData,
     loadingLanguages,
     loadingSelectableLanguages,
+    paramsObjectsTranslate,
+    setParamsObjectsTranslate,
   };
 }
