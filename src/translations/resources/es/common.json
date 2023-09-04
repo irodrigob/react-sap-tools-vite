@@ -1,347 +1,349 @@
 {
-    "app": {
-        "title": "Herramientas para SAP"
-    },
-    "login": {
-        "page": {
-            "title": "Inicio de sesión",
-            "initSessionGoogle": "Iniciar sesión con Google",
-            "logOut": "Ha cerrado la sesión"
-        },
-        "verifyLogin": {
-            "message": "Verificando acceso"
-        }
-    },
-    "appToolbar": {
-        "tooltipButtonsApps": "Listado de aplicaciones",
-        "accountSettings": "Configuración de la cuenta",
-        "menuProfile": {
-            "changeUser": "Cambiar de usuario"
-        }
-    },
-    "systemSelect": {
-        "label": "Sistemas",
-        "loading": "Leyendo...",
-        "placeholder": "Selecciona un sistema o escribelo",
-        "btnNewSystem": "Nuevo sistema",
-        "btnViewSystems": "Ver sistemas",
-        "errorCallServiceRead": "Se ha producido el siguiente error al leer los sistemas: {{errorService}}",
-        "sufixSystemSelected": "(Seleccionado)",
-        "placeholderFilterSystem": "Filtrar sistema",
-        "loadingSystemData": "Leyendo datos del sistema",
-        "alreadySelected": "Sistema ya seleccionado",
-        "anonymousTunnelWOURL": "En tuneles anónimos debe de introducir la URL del mismo manualmente"
-    },
-    "editSystem": {
-        "titleAddSystem": "Añadir sistema",
-        "titleEditSystem": "Editar sistema",
-        "msgErrorHostInvalid": "Debe de introducir un host válido",
-        "msgErrorODataSrvInvalid": "El path del nodo ICF debe comenzar por '/'",
-        "saveInProcess": "Grabación del sistema {{newSystem}} en proceso...",
-        "deleteInProcess": "Borrado en proceso...",
-        "saveSuccess": "Sistema {{newSystem}} grabado correctamente",
-        "deleteSuccess": "Sistema {{system}} borrado correctamente",
-        "serviceNewSystem": "Sistema añadido correctamente",
-        "errorCallServiceNew": "Al grabar el nuevo sistema se ha producido el siguiente error: {{errorService}}"
-    },
-    "tileSystems": {
-        "managementTile": {
-            "title": "Configuración",
-            "subTitle": "Configuración de sistemas",
-            "tooltipAdd": "Añadir nuevo sistema",
-            "tooltipConfiguration": "Configuración general sistemas"
-        },
-        "tileSystem": {
-            "toolTipDelete": "Borrar sistema",
-            "tooltipDownloadTunnel": "Descarga conexión tunel",
-            "tooltipEdit": "Editar sistema",
-            "tooltipConnect": "Conectar con el sistema",
-            "labelSAPUser": "Usuario SAP",
-            "labelConnectionTunnel": "Conexión por tunel",
-            "labelHost": "Host"
-        },
-        "popupDeleteSystem": {
-            "title": "Borrado de sistema",
-            "mainText": "¿Esta seguro que desea borrar el sistema: {{systemName}}?"
-        }
-    },
-    "systems": {
-        "labelName": "Nombre",
-        "labelHOST": "Host servidor",
-        "labelSAPUser": "Usuario SAP",
-        "labelSAPPassword": "Password SAP",
-        "labelUseConnectionTunnel": "Usar tunel para conexión",
-        "labelConnectTunnel": "Auto conexión a través del tunnel",
-        "labelURLManualTunnel": "URL Tunel conexión",
-        "labelActions": "Acciones",
-        "btnClose": "Cerrar",
-        "labelClient":"Mandante",
-        "labelLanguage":"Idioma"
-    },
-    "systemList": {
-        "title": "Listado de sistemas",
-        "btnTxtSave": "Cerrar"
-    },
-    "tunneling": {
-        "updateTunel": "Tunel actualizado",
-        "noAPIToken": "No hay token de conexión introducido",
-        "noTunnelsConnected": "No hay tuneles establecidos",
-        "noTunnelSystemSelected": "No hay tunel activo para el sistema seleccionado",
-        "errorGetTunnels": "Se ha producido el siguiente error al leer los tuneles {{errorService}}",
-        "errorGetProviders": "Se ha producido el siguiente error al leer los proveedores {{errorService}}",
-        "connectionTunelUpdated": "Tunel de conexión actualizado",
-        "errorCallServiceRead": "Se ha producido el siguiente error al leer la configuración: {{errorService}}",
-        "editConfiguration": {
-            "title": "Configuración del tunel",
-            "saveInProcess": "Grabación en proceso",
-            "labelAuthToken": "Token autorización",
-            "helperAuthToken": "Este token sirve para crear el tunnel con tu cuenta, en caso contrario, se crear un tunel anónimo.",
-            "helperAuthToken2": "Si lo rellenas no podrás usar tuneles anónimos.",
-            "helperAuthTokenNavigate": "Pulsa para navegar a la página donde se obtiene el token de autentificación",
-            "helperApiToken": "Este token sirve para consultar los tunneles creados con tu cuenta. No rellenar si se crean tuneles anónimos.",
-            "helperApiTokenNavigate": "Pulsa para navegar a la página donde se obtiene/crea el token de API",
-            "labelApiToken": "Token API",
-            "saveSuccess": "Configuración actualizada",
-            "urlAuthToken": "https://dashboard.ngrok.com/get-started/your-authtoken",
-            "urlApiToken": "https://dashboard.ngrok.com/api",
-            "noDataChanged":"No se han modificado datos"
-        }
-    },
-    "systemConfiguration": {
-        "title": "Configuración general",
-        "tunnelConfigurationTab": "Tunneling",
-        "btnClose": "Cerrar",
-        "btnSave": "Grabar"
-    },
-    "drawersApps": {
-        "tooltipButtonClose": "Ocultar listado aplicaciones"
-    },
-    "listApps": {
-        "title": "Aplicaciones",
-        "systemNotSelected": "Debe seleccionar un sistema",
-        "loadingApps": "Leyendo aplicaciones"
-    },
-    "general": {
-        "btnTxtCancel": "Cancelar",
-        "btnTxtSave": "Grabar",
-        "fieldMandatory": "Campo obligatorio",
-        "services": {
-            "errorCallGeneric": "Se ha producido el siguiente error '&1' al llamar al servicio",
-            "errorCallServiceName": "Se ha producido un error al llamar al servicio: &1"
-        }
-    },
-    "transportOrder": {
-        "title": "Transporte de ordenes",
-        "loadingOrder": "Leyendo ordenes del usuario",
-        "noData": "No se han encontrado ordenes",
-        "tableOrder": {
-            "labelStatus": "Status",
-            "labelUser": "Usuario",
-            "labelOrderType": "Tipo",
-            "labelDescription": "Descripción",
-            "labelOrdertask": "Orden/Tarea",
-            "labelActions": "Acciones",
-            "actions": {
-                "editTooltip": "Editar",
-                "confirmTooltip": "Confirmar",
-                "cancelTooltip": "Cancelar",
-                "editAutoAssign": "Auto asignarse orden",
-                "releaseOrder": "Liberar orden/tarea",
-                "deleteOrder": "Borrar orden/tarea",
-                "selectOneOrder": "Seleccione al menos una orden/tarea"
-
-            }
-        },
-        "orderTypes": {
-            "workbench": "Workbench",
-            "customizing": "Customizing",
-            "transportCopies": "Transporte de copias"
-        },
-        "toolbarAction": {
-            "transportCopy": "Transporte de copias",
-            "refreshOrders": "Refrescar ordenes/tareas",
-            "textSearchPlaceholder": "Búsqueda (> 2 carácteres)...",
-            "newOrder": "Crear nueva orden"
-        },
-        "transportCopy": {
-            "popup": {
-                "title": "Transporte de copias",
-                "lblOrderDesc": "Descripción",
-                "lblSystem": "Sistema",
-                "btnConfirm": "Transportar",
-                "msgTransportInProcess": "Transporte de copia en proceso...",
-                "placeholderSelectSystem": "Seleccione un sistema"
-            },
-            "errorService": "El proceso de transporte de copia ha devuelto el siguiente error: &1"
-        },
-        "newOrder": {
-            "popup": {
-                "title": "Nueva orden",
-                "lblOrderDesc": "Descripción",
-                "lblOrderUser": "Usuario",
-                "lblSystem": "Sistema",
-                "lblOrderType": "Tipo de orden",
-                "btnConfirm": "Crear",
-                "msgCreateInProcess": "Creación de orden en proceso...",
-                "msgOrderCreated": "Se ha creado la orden {{order}}"
-            },
-            "errorService": "El proceso de creación de orden ha devuelto el siguiente error: &1"
-        },
-        "orderObjects": {
-            "noDataText": "No hay objetos",
-            "toolbarAction": {
-                "placeholderSearch": "Búsqueda (> 2 carácteres)...",
-                "refresh": "Refresco de objetos"
-            },
-            "flatTableView": {
-                "lblPgmid": "ID Programa",
-                "lblObject": "Objeto",
-                "lblObjectDesc": "Desc. Objeto",
-                "lblObjName": "Nombre",
-                "lblLockflag": "Bloqueado",
-                "lblLanguage": "Idioma",
-                "tooltipIconLocked": "Objeto bloqueado"
-            },
-            "actions": {
-                "deleteObject": "Borrar objecto",
-                "copyObject": "Copiar objeto",
-                "moveObject": "Mover objeto",
-                "selectOneObject": "Seleccione al menos un objeto",
-                "objectsDiffOrderTypes": "No se pueden mover objetos de ordenes de distinto tipo",
-                "objectsOrdersNoEditable": "Ha seleccionado objetos de ordenes no editables"
-            },
-            "btnClosePopup": "Cerrar",
-            "deleteObjects": {
-                "deleteInProcess": "Borrando objeto(s)",
-                "deleteCompleted": "Objeto(s) borrados correctamente",
-                "confirmDelete": {
-                    "title": "Borrado objeto",
-                    "mainText": "¿Esta seguro que desea borrar el o los objetos?"
-                }
-            },
-            "moveObjects": {
-                "popup": {
-                    "btnConfirm": "Mover",
-                    "title": "Mover objetos"
-                },
-                "panelObjectsSelected": "Objetos seleccionados",
-                "stillErrors": "Soluciones los errores antes de mover los objetos",
-                "moveInProcess": "Reasignando objeto(s)",
-                "moveCompleted": "Objeto(s) reasignados correctamente",
-                "moveWithErrors": "Se han producido errores al reasignar los objetos",
-                "orderToSameOrdersFrom": "La orden seleccionada no puede ser la misma que la de los objetos seleccionados"
-            }
-        },
-        "changeOrder": {
-            "popup": {
-                "title": "Modificación de datos",
-                "lblUser": "Usuario",
-                "lblDescription": "Descripción"
-            },
-            "validations": {
-                "fieldMandatory": "Campo obligatorio",
-                "rowWithErrors": "Debe corregir los errores antes de poder grabar",
-                "userNotExist": "El usuario introducido no existe"
-            }
-        },
-        "updateOrder": {
-            "updateUserInprocess": "Actualizando usuario de la orden {{order}}",
-            "updateInProcess": "Actualizando la orden/tarea {{order}}",
-            "updateSuccess": "Orden/tarea actualizada {{order}}"
-        },
-        "releaseOrders": {
-            "releaseInProcess": "Liberando ordenes/tareas",
-            "releaseCompleted": "Ordenes/tareas liberadas correctamente",
-            "popupConfirm": {
-                "title": "Liberación ordenes",
-                "mainText": "¿Esta seguro que liberar las ordenes?"
-            }
-        },
-        "deleteOrders": {
-            "deleteInProcess": "Borrando orden/tarea {{order}}",
-            "deleteCompleted": "Orden/tarea {{order}} borrada correctamente",
-            "popupConfirm": {
-                "title": "Borrado orden/tarea: {{order}}",
-                "mainText": "¿Esta seguro que desea borrar la orden/tarea?",
-                "disclaimerTask": "El borrado de una tarea también borrara los objetos de esta.",
-                "disclaimerOrder": "El borrado de la orden implica el borrado de las tareas y objetos de la misma."
-            }
-        },
-        "filters": {
-            "type": {
-                "labelOrder": "Tipo de orden/tarea"
-            },
-            "status": {
-                "labelOrder": "Estado de la orden/tarea",
-                "values": {
-                    "changeable": "Modificable",
-                    "released": "Liberada"
-                }
-            },
-            "releaseDate": {
-                "label": "Liberado desde"
-            },
-            "validations": {
-                "fieldMandatory": "Campo obligatorio",
-                "fixErrorFilters": "Aún hay filtros con errores"
-            }
-        },
-        "selectOrder": {
-            "lblSelectOrder": "Seleccione una orden",
-            "placeholderSelectOrder": "Introduzca o seleccione una orden",
-            "selected": "Seleccionada",
-            "orderMandatory": "Orden obligatoria",
-            "orderNotExist": "La orden {{order}} no existe"
-        }
-    },
-    "translate":{
-        "filters":{
-            "labelOriginLanguage":"Idiona origen"
-        }
-    },
-    "messageManager": {
-        "tooltipMessageIcon": "Mensajes",
-        "lblAllMessages": "Todo"
-    },
-    "customAnalyticTable": {
-        "localization": {
-            "editRow": {
-                "editTooltip": "Editar",
-                "confirmTooltip": "Confirmar",
-                "cancelTooltip": "Cancelar",
-                "deleteTooltip": "Borrar",
-                "messagesTooltip": "Mensajes",
-                "deleteText": "¿Esta seguro que desea borrar el registro?",
-                "deleteTitle": "Confirmación de borrado"
-            },
-            "actions": {
-                "lblColumnActions": "Acciones",
-                "lblColumnActionsToolTip": "Acciones"
-            },
-            "validations": {
-                "fieldMandatory": "Campo obligatorio",
-                "rowWithErrors": "Debe corregir los errores de la fila antes de poder grabar"
-            },
-            "dialogMessages": {
-                "title": "Mensajes",
-                "footer": {
-                    "btnClose": "Cerrar"
-                }
-            }
-        }
-    },
-    "ngrok": {
-        "tunnelNotChange": "El tunel no ha sufrido cambios. No es necesario actualizar.",
-        "withOutTunnels": "No hay tunel establecido para el sistema seleccionado."
-    },
-    "breadCrumbsNavigation": {
-        "systems": "Sistemas",
-        "applications": "Aplicaciones"
-    },
-    "sideBar": {
-        "title": "Aplicaciones"
-    },
-    "appSystemSelected": {
-        "label": "Sistema"
-    }
+	"app": {
+		"title": "Herramientas para SAP"
+	},
+	"login": {
+		"page": {
+			"title": "Inicio de sesión",
+			"initSessionGoogle": "Iniciar sesión con Google",
+			"logOut": "Ha cerrado la sesión"
+		},
+		"verifyLogin": {
+			"message": "Verificando acceso"
+		}
+	},
+	"appToolbar": {
+		"tooltipButtonsApps": "Listado de aplicaciones",
+		"accountSettings": "Configuración de la cuenta",
+		"menuProfile": {
+			"changeUser": "Cambiar de usuario"
+		}
+	},
+	"systemSelect": {
+		"label": "Sistemas",
+		"loading": "Leyendo...",
+		"placeholder": "Selecciona un sistema o escribelo",
+		"btnNewSystem": "Nuevo sistema",
+		"btnViewSystems": "Ver sistemas",
+		"errorCallServiceRead": "Se ha producido el siguiente error al leer los sistemas: {{errorService}}",
+		"sufixSystemSelected": "(Seleccionado)",
+		"placeholderFilterSystem": "Filtrar sistema",
+		"loadingSystemData": "Leyendo datos del sistema",
+		"alreadySelected": "Sistema ya seleccionado",
+		"anonymousTunnelWOURL": "En tuneles anónimos debe de introducir la URL del mismo manualmente"
+	},
+	"editSystem": {
+		"titleAddSystem": "Añadir sistema",
+		"titleEditSystem": "Editar sistema",
+		"msgErrorHostInvalid": "Debe de introducir un host válido",
+		"msgErrorODataSrvInvalid": "El path del nodo ICF debe comenzar por '/'",
+		"saveInProcess": "Grabación del sistema {{newSystem}} en proceso...",
+		"deleteInProcess": "Borrado en proceso...",
+		"saveSuccess": "Sistema {{newSystem}} grabado correctamente",
+		"deleteSuccess": "Sistema {{system}} borrado correctamente",
+		"serviceNewSystem": "Sistema añadido correctamente",
+		"errorCallServiceNew": "Al grabar el nuevo sistema se ha producido el siguiente error: {{errorService}}"
+	},
+	"tileSystems": {
+		"managementTile": {
+			"title": "Configuración",
+			"subTitle": "Configuración de sistemas",
+			"tooltipAdd": "Añadir nuevo sistema",
+			"tooltipConfiguration": "Configuración general sistemas"
+		},
+		"tileSystem": {
+			"toolTipDelete": "Borrar sistema",
+			"tooltipDownloadTunnel": "Descarga conexión tunel",
+			"tooltipEdit": "Editar sistema",
+			"tooltipConnect": "Conectar con el sistema",
+			"labelSAPUser": "Usuario SAP",
+			"labelConnectionTunnel": "Conexión por tunel",
+			"labelHost": "Host"
+		},
+		"popupDeleteSystem": {
+			"title": "Borrado de sistema",
+			"mainText": "¿Esta seguro que desea borrar el sistema: {{systemName}}?"
+		}
+	},
+	"systems": {
+		"labelName": "Nombre",
+		"labelHOST": "Host servidor",
+		"labelSAPUser": "Usuario SAP",
+		"labelSAPPassword": "Password SAP",
+		"labelUseConnectionTunnel": "Usar tunel para conexión",
+		"labelConnectTunnel": "Auto conexión a través del tunnel",
+		"labelURLManualTunnel": "URL Tunel conexión",
+		"labelActions": "Acciones",
+		"btnClose": "Cerrar",
+		"labelClient": "Mandante",
+		"labelLanguage": "Idioma"
+	},
+	"systemList": {
+		"title": "Listado de sistemas",
+		"btnTxtSave": "Cerrar"
+	},
+	"tunneling": {
+		"updateTunel": "Tunel actualizado",
+		"noAPIToken": "No hay token de conexión introducido",
+		"noTunnelsConnected": "No hay tuneles establecidos",
+		"noTunnelSystemSelected": "No hay tunel activo para el sistema seleccionado",
+		"errorGetTunnels": "Se ha producido el siguiente error al leer los tuneles {{errorService}}",
+		"errorGetProviders": "Se ha producido el siguiente error al leer los proveedores {{errorService}}",
+		"connectionTunelUpdated": "Tunel de conexión actualizado",
+		"errorCallServiceRead": "Se ha producido el siguiente error al leer la configuración: {{errorService}}",
+		"editConfiguration": {
+			"title": "Configuración del tunel",
+			"saveInProcess": "Grabación en proceso",
+			"labelAuthToken": "Token autorización",
+			"helperAuthToken": "Este token sirve para crear el tunnel con tu cuenta, en caso contrario, se crear un tunel anónimo.",
+			"helperAuthToken2": "Si lo rellenas no podrás usar tuneles anónimos.",
+			"helperAuthTokenNavigate": "Pulsa para navegar a la página donde se obtiene el token de autentificación",
+			"helperApiToken": "Este token sirve para consultar los tunneles creados con tu cuenta. No rellenar si se crean tuneles anónimos.",
+			"helperApiTokenNavigate": "Pulsa para navegar a la página donde se obtiene/crea el token de API",
+			"labelApiToken": "Token API",
+			"saveSuccess": "Configuración actualizada",
+			"urlAuthToken": "https://dashboard.ngrok.com/get-started/your-authtoken",
+			"urlApiToken": "https://dashboard.ngrok.com/api",
+			"noDataChanged": "No se han modificado datos"
+		}
+	},
+	"systemConfiguration": {
+		"title": "Configuración general",
+		"tunnelConfigurationTab": "Tunneling",
+		"btnClose": "Cerrar",
+		"btnSave": "Grabar"
+	},
+	"drawersApps": {
+		"tooltipButtonClose": "Ocultar listado aplicaciones"
+	},
+	"listApps": {
+		"title": "Aplicaciones",
+		"systemNotSelected": "Debe seleccionar un sistema",
+		"loadingApps": "Leyendo aplicaciones"
+	},
+	"general": {
+		"btnTxtCancel": "Cancelar",
+		"btnTxtSave": "Grabar",
+		"fieldMandatory": "Campo obligatorio",
+		"services": {
+			"errorCallGeneric": "Se ha producido el siguiente error '&1' al llamar al servicio",
+			"errorCallServiceName": "Se ha producido un error al llamar al servicio: &1"
+		}
+	},
+	"transportOrder": {
+		"title": "Transporte de ordenes",
+		"loadingOrder": "Leyendo ordenes del usuario",
+		"noData": "No se han encontrado ordenes",
+		"tableOrder": {
+			"labelStatus": "Status",
+			"labelUser": "Usuario",
+			"labelOrderType": "Tipo",
+			"labelDescription": "Descripción",
+			"labelOrdertask": "Orden/Tarea",
+			"labelActions": "Acciones",
+			"actions": {
+				"editTooltip": "Editar",
+				"confirmTooltip": "Confirmar",
+				"cancelTooltip": "Cancelar",
+				"editAutoAssign": "Auto asignarse orden",
+				"releaseOrder": "Liberar orden/tarea",
+				"deleteOrder": "Borrar orden/tarea",
+				"selectOneOrder": "Seleccione al menos una orden/tarea"
+			}
+		},
+		"orderTypes": {
+			"workbench": "Workbench",
+			"customizing": "Customizing",
+			"transportCopies": "Transporte de copias"
+		},
+		"toolbarAction": {
+			"transportCopy": "Transporte de copias",
+			"refreshOrders": "Refrescar ordenes/tareas",
+			"textSearchPlaceholder": "Búsqueda (> 2 carácteres)...",
+			"newOrder": "Crear nueva orden"
+		},
+		"transportCopy": {
+			"popup": {
+				"title": "Transporte de copias",
+				"lblOrderDesc": "Descripción",
+				"lblSystem": "Sistema",
+				"btnConfirm": "Transportar",
+				"msgTransportInProcess": "Transporte de copia en proceso...",
+				"placeholderSelectSystem": "Seleccione un sistema"
+			},
+			"errorService": "El proceso de transporte de copia ha devuelto el siguiente error: &1"
+		},
+		"newOrder": {
+			"popup": {
+				"title": "Nueva orden",
+				"lblOrderDesc": "Descripción",
+				"lblOrderUser": "Usuario",
+				"lblSystem": "Sistema",
+				"lblOrderType": "Tipo de orden",
+				"btnConfirm": "Crear",
+				"msgCreateInProcess": "Creación de orden en proceso...",
+				"msgOrderCreated": "Se ha creado la orden {{order}}"
+			},
+			"errorService": "El proceso de creación de orden ha devuelto el siguiente error: &1"
+		},
+		"orderObjects": {
+			"noDataText": "No hay objetos",
+			"toolbarAction": {
+				"placeholderSearch": "Búsqueda (> 2 carácteres)...",
+				"refresh": "Refresco de objetos"
+			},
+			"flatTableView": {
+				"lblPgmid": "ID Programa",
+				"lblObject": "Objeto",
+				"lblObjectDesc": "Desc. Objeto",
+				"lblObjName": "Nombre",
+				"lblLockflag": "Bloqueado",
+				"lblLanguage": "Idioma",
+				"tooltipIconLocked": "Objeto bloqueado"
+			},
+			"actions": {
+				"deleteObject": "Borrar objecto",
+				"copyObject": "Copiar objeto",
+				"moveObject": "Mover objeto",
+				"selectOneObject": "Seleccione al menos un objeto",
+				"objectsDiffOrderTypes": "No se pueden mover objetos de ordenes de distinto tipo",
+				"objectsOrdersNoEditable": "Ha seleccionado objetos de ordenes no editables"
+			},
+			"btnClosePopup": "Cerrar",
+			"deleteObjects": {
+				"deleteInProcess": "Borrando objeto(s)",
+				"deleteCompleted": "Objeto(s) borrados correctamente",
+				"confirmDelete": {
+					"title": "Borrado objeto",
+					"mainText": "¿Esta seguro que desea borrar el o los objetos?"
+				}
+			},
+			"moveObjects": {
+				"popup": {
+					"btnConfirm": "Mover",
+					"title": "Mover objetos"
+				},
+				"panelObjectsSelected": "Objetos seleccionados",
+				"stillErrors": "Soluciones los errores antes de mover los objetos",
+				"moveInProcess": "Reasignando objeto(s)",
+				"moveCompleted": "Objeto(s) reasignados correctamente",
+				"moveWithErrors": "Se han producido errores al reasignar los objetos",
+				"orderToSameOrdersFrom": "La orden seleccionada no puede ser la misma que la de los objetos seleccionados"
+			}
+		},
+		"changeOrder": {
+			"popup": {
+				"title": "Modificación de datos",
+				"lblUser": "Usuario",
+				"lblDescription": "Descripción"
+			},
+			"validations": {
+				"fieldMandatory": "Campo obligatorio",
+				"rowWithErrors": "Debe corregir los errores antes de poder grabar",
+				"userNotExist": "El usuario introducido no existe"
+			}
+		},
+		"updateOrder": {
+			"updateUserInprocess": "Actualizando usuario de la orden {{order}}",
+			"updateInProcess": "Actualizando la orden/tarea {{order}}",
+			"updateSuccess": "Orden/tarea actualizada {{order}}"
+		},
+		"releaseOrders": {
+			"releaseInProcess": "Liberando ordenes/tareas",
+			"releaseCompleted": "Ordenes/tareas liberadas correctamente",
+			"popupConfirm": {
+				"title": "Liberación ordenes",
+				"mainText": "¿Esta seguro que liberar las ordenes?"
+			}
+		},
+		"deleteOrders": {
+			"deleteInProcess": "Borrando orden/tarea {{order}}",
+			"deleteCompleted": "Orden/tarea {{order}} borrada correctamente",
+			"popupConfirm": {
+				"title": "Borrado orden/tarea: {{order}}",
+				"mainText": "¿Esta seguro que desea borrar la orden/tarea?",
+				"disclaimerTask": "El borrado de una tarea también borrara los objetos de esta.",
+				"disclaimerOrder": "El borrado de la orden implica el borrado de las tareas y objetos de la misma."
+			}
+		},
+		"filters": {
+			"type": {
+				"labelOrder": "Tipo de orden/tarea"
+			},
+			"status": {
+				"labelOrder": "Estado de la orden/tarea",
+				"values": {
+					"changeable": "Modificable",
+					"released": "Liberada"
+				}
+			},
+			"releaseDate": {
+				"label": "Liberado desde"
+			},
+			"validations": {
+				"fieldMandatory": "Campo obligatorio",
+				"fixErrorFilters": "Aún hay filtros con errores"
+			}
+		},
+		"selectOrder": {
+			"lblSelectOrder": "Seleccione una orden",
+			"placeholderSelectOrder": "Introduzca o seleccione una orden",
+			"selected": "Seleccionada",
+			"orderMandatory": "Orden obligatoria",
+			"orderNotExist": "La orden {{order}} no existe"
+		}
+	},
+	"translate": {
+		"filters": {
+			"labelOriginLanguage": "Idioma origen",
+			"placeholderOriginLanguage": "Selecciona idiona origen",
+			"labelTargetLanguage": "Idioma(s) destino",
+			"placeholderTargetLanguage": "Selecciona idioma(s) destino"
+		}
+	},
+	"messageManager": {
+		"tooltipMessageIcon": "Mensajes",
+		"lblAllMessages": "Todo"
+	},
+	"customAnalyticTable": {
+		"localization": {
+			"editRow": {
+				"editTooltip": "Editar",
+				"confirmTooltip": "Confirmar",
+				"cancelTooltip": "Cancelar",
+				"deleteTooltip": "Borrar",
+				"messagesTooltip": "Mensajes",
+				"deleteText": "¿Esta seguro que desea borrar el registro?",
+				"deleteTitle": "Confirmación de borrado"
+			},
+			"actions": {
+				"lblColumnActions": "Acciones",
+				"lblColumnActionsToolTip": "Acciones"
+			},
+			"validations": {
+				"fieldMandatory": "Campo obligatorio",
+				"rowWithErrors": "Debe corregir los errores de la fila antes de poder grabar"
+			},
+			"dialogMessages": {
+				"title": "Mensajes",
+				"footer": {
+					"btnClose": "Cerrar"
+				}
+			}
+		}
+	},
+	"ngrok": {
+		"tunnelNotChange": "El tunel no ha sufrido cambios. No es necesario actualizar.",
+		"withOutTunnels": "No hay tunel establecido para el sistema seleccionado."
+	},
+	"breadCrumbsNavigation": {
+		"systems": "Sistemas",
+		"applications": "Aplicaciones"
+	},
+	"sideBar": {
+		"title": "Aplicaciones"
+	},
+	"appSystemSelected": {
+		"label": "Sistema"
+	}
 }
