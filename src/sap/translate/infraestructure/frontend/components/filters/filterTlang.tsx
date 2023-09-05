@@ -53,6 +53,7 @@ const FilterTlang: FC<Props> = (props: Props) => {
                     }),
                 });
             }}
+            style={{ maxWidth: "15rem" }}
         >
             {languages
                 .filter(

@@ -9,6 +9,7 @@ import {
     FilterGroupItem,
     Ui5CustomEvent,
     MultiComboBoxDomRef,
+    FlexBox,
 } from "@ui5/webcomponents-react";
 import { useTranslations } from "translations/i18nContext";
 import useMessages, {
@@ -16,6 +17,7 @@ import useMessages, {
 } from "shared/infraestructure/hooks/useMessages";
 import FilterOlang from "./filterOlang";
 import FilterTlang from "./filterTlang";
+import FilterObject from "./filterObject";
 
 interface Props {
     languages: Languages;
@@ -54,7 +56,7 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
     return (
         <FilterBar
             hideToolbar={true}
-            style={{ marginBottom: "0.4rem" }}
+            style={{ marginBottom: "0.4rem", alignItems: "stretch" }}
             showGoOnFB
             showRestoreOnFB
             hideFilterConfiguration={false}
@@ -72,9 +74,11 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
                 });
             }}
         >
+
             <FilterGroupItem
                 label={getI18nText("translate.filters.labelOriginLanguage")}
                 required
+                style={{ maxWidth: "15rem" }}
             >
                 <>
                     <FilterOlang
@@ -88,6 +92,7 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
             <FilterGroupItem
                 label={getI18nText("translate.filters.labelTargetLanguage")}
                 required
+                style={{ maxWidth: "15rem" }}
             >
                 <>
                     <FilterTlang
@@ -98,6 +103,21 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
                     />
                 </>
             </FilterGroupItem>
+            <FilterGroupItem
+                label={getI18nText("translate.filters.labelObject")}
+                required
+                style={{ maxWidth: "50rem" }}
+            >
+                <>
+                    <FilterObject
+                        loadingSelectableObjects={loadingLanguages}
+                        paramsObjectsTranslate={paramsObjectsTranslate}
+                        selectableObjects={selectableObjects}
+                        setParamsObjectsTranslate={setParamsObjectsTranslate}
+                    />
+                </>
+            </FilterGroupItem>
+
         </FilterBar>
     );
 };

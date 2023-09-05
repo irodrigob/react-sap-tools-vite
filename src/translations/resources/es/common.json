@@ -298,7 +298,10 @@
 			"labelOriginLanguage": "Idioma origen",
 			"placeholderOriginLanguage": "Selecciona idiona origen",
 			"labelTargetLanguage": "Idioma(s) destino",
-			"placeholderTargetLanguage": "Selecciona idioma(s) destino"
+			"placeholderTargetLanguage": "Selecciona idioma(s) destino",
+			"labelObject": "Objeto",
+			"placeholderObject": "Tipo de objeto",
+			"placeholderObjectName": "Nombre del objeto"
 		}
 	},
 	"messageManager": {
