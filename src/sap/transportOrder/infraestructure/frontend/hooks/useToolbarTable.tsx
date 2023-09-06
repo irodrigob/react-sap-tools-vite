@@ -14,7 +14,6 @@ import NewOrder from "sap/transportOrder/domain/entities/newOrder";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import useDataManager from "./useDataManager";
 import { userOrdersDTO } from "sap/transportOrder/infraestructure/dto/transportOrderDTO";
-import { setOrderListTree } from "../../storage/sapTransportOrderSlice";
 import {
   FieldsOrdersTreeTable,
   FieldsTaskTreeTable,
@@ -197,7 +196,7 @@ export default function useToolbarTable() {
           }
         });
     },
-    [setOrderListTree]
+    []
   );
 
   /**

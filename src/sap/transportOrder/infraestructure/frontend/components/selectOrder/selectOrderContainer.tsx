@@ -1,8 +1,9 @@
 import { FC, useEffect } from "react";
 import { ValueState } from "@ui5/webcomponents-react";
 import useSelectOrder from "sap/transportOrder/infraestructure/frontend/hooks/useSelectOrder";
-import InputSelectOrder from "./inputSelectOrder";
+import InputWithTitleOrder from "./inputWithTitleOrder";
 import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage/sapTransportOrderActions";
+import InputOrder from "./inputOrder";
 
 interface Props {
   orderType: string;
@@ -12,6 +13,7 @@ interface Props {
   setOrderValueState?: (state: ValueState) => void;
   orderValueStateMessage?: string;
   setOrderValueStateMessage?: (message: string) => void;
+  showTitle?: boolean
 }
 const SelectOrderContainer: FC<Props> = (props: Props) => {
   const {
@@ -22,6 +24,7 @@ const SelectOrderContainer: FC<Props> = (props: Props) => {
     setOrderValueState,
     orderValueStateMessage,
     setOrderValueStateMessage,
+    showTitle
   } = props;
   const { getOrders } = useSelectOrder();
   const transportOrderActions = new SAPTransportOrderActions();
@@ -43,14 +46,24 @@ const SelectOrderContainer: FC<Props> = (props: Props) => {
   };
 
   return (
-    <InputSelectOrder
-      showTasks={showTasks}
-      onSelectedOrder={handlerSelectedOrder}
-      orderValueState={orderValueState}
-      setOrderValueState={setOrderValueState}
-      orderValueStateMessage={orderValueStateMessage}
-      setOrderValueStateMessage={setOrderValueStateMessage}
-    />
+    <>
+      {showTitle && <InputWithTitleOrder
+        showTasks={showTasks}
+        onSelectedOrder={handlerSelectedOrder}
+        orderValueState={orderValueState}
+        setOrderValueState={setOrderValueState}
+        orderValueStateMessage={orderValueStateMessage}
+        setOrderValueStateMessage={setOrderValueStateMessage}
+      />}
+      {!showTitle && <InputOrder
+        showTasks={showTasks}
+        onSelectedOrder={handlerSelectedOrder}
+        orderValueState={orderValueState}
+        setOrderValueState={setOrderValueState}
+        orderValueStateMessage={orderValueStateMessage}
+        setOrderValueStateMessage={setOrderValueStateMessage}
+      />}
+    </>
   );
 };
 

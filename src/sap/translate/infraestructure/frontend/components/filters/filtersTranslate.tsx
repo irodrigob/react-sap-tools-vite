@@ -3,6 +3,7 @@ import {
     Languages,
     SelectableObjects,
     ParamsObjectTranslate,
+    FiltersValueState
 } from "sap/translate/infraestructure/types/translate";
 import {
     FilterBar,
@@ -18,6 +19,7 @@ import useMessages, {
 import FilterOlang from "./filterOlang";
 import FilterTlang from "./filterTlang";
 import FilterObject from "./filterObject";
+import FilterOrder from "./filterOrder";
 
 interface Props {
     languages: Languages;
@@ -27,6 +29,8 @@ interface Props {
     paramsObjectsTranslate: ParamsObjectTranslate;
     setParamsObjectsTranslate: (value: ParamsObjectTranslate) => void;
     originLanguage: string;
+    filterValueState: FiltersValueState;
+    setFilterValueState: (value: FiltersValueState) => void;
 }
 const FiltersTranslate: FC<Props> = (props: Props) => {
     const {
@@ -37,6 +41,8 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
         selectableObjects,
         setParamsObjectsTranslate,
         originLanguage,
+        filterValueState,
+        setFilterValueState
     } = props;
     const { getI18nText } = useTranslations();
     const { showMessage } = useMessages();
@@ -59,7 +65,7 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
             style={{ marginBottom: "0.4rem", alignItems: "stretch" }}
             showGoOnFB
             showRestoreOnFB
-            hideFilterConfiguration={false}
+            hideFilterConfiguration={true}
             onGo={(e) => {
                 e.stopPropagation();
             }}
@@ -114,7 +120,23 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
                         paramsObjectsTranslate={paramsObjectsTranslate}
                         selectableObjects={selectableObjects}
                         setParamsObjectsTranslate={setParamsObjectsTranslate}
+                        filterValueState={filterValueState}
+                        setFilterValueState={setFilterValueState}
                     />
+                </>
+            </FilterGroupItem>
+            <FilterGroupItem
+                label={getI18nText("translate.filters.labelOrder")}
+                style={{ maxWidth: "30rem" }}
+            >
+                <>
+                    {languages.length > 0 && <FilterOrder
+                        paramsObjectsTranslate={paramsObjectsTranslate}
+                        setParamsObjectsTranslate={setParamsObjectsTranslate}
+                        filterValueState={filterValueState}
+                        setFilterValueState={setFilterValueState}
+                    />}
+
                 </>
             </FilterGroupItem>
 

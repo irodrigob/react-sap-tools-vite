@@ -13,15 +13,19 @@ import { useTranslations } from "translations/i18nContext";
 import {
     SelectableObjects,
     ParamsObjectTranslate,
+    FiltersValueState,
 } from "sap/translate/infraestructure/types/translate";
 import { ValueState } from "@ui5/webcomponents-react/ssr";
 import TranslateController from "sap/translate/infraestructure/controller/translateController";
+import ErrorGraphql from "shared/errors/ErrorGraphql";
 
 interface Props {
     selectableObjects: SelectableObjects;
     loadingSelectableObjects: boolean;
     paramsObjectsTranslate: ParamsObjectTranslate;
     setParamsObjectsTranslate: (value: ParamsObjectTranslate) => void;
+    filterValueState: FiltersValueState;
+    setFilterValueState: (value: FiltersValueState) => void;
 }
 
 const FilterObject: FC<Props> = (props: Props) => {
@@ -30,11 +34,11 @@ const FilterObject: FC<Props> = (props: Props) => {
         paramsObjectsTranslate,
         selectableObjects,
         setParamsObjectsTranslate,
+        filterValueState,
+        setFilterValueState,
     } = props;
     const { getI18nText } = useTranslations();
     const [valueSelected, setValueSelected] = useState("");
-    const [valueStateObject, setValueStateObject] = useState(ValueState.None);
-    const [valueStateObjectMessage, setValueStateObjectMessage] = useState("");
     const translateController = new TranslateController();
 
     /**
@@ -59,12 +63,27 @@ const FilterObject: FC<Props> = (props: Props) => {
                     paramsObjectsTranslate.objectName
                 )
                 .then((response) => {
-                    if (response.isFailure)
-                        console.log("error")
+                    if (response.isFailure) {
+                        let error = (response.getErrorValue() as ErrorGraphql).getError();
+                        setFilterValueState({
+                            ...filterValueState,
+                            objectState: ValueState.Error,
+                            objectStateMessage: error.singleMessage as string
+                        })
+                    } else {
+                        setFilterValueState({
+                            ...filterValueState,
+                            objectState: ValueState.None,
+                            objectStateMessage: ""
+                        })
+                    }
                 });
         } else {
-            setValueStateObject(ValueState.None);
-            setValueStateObjectMessage("");
+            setFilterValueState({
+                ...filterValueState,
+                objectState: ValueState.None,
+                objectStateMessage: ""
+            })
         }
     }, [paramsObjectsTranslate.object, paramsObjectsTranslate.objectName]);
     return (
@@ -105,8 +124,8 @@ const FilterObject: FC<Props> = (props: Props) => {
                     });
                 }}
                 value={paramsObjectsTranslate.objectName}
-                valueState={valueStateObject}
-                valueStateMessage={<Text>{valueStateObjectMessage}</Text>}
+                valueState={filterValueState.objectState}
+                valueStateMessage={<Text>{filterValueState.objectStateMessage}</Text>}
             />
         </FlexBox>
     );

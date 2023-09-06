@@ -301,7 +301,8 @@
 			"placeholderTargetLanguage": "Selecciona idioma(s) destino",
 			"labelObject": "Objeto",
 			"placeholderObject": "Tipo de objeto",
-			"placeholderObjectName": "Nombre del objeto"
+			"placeholderObjectName": "Nombre del objeto",
+			"labelOrder": "Orden"
 		}
 	},
 	"messageManager": {

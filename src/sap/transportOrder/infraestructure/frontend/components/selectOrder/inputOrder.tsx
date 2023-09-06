@@ -1,7 +1,5 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import {
-  FlexBox,
-  Title,
   Input,
   InputDomRef,
   Ui5CustomEvent,
@@ -30,7 +28,7 @@ interface Props {
   setOrderValueStateMessage?: (message: string) => void;
 }
 
-const InputSelectOrder: FC<Props> = (props: Props) => {
+const InputOrder: FC<Props> = (props: Props) => {
   const {
     showTasks,
     onSelectedOrder,
@@ -107,10 +105,7 @@ const InputSelectOrder: FC<Props> = (props: Props) => {
   }, [selectableOrders]);
 
   return (
-    <FlexBox direction="Column">
-      <Title level="H4" style={{ paddingBottom: "1rem" }}>
-        {getI18nText("transportOrder.selectOrder.lblSelectOrder")}
-      </Title>
+    <>
       <Input
         id="inputOrderSelect"
         style={{ marginLeft: "1rem", width: "15rem" }}
@@ -157,8 +152,8 @@ const InputSelectOrder: FC<Props> = (props: Props) => {
           onSelectedOrder={popoverSelectOrder}
         />
       </Popover>
-    </FlexBox>
+    </>
   );
 };
 
-export default InputSelectOrder;
+export default InputOrder;

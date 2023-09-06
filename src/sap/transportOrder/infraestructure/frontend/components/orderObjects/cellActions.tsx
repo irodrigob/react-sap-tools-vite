@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { FlexBox, Icon, ToolbarSeparator } from "@ui5/webcomponents-react";
+import { FlexBox, Icon, ToolbarSeparatorV2 } from "@ui5/webcomponents-react";
 import "@ui5/webcomponents-icons/dist/edit";
 import "@ui5/webcomponents-icons/dist/delete";
 import "@ui5/webcomponents-icons/dist/copy";
@@ -22,7 +22,7 @@ const CellActions: FC = (instance: any) => {
             interactive={true}
             style={{ marginRight: "0.5rem" }}
             showTooltip={true}
-            onClick={() => {}}
+            onClick={() => { }}
             accessibleName={getI18nText(
               "transportOrder.orderObjects.actions.copyObject"
             )}
@@ -51,7 +51,7 @@ const CellActions: FC = (instance: any) => {
                 "transportOrder.orderObjects.actions.moveObject"
               )}
             />
-            <ToolbarSeparator
+            <ToolbarSeparatorV2
               style={{ height: "1rem", marginLeft: "0.3rem" }}
             />
             <Icon

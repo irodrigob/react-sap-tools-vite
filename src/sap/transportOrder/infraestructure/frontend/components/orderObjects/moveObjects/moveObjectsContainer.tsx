@@ -43,6 +43,7 @@ const MoveObjectsContainer: FC<Props> = (props: Props) => {
         setOrderValueState={setOrderValueState}
         orderValueStateMessage={orderValueStateMessage}
         setOrderValueStateMessage={setOrderValueStateMessage}
+        showTitle={true}
       />
     </FlexBox>
   );

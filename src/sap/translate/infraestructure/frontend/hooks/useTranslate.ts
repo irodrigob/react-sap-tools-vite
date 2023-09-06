@@ -4,6 +4,7 @@ import {
 	ObjectsText,
 	SelectableObjects,
 	ParamsObjectTranslate,
+	FiltersValueState,
 } from "sap/translate/infraestructure/types/translate";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import TranslateController from "sap/translate/infraestructure/controller/translateController";
@@ -12,6 +13,7 @@ import useMessages, {
 	MessageType,
 } from "shared/infraestructure/hooks/useMessages";
 import { useTranslations } from "translations/i18nContext";
+import { ValueState } from "@ui5/webcomponents-react/ssr";
 
 export default function useTranslate() {
 	const { getI18nText, language } = useTranslations();
@@ -33,6 +35,12 @@ export default function useTranslate() {
 			tLang: [],
 		});
 	const [originLanguage, setOriginLanguage] = useState(language);
+	const [filterValueState, setFilterValueState] = useState<FiltersValueState>({
+		objectState: ValueState.None,
+		objectStateMessage: "",
+		orderState: ValueState.None,
+		orderStateMessage: "",
+	});
 	const sapController = new SAPController();
 	const { showResultError, showMessage, updateMessage, updateResultError } =
 		useMessages();
@@ -113,5 +121,7 @@ export default function useTranslate() {
 		paramsObjectsTranslate,
 		setParamsObjectsTranslate,
 		originLanguage,
+		filterValueState,
+		setFilterValueState,
 	};
 }

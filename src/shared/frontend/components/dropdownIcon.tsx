@@ -10,13 +10,13 @@ interface Props {
 }
 
 const DropdownIcon: FC<Props> = (props) => {
-  //onClick={onClick}
-  const { slot, openSystemList, onClick } = props;
+  const { slot, openSystemList, onClick, ...others } = props;
   return (
     <IconDropDownStyled
       name={openSystemList ? "slim-arrow-up" : "slim-arrow-down"}
       slot={slot}
       onClick={onClick}
+      {...others}
     />
   );
 };

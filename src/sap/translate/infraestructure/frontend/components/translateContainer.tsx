@@ -16,6 +16,8 @@ export default function TranslateContainer() {
         paramsObjectsTranslate,
         setParamsObjectsTranslate,
         originLanguage,
+        filterValueState,
+        setFilterValueState
     } = useTranslate();
 
     useEffect(() => {
@@ -38,6 +40,8 @@ export default function TranslateContainer() {
                         selectableObjects={selectableObjects}
                         setParamsObjectsTranslate={setParamsObjectsTranslate}
                         originLanguage={originLanguage}
+                        filterValueState={filterValueState}
+                        setFilterValueState={setFilterValueState}
                     />
                 </DynamicPageHeader>
             }
