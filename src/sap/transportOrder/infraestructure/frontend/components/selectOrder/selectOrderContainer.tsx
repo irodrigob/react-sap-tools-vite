@@ -4,6 +4,8 @@ import useSelectOrder from "sap/transportOrder/infraestructure/frontend/hooks/us
 import InputWithTitleOrder from "./inputWithTitleOrder";
 import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage/sapTransportOrderActions";
 import InputOrder from "./inputOrder";
+import { SelectorComponentType } from "sap/transportOrder/infraestructure/types/selectOrder.d";
+import ComboOrder from "./comboOrder";
 
 interface Props {
   orderType: string;
@@ -14,6 +16,7 @@ interface Props {
   orderValueStateMessage?: string;
   setOrderValueStateMessage?: (message: string) => void;
   showTitle?: boolean
+  type?: SelectorComponentType
 }
 const SelectOrderContainer: FC<Props> = (props: Props) => {
   const {
@@ -24,8 +27,10 @@ const SelectOrderContainer: FC<Props> = (props: Props) => {
     setOrderValueState,
     orderValueStateMessage,
     setOrderValueStateMessage,
-    showTitle
+    showTitle,
+    type
   } = props;
+  const componentType = type ?? SelectorComponentType.inputWithTitle
   const { getOrders } = useSelectOrder();
   const transportOrderActions = new SAPTransportOrderActions();
 
@@ -47,7 +52,7 @@ const SelectOrderContainer: FC<Props> = (props: Props) => {
 
   return (
     <>
-      {showTitle && <InputWithTitleOrder
+      {componentType == SelectorComponentType.inputWithTitle && <InputWithTitleOrder
         showTasks={showTasks}
         onSelectedOrder={handlerSelectedOrder}
         orderValueState={orderValueState}
@@ -55,7 +60,15 @@ const SelectOrderContainer: FC<Props> = (props: Props) => {
         orderValueStateMessage={orderValueStateMessage}
         setOrderValueStateMessage={setOrderValueStateMessage}
       />}
-      {!showTitle && <InputOrder
+      {componentType == SelectorComponentType.input && <InputOrder
+        showTasks={showTasks}
+        onSelectedOrder={handlerSelectedOrder}
+        orderValueState={orderValueState}
+        setOrderValueState={setOrderValueState}
+        orderValueStateMessage={orderValueStateMessage}
+        setOrderValueStateMessage={setOrderValueStateMessage}
+      />}
+      {componentType == SelectorComponentType.combobox && <ComboOrder
         showTasks={showTasks}
         onSelectedOrder={handlerSelectedOrder}
         orderValueState={orderValueState}

@@ -8,6 +8,7 @@ import {
     Input,
     InputDomRef,
     Text,
+    ValueState
 } from "@ui5/webcomponents-react";
 import { useTranslations } from "translations/i18nContext";
 import {
@@ -15,7 +16,6 @@ import {
     ParamsObjectTranslate,
     FiltersValueState,
 } from "sap/translate/infraestructure/types/translate";
-import { ValueState } from "@ui5/webcomponents-react/ssr";
 import TranslateController from "sap/translate/infraestructure/controller/translateController";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 
@@ -67,22 +67,22 @@ const FilterObject: FC<Props> = (props: Props) => {
                         let error = (response.getErrorValue() as ErrorGraphql).getError();
                         setFilterValueState({
                             ...filterValueState,
-                            objectState: ValueState.Error,
-                            objectStateMessage: error.singleMessage as string
+                            objectNameState: ValueState.Error,
+                            objectNameStateMessage: error.singleMessage as string
                         })
                     } else {
                         setFilterValueState({
                             ...filterValueState,
-                            objectState: ValueState.None,
-                            objectStateMessage: ""
+                            objectNameState: ValueState.None,
+                            objectNameStateMessage: ""
                         })
                     }
                 });
         } else {
             setFilterValueState({
                 ...filterValueState,
-                objectState: ValueState.None,
-                objectStateMessage: ""
+                objectNameState: ValueState.None,
+                objectNameStateMessage: ""
             })
         }
     }, [paramsObjectsTranslate.object, paramsObjectsTranslate.objectName]);
@@ -93,14 +93,43 @@ const FilterObject: FC<Props> = (props: Props) => {
                 placeholder={getI18nText("translate.filters.placeholderObject")}
                 onChange={(event: Ui5CustomEvent<ComboBoxDomRef, never>) => {
                     event.preventDefault();
-                    let values = (event.target.value as string).split("-");
-                    setParamsObjectsTranslate({
-                        ...paramsObjectsTranslate,
-                        object: values[0].trim(),
-                    });
+                    let object = (event.target.value as string).split("-")[0].trim();
+                    if (object == "") {
+                        setFilterValueState({
+                            ...filterValueState,
+                            objectState: ValueState.Error,
+                            objectStateMessage: getI18nText("translate.filters.fieldMandatory"),
+                        });
+                    }
+                    else {
+                        if (selectableObjects.findIndex(
+                            (row) => row.object == object
+                        ) != -1) {
+                            setParamsObjectsTranslate({
+                                ...paramsObjectsTranslate,
+                                object: object,
+                            });
+                            setFilterValueState({
+                                ...filterValueState,
+                                objectState: ValueState.None,
+                                objectStateMessage: "",
+                            });
+                        }
+                        else {
+                            setFilterValueState({
+                                ...filterValueState,
+                                objectState: ValueState.Error,
+                                objectStateMessage: getI18nText("translate.filters.valueNotValid"),
+                            });
+                        }
+                    }
+
+
                 }}
                 loading={loadingSelectableObjects}
                 value={valueSelected}
+                valueState={filterValueState.objectState}
+                valueStateMessage={<Text>{filterValueState.objectStateMessage}</Text>}
             >
                 {selectableObjects.map((rowObject) => {
                     return (
@@ -124,8 +153,8 @@ const FilterObject: FC<Props> = (props: Props) => {
                     });
                 }}
                 value={paramsObjectsTranslate.objectName}
-                valueState={filterValueState.objectState}
-                valueStateMessage={<Text>{filterValueState.objectStateMessage}</Text>}
+                valueState={filterValueState.objectNameState}
+                valueStateMessage={<Text>{filterValueState.objectNameStateMessage}</Text>}
             />
         </FlexBox>
     );

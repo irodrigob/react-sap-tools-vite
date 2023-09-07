@@ -302,7 +302,10 @@
 			"labelObject": "Objeto",
 			"placeholderObject": "Tipo de objeto",
 			"placeholderObjectName": "Nombre del objeto",
-			"labelOrder": "Orden"
+			"labelOrder": "Orden",
+			"stillErrors": "Solucione los errores para poder continuar",
+			"fieldMandatory": "Campo obligatorio",
+			"valueNotValid": "Valor no valido"
 		}
 	},
 	"messageManager": {

@@ -10,10 +10,9 @@ import {
 } from "@ui5/webcomponents-react";
 import { useAppSelector } from "shared/storage/useStore";
 import { OrdersData } from "sap/transportOrder/infraestructure/types/selectOrder";
-import { SelectableOrder } from "sap/transportOrder/domain/entities/selectableOrders";
-import ArrayUtils from "shared/utils/array/arrayUtils";
 import { useTranslations } from "translations/i18nContext";
 import { ListItemClickEventDetail } from "@ui5/webcomponents/dist/List.js";
+import useSelectOrder from "sap/transportOrder/infraestructure/frontend/hooks/useSelectOrder";
 
 interface Props {
   showTasks: boolean;
@@ -36,32 +35,10 @@ const OrdersList: FC<Props> = (props: Props) => {
   );
   const [ordersList, setOrdersList] = useState<OrdersData>([]);
   const { getI18nText } = useTranslations();
+  const { convertOrders2ListFormat } = useSelectOrder()
 
   useEffect(() => {
-    let ordersGroup = ArrayUtils.groupBy<SelectableOrder>(
-      selectableOrders,
-      (e) => e.order
-    );
-    let orders: OrdersData = [];
-
-    for (const order in ordersGroup) {
-      orders.push({
-        order: ordersGroup[order][0].order,
-        orderDesc: ordersGroup[order][0].orderDesc,
-        isTask: false,
-      });
-      if (showTasks)
-        ordersGroup[order]
-          .filter((taskRow) => taskRow.task != "")
-          .map((taskRow) => {
-            orders.push({
-              order: taskRow.task,
-              orderDesc: taskRow.taskDesc,
-              isTask: true,
-            });
-          });
-    }
-    setOrdersList(orders);
+    setOrdersList(convertOrders2ListFormat(selectableOrders, showTasks));
   }, [selectableOrders]);
 
   return (

@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import {
     SelectableObjects,
     ParamsObjectTranslate,
@@ -9,6 +9,7 @@ import TranslateController from "sap/translate/infraestructure/controller/transl
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import SelectOrderContainer from "sap/transportOrder/infraestructure/frontend/components/selectOrder/selectOrderContainer";
 import { TYPE } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder"
+import { SelectorComponentType } from "sap/transportOrder/infraestructure/types/selectOrder.d";
 
 interface Props {
     paramsObjectsTranslate: ParamsObjectTranslate;
@@ -21,24 +22,38 @@ interface Props {
 const FilterOrder: FC<Props> = (props: Props) => {
 
     const { filterValueState, paramsObjectsTranslate, setFilterValueState, setParamsObjectsTranslate } = props
+    const [orderValueState, setOrderValueState] = useState<ValueState>(
+        ValueState.None
+    );
+    const [orderValueStateMessage, setOrderValueStateMessage] = useState("");
+
     const onSelectedOrder = useCallback((order: string) => {
+        console.log(order)
         setParamsObjectsTranslate({
             ...paramsObjectsTranslate,
             order: order
         })
     }, [])
-    const setOrderValueState = useCallback((state: ValueState) => {
+
+    /**
+     * Efecto que sincroniza los valueState de la orden entre el componente de orde y de los filtros.
+     * Si paso una función que actualiza el state de los filtros en vez de hacerlo como esta hora no sirve,
+     * porque el componente de orden no se estera del cambio.
+     */
+    useEffect(() => {
+        // Si hay error quito la orden previa que pueda tener
+        if (orderValueState == ValueState.Error) setParamsObjectsTranslate({
+            ...paramsObjectsTranslate,
+            order: ""
+        })
+
         setFilterValueState({
             ...filterValueState,
-            objectState: state
+            orderStateMessage: orderValueStateMessage,
+            orderState: orderValueState
         })
-    }, [])
-    const setOrderValueStateMessage = useCallback((message: string) => {
-        setFilterValueState({
-            ...filterValueState,
-            objectStateMessage: message
-        })
-    }, [])
+    }, [orderValueState, orderValueStateMessage])
+
 
     return <SelectOrderContainer
         orderType={TYPE.WORKBENCH}
@@ -48,6 +63,7 @@ const FilterOrder: FC<Props> = (props: Props) => {
         setOrderValueState={setOrderValueState}
         orderValueStateMessage={filterValueState.orderStateMessage}
         setOrderValueStateMessage={setOrderValueStateMessage}
+        type={SelectorComponentType.combobox}
     />
 }
 

@@ -3,7 +3,7 @@ import {
     Languages,
     SelectableObjects,
     ParamsObjectTranslate,
-    FiltersValueState
+    FiltersValueState,
 } from "sap/translate/infraestructure/types/translate";
 import {
     FilterBar,
@@ -20,6 +20,7 @@ import FilterOlang from "./filterOlang";
 import FilterTlang from "./filterTlang";
 import FilterObject from "./filterObject";
 import FilterOrder from "./filterOrder";
+import { ValueState } from "@ui5/webcomponents-react/ssr";
 
 interface Props {
     languages: Languages;
@@ -42,23 +43,11 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
         setParamsObjectsTranslate,
         originLanguage,
         filterValueState,
-        setFilterValueState
+        setFilterValueState,
     } = props;
     const { getI18nText } = useTranslations();
     const { showMessage } = useMessages();
 
-    /**
-     * Evento que se dispara cuando cambian los valores de los filtros.
-     * @param {object} e | Datos del evento de modificación
-     */
-    const onFilterChange = (
-        e: Ui5CustomEvent<
-            MultiComboBoxDomRef,
-            {
-                items: unknown[];
-            }
-        >
-    ) => { };
     return (
         <FilterBar
             hideToolbar={true}
@@ -68,6 +57,29 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
             hideFilterConfiguration={true}
             onGo={(e) => {
                 e.stopPropagation();
+                if (
+                    filterValueState.objectState == ValueState.Error ||
+                    filterValueState.objectNameState == ValueState.Error ||
+                    filterValueState.orderState == ValueState.Error ||
+                    filterValueState.olangState == ValueState.Error ||
+                    filterValueState.tlangState == ValueState.Error
+                ) {
+                    showMessage(
+                        getI18nText("translate.filters.stillErrors"),
+                        MessageType.warning
+                    );
+                } else {
+                    if (paramsObjectsTranslate.tLang.length == 0) {
+                        setFilterValueState({
+                            ...filterValueState,
+                            tlangState: ValueState.Error,
+                            tlangStateMessage: getI18nText(
+                                "translate.filters.fieldMandatory"
+                            ),
+                        });
+                    } else {
+                    }
+                }
             }}
             onRestore={() => {
                 setParamsObjectsTranslate({
@@ -80,7 +92,6 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
                 });
             }}
         >
-
             <FilterGroupItem
                 label={getI18nText("translate.filters.labelOriginLanguage")}
                 required
@@ -92,6 +103,8 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
                         loadingLanguages={loadingLanguages}
                         paramsObjectsTranslate={paramsObjectsTranslate}
                         setParamsObjectsTranslate={setParamsObjectsTranslate}
+                        filterValueState={filterValueState}
+                        setFilterValueState={setFilterValueState}
                     />
                 </>
             </FilterGroupItem>
@@ -106,6 +119,8 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
                         loadingLanguages={loadingLanguages}
                         paramsObjectsTranslate={paramsObjectsTranslate}
                         setParamsObjectsTranslate={setParamsObjectsTranslate}
+                        filterValueState={filterValueState}
+                        setFilterValueState={setFilterValueState}
                     />
                 </>
             </FilterGroupItem>
@@ -130,16 +145,16 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
                 style={{ maxWidth: "30rem" }}
             >
                 <>
-                    {languages.length > 0 && <FilterOrder
-                        paramsObjectsTranslate={paramsObjectsTranslate}
-                        setParamsObjectsTranslate={setParamsObjectsTranslate}
-                        filterValueState={filterValueState}
-                        setFilterValueState={setFilterValueState}
-                    />}
-
+                    {languages.length > 0 && (
+                        <FilterOrder
+                            paramsObjectsTranslate={paramsObjectsTranslate}
+                            setParamsObjectsTranslate={setParamsObjectsTranslate}
+                            filterValueState={filterValueState}
+                            setFilterValueState={setFilterValueState}
+                        />
+                    )}
                 </>
             </FilterGroupItem>
-
         </FilterBar>
     );
 };

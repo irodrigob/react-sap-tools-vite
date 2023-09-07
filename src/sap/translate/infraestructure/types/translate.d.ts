@@ -24,6 +24,12 @@ export type ParamsObjectTranslate = {
 export type FiltersValueState = {
 	objectState: ValueState;
 	objectStateMessage: string;
+	objectNameState: ValueState;
+	objectNameStateMessage: string;
 	orderState: ValueState;
 	orderStateMessage: string;
+	olangState: ValueState;
+	olangStateMessage: string;
+	tlangState: ValueState;
+	tlangStateMessage: string;
 };

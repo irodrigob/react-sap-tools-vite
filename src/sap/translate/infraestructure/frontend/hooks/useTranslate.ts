@@ -38,8 +38,14 @@ export default function useTranslate() {
 	const [filterValueState, setFilterValueState] = useState<FiltersValueState>({
 		objectState: ValueState.None,
 		objectStateMessage: "",
+		objectNameState: ValueState.None,
+		objectNameStateMessage: "",
 		orderState: ValueState.None,
 		orderStateMessage: "",
+		olangState: ValueState.None,
+		olangStateMessage: "",
+		tlangState: ValueState.None,
+		tlangStateMessage: "",
 	});
 	const sapController = new SAPController();
 	const { showResultError, showMessage, updateMessage, updateResultError } =
