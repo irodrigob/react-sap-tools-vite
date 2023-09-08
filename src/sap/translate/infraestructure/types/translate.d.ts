@@ -32,4 +32,6 @@ export type FiltersValueState = {
 	olangStateMessage: string;
 	tlangState: ValueState;
 	tlangStateMessage: string;
+	depthRef: ValueState;
+	depthRefMessage: string;
 };

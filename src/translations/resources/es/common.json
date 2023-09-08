@@ -307,8 +307,11 @@
 			"fieldMandatory": "Campo obligatorio",
 			"valueNotValid": "Valor no valido",
 			"labelDepthRef": "Nivel de referencias",
-			"placeholderDepthRef": "Nivel de referencias a buscar"
-		}
+			"placeholderDepthRef": "Nivel de referencias a buscar",
+			"rangeDepthRef": "El valor debe ser entre 1 y 10",
+			"minDepthRef": "Se establece al valor por defecto"
+		},
+		"objectsTextDataNotLoad": "Seleccione un objeto y los idiomas a traducir"
 	},
 	"messageManager": {
 		"tooltipMessageIcon": "Mensajes",

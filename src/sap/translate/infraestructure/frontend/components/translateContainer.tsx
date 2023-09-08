@@ -3,6 +3,7 @@ import { DynamicPage, DynamicPageHeader } from "@ui5/webcomponents-react";
 import { useAppSelector } from "shared/storage/useStore";
 import useTranslate from "sap/translate/infraestructure/frontend/hooks/useTranslate";
 import FiltersTranslate from "./filters/filtersTranslate";
+import ObjectsTextContainer from "./objectsTextContainer";
 
 export default function TranslateContainer() {
     const { systemSelected } = useAppSelector((state) => state.System);
@@ -16,8 +17,11 @@ export default function TranslateContainer() {
         paramsObjectsTranslate,
         setParamsObjectsTranslate,
         originLanguage,
-        filterValueState,
-        setFilterValueState
+        getObjectTranslate,
+        objectsText,
+        loadingObjectsText,
+        loadObjectsText,
+        setLoadObjectsText
     } = useTranslate();
 
     useEffect(() => {
@@ -27,28 +31,36 @@ export default function TranslateContainer() {
     }, [systemSelected, systemChanged]);
 
     return (
-        <DynamicPage
-            showHideHeaderButton={true}
-            headerContentPinnable={false}
-            headerContent={
-                <DynamicPageHeader>
-                    <FiltersTranslate
-                        languages={languages}
-                        loadingLanguages={loadingLanguages}
-                        loadingSelectableObjects={loadingSelectableObjects}
-                        paramsObjectsTranslate={paramsObjectsTranslate}
-                        selectableObjects={selectableObjects}
-                        setParamsObjectsTranslate={setParamsObjectsTranslate}
-                        originLanguage={originLanguage}
-                        filterValueState={filterValueState}
-                        setFilterValueState={setFilterValueState}
-                    />
-                </DynamicPageHeader>
-            }
-            style={{
-                paddingLeft: "0px",
-                paddingRight: "0px",
-            }}
-        />
+        <>
+            <DynamicPage
+                showHideHeaderButton={true}
+                headerContentPinnable={false}
+                headerContent={
+                    <DynamicPageHeader>
+                        <FiltersTranslate
+                            languages={languages}
+                            loadingLanguages={loadingLanguages}
+                            loadingSelectableObjects={loadingSelectableObjects}
+                            paramsObjectsTranslate={paramsObjectsTranslate}
+                            selectableObjects={selectableObjects}
+                            setParamsObjectsTranslate={setParamsObjectsTranslate}
+                            originLanguage={originLanguage}
+                            onGo={() => {
+                                setLoadObjectsText(true)
+                                getObjectTranslate()
+                            }}
+                        />
+                    </DynamicPageHeader>
+                }
+                style={{
+                    paddingLeft: "0px",
+                    paddingRight: "0px",
+                }}
+            />
+            <ObjectsTextContainer loadObjectsText={loadObjectsText}
+                loadingObjectsText={loadingObjectsText}
+                objectsText={objectsText}
+            />
+        </>
     );
 }

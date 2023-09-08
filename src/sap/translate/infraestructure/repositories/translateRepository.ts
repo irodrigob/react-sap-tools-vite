@@ -57,53 +57,53 @@ export const QUERY_SELECTABLE_OBJECTS = gql`
 export const GET_OBJECT_TRANSLATE = gql`
 	mutation Mutation($input: inputGetObjectTranslate) {
 		getObjectTranslate(input: $input) {
-			object: String
-			objName: String
-			objType: String
-			idText: String
-			langOlang: String
-			colOlang: String
-			txtOlang: String
-			langTlang1: String
-			colTlang1: String
-			txtTlang1: String
-			ppsalTypeTlang1: String
-			langTlang2: String
-			colTlang2: String
-			txtTlang2: String
-			ppsalTypeTlang2: String
-			langTlang3: String
-			colTlang3: String
-			txtTlang3: String
-			ppsalTypeTlang3: String
-			langTlang4: String
-			colTlang4: String
-			txtTlang4: String
-			ppsalTypeTlang4: String
-			langTlang5: String
-			colTlang5: String
-			txtTlang5: String
-			ppsalTypeTlang5: String
-			langTlang6: String
-			colTlang6: String
-			txtTlang6: String
-			ppsalTypeTlang6: String
-			langTlang7: String
-			colTlang7: String
-			txtTlang7: String
-			ppsalTypeTlang7: String
-			langTlang8: String
-			colTlang8: String
-			txtTlang8: String
-			ppsalTypeTlang8: String
-			langTlang9: String
-			colTlang9: String
-			txtTlang9: String
-			ppsalTypeTlang9: String
-			langTlang10: String
-			colTlang10: String
-			txtTlang10: String
-			ppsalTypeTlang10: String
+			object
+			objName
+			objType
+			idText
+			langOlang
+			colOlang
+			txtOlang
+			langTlang1
+			colTlang1
+			txtTlang1
+			ppsalTypeTlang1
+			langTlang2
+			colTlang2
+			txtTlang2
+			ppsalTypeTlang2
+			langTlang3
+			colTlang3
+			txtTlang3
+			ppsalTypeTlang3
+			langTlang4
+			colTlang4
+			txtTlang4
+			ppsalTypeTlang4
+			langTlang5
+			colTlang5
+			txtTlang5
+			ppsalTypeTlang5
+			langTlang6
+			colTlang6
+			txtTlang6
+			ppsalTypeTlang6
+			langTlang7
+			colTlang7
+			txtTlang7
+			ppsalTypeTlang7
+			langTlang8
+			colTlang8
+			txtTlang8
+			ppsalTypeTlang8
+			langTlang9
+			colTlang9
+			txtTlang9
+			ppsalTypeTlang9
+			langTlang10
+			colTlang10
+			txtTlang10
+			ppsalTypeTlang10
 		}
 	}
 `;
@@ -112,53 +112,53 @@ export const SET_OBJECT_TRANSLATE = gql`
 	mutation Mutation($input: inputSetObjectTranslate) {
 		setObjectTranslate(input: $input) {
 			objectText {
-				object: String
-				objName: String
-				objType: String
-				idText: String
-				langOlang: String
-				colOlang: String
-				txtOlang: String
-				langTlang1: String
-				colTlang1: String
-				txtTlang1: String
-				ppsalTypeTlang1: String
-				langTlang2: String
-				colTlang2: String
-				txtTlang2: String
-				ppsalTypeTlang2: String
-				langTlang3: String
-				colTlang3: String
-				txtTlang3: String
-				ppsalTypeTlang3: String
-				langTlang4: String
-				colTlang4: String
-				txtTlang4: String
-				ppsalTypeTlang4: String
-				langTlang5: String
-				colTlang5: String
-				txtTlang5: String
-				ppsalTypeTlang5: String
-				langTlang6: String
-				colTlang6: String
-				txtTlang6: String
-				ppsalTypeTlang6: String
-				langTlang7: String
-				colTlang7: String
-				txtTlang7: String
-				ppsalTypeTlang7: String
-				langTlang8: String
-				colTlang8: String
-				txtTlang8: String
-				ppsalTypeTlang8: String
-				langTlang9: String
-				colTlang9: String
-				txtTlang9: String
-				ppsalTypeTlang9: String
-				langTlang10: String
-				colTlang10: String
-				txtTlang10: String
-				ppsalTypeTlang10: String
+				object
+				objName
+				objType
+				idText
+				langOlang
+				colOlang
+				txtOlang
+				langTlang1
+				colTlang1
+				txtTlang1
+				ppsalTypeTlang1
+				langTlang2
+				colTlang2
+				txtTlang2
+				ppsalTypeTlang2
+				langTlang3
+				colTlang3
+				txtTlang3
+				ppsalTypeTlang3
+				langTlang4
+				colTlang4
+				txtTlang4
+				ppsalTypeTlang4
+				langTlang5
+				colTlang5
+				txtTlang5
+				ppsalTypeTlang5
+				langTlang6
+				colTlang6
+				txtTlang6
+				ppsalTypeTlang6
+				langTlang7
+				colTlang7
+				txtTlang7
+				ppsalTypeTlang7
+				langTlang8
+				colTlang8
+				txtTlang8
+				ppsalTypeTlang8
+				langTlang9
+				colTlang9
+				txtTlang9
+				ppsalTypeTlang9
+				langTlang10
+				colTlang10
+				txtTlang10
+				ppsalTypeTlang10
 			}
 			return {
 				type

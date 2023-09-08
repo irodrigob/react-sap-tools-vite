@@ -26,27 +26,32 @@ const FilterDepthRef: FC<Props> = (props: Props) => {
         type="Number"
         onChange={(event: Ui5CustomEvent<InputDomRef, never>) => {
             event.preventDefault();
-            let objectName = event.target.value?.toUpperCase() as string
-            if (objectName == "") {
-                setFilterValueState({
-                    ...filterValueState,
-                    objectNameState: ValueState.Error,
-                    objectNameStateMessage: getI18nText("translate.filters.fieldMandatory"),
-                });
+            let depthRef = parseInt(event.target.value as string)
+
+            let newFilterValueState = { ...filterValueState }
+            newFilterValueState.depthRef = ValueState.None
+            newFilterValueState.depthRefMessage = ""
+
+            if (depthRef == 0 || isNaN(depthRef)) {
+                depthRef = 1
+                newFilterValueState.depthRef = ValueState.Information
+                newFilterValueState.depthRefMessage = getI18nText("translate.filters.minDepthRef")
             }
-            else {
-                setFilterValueState({
-                    ...filterValueState,
-                    objectNameState: ValueState.None,
-                    objectNameStateMessage: "",
-                });
-                setParamsObjectsTranslate({
-                    ...paramsObjectsTranslate,
-                    objectName: objectName
-                });
+            else if (depthRef > 10) {
+                depthRef = 10
+                newFilterValueState.depthRef = ValueState.Warning
+                newFilterValueState.depthRefMessage = getI18nText("translate.filters.rangeDepthRef")
+
             }
+            setParamsObjectsTranslate({
+                ...paramsObjectsTranslate,
+                depthRefs: depthRef
+            });
+            setFilterValueState(newFilterValueState)
 
         }}
+        valueState={filterValueState.depthRef}
+        valueStateMessage={<Text>{filterValueState.depthRefMessage}</Text>}
     />)
 }
 

@@ -8,9 +8,6 @@ import {
 import {
     FilterBar,
     FilterGroupItem,
-    Ui5CustomEvent,
-    MultiComboBoxDomRef,
-    FlexBox,
 } from "@ui5/webcomponents-react";
 import { useTranslations } from "translations/i18nContext";
 import useMessages, {
@@ -31,8 +28,7 @@ interface Props {
     paramsObjectsTranslate: ParamsObjectTranslate;
     setParamsObjectsTranslate: (value: ParamsObjectTranslate) => void;
     originLanguage: string;
-    filterValueState: FiltersValueState;
-    setFilterValueState: (value: FiltersValueState) => void;
+    onGo: () => void
 }
 const FiltersTranslate: FC<Props> = (props: Props) => {
     const {
@@ -43,9 +39,22 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
         selectableObjects,
         setParamsObjectsTranslate,
         originLanguage,
-        filterValueState,
-        setFilterValueState,
+        onGo
     } = props;
+    const [filterValueState, setFilterValueState] = useState<FiltersValueState>({
+        objectState: ValueState.None,
+        objectStateMessage: "",
+        objectNameState: ValueState.None,
+        objectNameStateMessage: "",
+        orderState: ValueState.None,
+        orderStateMessage: "",
+        olangState: ValueState.None,
+        olangStateMessage: "",
+        tlangState: ValueState.None,
+        tlangStateMessage: "",
+        depthRef: ValueState.None,
+        depthRefMessage: "",
+    });
     const { getI18nText } = useTranslations();
     const { showMessage } = useMessages();
 
@@ -95,6 +104,9 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
                         getI18nText("translate.filters.stillErrors"),
                         MessageType.warning
                     )
+                }
+                else {
+                    onGo()
                 }
                 setFilterValueState(newFilterValueState)
 

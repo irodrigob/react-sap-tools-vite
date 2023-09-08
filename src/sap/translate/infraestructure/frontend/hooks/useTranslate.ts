@@ -28,25 +28,17 @@ export default function useTranslate() {
 	const [paramsObjectsTranslate, setParamsObjectsTranslate] =
 		useState<ParamsObjectTranslate>({
 			depthRefs: 1,
-			object: "",
-			objectName: "",
+			object: "PROG",
+			objectName: "ZTRANSLATE_TOOL",
 			oLang: language.toLocaleUpperCase(),
 			order: "",
 			tLang: [],
 		});
 	const [originLanguage, setOriginLanguage] = useState(language);
-	const [filterValueState, setFilterValueState] = useState<FiltersValueState>({
-		objectState: ValueState.None,
-		objectStateMessage: "",
-		objectNameState: ValueState.None,
-		objectNameStateMessage: "",
-		orderState: ValueState.None,
-		orderStateMessage: "",
-		olangState: ValueState.None,
-		olangStateMessage: "",
-		tlangState: ValueState.None,
-		tlangStateMessage: "",
-	});
+	const [loadingObjectsText, setLoadingObjectsText] = useState(false);
+	const [loadObjectsText, setLoadObjectsText] = useState(false);
+	const [objectsText, setObjectsText] = useState<ObjectsText>([]);
+
 	const sapController = new SAPController();
 	const { showResultError, showMessage, updateMessage, updateResultError } =
 		useMessages();
@@ -115,6 +107,23 @@ export default function useTranslate() {
 			});
 		}
 	};
+	/**
+	 * Lectura de los datos de traducción
+	 */
+	const getObjectTranslate = useCallback(() => {
+		setLoadingObjectsText(true);
+		translateController
+			.getObjectTranslate(paramsObjectsTranslate)
+			.then((resultObjectTranslate) => {
+				setLoadingObjectsText(false);
+				if (resultObjectTranslate.isSuccess)
+					setObjectsText(resultObjectTranslate.getValue() as ObjectsText);
+				else
+					showResultError(
+						resultObjectTranslate.getErrorValue() as ErrorGraphql
+					);
+			});
+	}, [paramsObjectsTranslate]);
 
 	return {
 		languages,
@@ -127,7 +136,10 @@ export default function useTranslate() {
 		paramsObjectsTranslate,
 		setParamsObjectsTranslate,
 		originLanguage,
-		filterValueState,
-		setFilterValueState,
+		getObjectTranslate,
+		loadingObjectsText,
+		objectsText,
+		loadObjectsText,
+		setLoadObjectsText,
 	};
 }
