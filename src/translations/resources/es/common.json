@@ -305,7 +305,9 @@
 			"labelOrder": "Orden",
 			"stillErrors": "Solucione los errores para poder continuar",
 			"fieldMandatory": "Campo obligatorio",
-			"valueNotValid": "Valor no valido"
+			"valueNotValid": "Valor no valido",
+			"labelDepthRef": "Nivel de referencias",
+			"placeholderDepthRef": "Nivel de referencias a buscar"
 		}
 	},
 	"messageManager": {

@@ -26,13 +26,23 @@ const FilterOrder: FC<Props> = (props: Props) => {
         ValueState.None
     );
     const [orderValueStateMessage, setOrderValueStateMessage] = useState("");
-
+    const translateController = new TranslateController()
     const onSelectedOrder = useCallback((order: string) => {
-        console.log(order)
         setParamsObjectsTranslate({
             ...paramsObjectsTranslate,
             order: order
         })
+        translateController.checkOrder(order).then((response) => {
+            if (response.isFailure) {
+                let error = (response.getErrorValue() as ErrorGraphql).getError();
+                setOrderValueState(ValueState.Error)
+                setOrderValueStateMessage(error.singleMessage as string)
+            } else {
+                setOrderValueState(ValueState.None)
+                setOrderValueStateMessage("")
+            }
+        })
+
     }, [])
 
     /**

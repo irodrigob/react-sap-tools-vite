@@ -199,7 +199,7 @@ export const QUERY_CHECK_ORDER = gql`
 		$client: String!
 		$order: String!
 	) {
-		checkObject(
+		checkOrder(
 			system: $system
 			sap_user: $sap_user
 			sap_password: $sap_password

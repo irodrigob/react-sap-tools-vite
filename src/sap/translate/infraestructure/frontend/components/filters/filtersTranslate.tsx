@@ -21,6 +21,7 @@ import FilterTlang from "./filterTlang";
 import FilterObject from "./filterObject";
 import FilterOrder from "./filterOrder";
 import { ValueState } from "@ui5/webcomponents-react/ssr";
+import FilterDepthRef from "./filterDepthRef";
 
 interface Props {
     languages: Languages;
@@ -57,30 +58,49 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
             hideFilterConfiguration={true}
             onGo={(e) => {
                 e.stopPropagation();
+
+                let newFilterValueState = { ...filterValueState }
+
+                // Tiene que haber idioma destino
+                if (paramsObjectsTranslate.tLang.length == 0) {
+                    newFilterValueState.tlangState = ValueState.Error;
+                    newFilterValueState.tlangStateMessage = getI18nText(
+                        "translate.filters.fieldMandatory"
+                    )
+                }
+
+                // Tiene que haber objeto y nombre del objeto informado
+                if (paramsObjectsTranslate.object == "") {
+                    newFilterValueState.objectState = ValueState.Error,
+                        newFilterValueState.objectStateMessage = getI18nText(
+                            "translate.filters.fieldMandatory"
+                        )
+                }
+
+
+                if (paramsObjectsTranslate.objectName == "") {
+                    newFilterValueState.objectNameState = ValueState.Error
+                    newFilterValueState.objectNameStateMessage = getI18nText(
+                        "translate.filters.fieldMandatory"
+                    )
+                }
                 if (
-                    filterValueState.objectState == ValueState.Error ||
-                    filterValueState.objectNameState == ValueState.Error ||
-                    filterValueState.orderState == ValueState.Error ||
-                    filterValueState.olangState == ValueState.Error ||
-                    filterValueState.tlangState == ValueState.Error
+                    newFilterValueState.objectState == ValueState.Error ||
+                    newFilterValueState.objectNameState == ValueState.Error ||
+                    newFilterValueState.orderState == ValueState.Error ||
+                    newFilterValueState.olangState == ValueState.Error ||
+                    newFilterValueState.tlangState == ValueState.Error
                 ) {
                     showMessage(
                         getI18nText("translate.filters.stillErrors"),
                         MessageType.warning
-                    );
-                } else {
-                    if (paramsObjectsTranslate.tLang.length == 0) {
-                        setFilterValueState({
-                            ...filterValueState,
-                            tlangState: ValueState.Error,
-                            tlangStateMessage: getI18nText(
-                                "translate.filters.fieldMandatory"
-                            ),
-                        });
-                    } else {
-                    }
+                    )
                 }
-            }}
+                setFilterValueState(newFilterValueState)
+
+
+            }
+            }
             onRestore={() => {
                 setParamsObjectsTranslate({
                     depthRefs: 1,
@@ -127,7 +147,7 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
             <FilterGroupItem
                 label={getI18nText("translate.filters.labelObject")}
                 required
-                style={{ maxWidth: "50rem" }}
+                style={{ minWidth: "30rem" }}
             >
                 <>
                     <FilterObject
@@ -142,7 +162,7 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
             </FilterGroupItem>
             <FilterGroupItem
                 label={getI18nText("translate.filters.labelOrder")}
-                style={{ maxWidth: "30rem" }}
+                style={{ minWidth: "30rem" }}
             >
                 <>
                     {languages.length > 0 && (
@@ -153,6 +173,17 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
                             setFilterValueState={setFilterValueState}
                         />
                     )}
+                </>
+            </FilterGroupItem>
+            <FilterGroupItem
+                label={getI18nText("translate.filters.labelDepthRef")}
+                style={{ maxWidth: "15rem" }}
+            >
+                <>
+                    <FilterDepthRef filterValueState={filterValueState}
+                        setFilterValueState={setFilterValueState}
+                        paramsObjectsTranslate={paramsObjectsTranslate}
+                        setParamsObjectsTranslate={setParamsObjectsTranslate} />
                 </>
             </FilterGroupItem>
         </FilterBar>

@@ -78,12 +78,6 @@ const FilterObject: FC<Props> = (props: Props) => {
                         })
                     }
                 });
-        } else {
-            setFilterValueState({
-                ...filterValueState,
-                objectNameState: ValueState.None,
-                objectNameStateMessage: ""
-            })
         }
     }, [paramsObjectsTranslate.object, paramsObjectsTranslate.objectName]);
     return (
@@ -144,13 +138,29 @@ const FilterObject: FC<Props> = (props: Props) => {
             </ComboBox>
             <Input
                 placeholder={getI18nText("translate.filters.placeholderObjectName")}
-                style={{ marginLeft: "0.7rem", maxWidth: "15rem" }}
+                style={{ marginLeft: "0.7rem", maxWidth: "25rem" }}
                 onChange={(event: Ui5CustomEvent<InputDomRef, never>) => {
                     event.preventDefault();
-                    setParamsObjectsTranslate({
-                        ...paramsObjectsTranslate,
-                        objectName: event.target.value?.toUpperCase() as string,
-                    });
+                    let objectName = event.target.value?.toUpperCase() as string
+                    if (objectName == "") {
+                        setFilterValueState({
+                            ...filterValueState,
+                            objectNameState: ValueState.Error,
+                            objectNameStateMessage: getI18nText("translate.filters.fieldMandatory"),
+                        });
+                    }
+                    else {
+                        setFilterValueState({
+                            ...filterValueState,
+                            objectNameState: ValueState.None,
+                            objectNameStateMessage: "",
+                        });
+                        setParamsObjectsTranslate({
+                            ...paramsObjectsTranslate,
+                            objectName: objectName
+                        });
+                    }
+
                 }}
                 value={paramsObjectsTranslate.objectName}
                 valueState={filterValueState.objectNameState}
