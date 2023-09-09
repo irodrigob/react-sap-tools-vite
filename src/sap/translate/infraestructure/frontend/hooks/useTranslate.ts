@@ -38,6 +38,9 @@ export default function useTranslate() {
 	const [loadingObjectsText, setLoadingObjectsText] = useState(false);
 	const [loadObjectsText, setLoadObjectsText] = useState(false);
 	const [objectsText, setObjectsText] = useState<ObjectsText>([]);
+	const [objectsTextOriginal, setObjectsTextOriginal] = useState<ObjectsText>(
+		[]
+	);
 
 	const sapController = new SAPController();
 	const { showResultError, showMessage, updateMessage, updateResultError } =
@@ -116,12 +119,16 @@ export default function useTranslate() {
 			.getObjectTranslate(paramsObjectsTranslate)
 			.then((resultObjectTranslate) => {
 				setLoadingObjectsText(false);
-				if (resultObjectTranslate.isSuccess)
+				if (resultObjectTranslate.isSuccess) {
 					setObjectsText(resultObjectTranslate.getValue() as ObjectsText);
-				else
+					setObjectsTextOriginal(
+						resultObjectTranslate.getValue() as ObjectsText
+					);
+				} else {
 					showResultError(
 						resultObjectTranslate.getErrorValue() as ErrorGraphql
 					);
+				}
 			});
 	}, [paramsObjectsTranslate]);
 
@@ -141,5 +148,7 @@ export default function useTranslate() {
 		objectsText,
 		loadObjectsText,
 		setLoadObjectsText,
+		objectsTextOriginal,
+		setObjectsTextOriginal,
 	};
 }

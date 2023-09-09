@@ -61,23 +61,6 @@ const ObjectsSelected: FC<Props> = (props: Props) => {
     []
   );
 
-  /*
-
-<Panel
-      headerText={getI18nText(
-        "transportOrder.orderObjects.moveObjects.panelObjectsSelected"
-      )}
-    >
-      <AnalyticalTable
-        columns={columnsTable}
-        data={objectsToProcess}
-        visibleRows={visibleRows}
-        noDataText={getI18nText("transportOrder.orderObjects.noDataText")}
-      />
-    </Panel>
-
-  */
-
   return (
     <FlexBox direction="Column" style={{ paddingBottom: "2rem" }}>
       <Title level="H4" style={{ paddingBottom: "1rem" }}>

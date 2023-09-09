@@ -21,7 +21,8 @@ export default function TranslateContainer() {
         objectsText,
         loadingObjectsText,
         loadObjectsText,
-        setLoadObjectsText
+        setLoadObjectsText,
+        objectsTextOriginal,
     } = useTranslate();
 
     useEffect(() => {
@@ -60,6 +61,7 @@ export default function TranslateContainer() {
             <ObjectsTextContainer loadObjectsText={loadObjectsText}
                 loadingObjectsText={loadingObjectsText}
                 objectsText={objectsText}
+                objectsTextOriginal={objectsTextOriginal}
             />
         </>
     );
