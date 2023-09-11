@@ -1,10 +1,17 @@
 import { AnalyticalTableColumnDefinition } from "@ui5/webcomponents-react";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { ObjectsText } from "sap/translate/infraestructure/types/translate.d";
 import { useTranslations } from "translations/i18nContext";
+import { useAppSelector } from "shared/storage/useStore";
+import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
+import CellTextLang from "sap/translate/infraestructure/frontend/components/tableText/cellTextLang";
+import ObjectText from "sap/translate/domain/entities/objectText";
 
-export default function useObjectTextTable(objectsText: ObjectsText) {
+export default function useObjectTextTable() {
 	const { getI18nText } = useTranslations();
+	const { objectsText, objectsTextsChanged, objectsTextsOriginal } =
+		useAppSelector((state) => state.SAPTranslate);
+	const sapTranslateActions = new SAPTranslateActions();
 	const columnsTable: AnalyticalTableColumnDefinition[] = useMemo(() => {
 		// Campos fijos
 		let columnsTmp: AnalyticalTableColumnDefinition[] = [
@@ -41,6 +48,7 @@ export default function useObjectTextTable(objectsText: ObjectsText) {
 					Header: objectsText[0][colField],
 					headerTooltip: objectsText[0][colField],
 					accessor: `txtTlang${x}`,
+					Cell: CellTextLang,
 				});
 			}
 		}
@@ -48,5 +56,10 @@ export default function useObjectTextTable(objectsText: ObjectsText) {
 		return columnsTmp;
 	}, [objectsText]);
 
-	return { columnsTable };
+	const updateRowChanged = useCallback(
+		(rowChanged: ObjectText) => {},
+		[objectsTextsChanged, objectsTextsOriginal]
+	);
+
+	return { columnsTable, updateRowChanged };
 }

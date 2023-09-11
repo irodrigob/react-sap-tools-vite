@@ -8,17 +8,20 @@ import {
 } from "@ui5/webcomponents-react";
 import { useTranslations } from "translations/i18nContext";
 import { FiltersValueState, ParamsObjectTranslate } from "sap/translate/infraestructure/types/translate";
-
+import { useAppSelector } from "shared/storage/useStore";
+import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
 
 interface Props {
-    paramsObjectsTranslate: ParamsObjectTranslate;
-    setParamsObjectsTranslate: (value: ParamsObjectTranslate) => void;
     filterValueState: FiltersValueState;
     setFilterValueState: (value: FiltersValueState) => void;
 }
 
 const FilterDepthRef: FC<Props> = (props: Props) => {
-    const { filterValueState, paramsObjectsTranslate, setFilterValueState, setParamsObjectsTranslate } = props
+    const { filterValueState, setFilterValueState } = props;
+    const { paramsObjectsTranslate } = useAppSelector(
+        (state) => state.SAPTranslate
+    );
+    const sapTranslateActions = new SAPTranslateActions();
     const { getI18nText } = useTranslations();
 
     return (<Input placeholder={getI18nText("translate.filters.placeholderDepthRef")}
@@ -43,7 +46,7 @@ const FilterDepthRef: FC<Props> = (props: Props) => {
                 newFilterValueState.depthRefMessage = getI18nText("translate.filters.rangeDepthRef")
 
             }
-            setParamsObjectsTranslate({
+            sapTranslateActions.setParamsObjectsTranslate({
                 ...paramsObjectsTranslate,
                 depthRefs: depthRef
             });

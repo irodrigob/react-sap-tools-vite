@@ -13,12 +13,12 @@ import {
     Languages,
     ParamsObjectTranslate,
 } from "sap/translate/infraestructure/types/translate";
+import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
+import { useAppSelector } from "shared/storage/useStore";
 
 interface Props {
     languages: Languages;
     loadingLanguages: boolean;
-    paramsObjectsTranslate: ParamsObjectTranslate;
-    setParamsObjectsTranslate: (value: ParamsObjectTranslate) => void;
     filterValueState: FiltersValueState;
     setFilterValueState: (value: FiltersValueState) => void;
 }
@@ -26,11 +26,13 @@ const FilterOlang: FC<Props> = (props: Props) => {
     const {
         languages,
         loadingLanguages,
-        paramsObjectsTranslate,
-        setParamsObjectsTranslate,
         filterValueState,
         setFilterValueState,
     } = props;
+    const { paramsObjectsTranslate } = useAppSelector(
+        (state) => state.SAPTranslate
+    );
+    const sapTranslateActions = new SAPTranslateActions();
     const [valueSelected, setValueSelected] = useState("");
     const { getI18nText } = useTranslations();
 
@@ -67,7 +69,7 @@ const FilterOlang: FC<Props> = (props: Props) => {
                             olangState: ValueState.None,
                             olangStateMessage: "",
                         });
-                        setParamsObjectsTranslate({
+                        sapTranslateActions.setParamsObjectsTranslate({
                             ...paramsObjectsTranslate,
                             oLang: olang,
                         });

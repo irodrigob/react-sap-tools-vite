@@ -15,12 +15,12 @@ import {
 } from "sap/translate/infraestructure/types/translate";
 import { useTranslations } from "translations/i18nContext";
 import { MultiComboBoxSelectionChangeEventDetail } from "@ui5/webcomponents/dist/MultiComboBox.js";
+import { useAppSelector } from "shared/storage/useStore";
+import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
 
 interface Props {
     languages: Languages;
     loadingLanguages: boolean;
-    paramsObjectsTranslate: ParamsObjectTranslate;
-    setParamsObjectsTranslate: (value: ParamsObjectTranslate) => void;
     filterValueState: FiltersValueState;
     setFilterValueState: (value: FiltersValueState) => void;
 }
@@ -28,12 +28,14 @@ interface Props {
 const FilterTlang: FC<Props> = (props: Props) => {
     const {
         loadingLanguages,
-        paramsObjectsTranslate,
-        setParamsObjectsTranslate,
         languages,
         filterValueState,
         setFilterValueState
     } = props;
+    const { paramsObjectsTranslate } = useAppSelector(
+        (state) => state.SAPTranslate
+    );
+    const sapTranslateActions = new SAPTranslateActions();
     const { getI18nText } = useTranslations();
 
     /**
@@ -41,7 +43,7 @@ const FilterTlang: FC<Props> = (props: Props) => {
      */
     useEffect(() => {
         if (paramsObjectsTranslate.tLang.findIndex(row => row == paramsObjectsTranslate.oLang) != -1)
-            setParamsObjectsTranslate({
+            sapTranslateActions.setParamsObjectsTranslate({
                 ...paramsObjectsTranslate,
                 tLang: paramsObjectsTranslate.tLang.filter(row => row != paramsObjectsTranslate.oLang)
             })
@@ -55,7 +57,7 @@ const FilterTlang: FC<Props> = (props: Props) => {
                     MultiComboBoxSelectionChangeEventDetail
                 >
             ) => {
-                setParamsObjectsTranslate({
+                sapTranslateActions.setParamsObjectsTranslate({
                     ...paramsObjectsTranslate,
                     tLang: event.detail.items.map((item) => {
                         return item.id;

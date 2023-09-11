@@ -14,15 +14,11 @@ export default function TranslateContainer() {
         loadInitialData,
         loadingLanguages,
         loadingSelectableObjects,
-        paramsObjectsTranslate,
-        setParamsObjectsTranslate,
         originLanguage,
         getObjectTranslate,
-        objectsText,
         loadingObjectsText,
         loadObjectsText,
         setLoadObjectsText,
-        objectsTextOriginal,
     } = useTranslate();
 
     useEffect(() => {
@@ -42,9 +38,7 @@ export default function TranslateContainer() {
                             languages={languages}
                             loadingLanguages={loadingLanguages}
                             loadingSelectableObjects={loadingSelectableObjects}
-                            paramsObjectsTranslate={paramsObjectsTranslate}
                             selectableObjects={selectableObjects}
-                            setParamsObjectsTranslate={setParamsObjectsTranslate}
                             originLanguage={originLanguage}
                             onGo={() => {
                                 setLoadObjectsText(true)
@@ -60,8 +54,6 @@ export default function TranslateContainer() {
             />
             <ObjectsTextContainer loadObjectsText={loadObjectsText}
                 loadingObjectsText={loadingObjectsText}
-                objectsText={objectsText}
-                objectsTextOriginal={objectsTextOriginal}
             />
         </>
     );

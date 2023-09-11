@@ -3,18 +3,11 @@ import { AnalyticalTable } from "@ui5/webcomponents-react";
 import { ObjectsText } from "sap/translate/infraestructure/types/translate.d";
 import { useTranslations } from "translations/i18nContext";
 import useObjectTextTable from "sap/translate/infraestructure/frontend/hooks/useObjectTextTable";
+import { useAppSelector } from "shared/storage/useStore";
 
-interface Props {
-    objectsText: ObjectsText;
-    objectsTextOriginal: ObjectsText;
-}
-
-const ObjectsTextTable: FC<Props> = (props: Props) => {
-    const {
-        objectsText,
-        objectsTextOriginal,
-    } = props;
-    const { columnsTable } = useObjectTextTable(objectsText);
+export default function ObjectsTextTable() {
+    const { objectsText } = useAppSelector(state => state.SAPTranslate)
+    const { columnsTable } = useObjectTextTable();
     const { getI18nText } = useTranslations();
 
     return (
@@ -29,4 +22,3 @@ const ObjectsTextTable: FC<Props> = (props: Props) => {
         </>
     );
 };
-export default ObjectsTextTable

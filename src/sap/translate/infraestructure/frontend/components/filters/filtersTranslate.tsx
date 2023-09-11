@@ -19,14 +19,14 @@ import FilterObject from "./filterObject";
 import FilterOrder from "./filterOrder";
 import { ValueState } from "@ui5/webcomponents-react/ssr";
 import FilterDepthRef from "./filterDepthRef";
+import { useAppSelector } from "shared/storage/useStore";
+import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
 
 interface Props {
     languages: Languages;
     loadingLanguages: boolean;
     selectableObjects: SelectableObjects;
     loadingSelectableObjects: boolean;
-    paramsObjectsTranslate: ParamsObjectTranslate;
-    setParamsObjectsTranslate: (value: ParamsObjectTranslate) => void;
     originLanguage: string;
     onGo: () => void
 }
@@ -35,12 +35,13 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
         languages,
         loadingLanguages,
         loadingSelectableObjects,
-        paramsObjectsTranslate,
         selectableObjects,
-        setParamsObjectsTranslate,
         originLanguage,
         onGo
     } = props;
+    const { paramsObjectsTranslate } = useAppSelector(
+        (state) => state.SAPTranslate
+    );
     const [filterValueState, setFilterValueState] = useState<FiltersValueState>({
         objectState: ValueState.None,
         objectStateMessage: "",
@@ -57,6 +58,7 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
     });
     const { getI18nText } = useTranslations();
     const { showMessage } = useMessages();
+    const sapTranslateActions = new SAPTranslateActions();
 
     return (
         <FilterBar
@@ -114,7 +116,7 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
             }
             }
             onRestore={() => {
-                setParamsObjectsTranslate({
+                sapTranslateActions.setParamsObjectsTranslate({
                     depthRefs: 1,
                     object: "",
                     objectName: "",
@@ -133,8 +135,6 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
                     <FilterOlang
                         languages={languages}
                         loadingLanguages={loadingLanguages}
-                        paramsObjectsTranslate={paramsObjectsTranslate}
-                        setParamsObjectsTranslate={setParamsObjectsTranslate}
                         filterValueState={filterValueState}
                         setFilterValueState={setFilterValueState}
                     />
@@ -149,8 +149,6 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
                     <FilterTlang
                         languages={languages}
                         loadingLanguages={loadingLanguages}
-                        paramsObjectsTranslate={paramsObjectsTranslate}
-                        setParamsObjectsTranslate={setParamsObjectsTranslate}
                         filterValueState={filterValueState}
                         setFilterValueState={setFilterValueState}
                     />
@@ -164,9 +162,7 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
                 <>
                     <FilterObject
                         loadingSelectableObjects={loadingLanguages}
-                        paramsObjectsTranslate={paramsObjectsTranslate}
                         selectableObjects={selectableObjects}
-                        setParamsObjectsTranslate={setParamsObjectsTranslate}
                         filterValueState={filterValueState}
                         setFilterValueState={setFilterValueState}
                     />
@@ -179,8 +175,6 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
                 <>
                     {languages.length > 0 && (
                         <FilterOrder
-                            paramsObjectsTranslate={paramsObjectsTranslate}
-                            setParamsObjectsTranslate={setParamsObjectsTranslate}
                             filterValueState={filterValueState}
                             setFilterValueState={setFilterValueState}
                         />
@@ -193,9 +187,7 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
             >
                 <>
                     <FilterDepthRef filterValueState={filterValueState}
-                        setFilterValueState={setFilterValueState}
-                        paramsObjectsTranslate={paramsObjectsTranslate}
-                        setParamsObjectsTranslate={setParamsObjectsTranslate} />
+                        setFilterValueState={setFilterValueState} />
                 </>
             </FilterGroupItem>
         </FilterBar>

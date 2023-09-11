@@ -2,18 +2,17 @@ import { FC } from "react";
 import { Title } from "@ui5/webcomponents-react";
 import { ObjectsText } from "sap/translate/infraestructure/types/translate.d";
 import { useTranslations } from "translations/i18nContext";
-import ObjectsTextTable from "./objectsTextTable";
-
+import ObjectsTextTable from "./tableText/objectsTextTable";
+import { useAppSelector } from "shared/storage/useStore";
 interface Props {
-    objectsText: ObjectsText;
     loadingObjectsText: boolean;
     loadObjectsText: boolean;
-    objectsTextOriginal: ObjectsText;
 }
 
 const ObjectsTextContainer: FC<Props> = (props: Props) => {
-    const { loadingObjectsText, objectsText, loadObjectsText, objectsTextOriginal } = props;
+    const { loadingObjectsText, loadObjectsText } = props;
     const { getI18nText } = useTranslations();
+    const { objectsText } = useAppSelector(state => state.SAPTranslate)
 
     return (
         <>
@@ -55,10 +54,7 @@ const ObjectsTextContainer: FC<Props> = (props: Props) => {
                 {getI18nText("translate.loadingData")}
             </Title>)}
             {loadObjectsText && objectsText.length > 0 && (
-                <ObjectsTextTable
-                    objectsText={objectsText}
-                    objectsTextOriginal={objectsTextOriginal}
-                />
+                <ObjectsTextTable />
             )}
         </>
     );

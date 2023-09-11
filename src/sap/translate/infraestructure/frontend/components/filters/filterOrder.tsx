@@ -10,25 +10,29 @@ import ErrorGraphql from "shared/errors/ErrorGraphql";
 import SelectOrderContainer from "sap/transportOrder/infraestructure/frontend/components/selectOrder/selectOrderContainer";
 import { TYPE } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder"
 import { SelectorComponentType } from "sap/transportOrder/infraestructure/types/selectOrder.d";
+import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
+import { useAppSelector } from "shared/storage/useStore";
+
 
 interface Props {
-    paramsObjectsTranslate: ParamsObjectTranslate;
-    setParamsObjectsTranslate: (value: ParamsObjectTranslate) => void;
     filterValueState: FiltersValueState;
     setFilterValueState: (value: FiltersValueState) => void;
 }
 
 
 const FilterOrder: FC<Props> = (props: Props) => {
-
-    const { filterValueState, paramsObjectsTranslate, setFilterValueState, setParamsObjectsTranslate } = props
+    const { filterValueState, setFilterValueState } = props;
+    const { paramsObjectsTranslate } = useAppSelector(
+        (state) => state.SAPTranslate
+    );
+    const sapTranslateActions = new SAPTranslateActions();
     const [orderValueState, setOrderValueState] = useState<ValueState>(
         ValueState.None
     );
     const [orderValueStateMessage, setOrderValueStateMessage] = useState("");
     const translateController = new TranslateController()
     const onSelectedOrder = useCallback((order: string) => {
-        setParamsObjectsTranslate({
+        sapTranslateActions.setParamsObjectsTranslate({
             ...paramsObjectsTranslate,
             order: order
         })
@@ -46,13 +50,13 @@ const FilterOrder: FC<Props> = (props: Props) => {
     }, [])
 
     /**
-     * Efecto que sincroniza los valueState de la orden entre el componente de orde y de los filtros.
+     * Efecto que sincroniza los valueState de la orden entre el componente de orden y de los filtros.
      * Si paso una función que actualiza el state de los filtros en vez de hacerlo como esta hora no sirve,
      * porque el componente de orden no se estera del cambio.
      */
     useEffect(() => {
         // Si hay error quito la orden previa que pueda tener
-        if (orderValueState == ValueState.Error) setParamsObjectsTranslate({
+        if (orderValueState == ValueState.Error) sapTranslateActions.setParamsObjectsTranslate({
             ...paramsObjectsTranslate,
             order: ""
         })

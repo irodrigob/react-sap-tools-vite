@@ -13,10 +13,14 @@ import useMessages, {
 	MessageType,
 } from "shared/infraestructure/hooks/useMessages";
 import { useTranslations } from "translations/i18nContext";
-import { ValueState } from "@ui5/webcomponents-react/ssr";
+import { useAppSelector } from "shared/storage/useStore";
+import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
 
 export default function useTranslate() {
 	const { getI18nText, language } = useTranslations();
+	const { paramsObjectsTranslate } = useAppSelector(
+		(state) => state.SAPTranslate
+	);
 	const translateController = new TranslateController();
 	const [languages, setLanguages] = useState<Languages>([]);
 	const [selectableObjects, setSelectableObjects] = useState<SelectableObjects>(
@@ -25,24 +29,12 @@ export default function useTranslate() {
 	const [loadingLanguages, setLoadingLanguages] = useState(false);
 	const [loadingSelectableObjects, setLoadingSelectableLanguages] =
 		useState(false);
-	const [paramsObjectsTranslate, setParamsObjectsTranslate] =
-		useState<ParamsObjectTranslate>({
-			depthRefs: 1,
-			object: "PROG",
-			objectName: "ZTRANSLATE_TOOL",
-			oLang: language.toLocaleUpperCase(),
-			order: "",
-			tLang: [],
-		});
 	const [originLanguage, setOriginLanguage] = useState(language);
 	const [loadingObjectsText, setLoadingObjectsText] = useState(false);
 	const [loadObjectsText, setLoadObjectsText] = useState(false);
-	const [objectsText, setObjectsText] = useState<ObjectsText>([]);
-	const [objectsTextOriginal, setObjectsTextOriginal] = useState<ObjectsText>(
-		[]
-	);
 
 	const sapController = new SAPController();
+	const sapTranslateActions = new SAPTranslateActions();
 	const { showResultError, showMessage, updateMessage, updateResultError } =
 		useMessages();
 
@@ -97,18 +89,18 @@ export default function useTranslate() {
 	 * @param languages Idiomas
 	 */
 	const determineDefaultOriginLanguage = (languages: Languages): void => {
-		// Localiza el idioma por defecto que se conecta al sistema
+		let oLang = language;
 		let systemLanguage = languages.find((row) => row.isSystemLanguage);
 
 		// Si el idioma del sistema al que se conecta es distinto al del navegador, entonces
 		// pongo por defecto el idioma del sistema
-		if (systemLanguage) {
-			setOriginLanguage(systemLanguage.language);
-			setParamsObjectsTranslate({
-				...paramsObjectsTranslate,
-				oLang: systemLanguage.language,
-			});
-		}
+		if (systemLanguage) oLang = systemLanguage.language;
+
+		setOriginLanguage(oLang);
+		sapTranslateActions.setParamsObjectsTranslate({
+			...paramsObjectsTranslate,
+			oLang: oLang,
+		});
 	};
 	/**
 	 * Lectura de los datos de traducción
@@ -120,8 +112,10 @@ export default function useTranslate() {
 			.then((resultObjectTranslate) => {
 				setLoadingObjectsText(false);
 				if (resultObjectTranslate.isSuccess) {
-					setObjectsText(resultObjectTranslate.getValue() as ObjectsText);
-					setObjectsTextOriginal(
+					sapTranslateActions.setObjectsText(
+						resultObjectTranslate.getValue() as ObjectsText
+					);
+					sapTranslateActions.setObjectsTextOriginal(
 						resultObjectTranslate.getValue() as ObjectsText
 					);
 				} else {
@@ -140,15 +134,10 @@ export default function useTranslate() {
 		loadInitialData,
 		loadingLanguages,
 		loadingSelectableObjects,
-		paramsObjectsTranslate,
-		setParamsObjectsTranslate,
 		originLanguage,
 		getObjectTranslate,
 		loadingObjectsText,
-		objectsText,
 		loadObjectsText,
 		setLoadObjectsText,
-		objectsTextOriginal,
-		setObjectsTextOriginal,
 	};
 }

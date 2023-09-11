@@ -18,12 +18,12 @@ import {
 } from "sap/translate/infraestructure/types/translate";
 import TranslateController from "sap/translate/infraestructure/controller/translateController";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
+import { useAppSelector } from "shared/storage/useStore";
+import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
 
 interface Props {
     selectableObjects: SelectableObjects;
     loadingSelectableObjects: boolean;
-    paramsObjectsTranslate: ParamsObjectTranslate;
-    setParamsObjectsTranslate: (value: ParamsObjectTranslate) => void;
     filterValueState: FiltersValueState;
     setFilterValueState: (value: FiltersValueState) => void;
 }
@@ -31,12 +31,14 @@ interface Props {
 const FilterObject: FC<Props> = (props: Props) => {
     const {
         loadingSelectableObjects,
-        paramsObjectsTranslate,
         selectableObjects,
-        setParamsObjectsTranslate,
         filterValueState,
         setFilterValueState,
     } = props;
+    const { paramsObjectsTranslate } = useAppSelector(
+        (state) => state.SAPTranslate
+    );
+    const sapTranslateActions = new SAPTranslateActions();
     const { getI18nText } = useTranslations();
     const [valueSelected, setValueSelected] = useState("");
     const translateController = new TranslateController();
@@ -99,7 +101,7 @@ const FilterObject: FC<Props> = (props: Props) => {
                         if (selectableObjects.findIndex(
                             (row) => row.object == object
                         ) != -1) {
-                            setParamsObjectsTranslate({
+                            sapTranslateActions.setParamsObjectsTranslate({
                                 ...paramsObjectsTranslate,
                                 object: object,
                             });
@@ -155,7 +157,7 @@ const FilterObject: FC<Props> = (props: Props) => {
                             objectNameState: ValueState.None,
                             objectNameStateMessage: "",
                         });
-                        setParamsObjectsTranslate({
+                        sapTranslateActions.setParamsObjectsTranslate({
                             ...paramsObjectsTranslate,
                             objectName: objectName
                         });
