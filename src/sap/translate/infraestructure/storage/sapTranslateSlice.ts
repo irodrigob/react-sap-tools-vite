@@ -5,16 +5,16 @@ import {
 } from "sap/translate/infraestructure/types/translate";
 
 export interface SAPTranslateRedux {
-	objectsTextsChanged: ObjectsText;
+	objectsTextChanged: ObjectsText;
 	objectsText: ObjectsText;
-	objectsTextsOriginal: ObjectsText;
+	objectsTextOriginal: ObjectsText;
 	paramsObjectsTranslate: ParamsObjectTranslate;
 }
 
 const initialState: SAPTranslateRedux = {
-	objectsTextsChanged: [],
+	objectsTextChanged: [],
 	objectsText: [],
-	objectsTextsOriginal: [],
+	objectsTextOriginal: [],
 	paramsObjectsTranslate: {
 		depthRefs: 1,
 		object: "PROG",
@@ -30,13 +30,13 @@ export const SAPTransportOrderSlice = createSlice({
 	initialState: initialState,
 	reducers: {
 		setObjectsTextChanged: (state, action: PayloadAction<ObjectsText>) => {
-			state.objectsTextsChanged = action.payload;
+			state.objectsTextChanged = action.payload;
 		},
 		setObjectsText: (state, action: PayloadAction<ObjectsText>) => {
 			state.objectsText = action.payload;
 		},
 		setObjectsTextOriginal: (state, action: PayloadAction<ObjectsText>) => {
-			state.objectsTextsOriginal = action.payload;
+			state.objectsTextOriginal = action.payload;
 		},
 		setParamsObjectsTranslate: (
 			state,
