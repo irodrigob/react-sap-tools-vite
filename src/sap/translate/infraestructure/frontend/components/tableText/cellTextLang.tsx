@@ -20,6 +20,9 @@ const CellTextLang: FC = (instance: any) => {
         case TEXT_PPSAL_TYPE.WITHOUT_TEXT:
             colorPpsalType = COLOR_TEXT_PPSAL_TYPE.WITHOUT_TEXT;
             break
+        case TEXT_PPSAL_TYPE.CHANGED_TEXT:
+            colorPpsalType = COLOR_TEXT_PPSAL_TYPE.CHANGED_TEXT;
+            break
     }
 
     const handlerChange = (event: Ui5CustomEvent<InputDomRef, never>) => {

@@ -46,7 +46,7 @@ export default function useObjectTextTable() {
 
 		// Idiomas de destino
 		for (let x = 1; x <= NUMBER_FIELD_TLANG; x++) {
-			let langField = `${FIELDS_TEXT.TEXT}${x}`;
+			let langField = `${FIELDS_TEXT.LANGUAGE}${x}`;
 			if (objectsText[0][langField] != "") {
 				let colField = `${FIELDS_TEXT.COL_TEXT}${x}`;
 				columnsTmp.push({
@@ -69,6 +69,14 @@ export default function useObjectTextTable() {
 	 */
 	const determinePpsalTypeFromColumnId = (columnId: string) => {
 		return columnId.replace(FIELDS_TEXT.TEXT, FIELDS_TEXT.PPSAL_TYPE);
+	};
+	/**
+	 * En base al ID de la columna de la tabla se devuelve el campo que contiene el idioma de destino
+	 * @param columnId | Id de columna con el texto
+	 * @returns | Nombre de columna de la propuesta de texto
+	 */
+	const determineColTextFromColumnId = (columnId: string) => {
+		return columnId.replace(FIELDS_TEXT.TEXT, FIELDS_TEXT.COL_TEXT);
 	};
 	/**
 	 * Proceso que realiza la actualización de los datos tanto en el modelo propio
@@ -99,37 +107,35 @@ export default function useObjectTextTable() {
 			);
 
 			newObjectsText[rowObjectIndex][columnId] = value;
-			// El tipo de propuesta: Si no hay texto se marca como que no hay.
-			// Si hay valor se mira si el valor es el mismo al original. Si es igual se pone el tipo de propuesta original,
-			// en caso de no serlo se pone el pendiente de confirmar.
-			if (value == "") {
-				newObjectsText[rowObjectIndex][fieldPpsalType] =
-					TEXT_PPSAL_TYPE.WITHOUT_TEXT;
-			} else {
-				newObjectsText[rowObjectIndex][fieldPpsalType] =
-					newObjectsText[rowObjectIndex][columnId] !=
-					objectsTextOriginal[rowObjectIndex][columnId]
-						? TEXT_PPSAL_TYPE.PPSAL_WO_CONFIRM
-						: objectsTextOriginal[rowObjectIndex][fieldPpsalType];
-			}
 
+			// Si hay valor se mira si el valor es el mismo al original. Si es igual se pone el tipo de propuesta original,
+			// en caso de no serlo se pone que ha sido modificado.
+			newObjectsText[rowObjectIndex][fieldPpsalType] =
+				newObjectsText[rowObjectIndex][columnId] !=
+				objectsTextOriginal[rowObjectIndex][columnId]
+					? TEXT_PPSAL_TYPE.CHANGED_TEXT
+					: objectsTextOriginal[rowObjectIndex][fieldPpsalType];
+
+			// Los datos se cambian siempre porque puede haber cambios en el tipo de propuesta, aunque se indique que los valores sean iguales.
+			sapTranslateActions.setObjectsText(newObjectsText);
+
+			/*
 			// Se compara la fila actualiza con los datos originales para ver si hay cambios.
 			// Lo hago aquí dentro porque con los índices es muy simple acceder a los campos por variables
 			let dataChanged = false;
 			for (let x = 1; x <= NUMBER_FIELD_TLANG; x++) {
 				let langField = `${FIELDS_TEXT.TEXT}${x}`;
-				if (
-					newObjectsText[rowObjectIndex][langField] !=
-					objectsTextOriginal[rowObjectIndex][langField]
-				) {
-					dataChanged = true;
-					break;
-				}
+				let colField = `${FIELDS_TEXT.COL_TEXT}${x}`;
+				if (newObjectsText[rowObjectIndex][colField] != "")
+					if (
+						newObjectsText[rowObjectIndex][langField] !=
+						objectsTextOriginal[rowObjectIndex][langField]
+					) {
+						dataChanged = true;
+						break;
+					} else break;
 			}
-
-			// Los datos se cambian siempre porque puede haber cambios en el tipo de propuesta, aunque se indique que los valores sean iguales.
-			sapTranslateActions.setObjectsText(newObjectsText);
-
+			
 			// Datos cambios se actualiza la storage y se añade o modifica en la tabla de registros cambios
 			if (dataChanged) {
 				if (rowObjectChangedIndex == -1)
@@ -146,7 +152,7 @@ export default function useObjectTextTable() {
 					rowObjectChangedIndex >= 0 ? 1 : 0
 				);
 				sapTranslateActions.setObjectsTextChanged(newObjectsChanged);
-			}
+			}*/
 		},
 		[objectsTextChanged, objectsTextOriginal, objectsText]
 	);
