@@ -25,7 +25,7 @@ export default function useObjectTextTable() {
 	const { getI18nText } = useTranslations();
 	const { objectsText, objectsTextOriginal, paramsObjectsTranslate } =
 		useAppSelector((state) => state.SAPTranslate);
-	const sapTranslateActions = new SAPTranslateActions();
+	const translateActions = new SAPTranslateActions();
 	const {
 		showMessage,
 		updateResultError,
@@ -127,7 +127,7 @@ export default function useObjectTextTable() {
 					: objectsTextOriginal[rowObjectIndex][fieldPpsalType];
 
 			// Los datos se cambian siempre porque puede haber cambios en el tipo de propuesta, aunque se indique que los valores sean iguales.
-			sapTranslateActions.setObjectsText(newObjectsText);
+			translateActions.setObjectsText(newObjectsText);
 		},
 		[objectsTextOriginal, objectsText]
 	);
@@ -165,6 +165,10 @@ export default function useObjectTextTable() {
 							result.return[0].message,
 							convertServiceSAPMsgType(result.return[0].type)
 						);
+						console.log(result.objectText);
+						// Actualizo el modelo con los datos devueltos.
+						translateActions.setObjectsText(result.objectText);
+						//translateActions.setObjectsTextOriginal(result.objectText);
 					} else {
 						updateResultError(
 							toastID,
@@ -178,7 +182,7 @@ export default function useObjectTextTable() {
 				MessageType.info
 			);
 		}
-	}, [objectsText]);
+	}, [objectsText, objectsTextOriginal]);
 
 	return {
 		columnsTable,

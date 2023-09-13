@@ -53,7 +53,7 @@ const ObjectsTextContainer: FC<Props> = (props: Props) => {
             >
                 {getI18nText("translate.loadingData")}
             </Title>)}
-            {loadObjectsText && objectsText.length > 0 && (
+            {!loadingObjectsText && loadObjectsText && objectsText.length > 0 && (
                 <ObjectsTextTable />
             )}
         </>

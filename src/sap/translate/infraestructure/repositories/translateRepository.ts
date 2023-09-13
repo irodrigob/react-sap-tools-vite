@@ -9,6 +9,7 @@ import {
 	ResponseSaveObjectText,
 } from "sap/translate/infraestructure/types/translate";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
+import { ObjectsTextToSaveDTO } from "sap/translate/infraestructure/dto/setObjectTextDTO";
 
 export const QUERY_GET_LANGUAGES = gql`
 	query Query(
@@ -267,7 +268,7 @@ export default class TranslateRepository
 	async saveObjectTranslate(
 		dataConnection: DataConnectionSystem,
 		paramsTranslate: ParamsObjectTranslate,
-		objectsText: ObjectsText
+		objectsText: ObjectsTextToSaveDTO
 	): Promise<ResponseSaveObjectText> {
 		const response = await this._apolloClient.mutate({
 			mutation: SET_OBJECT_TRANSLATE,

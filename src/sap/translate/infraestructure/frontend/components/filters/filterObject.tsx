@@ -41,7 +41,7 @@ const FilterObject: FC<Props> = (props: Props) => {
     const sapTranslateActions = new SAPTranslateActions();
     const { getI18nText } = useTranslations();
     const [valueSelected, setValueSelected] = useState("");
-    const SAPTranslateController = new SAPTranslateController();
+    const translateController = new SAPTranslateController();
 
     /**
      * Efecto que informa el objeto y nombre para que se vea en el combo
@@ -59,7 +59,7 @@ const FilterObject: FC<Props> = (props: Props) => {
             paramsObjectsTranslate.object != "" &&
             paramsObjectsTranslate.objectName != ""
         ) {
-            SAPTranslateController
+            translateController
                 .checkObject(
                     paramsObjectsTranslate.object,
                     paramsObjectsTranslate.objectName

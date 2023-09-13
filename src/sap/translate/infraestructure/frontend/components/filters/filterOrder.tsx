@@ -30,13 +30,13 @@ const FilterOrder: FC<Props> = (props: Props) => {
         ValueState.None
     );
     const [orderValueStateMessage, setOrderValueStateMessage] = useState("");
-    const SAPTranslateController = new SAPTranslateController()
+    const translateController = new SAPTranslateController()
     const onSelectedOrder = useCallback((order: string) => {
         sapTranslateActions.setParamsObjectsTranslate({
             ...paramsObjectsTranslate,
             order: order
         })
-        SAPTranslateController.checkOrder(order).then((response) => {
+        translateController.checkOrder(order).then((response) => {
             if (response.isFailure) {
                 let error = (response.getErrorValue() as ErrorGraphql).getError();
                 setOrderValueState(ValueState.Error)

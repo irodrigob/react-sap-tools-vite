@@ -5,6 +5,7 @@ import {
 	ParamsObjectTranslate,
 	ResponseSaveObjectText,
 } from "sap/translate/infraestructure/types/translate";
+import { ObjectsTextToSaveDTO } from "sap/translate/infraestructure/dto/setObjectTextDTO";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 
 export default interface TranslateRepositoryInterface {
@@ -42,7 +43,7 @@ export default interface TranslateRepositoryInterface {
 	saveObjectTranslate(
 		dataConnection: DataConnectionSystem,
 		paramsTranslate: ParamsObjectTranslate,
-		objectsText: ObjectsText
+		objectsText: ObjectsTextToSaveDTO
 	): Promise<ResponseSaveObjectText>;
 	/**
 	 * Verifica que el objeto exista

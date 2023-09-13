@@ -15,6 +15,16 @@ import {
 	ObjectsText,
 	ParamsObjectTranslate,
 } from "sap/translate/infraestructure/types/translate";
+import {
+	ObjectTextToSaveDTO,
+	ObjectsTextToSaveDTO,
+} from "sap/translate/infraestructure/dto/setObjectTextDTO";
+import ObjectText from "sap/translate/domain/entities/objectText";
+import {
+	FIELDS_TEXT,
+	NUMBER_FIELD_TLANG,
+} from "sap/translate/infraestructure/utils/constants/constantsTranslate";
+
 export default class TranslateApplication {
 	private translateRepository: TranslateRepository;
 
@@ -97,10 +107,39 @@ export default class TranslateApplication {
 		objectsText: ObjectsText
 	): Promise<ReponseSaveTranslate> {
 		try {
+			let objectsTextDTO = objectsText.map((objectText: ObjectText) => {
+				return {
+					object: objectText.object,
+					objName: objectText.objName,
+					objType: objectText.objType,
+					idText: objectText.idText,
+					langTlang1: objectText.langTlang1,
+					txtTlang1: objectText.txtTlang1,
+					langTlang2: objectText.langTlang2,
+					txtTlang2: objectText.txtTlang2,
+					langTlang3: objectText.langTlang3,
+					txtTlang3: objectText.txtTlang3,
+					langTlang4: objectText.langTlang4,
+					txtTlang4: objectText.txtTlang4,
+					langTlang5: objectText.langTlang5,
+					txtTlang5: objectText.txtTlang5,
+					langTlang6: objectText.langTlang6,
+					txtTlang6: objectText.txtTlang6,
+					langTlang7: objectText.langTlang7,
+					txtTlang7: objectText.txtTlang7,
+					langTlang8: objectText.langTlang8,
+					txtTlang8: objectText.txtTlang8,
+					langTlang9: objectText.langTlang9,
+					txtTlang9: objectText.txtTlang9,
+					langTlang10: objectText.langTlang10,
+					txtTlang10: objectText.txtTlang10,
+				};
+			});
+
 			let response = await this.translateRepository.saveObjectTranslate(
 				dataConnection,
 				paramsTranslate,
-				objectsText
+				objectsTextDTO
 			);
 
 			return Result.ok(response);
