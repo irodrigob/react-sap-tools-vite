@@ -5,7 +5,7 @@ import {
     FiltersValueState,
 } from "sap/translate/infraestructure/types/translate";
 import { ValueState } from "@ui5/webcomponents-react/ssr";
-import TranslateController from "sap/translate/infraestructure/controller/translateController";
+import SAPTranslateController from "sap/translate/infraestructure/controller/sapTranslateController";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import SelectOrderContainer from "sap/transportOrder/infraestructure/frontend/components/selectOrder/selectOrderContainer";
 import { TYPE } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder"
@@ -30,13 +30,13 @@ const FilterOrder: FC<Props> = (props: Props) => {
         ValueState.None
     );
     const [orderValueStateMessage, setOrderValueStateMessage] = useState("");
-    const translateController = new TranslateController()
+    const SAPTranslateController = new SAPTranslateController()
     const onSelectedOrder = useCallback((order: string) => {
         sapTranslateActions.setParamsObjectsTranslate({
             ...paramsObjectsTranslate,
             order: order
         })
-        translateController.checkOrder(order).then((response) => {
+        SAPTranslateController.checkOrder(order).then((response) => {
             if (response.isFailure) {
                 let error = (response.getErrorValue() as ErrorGraphql).getError();
                 setOrderValueState(ValueState.Error)

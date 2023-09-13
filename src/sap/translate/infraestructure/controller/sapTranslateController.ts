@@ -16,7 +16,7 @@ import {
 } from "sap/translate/infraestructure/types/translate";
 import { APP } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
 
-export default class TranslateController {
+export default class SAPTranslateController {
 	private appStore: AppStore;
 	private translateApplication: TranslateApplication;
 	private sapController: SAPController;

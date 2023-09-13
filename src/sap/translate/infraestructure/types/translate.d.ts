@@ -10,7 +10,7 @@ export type SelectableObjects = SelectableObject[];
 export type ObjectsText = ObjectText[];
 export type ResponseSaveObjectText = {
 	objectText: ObjectsText;
-	return: ReturnDTO;
+	return: ReturnsDTO;
 };
 export type ParamsObjectTranslate = {
 	object: string;

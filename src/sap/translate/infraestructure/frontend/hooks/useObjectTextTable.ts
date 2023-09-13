@@ -1,6 +1,9 @@
 import { AnalyticalTableColumnDefinition } from "@ui5/webcomponents-react";
 import { useCallback, useMemo } from "react";
-import { ObjectsText } from "sap/translate/infraestructure/types/translate.d";
+import {
+	ObjectsText,
+	ResponseSaveObjectText,
+} from "sap/translate/infraestructure/types/translate.d";
 import { useTranslations } from "translations/i18nContext";
 import { useAppSelector } from "shared/storage/useStore";
 import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
@@ -11,12 +14,27 @@ import {
 	FIELDS_TEXT,
 	NUMBER_FIELD_TLANG,
 } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
+import useMessages, {
+	MessageType,
+} from "shared/infraestructure/hooks/useMessages";
+import SAPTranslateController from "sap/translate/infraestructure/controller/sapTranslateController";
+import ErrorGraphql from "shared/errors/ErrorGraphql";
+import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 
 export default function useObjectTextTable() {
 	const { getI18nText } = useTranslations();
-	const { objectsText, objectsTextChanged, objectsTextOriginal } =
+	const { objectsText, objectsTextOriginal, paramsObjectsTranslate } =
 		useAppSelector((state) => state.SAPTranslate);
 	const sapTranslateActions = new SAPTranslateActions();
+	const {
+		showMessage,
+		updateResultError,
+		updateMessage,
+		convertServiceSAPMsgType,
+	} = useMessages();
+	const translateController = new SAPTranslateController();
+	const messageManagerController = new MessageManagerController();
+
 	const columnsTable: AnalyticalTableColumnDefinition[] = useMemo(() => {
 		// Campos fijos
 		let columnsTmp: AnalyticalTableColumnDefinition[] = [
@@ -88,17 +106,9 @@ export default function useObjectTextTable() {
 	const processRowChanged = useCallback(
 		(rowChanged: ObjectText, columnId: string, value: string) => {
 			let newObjectsText = structuredClone(objectsText);
-			let newObjectsChanged = structuredClone(objectsTextChanged);
 			let fieldPpsalType = determinePpsalTypeFromColumnId(columnId);
 
 			let rowObjectIndex = newObjectsText.findIndex(
-				(row: ObjectText) =>
-					row.object == rowChanged.object &&
-					row.objName == rowChanged.objName &&
-					row.objType == rowChanged.objType &&
-					row.idText == rowChanged.idText
-			);
-			let rowObjectChangedIndex = objectsTextChanged.findIndex(
 				(row: ObjectText) =>
 					row.object == rowChanged.object &&
 					row.objName == rowChanged.objName &&
@@ -118,44 +128,62 @@ export default function useObjectTextTable() {
 
 			// Los datos se cambian siempre porque puede haber cambios en el tipo de propuesta, aunque se indique que los valores sean iguales.
 			sapTranslateActions.setObjectsText(newObjectsText);
-
-			/*
-			// Se compara la fila actualiza con los datos originales para ver si hay cambios.
-			// Lo hago aquí dentro porque con los índices es muy simple acceder a los campos por variables
-			let dataChanged = false;
-			for (let x = 1; x <= NUMBER_FIELD_TLANG; x++) {
-				let langField = `${FIELDS_TEXT.TEXT}${x}`;
-				let colField = `${FIELDS_TEXT.COL_TEXT}${x}`;
-				if (newObjectsText[rowObjectIndex][colField] != "")
-					if (
-						newObjectsText[rowObjectIndex][langField] !=
-						objectsTextOriginal[rowObjectIndex][langField]
-					) {
-						dataChanged = true;
-						break;
-					} else break;
-			}
-			
-			// Datos cambios se actualiza la storage y se añade o modifica en la tabla de registros cambios
-			if (dataChanged) {
-				if (rowObjectChangedIndex == -1)
-					newObjectsChanged.push(newObjectsText[rowObjectIndex]);
-				else
-					newObjectsChanged[rowObjectChangedIndex] =
-						newObjectsText[rowObjectIndex];
-				sapTranslateActions.setObjectsTextChanged(newObjectsChanged);
-			}
-			// Si no hay cambios y el registro existe en la tabla de datos modificados se borra // Si existe el registro en los datos modificados lo elimino
-			else if (rowObjectChangedIndex != -1) {
-				newObjectsChanged.splice(
-					rowObjectChangedIndex,
-					rowObjectChangedIndex >= 0 ? 1 : 0
-				);
-				sapTranslateActions.setObjectsTextChanged(newObjectsChanged);
-			}*/
 		},
-		[objectsTextChanged, objectsTextOriginal, objectsText]
+		[objectsTextOriginal, objectsText]
 	);
 
-	return { columnsTable, processRowChanged, determinePpsalTypeFromColumnId };
+	const saveObjectsText = useCallback(() => {
+		let objectsTextToSave: ObjectsText = [];
+		// Solo se graban aquellos registors modificados, eso se sabe por el campo de de tipo de proppuesta de texto.
+		objectsText.forEach((objectText) => {
+			for (let x = 1; x <= NUMBER_FIELD_TLANG; x++) {
+				let ppsalField = `${FIELDS_TEXT.PPSAL_TYPE}${x}`;
+				let langField = `${FIELDS_TEXT.LANGUAGE}${x}`;
+				if (objectText[langField] != "") {
+					if (objectText[ppsalField] == TEXT_PPSAL_TYPE.CHANGED_TEXT)
+						objectsTextToSave.push(objectText);
+				} else {
+					break;
+				}
+			}
+		});
+		if (objectsTextToSave.length > 0) {
+			let toastID = showMessage(
+				getI18nText("translate.objectsTextTable.saveInProcess"),
+				MessageType.info
+			);
+			translateController
+				.saveObjectTranslate(paramsObjectsTranslate, objectsTextToSave)
+				.then((resultSave) => {
+					if (resultSave.isSuccess) {
+						let result = resultSave.getValue() as ResponseSaveObjectText;
+
+						messageManagerController.addFromSAPArrayReturn(result.return);
+
+						updateMessage(
+							toastID,
+							result.return[0].message,
+							convertServiceSAPMsgType(result.return[0].type)
+						);
+					} else {
+						updateResultError(
+							toastID,
+							resultSave.getErrorValue() as ErrorGraphql
+						);
+					}
+				});
+		} else {
+			showMessage(
+				getI18nText("translate.objectsTextTable.noDataChanged"),
+				MessageType.info
+			);
+		}
+	}, [objectsText]);
+
+	return {
+		columnsTable,
+		processRowChanged,
+		determinePpsalTypeFromColumnId,
+		saveObjectsText,
+	};
 }

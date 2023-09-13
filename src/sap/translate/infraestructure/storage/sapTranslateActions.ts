@@ -1,6 +1,5 @@
 import AppStore from "shared/storage/appStore";
 import {
-	setObjectsTextChanged,
 	setObjectsText,
 	setObjectsTextOriginal,
 	setParamsObjectsTranslate,
@@ -11,9 +10,6 @@ import {
 } from "sap/translate/infraestructure/types/translate";
 
 export default class SAPTranslateActions extends AppStore {
-	setObjectsTextChanged(value: ObjectsText) {
-		this.dispatch(setObjectsTextChanged(value));
-	}
 	setObjectsText(value: ObjectsText) {
 		this.dispatch(setObjectsText(value));
 	}

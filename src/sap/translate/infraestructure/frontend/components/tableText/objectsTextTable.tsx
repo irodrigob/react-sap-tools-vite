@@ -19,7 +19,7 @@ export default function ObjectsTextTable() {
                 data={objectsText}
                 visibleRowCountMode="Interactive"
                 scaleWidthMode="Grow"
-                header={<><ToolbarTable /></>}
+                header={<ToolbarTable />}
             />
         </>
     );

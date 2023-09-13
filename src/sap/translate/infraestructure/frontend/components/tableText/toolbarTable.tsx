@@ -1,20 +1,19 @@
 import {
-    Toolbar,
-    ToolbarSeparator,
-    ToolbarSpacer,
-    Button,
+    ToolbarV2,
+    ToolbarButton,
 } from "@ui5/webcomponents-react";
 import "@ui5/webcomponents-icons/dist/save";
+import useObjectTextTable from "sap/translate/infraestructure/frontend/hooks/useObjectTextTable";
 
 export default function ToolbarTable() {
-
+    const { saveObjectsText } = useObjectTextTable()
 
     return (
-        <><Toolbar toolbarStyle="Clear">
-            <ToolbarSpacer />
-            <Button
+        <ToolbarV2 alignContent="End">
+            <ToolbarButton
                 icon="save"
+                onClick={saveObjectsText}
             />
-        </Toolbar></>)
+        </ToolbarV2>)
 
 }

@@ -317,7 +317,9 @@
 		"objectsTextTable": {
 			"lblObjtype": "Tipo",
 			"lblObject": "Objeto",
-			"lblIdText": "ID Text"
+			"lblIdText": "ID Text",
+			"noDataChanged": "No se han modificado datos",
+			"saveInProcess": "Grabación en proceso"
 		}
 	},
 	"messageManager": {

@@ -7,7 +7,7 @@ import {
 	FiltersValueState,
 } from "sap/translate/infraestructure/types/translate";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
-import TranslateController from "sap/translate/infraestructure/controller/translateController";
+import SAPTranslateController from "sap/translate/infraestructure/controller/sapTranslateController";
 import SAPController from "sap/general/infraestructure/controller/sapController";
 import useMessages, {
 	MessageType,
@@ -21,7 +21,7 @@ export default function useTranslate() {
 	const { paramsObjectsTranslate } = useAppSelector(
 		(state) => state.SAPTranslate
 	);
-	const translateController = new TranslateController();
+	const translateController = new SAPTranslateController();
 	const [languages, setLanguages] = useState<Languages>([]);
 	const [selectableObjects, setSelectableObjects] = useState<SelectableObjects>(
 		[]
