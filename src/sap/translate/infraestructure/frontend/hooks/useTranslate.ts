@@ -43,6 +43,7 @@ export default function useTranslate() {
 	 */
 	const loadInitialData = useCallback(() => {
 		sapController.setSystemChanged(false);
+		sapController.setApplicationChanged(false);
 
 		loadLanguages();
 		loadSelectableObjects();

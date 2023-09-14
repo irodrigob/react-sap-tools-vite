@@ -25,7 +25,7 @@ const TileAppsListContainer: FC = () => {
           </Grid>
         </Grid>
       )}
-      {appsList && (
+      {appsList && !loadingListApps && (
         <div style={{ marginLeft: "0.5rem" }}>
           <Grid container spacing={2} direction="row" xs={12}>
             {appsList.map((row: AppsList) => {

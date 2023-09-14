@@ -4,10 +4,11 @@ import { useAppSelector } from "shared/storage/useStore";
 import useTranslate from "sap/translate/infraestructure/frontend/hooks/useTranslate";
 import FiltersTranslate from "./filters/filtersTranslate";
 import ObjectsTextContainer from "./objectsTextContainer";
+import { APP } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
 
 export default function TranslateContainer() {
     const { systemSelected } = useAppSelector((state) => state.System);
-    const { systemChanged } = useAppSelector((state) => state.SAPGeneral);
+    const { systemChanged, applicationChanged } = useAppSelector((state) => state.SAPGeneral);
     const {
         languages,
         selectableObjects,
@@ -22,10 +23,10 @@ export default function TranslateContainer() {
     } = useTranslate();
 
     useEffect(() => {
-        if (systemSelected.name && systemChanged) {
+        if (systemSelected.name && (systemChanged || applicationChanged)) {
             loadInitialData();
         }
-    }, [systemSelected, systemChanged]);
+    }, [systemSelected, systemChanged, applicationChanged]);
 
     return (
         <>

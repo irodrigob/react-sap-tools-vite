@@ -19,7 +19,7 @@ const TileApps: FC<Props> = ({ app }) => {
         interactive={true}
         onClick={() => {
           //navigate(app.frontendPage);
-          appSelected(app.frontendPage);
+          appSelected(app.frontendPage, app.app);
         }}
       />
     </Card>

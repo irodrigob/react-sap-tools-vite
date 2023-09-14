@@ -10,6 +10,7 @@ import useTransportOrder from "sap/transportOrder/infraestructure/frontend/hooks
 import OrdersTreeTable from "./ordersTreeTable";
 import { useAppSelector } from "shared/storage/useStore";
 import OrderObjectsContainer from "sap/transportOrder/infraestructure/frontend/components/orderObjects/orderObjectsContainer";
+import { APP } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder";
 
 const TransportOrderContainer: FC = () => {
 
@@ -18,16 +19,17 @@ const TransportOrderContainer: FC = () => {
   const { showOrderObjects } = useAppSelector(
     (state) => state.SAPTransportOrder
   );
-  const { systemChanged } = useAppSelector(
+  const { systemChanged, applicationChanged } = useAppSelector(
     (state) => state.SAPGeneral
   );
   const [layout, setLayout] = useState(FCLLayout.OneColumn);
 
   useEffect(() => {
-    if (systemSelected.name && systemChanged) {
+    // Verifico por sistma o cambio de aplicación leer los datos del proceso.
+    if (systemSelected.name && (systemChanged || applicationChanged)) {
       loadInitialData();
     }
-  }, [systemSelected, systemChanged]);
+  }, [systemSelected, systemChanged, applicationChanged]);
 
   useEffect(() => {
     setLayout(
