@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 import {
     Languages,
     SelectableObjects,
-    ParamsObjectTranslate,
     FiltersValueState,
 } from "sap/translate/infraestructure/types/translate";
 import {
@@ -21,6 +20,7 @@ import { ValueState } from "@ui5/webcomponents-react/ssr";
 import FilterDepthRef from "./filterDepthRef";
 import { useAppSelector } from "shared/storage/useStore";
 import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
+import { INIT_PARAMS_OBJECT_TRANSLATE } from "sap/translate/infraestructure/utils/initValues";
 
 interface Props {
     languages: Languages;
@@ -34,9 +34,7 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
     const {
         languages,
         loadingLanguages,
-        loadingSelectableObjects,
         selectableObjects,
-        originLanguage,
         onGo
     } = props;
     const { paramsObjectsTranslate } = useAppSelector(
@@ -116,14 +114,7 @@ const FiltersTranslate: FC<Props> = (props: Props) => {
             }
             }
             onRestore={() => {
-                sapTranslateActions.setParamsObjectsTranslate({
-                    depthRefs: 1,
-                    object: "",
-                    objectName: "",
-                    oLang: originLanguage,
-                    order: "",
-                    tLang: [],
-                });
+                sapTranslateActions.setParamsObjectsTranslate(INIT_PARAMS_OBJECT_TRANSLATE);
             }}
         >
             <FilterGroupItem

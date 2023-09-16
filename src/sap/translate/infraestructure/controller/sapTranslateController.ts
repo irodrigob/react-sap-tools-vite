@@ -16,6 +16,7 @@ import {
 } from "sap/translate/infraestructure/types/translate";
 import { APP } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
 import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
+import { INIT_PARAMS_OBJECT_TRANSLATE } from "sap/translate/infraestructure/utils/initValues";
 
 export default class SAPTranslateController {
 	private appStore: AppStore;
@@ -115,5 +116,8 @@ export default class SAPTranslateController {
 	clearVariables(): void {
 		this.sapTranslateActions.setObjectsText([]);
 		this.sapTranslateActions.setObjectsTextOriginal([]);
+		this.sapTranslateActions.setParamsObjectsTranslate(
+			INIT_PARAMS_OBJECT_TRANSLATE
+		);
 	}
 }

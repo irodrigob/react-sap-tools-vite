@@ -86,7 +86,7 @@ const CellActions: FC = (instance: any) => {
                     onClick={() => {
                       changeUserOrder(rowOriginal, systemSelected.sap_user);
                     }}
-                    style={{ marginLeft: "0.1rem" }}
+                    style={{ marginRight: "0.5rem" }}
                   />
                 )}
               </>

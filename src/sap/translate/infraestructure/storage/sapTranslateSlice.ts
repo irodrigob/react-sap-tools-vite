@@ -3,6 +3,7 @@ import {
 	ObjectsText,
 	ParamsObjectTranslate,
 } from "sap/translate/infraestructure/types/translate";
+import { INIT_PARAMS_OBJECT_TRANSLATE } from "sap/translate/infraestructure/utils/initValues";
 
 export interface SAPTranslateRedux {
 	objectsText: ObjectsText;
@@ -13,14 +14,7 @@ export interface SAPTranslateRedux {
 const initialState: SAPTranslateRedux = {
 	objectsText: [],
 	objectsTextOriginal: [],
-	paramsObjectsTranslate: {
-		depthRefs: 1,
-		object: "PROG",
-		objectName: "ZTRANSLATE_TOOL",
-		oLang: "EN",
-		order: "",
-		tLang: [],
-	},
+	paramsObjectsTranslate: INIT_PARAMS_OBJECT_TRANSLATE,
 };
 
 export const SAPTransportOrderSlice = createSlice({
