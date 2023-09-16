@@ -7,7 +7,6 @@ export default function useGoogle() {
 
 	const googleInitialize = useCallback(
 		(clientID: string, onCallBack: (response: any) => void) => {
-			console.log("llega al google init");
 			window.google.accounts.id.initialize({
 				client_id: clientID,
 				auto_select: true,
@@ -16,6 +15,7 @@ export default function useGoogle() {
 				callback: async (response: any) => {
 					onCallBack(response);
 				},
+				state_cookie_domain: window.document.location.origin,
 			});
 			window.google.accounts.id.prompt();
 		},
