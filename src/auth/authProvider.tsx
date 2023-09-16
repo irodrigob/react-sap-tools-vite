@@ -6,10 +6,13 @@ import {
   FC,
   useMemo,
   useEffect,
+  useCallback,
 } from "react";
 import { loadGSIScript } from "./hooks/useScript";
 import { Status } from "./types.d";
 import { GOOGLE_URL_SCRIPT } from "./constants";
+import useGoogle from "auth/hooks/useGoogle";
+import jwtDecode from "jwt-decode";
 
 interface authContextInterface {
   clientId: string;
@@ -17,8 +20,6 @@ interface authContextInterface {
   setStatus: (value: Status) => void;
   session: any;
   setSession: (value: any) => void;
-  scriptLoadSuccess: boolean;
-  scriptLoadError: boolean;
   loginSuccess: (credentials: any) => void;
   loginError: (error?: any) => void;
 }
@@ -26,13 +27,11 @@ interface authContextInterface {
 const AuthContext = createContext<authContextInterface>({
   clientId: "",
   status: Status.pending,
-  setStatus: () => {},
+  setStatus: () => { },
   session: "",
-  setSession: () => {},
-  scriptLoadSuccess: false,
-  scriptLoadError: false,
-  loginSuccess: () => {},
-  loginError: () => {},
+  setSession: () => { },
+  loginSuccess: () => { },
+  loginError: () => { },
 });
 
 interface Props {
@@ -44,10 +43,9 @@ export const AuthProvider: FC<Props> = (props: Props) => {
   const { client_id, children } = props;
   const [session, setSession] = useState<any>();
   const [status, setStatus] = useState<Status>(Status.pending);
-  const [scriptLoadSuccess, setScriptLoadSuccess] = useState(false);
-  const [scriptLoadError, setScriptLoadError] = useState(false);
+  const { googleInitialize } = useGoogle()
 
-  //const { promptLogin } = useGoogle(client_id);
+
   /*************************************
    * Efectos
    ************************************/
@@ -55,10 +53,12 @@ export const AuthProvider: FC<Props> = (props: Props) => {
   useEffect(() => {
     loadGSIScript(
       () => {
-        setScriptLoadSuccess(true);
+        // El status se cambia a no
+        setStatus(Status.loading);
+        googleInitialize(client_id, callbackGoogleInit)
       },
-      () => {
-        setScriptLoadError(true);
+      (error: any) => {
+        loginError(error)
       }
     );
 
@@ -68,7 +68,7 @@ export const AuthProvider: FC<Props> = (props: Props) => {
       );
       if (scriptTag) document.body.removeChild(scriptTag);
     };
-  }, []);
+  }, [client_id]);
 
   const clientId = useMemo(() => {
     return client_id;
@@ -77,6 +77,12 @@ export const AuthProvider: FC<Props> = (props: Props) => {
   /*************************************
    * Funciones
    ************************************/
+
+  const callbackGoogleInit = useCallback((response: any) => {
+    if (response.credential) loginSuccess(jwtDecode(response.credential));
+    else loginError(response);
+
+  }, [])
 
   /**
    * Captura cuando se hace login y guarda las credenciales y actualiza
@@ -91,9 +97,13 @@ export const AuthProvider: FC<Props> = (props: Props) => {
   /**
    * Captura cuando se produce un error al loguearse.
    */
-  const loginError = () => {
+  const loginError = (error: any) => {
     setStatus(Status.noAuth);
     setSession(null);
+
+    console.log("ERROR AUTH CONNECT----->")
+    console.log(error)
+    console.log("<-------ERROR AUTH CONNECT")
   };
 
   return (
@@ -104,8 +114,6 @@ export const AuthProvider: FC<Props> = (props: Props) => {
         setStatus,
         session,
         setSession,
-        scriptLoadSuccess,
-        scriptLoadError,
         loginSuccess,
         loginError,
       }}
