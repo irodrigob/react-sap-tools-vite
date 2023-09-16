@@ -28,11 +28,9 @@ export const loadGSIScript = (
 ) => {
 	loadScript(GOOGLE_URL_SCRIPT)
 		.then(() => {
-			console.log("bien");
 			fResolveCallBack();
 		})
 		.catch((error) => {
-			console.log("mal");
 			fErrorCallBack(error);
 		});
 };
