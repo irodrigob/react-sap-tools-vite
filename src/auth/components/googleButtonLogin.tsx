@@ -9,7 +9,7 @@ import { useSession } from "auth/authProvider";
  */
 export function GoogleButtonLogin() {
   const navigate = useNavigate();
-  const { clientId, scriptLoadSuccess, loginSuccess } = useSession();
+  const { clientId, loginSuccess } = useSession();
   const buttonRef = useRef<HTMLDivElement>(null);
   //const from = location.state?.from?.pathname || "/";
 
@@ -26,21 +26,20 @@ export function GoogleButtonLogin() {
    * seleccionar la cuenta una y otra vez.
    */
   useEffect(() => {
-    if (scriptLoadSuccess) {
-      window.google.accounts.id.initialize({
-        client_id: clientId,
-        callback: handlerLogin,
-        auto_select: true,
-      });
 
-      window.google.accounts.id.renderButton(buttonRef.current!, {
-        type: "standard",
-        theme: "outline",
-        size: "large",
-      });
-    }
-  }, [scriptLoadSuccess]);
+    window.google.accounts.id.initialize({
+      client_id: clientId,
+      callback: handlerLogin,
+      auto_select: true,
+    });
 
-  if (!scriptLoadSuccess) return <p>Cargando el botón</p>;
+    window.google.accounts.id.renderButton(buttonRef.current!, {
+      type: "standard",
+      theme: "outline",
+      size: "large",
+    });
+
+  }, []);
+
   return <div ref={buttonRef} />;
 }
