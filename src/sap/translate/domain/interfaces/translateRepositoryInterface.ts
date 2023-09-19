@@ -6,7 +6,9 @@ import {
 	ResponseSaveObjectText,
 } from "sap/translate/infraestructure/types/translate";
 import { ObjectsTextToSaveDTO } from "sap/translate/infraestructure/dto/setObjectTextDTO";
+import { TransportObjectsTextDTO } from "sap/translate/infraestructure/dto/transportObjectTextDTO";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
+import { ReturnsDTO } from "shared/dto/generalDTO";
 
 export default interface TranslateRepositoryInterface {
 	/**
@@ -65,4 +67,16 @@ export default interface TranslateRepositoryInterface {
 		dataConnection: DataConnectionSystem,
 		order: string
 	): Promise<void>;
+	/**
+	 * Graba los textos traducidos
+	 * @param dataConnection | Datos conexión sistema
+	 * @param paramsTranslate | Parametros del objeto a traducción
+	 * @param objectsText | Textos a traducir
+	 * @returns | Array con las traducciones confirmadas en SAP y los mensajes del proceso
+	 */
+	transportObjectTranslate(
+		dataConnection: DataConnectionSystem,
+		paramsTranslate: ParamsObjectTranslate,
+		objectsText: TransportObjectsTextDTO
+	): Promise<ReturnsDTO>;
 }

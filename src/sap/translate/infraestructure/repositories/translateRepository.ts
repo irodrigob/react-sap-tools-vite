@@ -10,6 +10,8 @@ import {
 } from "sap/translate/infraestructure/types/translate";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 import { ObjectsTextToSaveDTO } from "sap/translate/infraestructure/dto/setObjectTextDTO";
+import { TransportObjectsTextDTO } from "sap/translate/infraestructure/dto/transportObjectTextDTO";
+import { ReturnsDTO } from "shared/dto/generalDTO";
 
 export const QUERY_GET_LANGUAGES = gql`
 	query Query(
@@ -169,6 +171,15 @@ export const SET_OBJECT_TRANSLATE = gql`
 	}
 `;
 
+export const TRANSLATE_OBJECT_TEXT = gql`
+	mutation Mutation($input: inputTransportObjects) {
+		transportObjects(input: $input) {
+			message
+			type
+		}
+	}
+`;
+
 export const QUERY_CHECK_OBJECT = gql`
 	query Query(
 		$system: String!
@@ -324,5 +335,26 @@ export default class TranslateRepository
 			},
 		});
 		return response.data.checkOrder;
+	}
+	async transportObjectTranslate(
+		dataConnection: DataConnectionSystem,
+		paramsTranslate: ParamsObjectTranslate,
+		objectsText: TransportObjectsTextDTO
+	): Promise<ReturnsDTO> {
+		const response = await this._apolloClient.mutate({
+			mutation: SET_OBJECT_TRANSLATE,
+			variables: {
+				input: {
+					system: dataConnection.host,
+					sap_user: dataConnection.sap_user,
+					sap_password: dataConnection.sap_password,
+					language: dataConnection.language,
+					client: dataConnection.client,
+					objectText: objectsText,
+					...paramsTranslate,
+				},
+			},
+		});
+		return response.data.transportObjects;
 	}
 }
