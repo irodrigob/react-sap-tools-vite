@@ -6,7 +6,7 @@ import {
 	ResponseSaveObjectText,
 } from "sap/translate/infraestructure/types/translate";
 import { ObjectsTextToSaveDTO } from "sap/translate/infraestructure/dto/setObjectTextDTO";
-import { TransportObjectsTextDTO } from "sap/translate/infraestructure/dto/transportObjectTextDTO";
+import { AddObjects2Order } from "sap/translate/infraestructure/dto/addObjects2Order";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 import { ReturnsDTO } from "shared/dto/generalDTO";
 
@@ -68,15 +68,15 @@ export default interface TranslateRepositoryInterface {
 		order: string
 	): Promise<void>;
 	/**
-	 * Graba los textos traducidos
+	 * Guarda los objetos en una orden de transporte
 	 * @param dataConnection | Datos conexión sistema
 	 * @param paramsTranslate | Parametros del objeto a traducción
-	 * @param objectsText | Textos a traducir
-	 * @returns | Array con las traducciones confirmadas en SAP y los mensajes del proceso
+	 * @param objects | Objetos a guardar en una orden
+	 * @returns |
 	 */
-	transportObjectTranslate(
+	addObjects2Order(
 		dataConnection: DataConnectionSystem,
 		paramsTranslate: ParamsObjectTranslate,
-		objectsText: TransportObjectsTextDTO
+		objects: AddObjects2Order
 	): Promise<ReturnsDTO>;
 }

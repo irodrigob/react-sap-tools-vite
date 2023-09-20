@@ -9,21 +9,16 @@ import {
 	ReponseGetObjectsTranslate,
 	ResponseCheckObject,
 	ResponseCheckOrder,
+	ResponseAddObject2Order,
 } from "sap/translate/infraestructure/types/application";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import {
 	ObjectsText,
 	ParamsObjectTranslate,
 } from "sap/translate/infraestructure/types/translate";
-import {
-	ObjectTextToSaveDTO,
-	ObjectsTextToSaveDTO,
-} from "sap/translate/infraestructure/dto/setObjectTextDTO";
 import ObjectText from "sap/translate/domain/entities/objectText";
-import {
-	FIELDS_TEXT,
-	NUMBER_FIELD_TLANG,
-} from "sap/translate/infraestructure/utils/constants/constantsTranslate";
+import { ReturnsDTO } from "shared/dto/generalDTO";
+import { AddObjects2Order } from "sap/translate/infraestructure/dto/addObjects2Order";
 
 export default class TranslateApplication {
 	private translateRepository: TranslateRepository;
@@ -187,6 +182,24 @@ export default class TranslateApplication {
 			await this.translateRepository.checkOrder(dataConnection, order);
 
 			return Result.ok(undefined);
+		} catch (error) {
+			return Result.fail<ErrorGraphql>(
+				ErrorGraphql.create(error as ApolloError)
+			);
+		}
+	}
+	async addObjects2Order(
+		dataConnection: DataConnectionSystem,
+		paramsTranslate: ParamsObjectTranslate,
+		objects: AddObjects2Order
+	): Promise<ResponseAddObject2Order> {
+		try {
+			let response = await this.translateRepository.addObjects2Order(
+				dataConnection,
+				paramsTranslate,
+				objects
+			);
+			return Result.ok(response);
 		} catch (error) {
 			return Result.fail<ErrorGraphql>(
 				ErrorGraphql.create(error as ApolloError)

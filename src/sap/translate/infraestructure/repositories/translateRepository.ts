@@ -10,7 +10,7 @@ import {
 } from "sap/translate/infraestructure/types/translate";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 import { ObjectsTextToSaveDTO } from "sap/translate/infraestructure/dto/setObjectTextDTO";
-import { TransportObjectsTextDTO } from "sap/translate/infraestructure/dto/transportObjectTextDTO";
+import { AddObjects2Order } from "sap/translate/infraestructure/dto/addObjects2Order";
 import { ReturnsDTO } from "shared/dto/generalDTO";
 
 export const QUERY_GET_LANGUAGES = gql`
@@ -222,6 +222,17 @@ export const QUERY_CHECK_ORDER = gql`
 	}
 `;
 
+export const ADD_OBJECT_ORDER = gql`
+	mutation Mutation($input: inputAddObjects2Order) {
+		addObjects2Order(input: $input) {
+			return {
+				type
+				message
+			}
+		}
+	}
+`;
+
 export default class TranslateRepository
 	extends graphQLRepository
 	implements TranslateRepositoryInterface
@@ -336,13 +347,13 @@ export default class TranslateRepository
 		});
 		return response.data.checkOrder;
 	}
-	async transportObjectTranslate(
+	async addObjects2Order(
 		dataConnection: DataConnectionSystem,
 		paramsTranslate: ParamsObjectTranslate,
-		objectsText: TransportObjectsTextDTO
+		objects: AddObjects2Order
 	): Promise<ReturnsDTO> {
 		const response = await this._apolloClient.mutate({
-			mutation: SET_OBJECT_TRANSLATE,
+			mutation: ADD_OBJECT_ORDER,
 			variables: {
 				input: {
 					system: dataConnection.host,
@@ -350,7 +361,7 @@ export default class TranslateRepository
 					sap_password: dataConnection.sap_password,
 					language: dataConnection.language,
 					client: dataConnection.client,
-					objectText: objectsText,
+					objects: objects,
 					...paramsTranslate,
 				},
 			},

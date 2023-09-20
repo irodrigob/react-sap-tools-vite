@@ -25,18 +25,17 @@ const FilterOrder: FC<Props> = (props: Props) => {
     const { paramsObjectsTranslate } = useAppSelector(
         (state) => state.SAPTranslate
     );
+    const [selectedOrder, setSelectedOrder] = useState("");
     const sapTranslateActions = new SAPTranslateActions();
     const [orderValueState, setOrderValueState] = useState<ValueState>(
         ValueState.None
     );
     const [orderValueStateMessage, setOrderValueStateMessage] = useState("");
     const translateController = new SAPTranslateController()
-    const onSelectedOrder = useCallback((order: string) => {
-        sapTranslateActions.setParamsObjectsTranslate({
-            ...paramsObjectsTranslate,
-            order: order
-        })
-        translateController.checkOrder(order).then((response) => {
+
+    const onSelectedOrder = useCallback((orderSelected: string) => {
+        setSelectedOrder(orderSelected)
+        translateController.checkOrder(orderSelected).then((response) => {
             if (response.isFailure) {
                 let error = (response.getErrorValue() as ErrorGraphql).getError();
                 setOrderValueState(ValueState.Error)
@@ -53,12 +52,17 @@ const FilterOrder: FC<Props> = (props: Props) => {
      * Efecto que sincroniza los valueState de la orden entre el componente de orden y de los filtros.
      * Si paso una función que actualiza el state de los filtros en vez de hacerlo como esta hora no sirve,
      * porque el componente de orden no se estera del cambio.
+     * Además guarda la orden seleccionada si no hay errores. 
      */
     useEffect(() => {
+        let orderTemp = selectedOrder
         // Si hay error quito la orden previa que pueda tener
-        if (orderValueState == ValueState.Error) sapTranslateActions.setParamsObjectsTranslate({
+        if (orderValueState == ValueState.Error)
+            orderTemp = ""
+
+        sapTranslateActions.setParamsObjectsTranslate({
             ...paramsObjectsTranslate,
-            order: ""
+            order: orderTemp
         })
 
         setFilterValueState({
@@ -66,7 +70,7 @@ const FilterOrder: FC<Props> = (props: Props) => {
             orderStateMessage: orderValueStateMessage,
             orderState: orderValueState
         })
-    }, [orderValueState, orderValueStateMessage])
+    }, [orderValueState, orderValueStateMessage, selectedOrder])
 
 
     return <SelectOrderContainer

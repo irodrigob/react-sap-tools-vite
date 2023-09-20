@@ -9,6 +9,7 @@ import {
 	ReponseGetObjectsTranslate,
 	ResponseCheckObject,
 	ResponseCheckOrder,
+	ResponseAddObject2Order,
 } from "sap/translate/infraestructure/types/application";
 import {
 	ObjectsText,
@@ -17,6 +18,7 @@ import {
 import { APP } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
 import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
 import { INIT_PARAMS_OBJECT_TRANSLATE } from "sap/translate/infraestructure/utils/initValues";
+import { AddObjects2Order } from "sap/translate/infraestructure/dto/addObjects2Order";
 
 export default class SAPTranslateController {
 	private appStore: AppStore;
@@ -118,6 +120,22 @@ export default class SAPTranslateController {
 		this.sapTranslateActions.setObjectsTextOriginal([]);
 		this.sapTranslateActions.setParamsObjectsTranslate(
 			INIT_PARAMS_OBJECT_TRANSLATE
+		);
+	}
+	/**
+	 * Graba los textos traducidos
+	 * @param paramsTranslate | Parametros del objeto a traducción
+	 * @param ObjectsText | Textos a traducir
+	 * @returns | Resultado con las traducciones confirmadas y resultado del proceso
+	 */
+	async addObjects2Order(
+		paramsTranslate: ParamsObjectTranslate,
+		objects: AddObjects2Order
+	): Promise<ResponseAddObject2Order> {
+		return this.translateApplication.addObjects2Order(
+			this.getDataForConnection(),
+			paramsTranslate,
+			objects
 		);
 	}
 }

@@ -7,6 +7,7 @@ import {
 	SelectableObjects,
 	ResponseSaveObjectText,
 } from "sap/translate/infraestructure/types/translate";
+import { ReturnsDTO } from "shared/dto/generalDTO";
 
 export type ResponseLanguages = Result<Languages> | Result<ErrorGraphql>;
 export type ResponseSelectableObjects =
@@ -20,3 +21,4 @@ export type ReponseSaveTranslate =
 	| Result<ErrorGraphql>;
 export type ResponseCheckObject = Result<void> | Result<ErrorGraphql>;
 export type ResponseCheckOrder = Result<void> | Result<ErrorGraphql>;
+export type ResponseAddObject2Order = Result<ReturnsDTO> | Result<ErrorGraphql>;
