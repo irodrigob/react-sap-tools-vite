@@ -7,7 +7,6 @@ import ObjectsTextContainer from "./objectsTextContainer";
 import { APP } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
 
 export default function TranslateContainer() {
-    const { systemSelected } = useAppSelector((state) => state.System);
     const { systemChanged, applicationChanged } = useAppSelector((state) => state.SAPGeneral);
     const {
         languages,
@@ -23,10 +22,10 @@ export default function TranslateContainer() {
     } = useTranslate();
 
     useEffect(() => {
-        if (systemSelected.name && (systemChanged || applicationChanged)) {
+        if (systemChanged || applicationChanged) {
             loadInitialData();
         }
-    }, [systemSelected, systemChanged, applicationChanged]);
+    }, [systemChanged, applicationChanged]);
 
     return (
         <>

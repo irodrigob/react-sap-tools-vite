@@ -102,6 +102,14 @@ export default class SAPController {
 		this.SAPGeneralActions.setLoadingListApps(value);
 	}
 	/**
+	 * Indicador para saber si los servicios principales:metadata, userinfo,apps
+	 * han sido cargados. Paso básico para poder llamar al resto de servicios
+	 * @param value
+	 */
+	setMainServicesLoaded(value: boolean) {
+		this.SAPGeneralActions.setMainServicesLoaded(value);
+	}
+	/**
 	 * Devuelve los datos de conexión al sistema
 	 * @returns Objetos con los datos de conexión al sistema
 	 */
@@ -136,6 +144,6 @@ export default class SAPController {
 	 */
 	clearVariables(): void {
 		this.SAPGeneralActions.setAppsList([]);
-		this.SAPGeneralActions.setApplicationChanged(true);
+		this.SAPGeneralActions.setApplicationChanged(false);
 	}
 }

@@ -203,24 +203,34 @@ export default function useToolbarTable() {
    * Gestiona la visualización de los objetos de las ordenes
    */
   const handlerOrderObjects = useCallback(() => {
-    sapTransportOrderActions.setShowOrderObjects(true);
-    sapTransportOrderActions.setOrdersObjectsSelected(
-      orderTaskSelected
-        .filter((row) => row.hasObjects)
-        .map((row: FieldsOrdersTreeTable | FieldsTaskTreeTable) => {
-          return {
-            order: row.orderTask,
-            description: row.description,
-            row_editable: row.row_editable,
-            type: row.type,
-            user: row.user,
-            parent_order:
-              row.levelTree == "task"
-                ? (row as FieldsTaskTreeTable).parent_order
-                : "",
-          };
-        })
-    );
+    if (orderTaskSelected.length > 0) {
+      sapTransportOrderActions.setShowOrderObjects(true);
+      sapTransportOrderActions.setOrdersObjectsSelected(
+        orderTaskSelected
+          .filter((row) => row.hasObjects)
+          .map((row: FieldsOrdersTreeTable | FieldsTaskTreeTable) => {
+            return {
+              order: row.orderTask,
+              description: row.description,
+              row_editable: row.row_editable,
+              type: row.type,
+              user: row.user,
+              parent_order:
+                row.levelTree == "task"
+                  ? (row as FieldsTaskTreeTable).parent_order
+                  : "",
+            };
+          })
+      );
+    }
+    else {
+      showMessage(
+        getI18nText("transportOrder.tableOrder.actions.selectOneOrder"),
+        MessageType.info
+      )
+    }
+
+
   }, [orderTaskSelected]);
 
   return {

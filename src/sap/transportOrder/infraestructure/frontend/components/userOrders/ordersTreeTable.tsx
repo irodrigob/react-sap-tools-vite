@@ -36,7 +36,7 @@ const OrdersTreeTable: FC = () => {
           autoResetExpanded: autoResetExpanded,
         }}
         selectionMode="MultiSelect"
-        selectionBehavior="RowSelector"
+        selectionBehavior="Row"
         onRowExpandChange={() => {
           //setRowExpanded(event.detail.row.original);
           // console.log(event);

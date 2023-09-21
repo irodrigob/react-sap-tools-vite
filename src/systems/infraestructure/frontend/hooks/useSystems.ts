@@ -52,18 +52,12 @@ export default function useSystems() {
 			// Indico que no se esta conectado al sistema.
 			systemActions.setConnectedToSystem(false);
 
-			// Si se esta en el raíz se muestra el popup de sistemas. Si ya se esta en un aplicación
-			// no se muestra.
-			//if (location.pathname === "/") dispatch(setShowListApps(true));
-
 			// Oculto las tiles de selección de systema
 			setShowSystemList(false);
 			// Se indica que se mostrará la lista de aplicación
 			sapController.setShowListApps(true);
 			// Y el loader que se están leyendo las aplicaciones
 			sapController.setLoadingListApps(true);
-			// Se indica el cambio de aplicación cuando cambia el sistema.
-			sapController.setApplicationChanged(true);
 
 			// Se borras las variables principales de las aplicaciones para que no se visualice
 			// datos de otro sistema si falla algo del sistema seleccionado.

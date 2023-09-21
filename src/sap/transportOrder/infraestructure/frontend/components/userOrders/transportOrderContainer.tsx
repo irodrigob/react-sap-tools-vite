@@ -14,7 +14,6 @@ import { APP } from "sap/transportOrder/infraestructure/utils/constants/constant
 
 const TransportOrderContainer: FC = () => {
 
-  const { systemSelected } = useAppSelector((state) => state.System);
   const { loadInitialData } = useTransportOrder();
   const { showOrderObjects } = useAppSelector(
     (state) => state.SAPTransportOrder
@@ -26,10 +25,10 @@ const TransportOrderContainer: FC = () => {
 
   useEffect(() => {
     // Verifico por sistma o cambio de aplicación leer los datos del proceso.
-    if (systemSelected.name && (systemChanged || applicationChanged)) {
+    if (systemChanged || applicationChanged) {
       loadInitialData();
     }
-  }, [systemSelected, systemChanged, applicationChanged]);
+  }, [systemChanged, applicationChanged]);
 
   useEffect(() => {
     setLayout(

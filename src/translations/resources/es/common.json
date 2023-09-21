@@ -320,6 +320,10 @@
 			"lblIdText": "ID Text",
 			"noDataChanged": "No se han modificado datos",
 			"saveInProcess": "Grabación en proceso"
+		},
+		"toolbarActionsTable": {
+			"tooltipSave": "Grabar traducciones",
+			"tooltipAddObjects": "Añadir objetos a ordenes"
 		}
 	},
 	"messageManager": {

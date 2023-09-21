@@ -57,9 +57,6 @@ const ToolbarTable: FC = () => {
             "transportOrder.tableOrder.actions.orderObjects"
           )}
           onClick={handlerOrderObjects}
-          style={{
-            ...(!determineVisibleBtnObjects && { display: "none" }),
-          }}
         />
         <Button
           icon="duplicate"
