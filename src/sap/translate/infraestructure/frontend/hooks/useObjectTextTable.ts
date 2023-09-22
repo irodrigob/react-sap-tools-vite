@@ -1,5 +1,5 @@
 import { AnalyticalTableColumnDefinition } from "@ui5/webcomponents-react";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
 	ObjectsText,
 	ResponseSaveObjectText,
@@ -34,6 +34,7 @@ export default function useObjectTextTable() {
 	} = useMessages();
 	const translateController = new SAPTranslateController();
 	const messageManagerController = new MessageManagerController();
+	const [selectedObjectText, setSelectedObjectText] = useState<ObjectsText>([]);
 
 	const columnsTable: AnalyticalTableColumnDefinition[] = useMemo(() => {
 		// Campos fijos
@@ -183,11 +184,40 @@ export default function useObjectTextTable() {
 			);
 		}
 	}, [objectsText, objectsTextOriginal]);
+	/**
+	 * Marca/Desmarca las filas de la tabla de textos
+	 * @param objectsText
+	 */
+	const setRowSelected = useCallback(
+		(rowsSelected: ObjectsText) => {
+			if (rowsSelected.length > 0) {
+				let newRowSelected = [...selectedObjectText];
+				rowsSelected.forEach((rowSelected) => {
+					let tabix = newRowSelected.findIndex(
+						(row: ObjectText) =>
+							row.object == rowSelected.object &&
+							row.objName == rowSelected.objName &&
+							row.objType == rowSelected.objType &&
+							row.idText == rowSelected.idText
+					);
+					if (tabix !== -1) newRowSelected.splice(tabix, tabix >= 0 ? 1 : 0);
+					else newRowSelected.push(rowSelected);
+				});
+
+				setSelectedObjectText(newRowSelected);
+			} else {
+				setSelectedObjectText([]);
+			}
+		},
+		[selectedObjectText]
+	);
 
 	return {
 		columnsTable,
 		processRowChanged,
 		determinePpsalTypeFromColumnId,
 		saveObjectsText,
+		selectedObjectText,
+		setRowSelected,
 	};
 }

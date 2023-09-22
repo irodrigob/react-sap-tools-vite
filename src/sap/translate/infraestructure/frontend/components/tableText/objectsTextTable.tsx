@@ -8,7 +8,7 @@ import ToolbarTable from "./toolbarTable";
 
 export default function ObjectsTextTable() {
     const { objectsText } = useAppSelector(state => state.SAPTranslate)
-    const { columnsTable } = useObjectTextTable();
+    const { columnsTable, setRowSelected, selectedObjectText } = useObjectTextTable();
     const { getI18nText } = useTranslations();
 
     return (
@@ -21,7 +21,17 @@ export default function ObjectsTextTable() {
                 scaleWidthMode="Grow"
                 selectionMode="MultiSelect"
                 selectionBehavior="Row"
-                header={<ToolbarTable />}
+                header={<ToolbarTable selectedObjectText={selectedObjectText} />}
+                onRowSelect={(event: any) => {
+                    if (event.detail.row) {
+                        setRowSelected([{ ...event.detail.row.original }]);
+                    } else if (event.detail.selectedFlatRows) {
+                        setRowSelected(event.detail.selectedFlatRows.map((row: any) => {
+                            return row.original;
+                        }))
+
+                    }
+                }}
             />
         </>
     );
