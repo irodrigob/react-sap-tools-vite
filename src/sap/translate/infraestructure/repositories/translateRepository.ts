@@ -225,10 +225,8 @@ export const QUERY_CHECK_ORDER = gql`
 export const ADD_OBJECT_ORDER = gql`
 	mutation Mutation($input: inputAddObjects2Order) {
 		addObjects2Order(input: $input) {
-			return {
-				type
-				message
-			}
+			type
+			message
 		}
 	}
 `;
@@ -361,11 +359,14 @@ export default class TranslateRepository
 					sap_password: dataConnection.sap_password,
 					language: dataConnection.language,
 					client: dataConnection.client,
-					objects: objects,
-					...paramsTranslate,
+					objectsAdd: objects,
+					object: paramsTranslate.object,
+					objectName: paramsTranslate.objectName,
+					tLang: paramsTranslate.tLang,
+					order: paramsTranslate.order,
 				},
 			},
 		});
-		return response.data.transportObjects;
+		return response.data.addObjects2Order;
 	}
 }

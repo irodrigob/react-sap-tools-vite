@@ -314,6 +314,7 @@
 		"objectsTextDataNotLoad": "Seleccione un objeto y los idiomas a traducir",
 		"noDataFound": "No se han encontrado datos",
 		"loadingData": "Leyendo traducciones",
+		"addingObjects2Order": "Añadiendo los objetos en la orden",
 		"objectsTextTable": {
 			"lblObjtype": "Tipo",
 			"lblObject": "Objeto",
@@ -323,7 +324,9 @@
 		},
 		"toolbarActionsTable": {
 			"tooltipSave": "Grabar traducciones",
-			"tooltipAddObjects": "Añadir objetos a ordenes"
+			"tooltipAddObjects": "Añadir objetos a ordenes",
+			"noObjectTextSelected": "Debe seleccionar al menos un objeto",
+			"noOrderSelected": "Debe seleccionar una orden para realizar dicha acción"
 		}
 	},
 	"messageManager": {

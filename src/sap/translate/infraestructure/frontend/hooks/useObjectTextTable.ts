@@ -166,10 +166,10 @@ export default function useObjectTextTable() {
 							result.return[0].message,
 							convertServiceSAPMsgType(result.return[0].type)
 						);
-						console.log(result.objectText);
+
 						// Actualizo el modelo con los datos devueltos.
 						translateActions.setObjectsText(result.objectText);
-						//translateActions.setObjectsTextOriginal(result.objectText);
+						translateActions.setObjectsTextOriginal(result.objectText);
 					} else {
 						updateResultError(
 							toastID,
