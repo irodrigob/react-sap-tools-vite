@@ -19,6 +19,7 @@ import useMessages, {
 } from "shared/infraestructure/hooks/useMessages";
 import { responseSystemRepoArray } from "systems/infraestructure/types/application";
 import useTunnelSystem from "tunnelSystem/infraestructure/frontend/hooks/useTunnelSystem";
+import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 
 export default function useSystems() {
 	const {
@@ -39,6 +40,7 @@ export default function useSystems() {
 	const { getI18nText } = useTranslations();
 	const { showResultError, showMessage } = useMessages();
 	const { getTunnelConfiguration, getTunnelProviders } = useTunnelSystem();
+	const messageController = new MessageManagerController();
 
 	/**
 	 * Proceso que se lanza cuando se selecciona un sistema
@@ -243,6 +245,7 @@ export default function useSystems() {
 		sapController.clearVariables();
 		sapTransportOrderController.clearVariables();
 		sapTranslateController.clearVariables();
+		messageController.clearVariables();
 	}, []);
 
 	return {

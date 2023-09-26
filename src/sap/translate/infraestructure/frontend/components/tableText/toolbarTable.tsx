@@ -4,6 +4,7 @@ import {
 } from "@ui5/webcomponents-react";
 import "@ui5/webcomponents-icons/dist/save";
 import "@ui5/webcomponents-icons/dist/shipping-status";
+import "@ui5/webcomponents-icons/dist/download";
 import {
     ObjectsText
 } from "sap/translate/infraestructure/types/translate.d";
@@ -24,6 +25,10 @@ const ToolbarTable: FC<Props> = (props) => {
 
     return (
         <ToolbarV2 alignContent="End">
+            <ToolbarButton
+                icon="download"
+                tooltip={getI18nText("transportOrder.toolbarActionsTable.tooltipDownloadTexts")}
+            />
             <ToolbarButton
                 icon="shipping-status"
                 tooltip={getI18nText("transportOrder.toolbarActionsTable.tooltipAddObjects")}

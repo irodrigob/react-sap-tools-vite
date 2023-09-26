@@ -325,6 +325,7 @@
 		"toolbarActionsTable": {
 			"tooltipSave": "Grabar traducciones",
 			"tooltipAddObjects": "Añadir objetos a ordenes",
+			"tooltipDownloadTexts": "Descargar textos a excel",
 			"noObjectTextSelected": "Debe seleccionar al menos un objeto",
 			"noOrderSelected": "Debe seleccionar una orden para realizar dicha acción"
 		}
