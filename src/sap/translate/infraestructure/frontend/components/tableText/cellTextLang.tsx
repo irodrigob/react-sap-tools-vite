@@ -1,13 +1,13 @@
 import { FC } from "react";
 import { Input, Ui5CustomEvent, InputDomRef } from "@ui5/webcomponents-react";
 import ObjectText from "sap/translate/domain/entities/objectText";
-import useObjectTextTable from "sap/translate/infraestructure/frontend/hooks/useObjectTextTable";
+import useDataManager from "sap/translate/infraestructure/frontend/hooks/useDataManager";
 import { COLOR_TEXT_PPSAL_TYPE, TEXT_PPSAL_TYPE } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
 
 const CellTextLang: FC = (instance: any) => {
     const rowOriginal = instance.row.original;
     const column = instance.column;
-    const { processRowChanged, determinePpsalTypeFromColumnId } = useObjectTextTable();
+    const { determinePpsalTypeFromColumnId, processRowChanged } = useDataManager()
 
     var colorPpsalType = COLOR_TEXT_PPSAL_TYPE.WITHOUT_TEXT
     switch (rowOriginal[determinePpsalTypeFromColumnId(column.id)]) {

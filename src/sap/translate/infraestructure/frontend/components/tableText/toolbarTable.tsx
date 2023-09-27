@@ -8,7 +8,6 @@ import "@ui5/webcomponents-icons/dist/download";
 import {
     ObjectsText
 } from "sap/translate/infraestructure/types/translate.d";
-import useObjectTextTable from "sap/translate/infraestructure/frontend/hooks/useObjectTextTable";
 import { useTranslations } from "translations/i18nContext";
 import useToolbarTable from "sap/translate/infraestructure/frontend/hooks/useToolbarTable";
 import { FC } from "react";
@@ -18,17 +17,19 @@ interface Props {
 }
 const ToolbarTable: FC<Props> = (props) => {
     const { selectedObjectText } = props
-    const { saveObjectsText } = useObjectTextTable()
     const { getI18nText } = useTranslations()
-    const { handlerAddObjects } = useToolbarTable()
+    const { handlerAddObjects, handlerSaveObjectsText } = useToolbarTable()
 
-
+    /*
+    <ToolbarButton
+                    icon="download"
+                    tooltip={getI18nText("transportOrder.toolbarActionsTable.tooltipDownloadTexts")}
+                />
+    
+    */
     return (
         <ToolbarV2 alignContent="End">
-            <ToolbarButton
-                icon="download"
-                tooltip={getI18nText("transportOrder.toolbarActionsTable.tooltipDownloadTexts")}
-            />
+
             <ToolbarButton
                 icon="shipping-status"
                 tooltip={getI18nText("transportOrder.toolbarActionsTable.tooltipAddObjects")}
@@ -36,7 +37,7 @@ const ToolbarTable: FC<Props> = (props) => {
             />
             <ToolbarButton
                 icon="save"
-                onClick={saveObjectsText}
+                onClick={handlerSaveObjectsText}
                 tooltip={getI18nText("transportOrder.toolbarActionsTable.tooltipSave")}
             />
         </ToolbarV2>)

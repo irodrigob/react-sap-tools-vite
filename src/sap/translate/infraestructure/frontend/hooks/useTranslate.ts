@@ -3,6 +3,7 @@ import {
 	Languages,
 	ObjectsText,
 	SelectableObjects,
+	ResponseSaveObjectText,
 } from "sap/translate/infraestructure/types/translate";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import SAPTranslateController from "sap/translate/infraestructure/controller/sapTranslateController";
@@ -13,6 +14,8 @@ import useMessages, {
 import { useTranslations } from "translations/i18nContext";
 import { useAppSelector } from "shared/storage/useStore";
 import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
+
+import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 
 export default function useTranslate() {
 	const { getI18nText, language } = useTranslations();
@@ -33,7 +36,14 @@ export default function useTranslate() {
 
 	const sapController = new SAPController();
 	const sapTranslateActions = new SAPTranslateActions();
-	const { showResultError } = useMessages();
+	const {
+		showResultError,
+		showMessage,
+		updateMessage,
+		updateResultError,
+		convertServiceSAPMsgType,
+	} = useMessages();
+	const messageManagerController = new MessageManagerController();
 
 	/**
 	 * Lectura inicial de datos
@@ -124,6 +134,41 @@ export default function useTranslate() {
 			});
 	}, [paramsObjectsTranslate]);
 
+	/**
+	 * Grabación de los textos modificados
+	 * @param objectsText | Tabla con los textos
+	 */
+	const saveObjectsText = useCallback((objectsTextToSave: ObjectsText) => {
+		let toastID = showMessage(
+			getI18nText("translate.objectsTextTable.saveInProcess"),
+			MessageType.info
+		);
+		translateController
+			.saveObjectTranslate(paramsObjectsTranslate, objectsTextToSave)
+			.then((resultSave) => {
+				if (resultSave.isSuccess) {
+					let result = resultSave.getValue() as ResponseSaveObjectText;
+
+					messageManagerController.addFromSAPArrayReturn(result.return);
+
+					updateMessage(
+						toastID,
+						result.return[0].message,
+						convertServiceSAPMsgType(result.return[0].type)
+					);
+
+					// Actualizo el modelo con los datos devueltos.
+					sapTranslateActions.setObjectsText(result.objectText);
+					sapTranslateActions.setObjectsTextOriginal(result.objectText);
+				} else {
+					updateResultError(
+						toastID,
+						resultSave.getErrorValue() as ErrorGraphql
+					);
+				}
+			});
+	}, []);
+
 	return {
 		languages,
 		setLanguages,
@@ -137,5 +182,6 @@ export default function useTranslate() {
 		loadingObjectsText,
 		loadObjectsText,
 		setLoadObjectsText,
+		saveObjectsText,
 	};
 }

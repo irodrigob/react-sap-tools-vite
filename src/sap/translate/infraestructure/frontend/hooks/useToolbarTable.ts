@@ -10,6 +10,12 @@ import SAPTranslateController from "sap/translate/infraestructure/controller/sap
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import { ReturnsDTO } from "shared/dto/generalDTO";
 import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
+import useTranslate from "./useTranslate";
+import {
+	TEXT_PPSAL_TYPE,
+	FIELDS_TEXT,
+	NUMBER_FIELD_TLANG,
+} from "sap/translate/infraestructure/utils/constants/constantsTranslate";
 
 export default function useToolbarTable() {
 	const { getI18nText } = useTranslations();
@@ -20,11 +26,12 @@ export default function useToolbarTable() {
 		convertServiceSAPMsgType,
 	} = useMessages();
 	const { convertObjectTexts2AddObjects } = useDataManager();
-	const { paramsObjectsTranslate } = useAppSelector(
+	const { paramsObjectsTranslate, objectsText } = useAppSelector(
 		(state) => state.SAPTranslate
 	);
 	const sapTranslateController = new SAPTranslateController();
 	const messageManagerController = new MessageManagerController();
+	const { saveObjectsText } = useTranslate();
 
 	/**
 	 * Gestiona añadir objetos a una orden
@@ -78,5 +85,33 @@ export default function useToolbarTable() {
 		[paramsObjectsTranslate]
 	);
 
-	return { handlerAddObjects };
+	/**
+	 * Gestiona el proceso de grabación de los textos
+	 */
+	const handlerSaveObjectsText = useCallback(() => {
+		let objectsTextToSave: ObjectsText = [];
+		// Solo se graban aquellos registors modificados, eso se sabe por el campo de de tipo de proppuesta de texto.
+		objectsText.forEach((objectText) => {
+			for (let x = 1; x <= NUMBER_FIELD_TLANG; x++) {
+				let ppsalField = `${FIELDS_TEXT.PPSAL_TYPE}${x}`;
+				let langField = `${FIELDS_TEXT.LANGUAGE}${x}`;
+				if (objectText[langField] != "") {
+					if (objectText[ppsalField] == TEXT_PPSAL_TYPE.CHANGED_TEXT)
+						objectsTextToSave.push(objectText);
+				} else {
+					break;
+				}
+			}
+		});
+		if (objectsTextToSave.length > 0) {
+			saveObjectsText(objectsTextToSave);
+		} else {
+			showMessage(
+				getI18nText("translate.objectsTextTable.noDataChanged"),
+				MessageType.info
+			);
+		}
+	}, [objectsText]);
+
+	return { handlerAddObjects, handlerSaveObjectsText };
 }

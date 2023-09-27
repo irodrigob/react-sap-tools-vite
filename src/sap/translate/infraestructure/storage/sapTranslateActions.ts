@@ -1,8 +1,10 @@
 import AppStore from "shared/storage/appStore";
+import { AnalyticalTableColumnDefinition } from "@ui5/webcomponents-react";
 import {
 	setObjectsText,
 	setObjectsTextOriginal,
 	setParamsObjectsTranslate,
+	setColumnsObjectsText,
 } from "./sapTranslateSlice";
 import {
 	ObjectsText,
@@ -18,5 +20,8 @@ export default class SAPTranslateActions extends AppStore {
 	}
 	setParamsObjectsTranslate(value: ParamsObjectTranslate) {
 		this.dispatch(setParamsObjectsTranslate(value));
+	}
+	setColumnsObjectsText(value: AnalyticalTableColumnDefinition[]) {
+		this.dispatch(setColumnsObjectsText(value));
 	}
 }

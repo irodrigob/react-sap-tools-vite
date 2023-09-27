@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AnalyticalTableColumnDefinition } from "@ui5/webcomponents-react";
 import {
 	ObjectsText,
 	ParamsObjectTranslate,
@@ -9,12 +10,14 @@ export interface SAPTranslateRedux {
 	objectsText: ObjectsText;
 	objectsTextOriginal: ObjectsText;
 	paramsObjectsTranslate: ParamsObjectTranslate;
+	columnsObjectsText: AnalyticalTableColumnDefinition[];
 }
 
 const initialState: SAPTranslateRedux = {
 	objectsText: [],
 	objectsTextOriginal: [],
 	paramsObjectsTranslate: INIT_PARAMS_OBJECT_TRANSLATE,
+	columnsObjectsText: [],
 };
 
 export const SAPTransportOrderSlice = createSlice({
@@ -33,6 +36,12 @@ export const SAPTransportOrderSlice = createSlice({
 		) => {
 			state.paramsObjectsTranslate = action.payload;
 		},
+		setColumnsObjectsText: (
+			state,
+			action: PayloadAction<AnalyticalTableColumnDefinition[]>
+		) => {
+			state.columnsObjectsText = action.payload;
+		},
 	},
 });
 
@@ -40,6 +49,7 @@ export const {
 	setObjectsText,
 	setObjectsTextOriginal,
 	setParamsObjectsTranslate,
+	setColumnsObjectsText,
 } = SAPTransportOrderSlice.actions;
 
 export default SAPTransportOrderSlice.reducer;

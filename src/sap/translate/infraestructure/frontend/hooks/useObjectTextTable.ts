@@ -1,11 +1,12 @@
 import { AnalyticalTableColumnDefinition } from "@ui5/webcomponents-react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
 	ObjectsText,
 	ResponseSaveObjectText,
 } from "sap/translate/infraestructure/types/translate.d";
 import { useTranslations } from "translations/i18nContext";
 import { useAppSelector } from "shared/storage/useStore";
+import useDataManager from "sap/translate/infraestructure/frontend/hooks/useDataManager";
 import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
 import CellTextLang from "sap/translate/infraestructure/frontend/components/tableText/cellTextLang";
 import ObjectText from "sap/translate/domain/entities/objectText";
@@ -23,8 +24,13 @@ import MessageManagerController from "messageManager/infraestructure/controller/
 
 export default function useObjectTextTable() {
 	const { getI18nText } = useTranslations();
-	const { objectsText, objectsTextOriginal, paramsObjectsTranslate } =
-		useAppSelector((state) => state.SAPTranslate);
+	const {
+		objectsText,
+		objectsTextOriginal,
+		paramsObjectsTranslate,
+		columnsObjectsText,
+	} = useAppSelector((state) => state.SAPTranslate);
+	const { determinePpsalTypeFromColumnId } = useDataManager();
 	const translateActions = new SAPTranslateActions();
 	const {
 		showMessage,
@@ -36,104 +42,52 @@ export default function useObjectTextTable() {
 	const messageManagerController = new MessageManagerController();
 	const [selectedObjectText, setSelectedObjectText] = useState<ObjectsText>([]);
 
-	const columnsTable: AnalyticalTableColumnDefinition[] = useMemo(() => {
-		// Campos fijos
-		let columnsTmp: AnalyticalTableColumnDefinition[] = [
-			{
-				Header: getI18nText("translate.objectsTextTable.lblObjtype"),
-				headerTooltip: getI18nText("translate.objectsTextTable.lblObjtype"),
-				accessor: "objType",
-				maxWidth: 80,
-			},
-			{
-				Header: getI18nText("translate.objectsTextTable.lblObject"),
-				headerTooltip: getI18nText("translate.objectsTextTable.lblObject"),
-				accessor: "objName",
-			},
-			{
-				Header: getI18nText("translate.objectsTextTable.lblIdText"),
-				headerTooltip: getI18nText("translate.objectsTextTable.lblIdText"),
-				accessor: "idText",
-			},
-		];
-		// El idioma origen viene del primer registro de la tabla
-		columnsTmp.push({
-			Header: objectsText[0].colOlang,
-			headerTooltip: objectsText[0].colOlang,
-			accessor: "txtOlang",
-		});
+	useEffect(() => {
+		if (objectsText.length > 0) {
+			// Campos fijos
+			let columnsTmp: AnalyticalTableColumnDefinition[] = [
+				{
+					Header: getI18nText("translate.objectsTextTable.lblObjtype"),
+					headerTooltip: getI18nText("translate.objectsTextTable.lblObjtype"),
+					accessor: "objType",
+					maxWidth: 80,
+				},
+				{
+					Header: getI18nText("translate.objectsTextTable.lblObject"),
+					headerTooltip: getI18nText("translate.objectsTextTable.lblObject"),
+					accessor: "objName",
+				},
+				{
+					Header: getI18nText("translate.objectsTextTable.lblIdText"),
+					headerTooltip: getI18nText("translate.objectsTextTable.lblIdText"),
+					accessor: "idText",
+				},
+			];
+			// El idioma origen viene del primer registro de la tabla
+			columnsTmp.push({
+				Header: objectsText[0].colOlang,
+				headerTooltip: objectsText[0].colOlang,
+				accessor: "txtOlang",
+			});
 
-		// Idiomas de destino
-		for (let x = 1; x <= NUMBER_FIELD_TLANG; x++) {
-			let langField = `${FIELDS_TEXT.LANGUAGE}${x}`;
-			if (objectsText[0][langField] != "") {
-				let colField = `${FIELDS_TEXT.COL_TEXT}${x}`;
-				columnsTmp.push({
-					Header: objectsText[0][colField],
-					headerTooltip: objectsText[0][colField],
-					accessor: `txtTlang${x}`,
-					Cell: CellTextLang,
-				});
+			// Idiomas de destino
+			for (let x = 1; x <= NUMBER_FIELD_TLANG; x++) {
+				let langField = `${FIELDS_TEXT.LANGUAGE}${x}`;
+				if (objectsText[0][langField] != "") {
+					let colField = `${FIELDS_TEXT.COL_TEXT}${x}`;
+					columnsTmp.push({
+						Header: objectsText[0][colField],
+						headerTooltip: objectsText[0][colField],
+						accessor: `txtTlang${x}`,
+						Cell: CellTextLang,
+					});
+				}
 			}
+			translateActions.setColumnsObjectsText(columnsTmp);
 		}
-
-		return columnsTmp;
 	}, [objectsText]);
 
-	/**
-	 * En base al ID de la columna de la tabla se devuelve el campo que contiene el tipo de
-	 * propuesta de texto
-	 * @param columnId | Id de columna con el texto
-	 * @returns | Nombre de columna de la propuesta de texto
-	 */
-	const determinePpsalTypeFromColumnId = (columnId: string) => {
-		return columnId.replace(FIELDS_TEXT.TEXT, FIELDS_TEXT.PPSAL_TYPE);
-	};
-	/**
-	 * En base al ID de la columna de la tabla se devuelve el campo que contiene el idioma de destino
-	 * @param columnId | Id de columna con el texto
-	 * @returns | Nombre de columna de la propuesta de texto
-	 */
-	const determineColTextFromColumnId = (columnId: string) => {
-		return columnId.replace(FIELDS_TEXT.TEXT, FIELDS_TEXT.COL_TEXT);
-	};
-	/**
-	 * Proceso que realiza la actualización de los datos tanto en el modelo propio
-	 * como en la tabla que guarda los registros que se actualizan
-	 * @param rowChanged | Fila modificada
-	 * @param columnId | Id de columna modificada
-	 * @param value | Valor introducido
-	 */
-	const processRowChanged = useCallback(
-		(rowChanged: ObjectText, columnId: string, value: string) => {
-			let newObjectsText = structuredClone(objectsText);
-			let fieldPpsalType = determinePpsalTypeFromColumnId(columnId);
-
-			let rowObjectIndex = newObjectsText.findIndex(
-				(row: ObjectText) =>
-					row.object == rowChanged.object &&
-					row.objName == rowChanged.objName &&
-					row.objType == rowChanged.objType &&
-					row.idText == rowChanged.idText
-			);
-
-			newObjectsText[rowObjectIndex][columnId] = value;
-
-			// Si hay valor se mira si el valor es el mismo al original. Si es igual se pone el tipo de propuesta original,
-			// en caso de no serlo se pone que ha sido modificado.
-			newObjectsText[rowObjectIndex][fieldPpsalType] =
-				newObjectsText[rowObjectIndex][columnId] !=
-				objectsTextOriginal[rowObjectIndex][columnId]
-					? TEXT_PPSAL_TYPE.CHANGED_TEXT
-					: objectsTextOriginal[rowObjectIndex][fieldPpsalType];
-
-			// Los datos se cambian siempre porque puede haber cambios en el tipo de propuesta, aunque se indique que los valores sean iguales.
-			translateActions.setObjectsText(newObjectsText);
-		},
-		[objectsTextOriginal, objectsText]
-	);
-
-	const saveObjectsText = useCallback(() => {
+	/*	const saveObjectsText = useCallback(() => {
 		let objectsTextToSave: ObjectsText = [];
 		// Solo se graban aquellos registors modificados, eso se sabe por el campo de de tipo de proppuesta de texto.
 		objectsText.forEach((objectText) => {
@@ -183,7 +137,7 @@ export default function useObjectTextTable() {
 				MessageType.info
 			);
 		}
-	}, [objectsText, objectsTextOriginal]);
+	}, [objectsText, objectsTextOriginal]);*/
 	/**
 	 * Marca/Desmarca las filas de la tabla de textos
 	 * @param objectsText
@@ -213,10 +167,7 @@ export default function useObjectTextTable() {
 	);
 
 	return {
-		columnsTable,
-		processRowChanged,
-		determinePpsalTypeFromColumnId,
-		saveObjectsText,
+		columnsObjectsText,
 		selectedObjectText,
 		setRowSelected,
 	};
