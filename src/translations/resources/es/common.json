@@ -316,8 +316,9 @@
 		"loadingData": "Leyendo traducciones",
 		"addingObjects2Order": "Añadiendo los objetos en la orden",
 		"objectsTextTable": {
-			"lblObjtype": "Tipo",
+			"lblObjtype": "Tipo texto",
 			"lblObject": "Objeto",
+			"lblObjectName": "Nombre del objeto",
 			"lblIdText": "ID Text",
 			"noDataChanged": "No se han modificado datos",
 			"saveInProcess": "Grabación en proceso"

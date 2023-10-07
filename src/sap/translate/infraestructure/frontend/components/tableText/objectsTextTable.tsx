@@ -17,7 +17,7 @@ export default function ObjectsTextTable() {
                 scaleWidthMode="Grow"
                 selectionMode="MultiSelect"
                 selectionBehavior="Row"
-                header={<ToolbarTable selectedObjectText={selectedObjectText} />}
+                header={<ToolbarTable selectedObjectText={selectedObjectText} objectsText={objectsText} />}
                 onRowSelect={(event: any) => {
                     if (event.detail.row) {
                         setRowSelected([{ ...event.detail.row.original }]);

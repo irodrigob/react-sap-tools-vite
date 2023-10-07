@@ -6,6 +6,7 @@ import useMessages, {
 import { useAppSelector } from "shared/storage/useStore";
 import { useCallback } from "react";
 import useDataManager from "./useDataManager";
+import useExcelManager from "./useExcelManager";
 import SAPTranslateController from "sap/translate/infraestructure/controller/sapTranslateController";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import { ReturnsDTO } from "shared/dto/generalDTO";
@@ -32,6 +33,7 @@ export default function useToolbarTable() {
 	const sapTranslateController = new SAPTranslateController();
 	const messageManagerController = new MessageManagerController();
 	const { saveObjectsText } = useTranslate();
+	const { generateExcel } = useExcelManager();
 
 	/**
 	 * Gestiona añadir objetos a una orden
@@ -113,5 +115,15 @@ export default function useToolbarTable() {
 		}
 	}, [objectsText]);
 
-	return { handlerAddObjects, handlerSaveObjectsText };
+	/**
+	 * Gestiona la descarga de los objetos de los textos a excel
+	 */
+	const handlerDownloadExcel = useCallback(
+		(objectsText: ObjectsText) => () => {
+			generateExcel(objectsText);
+		},
+		[objectsText]
+	);
+
+	return { handlerAddObjects, handlerSaveObjectsText, handlerDownloadExcel };
 }

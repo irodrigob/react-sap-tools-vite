@@ -24,4 +24,7 @@ export const FIELDS_TEXT = {
 	PPSAL_TYPE: "ppsalTypeTlang",
 	COL_TEXT: "colTlang",
 	LANGUAGE: "langTlang",
+	LANG_OLANG: "langOlang",
+	COL_OLANG: "colOlang",
+	TXT_OLANG: "txtOlang",
 };

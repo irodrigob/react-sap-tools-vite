@@ -14,18 +14,18 @@ import { FC } from "react";
 
 interface Props {
     selectedObjectText: ObjectsText
+    objectsText: ObjectsText
 }
 const ToolbarTable: FC<Props> = (props) => {
-    const { selectedObjectText } = props
+    const { selectedObjectText, objectsText } = props
     const { getI18nText } = useTranslations()
-    const { handlerAddObjects, handlerSaveObjectsText } = useToolbarTable()
-
+    const { handlerAddObjects, handlerSaveObjectsText, handlerDownloadExcel } = useToolbarTable()
     /*
-    <ToolbarButton
+     <ToolbarButton
                     icon="download"
                     tooltip={getI18nText("transportOrder.toolbarActionsTable.tooltipDownloadTexts")}
+                    onClick={handlerDownloadExcel(objectsText)}
                 />
-    
     */
     return (
         <ToolbarV2 alignContent="End">
