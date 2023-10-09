@@ -1,5 +1,8 @@
 import { useTranslations } from "translations/i18nContext";
-import { ObjectsText } from "sap/translate/infraestructure/types/translate.d";
+import {
+	ObjectsText,
+	ParamsObjectTranslate,
+} from "sap/translate/infraestructure/types/translate.d";
 import useMessages, {
 	MessageType,
 } from "shared/infraestructure/hooks/useMessages";
@@ -119,9 +122,13 @@ export default function useToolbarTable() {
 	 * Gestiona la descarga de los objetos de los textos a excel
 	 */
 	const handlerDownloadExcel = useCallback(
-		(objectsText: ObjectsText) => () => {
-			generateExcel(objectsText);
-		},
+		(objectsText: ObjectsText, paramsObjectsTranslate: ParamsObjectTranslate) =>
+			() => {
+				generateExcel(
+					objectsText,
+					`${paramsObjectsTranslate.object}_${paramsObjectsTranslate.objectName}.xlsx`
+				);
+			},
 		[objectsText]
 	);
 

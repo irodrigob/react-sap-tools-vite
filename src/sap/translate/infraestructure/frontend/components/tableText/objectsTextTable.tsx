@@ -4,7 +4,7 @@ import { useAppSelector } from "shared/storage/useStore";
 import ToolbarTable from "./toolbarTable";
 
 export default function ObjectsTextTable() {
-    const { objectsText } = useAppSelector(state => state.SAPTranslate)
+    const { objectsText, paramsObjectsTranslate } = useAppSelector(state => state.SAPTranslate)
     const { columnsObjectsText, setRowSelected, selectedObjectText } = useObjectTextTable();
 
     return (
@@ -17,7 +17,7 @@ export default function ObjectsTextTable() {
                 scaleWidthMode="Grow"
                 selectionMode="MultiSelect"
                 selectionBehavior="Row"
-                header={<ToolbarTable selectedObjectText={selectedObjectText} objectsText={objectsText} />}
+                header={<ToolbarTable selectedObjectText={selectedObjectText} objectsText={objectsText} paramsObjectsTranslate={paramsObjectsTranslate} />}
                 onRowSelect={(event: any) => {
                     if (event.detail.row) {
                         setRowSelected([{ ...event.detail.row.original }]);

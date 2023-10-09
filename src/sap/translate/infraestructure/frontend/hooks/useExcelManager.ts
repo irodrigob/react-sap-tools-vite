@@ -42,42 +42,67 @@ export default function useExcelManager() {
 	 * @returns | Registro con las descripciones de las columnas
 	 */
 	const buildRowDescriptions = useCallback(
-		(objectText: ObjectText): ObjectText => {
+		(objectText: ObjectText): string[] => {
 			// Tomo como base el registro donde
-			let rowDescription = { ...objectText };
+			let descriptions: string[] = [];
 
-			rowDescription.object = rowDescription.objName = getI18nText(
-				"translate.objectsTextTable.lblObject"
+			descriptions.push(getI18nText("translate.objectsTextTable.lblObject"));
+			descriptions.push(getI18nText("translate.objectsTextTable.lblObjtype"));
+			descriptions.push(
+				getI18nText("translate.objectsTextTable.lblObjectName")
 			);
-			rowDescription.objType = getI18nText(
-				"translate.objectsTextTable.lblObjtype"
-			);
-			rowDescription.objName = getI18nText(
-				"translate.objectsTextTable.lblObjectName"
-			);
-			rowDescription.idText = getI18nText(
-				"translate.objectsTextTable.lblIdText"
-			);
-			// El valor de colOlang que es donde esta la descripción del idioma la pongo donde sale el texto
-			rowDescription.txtOlang = rowDescription.colOlang;
+			descriptions.push(getI18nText("translate.objectsTextTable.lblIdText"));
+			descriptions.push(objectText.colOlang);
 
 			// Los campos de destino se hace lo mismo que en el origen. Se pone el texto del idioma destino en la columna del texto del id de objeto
 			for (let x = 1; x <= NUMBER_FIELD_TLANG; x++) {
 				let langField = `${FIELDS_TEXT.LANGUAGE}${x}`;
 
-				if (rowDescription[langField as keyof ObjectText] != "") {
+				if (objectText[langField as keyof ObjectText] != "") {
 					let colField = `${FIELDS_TEXT.COL_TEXT}${x}`;
 					let textField = `${FIELDS_TEXT.TEXT}${x}`;
 
-					rowDescription[textField as keyof ObjectText] = rowDescription[
-						colField as keyof ObjectText
-					] as string;
+					descriptions.push(objectText[colField as keyof ObjectText] as string);
 				} else {
 					break;
 				}
 			}
 
-			return rowDescription;
+			return descriptions;
+		},
+		[]
+	);
+	/**
+	 * Convierte los datos de texto a formato AOA
+	 * @param objectsText | Datos de texto
+	 * @returns Array of object
+	 */
+	const convertData2AOA = useCallback(
+		(objectsText: ObjectsText): string[][] => {
+			let dataAOA: string[][] = [];
+
+			objectsText.forEach((row: ObjectText) => {
+				let values: string[] = [];
+
+				values.push(row.object);
+				values.push(row.objName);
+				values.push(row.objType);
+				values.push(row.idText);
+				values.push(row.txtOlang);
+				for (let x = 1; x <= NUMBER_FIELD_TLANG; x++) {
+					let langField = `${FIELDS_TEXT.LANGUAGE}${x}`;
+
+					if (row[langField as keyof ObjectText] != "") {
+						let colField = `${FIELDS_TEXT.TEXT}${x}`;
+
+						values.push(row[colField as keyof ObjectText] as string);
+					} else {
+						break;
+					}
+				}
+				dataAOA.push(values);
+			});
+			return dataAOA;
 		},
 		[]
 	);
@@ -109,68 +134,24 @@ export default function useExcelManager() {
 		ws["!cols"][colIndex].hidden = true;
 	}, []);
 
-	/**
-	 * Oculta las columnas técnicas de los textos necesarias para el montaje de la tabla
-	 * y grabación de datos pero que no tiene sentido que se visualicen
-	 * @param ws
-	 * @param objectText
-	 */
-	const hiddenTechnicalColumns = useCallback(
-		(ws: XLSX.WorkSheet, objectText: ObjectText) => {
-			let fieldsKeys = Object.keys(objectText);
+	const generateExcel = (objectsText: ObjectsText, fileName: string) => {
+		let aoa: string[][] = [];
 
-			// La primera pasada se ocultan campos fijos: id del idioma origen, texto del idioma origen, id e descripcion de los idioma de destino y el tipo
-			// de propuesta de texto
-			fieldsKeys.forEach((field, key) => {
-				if (
-					field == FIELDS_TEXT.COL_OLANG ||
-					field == FIELDS_TEXT.LANG_OLANG ||
-					field.includes(FIELDS_TEXT.COL_TEXT) ||
-					field.includes(FIELDS_TEXT.PPSAL_TYPE) ||
-					field.includes(FIELDS_TEXT.LANGUAGE)
-				) {
-					hiddeColumn(key, ws);
-				}
-			});
-			// La segunda pasada es para ocultar los campos de texto de idioma destino que no tienen idioma asociado
-			for (let x = 1; x <= 10; x++) {
-				let langField = `${FIELDS_TEXT.LANGUAGE}${x}`;
+		aoa.push(buildHeader(objectsText[0]));
+		aoa.push(buildRowDescriptions(objectsText[0]));
+		aoa = aoa.concat(convertData2AOA(objectsText));
 
-				if (objectText[langField as keyof ObjectText] == "") {
-					let textField = `${FIELDS_TEXT.TEXT}${x}`;
-					let colIndex = fieldsKeys.findIndex((row) => row == textField);
-					if (colIndex != -1) hiddeColumn(colIndex, ws);
-				} else {
-					break;
-				}
-			}
-		},
-		[]
-	);
-
-	const generateExcel = (objectsText: ObjectsText) => {
-		let newObjectText: ObjectsText = [];
-
-		let headerFields = buildHeader(objectsText[0]);
-		console.log(headerFields);
-
-		newObjectText.push(buildRowDescriptions(objectsText[0]));
-		newObjectText = newObjectText.concat(objectsText);
-
-		let ws = XLSX.utils.json_to_sheet(newObjectText, {
-			header: headerFields,
-		});
+		let ws = XLSX.utils.aoa_to_sheet(aoa);
 
 		let wb = XLSX.utils.book_new();
-		XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+		XLSX.utils.book_append_sheet(wb, ws, "Translate");
 
-		//hiddenTechnicalRow(ws);
-		//hiddenTechnicalColumns(ws, objectsText[0]);
+		hiddenTechnicalRow(ws);
 
 		const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
 		FileAs.save(
 			"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
-			"prueba.xlsx",
+			fileName,
 			excelBuffer
 		);
 	};

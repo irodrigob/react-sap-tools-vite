@@ -33,8 +33,8 @@ dependencies:
     specifier: ^1.18.0
     version: 1.18.0
   '@ui5/webcomponents-react':
-    specifier: ^1.20.0
-    version: 1.20.0(@types/react-dom@18.2.7)(@types/react@18.2.21)(@ui5/webcomponents-fiori@1.18.0)(@ui5/webcomponents-icons@1.18.0)(@ui5/webcomponents@1.18.0)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^1.21.0
+    version: 1.21.0(@types/react-dom@18.2.7)(@types/react@18.2.21)(@ui5/webcomponents-fiori@1.18.0)(@ui5/webcomponents-icons@1.18.0)(@ui5/webcomponents@1.18.0)(react-dom@18.2.0)(react@18.2.0)
   axios:
     specifier: ^1.5.0
     version: 1.5.0
@@ -989,17 +989,17 @@ packages:
     resolution: {integrity: sha512-z/G02d+59gyyUb7KYhKi9jOhicek6QD2oMaotUyG+lUkybpXoV49dY9bj7Ah5Q+y7knK2jU67UTX9FyfGzaxQg==}
     dev: true
 
-  /@tanstack/react-virtual@3.0.0-beta.61(react@18.2.0):
-    resolution: {integrity: sha512-ElaOqL3FvJE075/6mRbv8VBHhiF5kHjGA7eo1O+x7sPWO7+fzkTr7t7AhNaWzRLxhUpQfbb6XG3ltp8mpfFLQg==}
+  /@tanstack/react-virtual@3.0.0-beta.65(react@18.2.0):
+    resolution: {integrity: sha512-Q21cUoE0C8Oyzy3RAMV+u4BuB+RwIf2/oQRCWksmIBp1PqLEtvXhAldh7v/wUt7WKEkislKDICZAvbYYs7EAyQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@tanstack/virtual-core': 3.0.0-beta.61
+      '@tanstack/virtual-core': 3.0.0-beta.65
       react: 18.2.0
     dev: false
 
-  /@tanstack/virtual-core@3.0.0-beta.61:
-    resolution: {integrity: sha512-C3iu9rkWvjJ/KbYAjuwLTjqiR9fcf9lXjRBLHDzsL/M6cR7/HLSU94abSdVrzuiqRvP7u7e0FeqPK0O3VbvWyg==}
+  /@tanstack/virtual-core@3.0.0-beta.65:
+    resolution: {integrity: sha512-ObP2pvXBdbivinr7BWDbGqYt4TK8wNzYsOWio+qBkDx5AJFuvqcdJxcCCYnv4dzVTe5ELA1MT4tkt8NB/tnEdA==}
     dev: false
 
   /@types/crypto-js@4.1.1:
@@ -1351,8 +1351,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@ui5/webcomponents-react@1.20.0(@types/react-dom@18.2.7)(@types/react@18.2.21)(@ui5/webcomponents-fiori@1.18.0)(@ui5/webcomponents-icons@1.18.0)(@ui5/webcomponents@1.18.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-1KPdfnJxnsLYHcKsHTaMfOevGz69Yvk/cAiN3Ou8GSzhLmmzpOkIk9pQztnHPOhcXxtrd9L/K3TSELTjKcDgdw==}
+  /@ui5/webcomponents-react@1.21.0(@types/react-dom@18.2.7)(@types/react@18.2.21)(@ui5/webcomponents-fiori@1.18.0)(@ui5/webcomponents-icons@1.18.0)(@ui5/webcomponents@1.18.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-1Tlyl/7ORRMOyrdXFEJrp94fSMAa0TYaDo8kpVEpUQLd2X/FS0ga38Dj2DrlquF+5MeOXv8F6EE4WJtIYtiIIA==}
     peerDependencies:
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -1372,7 +1372,7 @@ packages:
       '@ui5/webcomponents-icons':
         optional: true
     dependencies:
-      '@tanstack/react-virtual': 3.0.0-beta.61(react@18.2.0)
+      '@tanstack/react-virtual': 3.0.0-beta.65(react@18.2.0)
       '@types/react': 18.2.21
       '@types/react-dom': 18.2.7
       '@ui5/webcomponents': 1.18.0
