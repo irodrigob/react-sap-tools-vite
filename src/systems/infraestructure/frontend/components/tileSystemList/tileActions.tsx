@@ -1,6 +1,7 @@
 import { FC, useCallback, useState } from "react";
 import { Icon, FlexBox } from "@ui5/webcomponents-react";
-import "@ui5/webcomponents-icons/dist/toaster-down";
+import "@ui5/webcomponents-icons/dist/download-from-cloud";
+import "@ui5/webcomponents-icons/dist/download";
 import "@ui5/webcomponents-icons/dist/delete";
 import { Tooltip } from "@mui/material";
 import System from "systems/domain/entities/system";
@@ -68,24 +69,44 @@ const TileActions: FC<Props> = (props) => {
     <>
       <FlexBox direction="Row">
         {system.use_connection_tunnel && (
-          <Tooltip
-            title={getI18nText("tileSystems.tileSystem.tooltipDownloadTunnel")}
-            placement="bottom-start"
-          >
-            <Icon
-              name="toaster-down"
-              showTooltip={true}
-              interactive={true}
-              style={{ margin: "1rem", width: "1.2rem", height: "1.2rem" }}
-              onClick={() => {
-                tunnelController.downloadLaunchTunnelConnection(
-                  system.name,
-                  system.host,
-                  tunnelConfiguration
-                );
-              }}
-            />
-          </Tooltip>
+          <>
+            <Tooltip
+              title={getI18nText("tileSystems.tileSystem.tooltipDownloadTunnelDocker")}
+              placement="bottom-start"
+            >
+              <Icon
+                name="download-from-cloud"
+                showTooltip={true}
+                interactive={true}
+                style={{ margin: "1rem", width: "1.2rem", height: "1.2rem" }}
+                onClick={() => {
+                  tunnelController.downloadLaunchTunnelConnectionDocker(
+                    system.name,
+                    system.host,
+                    tunnelConfiguration
+                  );
+                }}
+              />
+            </Tooltip>
+            <Tooltip
+              title={getI18nText("tileSystems.tileSystem.tooltipDownloadTunnelExe")}
+              placement="bottom-start"
+            >
+              <Icon
+                name="download"
+                showTooltip={true}
+                interactive={true}
+                style={{ margin: "1rem", width: "1.2rem", height: "1.2rem" }}
+                onClick={() => {
+                  tunnelController.downloadLaunchTunnelConnectionExe(
+                    system.name,
+                    system.host,
+                    tunnelConfiguration
+                  );
+                }}
+              />
+            </Tooltip>
+          </>
         )}
         <Tooltip
           title={getI18nText("tileSystems.tileSystem.tooltipEdit")}

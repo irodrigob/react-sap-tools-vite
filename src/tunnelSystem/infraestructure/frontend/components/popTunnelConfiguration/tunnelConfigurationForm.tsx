@@ -173,67 +173,64 @@ const TunnelConfigurationForm: FC<Props> = (props) => {
             />
           }
         />
-        {watchAuthToken && watchAuthToken.length > 0 && (
-          <FormItem
-            children={
-              <Controller
-                name="apiToken"
-                control={control}
-                defaultValue=""
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <FlexBox direction="Column">
-                    <TextField
-                      style={{ marginTop: "1.5em" }}
-                      label={getI18nText(
-                        "tunneling.editConfiguration.labelApiToken"
+        <FormItem
+          children={
+            <Controller
+              name="apiToken"
+              control={control}
+              defaultValue=""
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <FlexBox direction="Column">
+                  <TextField
+                    style={{ marginTop: "1.5em" }}
+                    label={getI18nText(
+                      "tunneling.editConfiguration.labelApiToken"
+                    )}
+                    variant="filled"
+                    value={value}
+                    onChange={onChange}
+                    error={!!error}
+                    helperText={
+                      !!error
+                        ? error.type === "validate"
+                          ? getI18nText("general.fieldMandatory")
+                          : error.message
+                        : null
+                    }
+                    sx={{
+                      width: "35em",
+                      fontFamily: "var(--sapFontFamily)",
+                      fontSize: "var(--sapFontSize)",
+                    }}
+                    type="password"
+                  />
+                  <Text style={{ marginTop: "1em" }}>
+                    {getI18nText(
+                      "tunneling.editConfiguration.helperApiToken"
+                    )}
+                    <br />
+                    <Link
+                      href={getI18nText(
+                        "tunneling.editConfiguration.urlApiToken"
                       )}
-                      variant="filled"
-                      required
-                      value={value}
-                      onChange={onChange}
-                      error={!!error}
-                      helperText={
-                        !!error
-                          ? error.type === "validate"
-                            ? getI18nText("general.fieldMandatory")
-                            : error.message
-                          : null
-                      }
-                      sx={{
-                        width: "35em",
-                        fontFamily: "var(--sapFontFamily)",
-                        fontSize: "var(--sapFontSize)",
-                      }}
-                      type="password"
-                    />
-                    <Text style={{ marginTop: "1em" }}>
+                      target="_blank"
+                    >
                       {getI18nText(
-                        "tunneling.editConfiguration.helperApiToken"
+                        "tunneling.editConfiguration.helperApiTokenNavigate"
                       )}
-                      <br />
-                      <Link
-                        href={getI18nText(
-                          "tunneling.editConfiguration.urlApiToken"
-                        )}
-                        target="_blank"
-                      >
-                        {getI18nText(
-                          "tunneling.editConfiguration.helperApiTokenNavigate"
-                        )}
-                      </Link>
-                    </Text>
-                  </FlexBox>
-                )}
-                rules={{
-                  validate: (value) => value !== "" && watchAuthToken != "",
-                }}
-              />
-            }
-          />
-        )}
+                    </Link>
+                  </Text>
+                </FlexBox>
+              )}
+              rules={{
+                validate: (value) => value !== "" && watchAuthToken != "",
+              }}
+            />
+          }
+        />
       </Form>
       <Bar
         design="Footer"

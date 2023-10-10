@@ -29,16 +29,34 @@ export default class TunnelController {
 		return this.tunnelApplication.getTunnels(apiToken);
 	}
 	/**
-	 * Devuelve el contenido para el fichero que lanza el tunnel
+	 * Devuelve el contenido para el fichero que lanza el tunnel para docker
 	 * @param host | Host donde hay que hacer el tunnel
 	 * @param configuration | Configuración del tunel
 	 * @returns String con el contenido a guardar en el fichero
 	 */
-	getContentLaunchTunnel(
+	getContentLaunchTunnelDocker(
 		host: string,
 		configuration: TunnelConfiguration
 	): string {
-		return this.tunnelApplication.getContentLaunchTunnel(host, configuration);
+		return this.tunnelApplication.getContentLaunchTunnelDocker(
+			host,
+			configuration
+		);
+	}
+	/**
+	 * Devuelve el contenido para el fichero que lanza el tunnel para ejecutable
+	 * @param host | Host donde hay que hacer el tunnel
+	 * @param configuration | Configuración del tunel
+	 * @returns String con el contenido a guardar en el fichero
+	 */
+	getContentLaunchTunnelExe(
+		host: string,
+		configuration: TunnelConfiguration
+	): string {
+		return this.tunnelApplication.getContentLaunchTunnelExe(
+			host,
+			configuration
+		);
 	}
 	/**
 	 * Devuelve la configuración del tunel del usuario
@@ -74,20 +92,38 @@ export default class TunnelController {
 		return this.tunnelApplication.getTunnelURLFromHost(host, apiToken);
 	}
 	/**
-	 * Descarga del fichero por lotes para poder lanzar el tunel
+	 * Descarga del fichero por lotes para poder lanzar el tunel en docker
 	 * @param systemName | Nombre del sistema
 	 * @param host | Host
 	 * @param tunnelConfiguration | Configuración del tunel
 	 */
-	downloadLaunchTunnelConnection(
+	downloadLaunchTunnelConnectionDocker(
 		systemName: string,
 		host: string,
 		tunnelConfiguration: TunnelConfiguration
 	): void {
-		let content = this.getContentLaunchTunnel(host, tunnelConfiguration);
+		let content = this.getContentLaunchTunnelDocker(host, tunnelConfiguration);
 		FileAs.save(
 			"text/plain",
-			`tunnel ${systemName.toUpperCase()}.bat`,
+			`tunnel docker ${systemName.toUpperCase()}.bat`,
+			content
+		);
+	}
+	/**
+	 * Descarga del fichero por lotes para poder lanzar el tunel el ejecutable
+	 * @param systemName | Nombre del sistema
+	 * @param host | Host
+	 * @param tunnelConfiguration | Configuración del tunel
+	 */
+	downloadLaunchTunnelConnectionExe(
+		systemName: string,
+		host: string,
+		tunnelConfiguration: TunnelConfiguration
+	): void {
+		let content = this.getContentLaunchTunnelExe(host, tunnelConfiguration);
+		FileAs.save(
+			"text/plain",
+			`tunnel exe ${systemName.toUpperCase()}.bat`,
 			content
 		);
 	}

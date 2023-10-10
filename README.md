@@ -106,7 +106,7 @@ Para conectarse se puede hacer de dos maneras: Usando docker o el instalable. Am
 
 Para usar Docker, si no se tiene instalado, hay que descargarlo de su [página oficial](https://docs.docker.com/get-docker/). La instalación es muy sencilla, y cualquier problema es sencillo solucionarlo.
 
-Si hemos configurado el sistema para que use tunel ngrok en la tile de sistema nos aparecerá el siguiente icono: ![alt icono descarga tunel](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_descarga_tunel.png). Este icono lo que hará es descargarnos un autoejecutable donde arrancará de manera automática el ngrok con los datos de conexión al sistema. Este fichero no es necesario volver a descargarlo salvo que se cambie alguno de los token de autentificación a Ngrok.
+Si hemos configurado el sistema para que use tunel ngrok en la tile de sistema nos aparecerá el siguiente icono: ![alt icono descarga tunel docker](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_descarga_tunel_docker.png). Este icono lo que hará es descargarnos un autoejecutable donde arrancará de manera automática el ngrok con los datos de conexión al sistema. Este fichero no es necesario volver a descargarlo salvo que se cambie alguno de los token de autentificación a Ngrok.
 
 #### Usando instalable
 
@@ -121,6 +121,8 @@ Para hacer el tunel yo recomiendo usar el powershell de Windows, quien use Windo
 ```bash
  .\ngrok.exe http http://vhcalnplci.dummy.nodomain:8000
 ```
+
+O también podemos usar el siguiente icono ![alt icono descarga tunel ejecutable](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_descarga_tunel_exe.png)
 
 Esto generará un tunel y tan solo tenemos que copiar la URL para luego configurarlo en nuestro sistema. Si no conocemos la URL de nuestro sistema podemos utilizar el [programa](https://github.com/irodrigob/abap-sap-tools-core/wiki#saber-la-url-del-servidor-de-sap) de utilidades en el core de las herramientas de SAP para saberlo.
 
