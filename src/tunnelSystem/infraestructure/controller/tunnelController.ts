@@ -105,7 +105,7 @@ export default class TunnelController {
 		let content = this.getContentLaunchTunnelDocker(host, tunnelConfiguration);
 		FileAs.save(
 			"text/plain",
-			`tunnel docker ${systemName.toUpperCase()}.bat`,
+			`tunnel_docker_${systemName.toUpperCase()}.bat`,
 			content
 		);
 	}
@@ -123,7 +123,7 @@ export default class TunnelController {
 		let content = this.getContentLaunchTunnelExe(host, tunnelConfiguration);
 		FileAs.save(
 			"text/plain",
-			`tunnel exe ${systemName.toUpperCase()}.bat`,
+			`tunnel_exe_${systemName.toUpperCase()}.bat`,
 			content
 		);
 	}

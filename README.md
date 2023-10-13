@@ -113,16 +113,16 @@ Si hemos configurado el sistema para que use tunel ngrok en la tile de sistema n
 Desde la [página inicial](https://dashboard.ngrok.com/get-started/setup) nos descargamos el programa para hacer un tunel. Es un fichero zip que solo tenemos que descomprimirlo en la ubicación que queramos. Lo siguiente es añadir el token tal como se indica en las instrucciones:
 
 ```bash
-ngrok config add-authtoken <token que se indica en la página>
+./ngrok config add-authtoken <token que se indica en la página>
 ```
 
-Para hacer el tunel yo recomiendo usar el powershell de Windows, quien use Windows, porque permite copiar la URL que genera al hacer el tunel. Si nuestro servidor es `http://vhcalnplci.dummy.nodomain:8000` el tunel se crearía así:
+Para hacer el tunel yo recomiendo descarga el fichero mediante el siguiente icono ![alt icono descarga tunel ejecutable](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_descarga_tunel_exe.png) que nos descargará un fichero por lotes que se conectará al sistema donde esta el icono. Salvo que hayamos puesto el ejecutable del ngrok en un path global, hay que guardar el fichero en el mismo directorio donde esta el ejecutable.
+
+Otra opción es hacerlo manualmente. Para ello recomiendo usar el powershell de Windows, quien use Windows, porque permite copiar la URL que genera al hacer el tunel. Si nuestro servidor es `http://vhcalnplci.dummy.nodomain:8000` el tunel se crearía así:
 
 ```bash
  .\ngrok.exe http http://vhcalnplci.dummy.nodomain:8000
 ```
-
-O también podemos usar el siguiente icono ![alt icono descarga tunel ejecutable](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_descarga_tunel_exe.png)
 
 Esto generará un tunel y tan solo tenemos que copiar la URL para luego configurarlo en nuestro sistema. Si no conocemos la URL de nuestro sistema podemos utilizar el [programa](https://github.com/irodrigob/abap-sap-tools-core/wiki#saber-la-url-del-servidor-de-sap) de utilidades en el core de las herramientas de SAP para saberlo.
 
@@ -131,7 +131,7 @@ Ahora hay dos maneras de conectarse:
 1. Con la URL que nos ha generado la ponemos directamente en el el host del sistema. Como se ha dicho, debido la URL cambia cada vez se lance el programa habrá que editar el host del sistema.
 2. Informar del token de conexión y de la API en la configuración general de sistema, e indicar que se use el tunel para conexión automática. De esta manera la aplicación leerá la URL del tunel y la usará para la conexión.
 
-Esta opción es más tediosa si se quiere que funcione todo de manera automática. Por ello la opción más simple, y es la que uso, es la de docker.
+Esta opción manual es más tediosa si se quiere que funcione todo de manera automática. Por ello recomiendo descargar el fichero que genera el siguiente icono ![alt icono descarga tunel ejecutable](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_descarga_tunel_exe.png) del sistema.
 
 # Herramientas
 
