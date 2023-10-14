@@ -119,6 +119,56 @@ export default function useExcelManager() {
 
 		ws["!rows"][0].hidden = true;
 	}, []);
+	/**
+	 * Formateo de la fila de descripciones
+	 * @param ws | Objeto con la worksheet
+	 */
+	const formatterRowDescription = useCallback((ws: XLSX.WorkSheet) => {
+		let cellFormat = {
+			fill: { fgColor: { rgb: "ff808080", patternType: "solid" } },
+			font: { bold: true, color: { rgb: "ffffffff" } },
+		};
+		ws["A2"].s = cellFormat;
+		ws["B2"].s = cellFormat;
+		ws["C2"].s = cellFormat;
+		ws["D2"].s = cellFormat;
+		ws["E2"].s = cellFormat;
+		ws["F2"].s = cellFormat;
+	}, []);
+	/**
+	 * Formateo la celda de datos que no se tienen que modificar
+	 * @param ws
+	 * @param numRowData
+	 */
+	const formatterFixCellData = (ws: XLSX.WorkSheet, numRowData: number) => {
+		// Formato general a todas las celdas
+		let cellFormat = {
+			fill: { fgColor: { rgb: "ffbfbfbf", patternType: "solid" } },
+		};
+
+		// La fila del excel de datos comienza en la 3 (la primera los campos técnicos,ocultos, la segunda las descripciones de los campos)
+		for (let x = 0, excelRow = 2; x < numRowData; x++, excelRow++) {
+			for (let excelCol = 0; excelCol < 5; excelCol++) {
+				let cellAddr = XLSX.utils.encode_cell({ r: excelRow, c: excelCol });
+				ws[cellAddr].s = cellFormat;
+			}
+		}
+	};
+	/**
+	 * Formateo de la hoja excel
+	 * @param ws | Objeto con la worksheet
+	 * @param numRowData | Numero de registros de datos
+	 */
+	const formatterWorksheet = useCallback(
+		(ws: XLSX.WorkSheet, numRowData: number) => {
+			// Formateo de la fila de las descripciones de los campos
+			formatterRowDescription(ws);
+
+			// Formateo de las celdas de datos fijos
+			formatterFixCellData(ws, numRowData);
+		},
+		[]
+	);
 
 	/**
 	 * Oculta la columna pasada por parámetro
@@ -129,7 +179,7 @@ export default function useExcelManager() {
 		if (!ws["!cols"]) ws["!cols"] = [];
 
 		// A la columna hay que añadir un metadata para que funcione el ocultar
-		if (!ws["!cols"][colIndex]) ws["!cols"][colIndex] = { wch: 8 };
+		if (!ws["!cols"][colIndex]) ws["!cols"][colIndex] = { wch: 30 };
 
 		ws["!cols"][colIndex].hidden = true;
 	}, []);
@@ -147,6 +197,7 @@ export default function useExcelManager() {
 		XLSX.utils.book_append_sheet(wb, ws, "Translate");
 
 		hiddenTechnicalRow(ws);
+		formatterWorksheet(ws, objectsText.length);
 
 		const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
 		FileAs.save(
