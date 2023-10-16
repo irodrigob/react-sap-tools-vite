@@ -9,6 +9,10 @@ import {
 import { useTranslations } from "translations/i18nContext";
 import FileAs from "shared/utils/file/fileAs";
 
+interface FieldContentMaxLenght {
+	[key: string]: number;
+}
+
 export default function useExcelManager() {
 	const { getI18nText } = useTranslations();
 
@@ -169,6 +173,45 @@ export default function useExcelManager() {
 		},
 		[]
 	);
+	/**
+	 * Ajusta el tamaño de las columnas que se visualizan datos
+	 * @param ws | Objeto con la worksheet
+	 * @param objectsText | Textos con los objetos
+	 */
+	const setWidthColumns = useCallback(
+		(ws: XLSX.WorkSheet, objectsText: ObjectsText) => {
+			calculateMaxLengthColumn(objectsText);
+		},
+		[]
+	);
+	const calculateMaxLengthColumn = (
+		objectsText: ObjectsText
+	): FieldContentMaxLenght => {
+		let response: FieldContentMaxLenght = {};
+
+		response["object"] = 0;
+		response["objName"] = 0;
+		response["objType"] = 0;
+		response["idText"] = 0;
+		response["txtOlang"] = 0;
+
+		objectsText.forEach((objectText: ObjectText) => {
+			if (objectText.object.length > response["object"])
+				response["object"] = objectText.object.length;
+			if (objectText.objName.length > response["objName"])
+				response["objName"] = objectText.objName.length;
+			if (objectText.objType.length > response["objType"])
+				response["objType"] = objectText.objType.length;
+			if (objectText.idText.length > response["idText"])
+				response["idText"] = objectText.idText.length;
+			if (objectText.txtOlang.length > response["txtOlang"])
+				response["txtOlang"] = objectText.txtOlang.length;
+		});
+
+		console.log(response);
+
+		return response;
+	};
 
 	/**
 	 * Oculta la columna pasada por parámetro
@@ -184,28 +227,37 @@ export default function useExcelManager() {
 		ws["!cols"][colIndex].hidden = true;
 	}, []);
 
-	const generateExcel = (objectsText: ObjectsText, fileName: string) => {
-		let aoa: string[][] = [];
+	/**
+	 * Genera el excel en base a los datos pasados
+	 * @param objectsText | Textos de los objetos
+	 * @param fileName | Nombre del fichero a generar
+	 */
+	const generateExcel = useCallback(
+		(objectsText: ObjectsText, fileName: string) => {
+			let aoa: string[][] = [];
 
-		aoa.push(buildHeader(objectsText[0]));
-		aoa.push(buildRowDescriptions(objectsText[0]));
-		aoa = aoa.concat(convertData2AOA(objectsText));
+			aoa.push(buildHeader(objectsText[0]));
+			aoa.push(buildRowDescriptions(objectsText[0]));
+			aoa = aoa.concat(convertData2AOA(objectsText));
 
-		let ws = XLSX.utils.aoa_to_sheet(aoa);
+			let ws = XLSX.utils.aoa_to_sheet(aoa);
 
-		let wb = XLSX.utils.book_new();
-		XLSX.utils.book_append_sheet(wb, ws, "Translate");
+			let wb = XLSX.utils.book_new();
+			XLSX.utils.book_append_sheet(wb, ws, "Translate");
 
-		hiddenTechnicalRow(ws);
-		formatterWorksheet(ws, objectsText.length);
+			hiddenTechnicalRow(ws);
+			formatterWorksheet(ws, objectsText.length);
+			setWidthColumns(ws, objectsText);
 
-		const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-		FileAs.save(
-			"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
-			fileName,
-			excelBuffer
-		);
-	};
+			const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+			FileAs.save(
+				"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+				fileName,
+				excelBuffer
+			);
+		},
+		[]
+	);
 
 	return { generateExcel };
 }
