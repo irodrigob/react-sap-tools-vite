@@ -33,8 +33,8 @@ dependencies:
     specifier: ^1.18.0
     version: 1.18.0
   '@ui5/webcomponents-react':
-    specifier: ^1.21.0
-    version: 1.21.0(@types/react-dom@18.2.7)(@types/react@18.2.21)(@ui5/webcomponents-fiori@1.18.0)(@ui5/webcomponents-icons@1.18.0)(@ui5/webcomponents@1.18.0)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^1.21.1
+    version: 1.21.1(@types/react-dom@18.2.7)(@types/react@18.2.21)(@ui5/webcomponents-fiori@1.18.0)(@ui5/webcomponents-icons@1.18.0)(@ui5/webcomponents@1.18.0)(react-dom@18.2.0)(react@18.2.0)
   axios:
     specifier: ^1.5.0
     version: 1.5.0
@@ -1351,8 +1351,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@ui5/webcomponents-react@1.21.0(@types/react-dom@18.2.7)(@types/react@18.2.21)(@ui5/webcomponents-fiori@1.18.0)(@ui5/webcomponents-icons@1.18.0)(@ui5/webcomponents@1.18.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-1Tlyl/7ORRMOyrdXFEJrp94fSMAa0TYaDo8kpVEpUQLd2X/FS0ga38Dj2DrlquF+5MeOXv8F6EE4WJtIYtiIIA==}
+  /@ui5/webcomponents-react@1.21.1(@types/react-dom@18.2.7)(@types/react@18.2.21)(@ui5/webcomponents-fiori@1.18.0)(@ui5/webcomponents-icons@1.18.0)(@ui5/webcomponents@1.18.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-4MG7nwmY8/6R12J8S8zqM67DYxru5fN0ASNr4oFFvd23oj5xZs8INm6HhuuUhhxdA9LnxffnM7qIaYOcUSX9uw==}
     peerDependencies:
       '@types/react': '*'
       '@types/react-dom': '*'

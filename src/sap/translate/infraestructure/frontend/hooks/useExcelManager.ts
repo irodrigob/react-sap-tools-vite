@@ -178,9 +178,13 @@ export default function useExcelManager() {
 	 * @param ws | Objeto con la worksheet
 	 * @param objectsText | Textos con los objetos
 	 */
-	const setWidthColumns = useCallback(
+	const setOptimizeWidthColumns = useCallback(
 		(ws: XLSX.WorkSheet, objectsText: ObjectsText) => {
-			calculateMaxLengthColumn(objectsText);
+			let maxLength = calculateMaxLengthColumn(objectsText);
+			console.log(maxLength);
+			Object.keys(maxLength).forEach((key, index) => {
+				setWidthColumn(index, ws, maxLength[key] * 8);
+			});
 		},
 		[]
 	);
@@ -206,9 +210,27 @@ export default function useExcelManager() {
 				response["idText"] = objectText.idText.length;
 			if (objectText.txtOlang.length > response["txtOlang"])
 				response["txtOlang"] = objectText.txtOlang.length;
-		});
 
-		console.log(response);
+			for (let x = 1; x <= NUMBER_FIELD_TLANG; x++) {
+				let langField = `${FIELDS_TEXT.LANGUAGE}${x}`;
+
+				if (objectText[langField as keyof ObjectText] != "") {
+					let colField = `${FIELDS_TEXT.TEXT}${x}`;
+
+					if (
+						response[colField] &&
+						response[colField] < objectText[colField as keyof ObjectText].length
+					)
+						response[colField] =
+							objectText[colField as keyof ObjectText].length;
+					else if (!response[colField])
+						response[colField] =
+							objectText[colField as keyof ObjectText].length;
+				} else {
+					break;
+				}
+			}
+		});
 
 		return response;
 	};
@@ -226,6 +248,21 @@ export default function useExcelManager() {
 
 		ws["!cols"][colIndex].hidden = true;
 	}, []);
+
+	/**
+	 * Establece el ancho de la columna pasada por parámetro
+	 * @param colIndex | Número de columna
+	 * @param ws | Worksheet del excel
+	 * @param width | Ancho
+	 */
+	const setWidthColumn = useCallback(
+		(colIndex: number, ws: XLSX.WorkSheet, width: number) => {
+			if (!ws["!cols"]) ws["!cols"] = [];
+
+			ws["!cols"][colIndex] = { wpx: width };
+		},
+		[]
+	);
 
 	/**
 	 * Genera el excel en base a los datos pasados
@@ -247,7 +284,7 @@ export default function useExcelManager() {
 
 			hiddenTechnicalRow(ws);
 			formatterWorksheet(ws, objectsText.length);
-			setWidthColumns(ws, objectsText);
+			setOptimizeWidthColumns(ws, objectsText);
 
 			const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
 			FileAs.save(

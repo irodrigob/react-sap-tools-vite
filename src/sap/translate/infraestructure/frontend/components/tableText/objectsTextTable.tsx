@@ -2,6 +2,7 @@ import { AnalyticalTable } from "@ui5/webcomponents-react";
 import useObjectTextTable from "sap/translate/infraestructure/frontend/hooks/useObjectTextTable";
 import { useAppSelector } from "shared/storage/useStore";
 import ToolbarTable from "./toolbarTable";
+import { AnalyticalTableVisibleRowCountMode } from "@ui5/webcomponents-react/ssr";
 
 export default function ObjectsTextTable() {
     const { objectsText, paramsObjectsTranslate } = useAppSelector(state => state.SAPTranslate)
@@ -13,7 +14,7 @@ export default function ObjectsTextTable() {
                 style={{ marginLeft: "1rem" }}
                 columns={columnsObjectsText}
                 data={objectsText}
-                visibleRowCountMode="Interactive"
+                visibleRowCountMode={AnalyticalTableVisibleRowCountMode.Interactive}
                 scaleWidthMode="Grow"
                 selectionMode="MultiSelect"
                 selectionBehavior="Row"
