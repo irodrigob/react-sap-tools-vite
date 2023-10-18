@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { AnalyticalTable } from "@ui5/webcomponents-react";
 import useOrderObjectsTable from "sap/transportOrder/infraestructure/frontend/hooks/useOrderObjectsTable";
 import ToolbarTable from "./toolbarTable";
@@ -6,7 +6,11 @@ import { useTranslations } from "translations/i18nContext";
 import PopupMoveObjects from "./moveObjects/popupMoveObjects";
 import ConfirmDeleteOrderObject from "sap/transportOrder/infraestructure/frontend/components/orderObjects/confirmDeleteOrderObject";
 
-const OrderObjectsTable: FC = () => {
+interface Props {
+  loadingOrderObjects: boolean
+}
+const OrderObjectsTable: FC<Props> = (props: Props) => {
+  const { loadingOrderObjects } = props
   const {
     orderObjectsTable,
     columnsTable,
@@ -43,6 +47,7 @@ const OrderObjectsTable: FC = () => {
         selectionBehavior="RowSelector"
         data={orderObjectsTable}
         filterable={true}
+        loading={loadingOrderObjects}
         noDataText={getI18nText("transportOrder.orderObjects.noDataText")}
         onRowSelect={(event: any) => {
           handlerRowSelected(event);

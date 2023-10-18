@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import SAPTransportOrderController from "sap/transportOrder/infraestructure/controller/sapTransportOrderController";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import { useTranslations } from "translations/i18nContext";
@@ -34,6 +34,7 @@ export default function useOrderObjects() {
 	const { deleteObjectsModel } = useDataManagerObjects();
 	const messageManagerController = new MessageManagerController();
 	const { udpateHasObjects } = useDataManager();
+	const [loadingObjects, setLoadingObjects] = useState(false);
 
 	/**
 	 * Lectura de los objetos de las ordenes pasadas por parámetro. Este proceso
@@ -67,10 +68,13 @@ export default function useOrderObjects() {
 
 			// Si hay que buscar ordenes guardo las nuevas ordenes y lanzo el proceso de lectura
 			if (ordersToSearch.length > 0) {
+				setLoadingObjects(true);
 				sapTransportOrderActions.setOrderObjects(newOrderObjects);
 				transportOrderController
 					.getOrderObjects(ordersToSearch)
 					.then((response) => {
+						setLoadingObjects(false);
+
 						// Una cosa curiosa, y es que tengo que hacer una copia de objeto porque el newOrderObjects en este punto
 						// es inmutable, creo que es porque lo añado en el redux.
 						let postOrderObjects: OrderObjects =
@@ -303,5 +307,6 @@ export default function useOrderObjects() {
 		checkOrderEditable,
 		getOrderTypeOrderObject,
 		processMoveOrderObjects,
+		loadingObjects,
 	};
 }

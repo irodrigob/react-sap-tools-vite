@@ -7,7 +7,7 @@ export default function OrderObjectsContainer() {
   const { ordersObjectsSelected } = useAppSelector(
     (state) => state.SAPTransportOrder
   );
-  const { loadOrderObjects } = useOrderObjects();
+  const { loadOrderObjects, loadingObjects } = useOrderObjects();
 
   useEffect(() => {
     loadOrderObjects(
@@ -19,7 +19,7 @@ export default function OrderObjectsContainer() {
 
   return (
     <>
-      <OrderObjectsTable />
+      <OrderObjectsTable loadingOrderObjects={loadingObjects} />
     </>
   );
 }
