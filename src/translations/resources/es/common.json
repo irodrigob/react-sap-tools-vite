@@ -328,8 +328,14 @@
 			"tooltipSave": "Grabar traducciones",
 			"tooltipAddObjects": "Añadir objetos a ordenes",
 			"tooltipDownloadTexts": "Descargar textos a excel",
+			"tooltipUploadTexts": "Subida de textos del excel",
 			"noObjectTextSelected": "Debe seleccionar al menos un objeto",
 			"noOrderSelected": "Debe seleccionar una orden para realizar dicha acción"
+		},
+		"popupUploadTemplate": {
+			"title": "Selección template",
+			"advice1": "Para poder subir un template debe descargarlo previamente mediante el icono  ",
+			"advice2": "  una vez descargado modifique las celdas que están en color blanco (las de idioma destino) sin tocar el resto de columnas ni filas."
 		}
 	},
 	"messageManager": {

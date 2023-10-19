@@ -7,7 +7,7 @@ import useMessages, {
 	MessageType,
 } from "shared/infraestructure/hooks/useMessages";
 import { useAppSelector } from "shared/storage/useStore";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import useDataManager from "./useDataManager";
 import useExcelManager from "./useExcelManager";
 import SAPTranslateController from "sap/translate/infraestructure/controller/sapTranslateController";
@@ -37,6 +37,7 @@ export default function useToolbarTable() {
 	const messageManagerController = new MessageManagerController();
 	const { saveObjectsText } = useTranslate();
 	const { generateExcel } = useExcelManager();
+	const [openPopupUploadTemplate, setOpenPopupUploadTemplate] = useState(false);
 
 	/**
 	 * Gestiona añadir objetos a una orden
@@ -131,6 +132,17 @@ export default function useToolbarTable() {
 			},
 		[objectsText]
 	);
+	/**
+	 * Gestiona la subida del template
+	 */
+	const handlerUploadTemplate = useCallback(() => {}, []);
 
-	return { handlerAddObjects, handlerSaveObjectsText, handlerDownloadExcel };
+	return {
+		handlerAddObjects,
+		handlerSaveObjectsText,
+		handlerDownloadExcel,
+		openPopupUploadTemplate,
+		setOpenPopupUploadTemplate,
+		handlerUploadTemplate,
+	};
 }
