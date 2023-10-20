@@ -333,9 +333,10 @@
 			"noOrderSelected": "Debe seleccionar una orden para realizar dicha acción"
 		},
 		"popupUploadTemplate": {
-			"title": "Selección template",
-			"advice1": "Para poder subir un template debe descargarlo previamente mediante el icono  ",
-			"advice2": "  una vez descargado modifique las celdas que están en color blanco (las de idioma destino) sin tocar el resto de columnas ni filas."
+			"title": "Subida template",
+			"advice1": "Para poder subir un template debe descargarlo previamente mediante el siguiente icono  ",
+			"advice2": "  que aparece en la barra de herramientas.\n Una vez descargado modifique las celdas que están en color blanco (las de idioma destino)",
+			"advice3": " sin tocar el resto de columnas ni filas, y subalo con el icono que aparece a continuación:"
 		}
 	},
 	"messageManager": {
