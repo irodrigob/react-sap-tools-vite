@@ -13,9 +13,10 @@ import {
 } from "@ui5/webcomponents-react";
 import "@ui5/webcomponents-icons/dist/download";
 import "@ui5/webcomponents-icons/dist/upload";
+import { FileUploaderChangeEventDetail } from "@ui5/webcomponents/dist/FileUploader.js";
 import FooterDialog from "shared/frontend/components/footerDialog";
 import { useTranslations } from "translations/i18nContext";
-import { FileUploaderChangeEventDetail } from "@ui5/webcomponents/dist/FileUploader.js";
+import StreamUtils from "shared/utils/file/streamUtils";
 
 interface Props {
     open: boolean;
@@ -63,10 +64,9 @@ const PopupUploadTemplate: FC<Props> = (props: Props) => {
                 </Text>
                 <FileUploader hideInput onChange={(event: Ui5CustomEvent<FileUploaderDomRef, FileUploaderChangeEventDetail>) => {
                     if (event.detail?.files) {
-                        let fichero = event.detail.files[0]
-                        console.log(fichero.stream())
-                    }
+                        new StreamUtils(event.detail.files[0].stream()).getStream()
 
+                    }
                 }}>
                     <Avatar
                         icon="upload"
