@@ -36,7 +36,7 @@ export default function useToolbarTable() {
 	const sapTranslateController = new SAPTranslateController();
 	const messageManagerController = new MessageManagerController();
 	const { saveObjectsText } = useTranslate();
-	const { generateExcel } = useExcelManager();
+	const { generateExcel, processExcelFile } = useExcelManager();
 	const [openPopupUploadTemplate, setOpenPopupUploadTemplate] = useState(false);
 
 	/**
@@ -135,7 +135,12 @@ export default function useToolbarTable() {
 	/**
 	 * Gestiona la subida del template
 	 */
-	const handlerUploadTemplate = useCallback(() => {}, []);
+	const handlerUploadTemplate = useCallback(
+		(objectsText: ObjectsText, contentFile: string) => {
+			processExcelFile(contentFile);
+		},
+		[]
+	);
 
 	return {
 		handlerAddObjects,

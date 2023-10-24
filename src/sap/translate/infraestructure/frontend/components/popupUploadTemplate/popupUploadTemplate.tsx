@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import {
     Dialog,
     FileUploader,
@@ -21,15 +21,14 @@ import StreamUtils from "shared/utils/file/streamUtils";
 interface Props {
     open: boolean;
     onCloseButton: () => void;
-    onConfirmButton: (event: any) => void;
+    onConfirmButton: (contentFile: string) => void;
     onDownloadTemplate: () => void;
 }
 
 const PopupUploadTemplate: FC<Props> = (props: Props) => {
     const { open, onCloseButton, onConfirmButton, onDownloadTemplate } = props;
     const { getI18nText } = useTranslations();
-
-    const handlerUpload = () => { };
+    const [loadingFile, setLoadingFile] = useState(false)
 
     return (
         <Dialog
@@ -64,7 +63,10 @@ const PopupUploadTemplate: FC<Props> = (props: Props) => {
                 </Text>
                 <FileUploader hideInput onChange={(event: Ui5CustomEvent<FileUploaderDomRef, FileUploaderChangeEventDetail>) => {
                     if (event.detail?.files) {
-                        new StreamUtils(event.detail.files[0].stream()).getStream()
+                        setLoadingFile(true)
+                        new StreamUtils(event.detail.files[0].stream()).getStream().then((contentFile) => { onConfirmButton(contentFile) }).finally(() => {
+                            setLoadingFile(false)
+                        })
 
                     }
                 }}>
@@ -73,6 +75,7 @@ const PopupUploadTemplate: FC<Props> = (props: Props) => {
                         style={{ marginTop: "2rem" }}
                     />
                 </FileUploader>
+                {loadingFile && <Text>{getI18nText("translate.popupUploadTemplate.loadingFile")}</Text>}
             </FlexBox>
         </Dialog>
     );

@@ -65,7 +65,7 @@ const ToolbarTable: FC<Props> = (props) => {
                 onCloseButton={() => {
                     setOpenPopupUploadTemplate(false);
                 }}
-                onConfirmButton={handlerUploadTemplate}
+                onConfirmButton={(contentFile) => { setOpenPopupUploadTemplate(false); handlerUploadTemplate(objectsText, contentFile) }}
                 open={openPopupUploadTemplate}
                 onDownloadTemplate={handlerDownloadExcel(objectsText, paramsObjectsTranslate)
                 }

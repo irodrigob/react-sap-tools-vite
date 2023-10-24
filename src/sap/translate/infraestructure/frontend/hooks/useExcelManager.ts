@@ -181,7 +181,6 @@ export default function useExcelManager() {
 	const setOptimizeWidthColumns = useCallback(
 		(ws: XLSX.WorkSheet, objectsText: ObjectsText) => {
 			let maxLength = calculateMaxLengthColumn(objectsText);
-			console.log(maxLength);
 			Object.keys(maxLength).forEach((key, index) => {
 				setWidthColumn(index, ws, maxLength[key] * 8);
 			});
@@ -295,6 +294,18 @@ export default function useExcelManager() {
 		},
 		[]
 	);
+	/**
+	 * Procesa el fichero pasado por parámetro y lo devuelve en formato de la entidad ObjectText
+	 * @param contentFile | Contenido del fichero
+	 * @returns
+	 */
+	const processExcelFile = (contentFile: string) => {
+		const wb = XLSX.read(contentFile);
+		const ws = wb.Sheets[wb.SheetNames[0]];
+		const json = XLSX.utils.sheet_to_json(ws);
 
-	return { generateExcel };
+		console.log(json);
+	};
+
+	return { generateExcel, processExcelFile };
 }
