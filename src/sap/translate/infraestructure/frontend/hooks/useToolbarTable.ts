@@ -3,6 +3,8 @@ import {
 	ObjectsText,
 	ParamsObjectTranslate,
 } from "sap/translate/infraestructure/types/translate.d";
+import ObjectText from "sap/translate/domain/entities/objectText";
+
 import useMessages, {
 	MessageType,
 } from "shared/infraestructure/hooks/useMessages";
@@ -11,6 +13,7 @@ import { useCallback, useState } from "react";
 import useDataManager from "./useDataManager";
 import useExcelManager from "./useExcelManager";
 import SAPTranslateController from "sap/translate/infraestructure/controller/sapTranslateController";
+import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import { ReturnsDTO } from "shared/dto/generalDTO";
 import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
@@ -38,6 +41,7 @@ export default function useToolbarTable() {
 	const { saveObjectsText } = useTranslate();
 	const { generateExcel, processExcelFile } = useExcelManager();
 	const [openPopupUploadTemplate, setOpenPopupUploadTemplate] = useState(false);
+	const sapTranslateActions = new SAPTranslateActions();
 
 	/**
 	 * Gestiona añadir objetos a una orden
@@ -136,8 +140,40 @@ export default function useToolbarTable() {
 	 * Gestiona la subida del template
 	 */
 	const handlerUploadTemplate = useCallback(
-		(objectsText: ObjectsText, contentFile: string) => {
-			processExcelFile(contentFile);
+		(objectsText: ObjectsText, contentFile: Uint8Array) => {
+			// Se convierte el contenido del fichero a una tabla formato ObjectsExcel
+			// El array que me devuelve puede tener los campos incorrectos si alguien cambia
+			// la primera fila del excel, que esta oculta, que es lo que usa SheetJS para devolver
+			// el JSON con los datos del fichero
+			let objectsTextExcel = processExcelFile(contentFile);
+			let newObjectsText = structuredClone(objectsText);
+
+			objectsTextExcel.forEach((row: ObjectText) => {
+				let indexRowNew = newObjectsText.findIndex(
+					(rowNew) =>
+						rowNew.objName == row.objName &&
+						rowNew.object == row.object &&
+						rowNew.objType == row.objType &&
+						rowNew.idText == row.idText
+				);
+				if (indexRowNew != -1) {
+					for (let x = 1; x <= NUMBER_FIELD_TLANG; x++) {
+						let txtField = `${FIELDS_TEXT.TEXT}${x}`;
+
+						if (
+							row[txtField as keyof ObjectText] &&
+							row[txtField as keyof ObjectText] != ""
+						) {
+							try {
+								newObjectsText[indexRowNew][txtField as keyof ObjectText] =
+									row[txtField as keyof ObjectText];
+							} catch {}
+						}
+					}
+				}
+			});
+
+			sapTranslateActions.setObjectsText(newObjectsText);
 		},
 		[]
 	);

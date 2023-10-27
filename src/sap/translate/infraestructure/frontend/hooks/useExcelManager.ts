@@ -295,16 +295,39 @@ export default function useExcelManager() {
 		[]
 	);
 	/**
+	 * Convierte el formato del fichero leido al formato del dominio
+	 * @param objectFile | Array con el contenido del fichero
+	 * @returns | Array con el formato ObjectsText
+	 */
+	const convertJFileObject2ObjectText = (objectFile: any): ObjectsText => {
+		let objectsTextExcel: ObjectsText = [];
+
+		// Se inicia en la fila 1 ya que la 0 es el texto de la cabecerta
+		for (let x = 1; x < objectFile.length; x++) {
+			let rowObjectText: Partial<ObjectText> = {};
+			Object.keys(objectFile[x]).forEach((key) => {
+				// Nota: Si
+				rowObjectText[key as keyof ObjectText] = objectFile[x][key];
+			});
+			objectsTextExcel.push(rowObjectText as ObjectText);
+		}
+
+		return objectsTextExcel;
+	};
+	/**
 	 * Procesa el fichero pasado por parámetro y lo devuelve en formato de la entidad ObjectText
 	 * @param contentFile | Contenido del fichero
 	 * @returns
 	 */
-	const processExcelFile = (contentFile: string) => {
-		const wb = XLSX.read(contentFile);
+	const processExcelFile = (contentFile: Uint8Array): ObjectsText => {
+		const wb = XLSX.read(contentFile, { type: "array" });
 		const ws = wb.Sheets[wb.SheetNames[0]];
-		const json = XLSX.utils.sheet_to_json(ws);
+		// Esta utilidad crea un JSON con los campos de la primera fila. Si alguien cambia dicha fila
+		// el json saldrá con campos incorrectos. Cuando se convierta el JSON al array de tipo ObjectsText
+		// los campo se mapearán bien.
+		const jsonExcel = XLSX.utils.sheet_to_json(ws);
 
-		console.log(json);
+		return convertJFileObject2ObjectText(jsonExcel);
 	};
 
 	return { generateExcel, processExcelFile };

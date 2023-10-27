@@ -8,10 +8,10 @@ export default class StreamUtils {
 	/**
 	 * Obtención de los datos del stream
 	 */
-	async getStream(): Promise<string> {
+	async getStream(): Promise<Uint8Array> {
 		await this.readStream();
 
-		return new TextDecoder().decode(this.contentUint8);
+		return this.contentUint8;
 	}
 	/**
 	 * Lectura del contenido del stream en formato utf-8

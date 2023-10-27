@@ -21,7 +21,7 @@ import StreamUtils from "shared/utils/file/streamUtils";
 interface Props {
     open: boolean;
     onCloseButton: () => void;
-    onConfirmButton: (contentFile: string) => void;
+    onConfirmButton: (contentFile: Uint8Array) => void;
     onDownloadTemplate: () => void;
 }
 
