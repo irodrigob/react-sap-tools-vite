@@ -34,3 +34,8 @@ export type FiltersValueState = {
 	depthRef: ValueState;
 	depthRefMessage: string;
 };
+
+export type ReturnRowChanged = {
+	rowObjectText: ObjectText | undefined;
+	rowIndex: number;
+};

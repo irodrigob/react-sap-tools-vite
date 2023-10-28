@@ -7,7 +7,7 @@ import { COLOR_TEXT_PPSAL_TYPE, TEXT_PPSAL_TYPE } from "sap/translate/infraestru
 const CellTextLang: FC = (instance: any) => {
     const rowOriginal = instance.row.original;
     const column = instance.column;
-    const { determinePpsalTypeFromColumnId, processRowChanged } = useDataManager()
+    const { determinePpsalTypeFromColumnId, updateColumnChanged } = useDataManager()
 
     var colorPpsalType = COLOR_TEXT_PPSAL_TYPE.WITHOUT_TEXT
     switch (rowOriginal[determinePpsalTypeFromColumnId(column.id)]) {
@@ -26,7 +26,7 @@ const CellTextLang: FC = (instance: any) => {
     }
 
     const handlerChange = (event: Ui5CustomEvent<InputDomRef, never>) => {
-        processRowChanged(rowOriginal as ObjectText, column.id, event.target.value as string)
+        updateColumnChanged(rowOriginal as ObjectText, column.id, event.target.value as string)
 
     };
 
