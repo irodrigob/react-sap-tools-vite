@@ -100,13 +100,7 @@ Con los dos token generados hay que informarlos en la configuración de la aplic
 
 ### Como conectarse
 
-Para conectarse se puede hacer de dos maneras: Usando docker o el instalable. Ambas son opciones que ofrece el propio Ngrok. La versión más simple que he visto y la que esta preparado la aplicación es la versión del docker.
-
-#### Usando docker
-
-Para usar Docker, si no se tiene instalado, hay que descargarlo de su [página oficial](https://docs.docker.com/get-docker/). La instalación es muy sencilla, y cualquier problema es sencillo solucionarlo.
-
-Si hemos configurado el sistema para que use tunel ngrok en la tile de sistema nos aparecerá el siguiente icono: ![alt icono descarga tunel docker](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_descarga_tunel_docker.png). Este icono lo que hará es descargarnos un autoejecutable donde arrancará de manera automática el ngrok con los datos de conexión al sistema. Este fichero no es necesario volver a descargarlo salvo que se cambie alguno de los token de autentificación a Ngrok.
+Para conectarse se puede hacer de dos maneras: Usando docker o el instalable. Ambas son opciones que ofrece el propio Ngrok. La versión más simple, y que menos recursos consume, que he visto es a través del ejecutable.
 
 #### Usando instalable
 
@@ -116,15 +110,23 @@ Desde la [página inicial](https://dashboard.ngrok.com/get-started/setup) nos de
 ./ngrok config add-authtoken <token que se indica en la página>
 ```
 
-Para hacer el tunel yo recomiendo descarga el fichero mediante el siguiente icono ![alt icono descarga tunel ejecutable](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_descarga_tunel_exe.png) que nos descargará un fichero por lotes que se conectará al sistema donde esta el icono. Salvo que hayamos puesto el ejecutable del ngrok en un path global, hay que guardar el fichero en el mismo directorio donde esta el ejecutable.
+Para hacer el tunel yo recomiendo descargar el fichero mediante el siguiente icono ![alt icono descarga tunel ejecutable](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_descarga_tunel_exe.png) que nos descargará un fichero por lotes que se conectará al sistema. Salvo que hayamos puesto el ejecutable del ngrok en un path global hay que guardar el fichero en el mismo directorio donde esta el ejecutable.
 
-La opción más tediosa es hacerlo todo manualmente. Es decir, usar powershell de Windows, quien use Windows, porque permite copiar la URL que genera al hacer el tunel. Si nuestro servidor es `http://vhcalnplci.dummy.nodomain:8000` el tunel se crearía así:
+También es posible crear el tunel a través del simbolo de sistema o powershell escribiendo lo siguiente:
 
 ```bash
  .\ngrok.exe http http://vhcalnplci.dummy.nodomain:8000
 ```
 
-Ahora si tenemos configurado la _API Token_ en la configuración no tendremos que hacer nada más, ya que al seleccionar el sistema se leerá la URL del tunnel generado y se conectará al sistema con dicha URL. Si no hay API Token tendremos que copiar la URL generada y configurarla en el host del servidor.
+Donde *http://vhcalnplci.dummy.nodomain:8000* es la URL del servidor SAP al cual nos queremos conectar, y que es la misma URL que hemos introducido para configurar el sistema en la aplicación.
+
+Si por cualquier motivo no queremos introducir la _API Token_ en la configuración general tendremos que copiar la URL que nos ha generado Ngrok y copiarla en el campo de la URL del servidor. Esto es muy tedioso y no lo recomiendo porque en versiones gratuitas las URL generadas son dinámicas y tendremos que estar cambiandolo cada vez que nos queramos conectar a un sistema.
+
+#### Usando docker
+
+Para usar Docker, si no se tiene instalado, hay que descargarlo de su [página oficial](https://docs.docker.com/get-docker/). La instalación es muy sencilla, y cualquier problema es sencillo solucionarlo.
+
+Si hemos configurado el sistema para que use tunel ngrok en la tile de sistema nos aparecerá el siguiente icono: ![alt icono descarga tunel docker](https://github.com/irodrigob/react-sap-tools-vite/blob/master/public/instrucciones/icono_descarga_tunel_docker.png). Este icono lo que hará es descargarnos un autoejecutable donde arrancará de manera automática el ngrok con los datos de conexión al sistema. Este fichero no es necesario volver a descargarlo salvo que se cambie alguno de los token de autentificación a Ngrok.
 
 # Herramientas
 
