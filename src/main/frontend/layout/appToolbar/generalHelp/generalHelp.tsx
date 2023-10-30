@@ -6,7 +6,7 @@ import AppsList from "sap/general/domain/entities/appsList";
 import { useAppSelector } from "shared/storage/useStore";
 const generalHelp = {
   appDesc: "General",
-  urlHelp: "https://github.com/irodrigob/react-sap-tools",
+  urlHelp: "https://github.com/irodrigob/react-sap-tools-vite",
 };
 
 const GeneralHelp: FC = () => {
