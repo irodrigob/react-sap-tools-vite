@@ -104,7 +104,7 @@ export default function useSystems() {
 										);
 									}
 								});
-						} else if (response.isFailure) {
+						} else {
 							sapController.setLoadingListApps(false);
 							showResultError(response.getErrorValue() as ErrorGraphql);
 						}
