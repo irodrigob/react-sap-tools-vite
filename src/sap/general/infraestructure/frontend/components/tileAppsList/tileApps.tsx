@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Card, CardHeader, Icon } from "@ui5/webcomponents-react";
 import "@ui5/webcomponents-icons/dist/shipping-status";
 import "@ui5/webcomponents-icons/dist/translate";
+import "@ui5/webcomponents-icons/dist/source-code";
 import AppsList from "sap/general/domain/entities/appsList";
 import useSelectApp from "sap/general/infraestructure/frontend/hooks/useSelectApp";
 

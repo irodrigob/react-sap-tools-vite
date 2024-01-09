@@ -76,8 +76,12 @@ export default class SAPGeneralApplication {
 			let response = await this.SAPGeneralRepository.getAppsList(
 				dataConnection
 			);
-			this.SAPGeneralActions.setAppsList(response);
-			this.SAPGeneralActions.setLoadingListApps(false);
+			// Se recuperan las APP que haya en el modelo porque al cambiar de sistema se añaden las fijates que no dependen
+			// de las SAP Tools instaladas
+			let appList: AppsList[] = this.appStore.getState().SAPGeneral.appsList;
+
+			appList = appList.concat(response);
+			this.SAPGeneralActions.setAppsList(appList);
 
 			// Por cada aplicación llamo a su metadata
 			let connectionApp = dataConnection;
@@ -116,5 +120,26 @@ export default class SAPGeneralApplication {
 	 */
 	buildSAPUrl2Connect(host: string, service?: string): string {
 		return SAPFormatters.buildSAPUrl2Connect(host, service);
+	}
+	/**
+	 * Devuelve los datos de la aplicación fija del ADT
+	 * @returns Estructura con los datos de la aplicación
+	 */
+	ADTAppList(): AppsList {
+		return new AppsList(
+			"ADT",
+			"ABAP Developer Tools",
+			"",
+			"/adt",
+			"source-code",
+			""
+		);
+	}
+	/**
+	 * Añade la aplicación de ADT al storage. Este método se usará cuando las
+	 * SAP Tools no están instaladas
+	 */
+	addAdtApp2Store() {
+		this.SAPGeneralActions.setAppsList([{ ...this.ADTAppList() }]);
 	}
 }

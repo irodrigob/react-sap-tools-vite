@@ -131,6 +131,9 @@
 			"errorCallServiceName": "Se ha producido un error al llamar al servicio: &1"
 		}
 	},
+	"sapGeneral": {
+		"sapToolsNotInstalled": "Las SAP Tools no están instaladas"
+	},
 	"transportOrder": {
 		"title": "Transporte de ordenes",
 		"loadingOrder": "Leyendo ordenes del usuario",

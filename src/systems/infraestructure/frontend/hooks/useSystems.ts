@@ -20,6 +20,7 @@ import useMessages, {
 import { responseSystemRepoArray } from "systems/infraestructure/types/application";
 import useTunnelSystem from "tunnelSystem/infraestructure/frontend/hooks/useTunnelSystem";
 import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
+import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtController";
 
 export default function useSystems() {
 	const {
@@ -37,6 +38,7 @@ export default function useSystems() {
 	const sapController = new SAPController();
 	const sapTransportOrderController = new SAPTransportOrderController();
 	const sapTranslateController = new SAPTranslateController();
+	const sapAdtController = new SAPAdtController();
 	const { getI18nText } = useTranslations();
 	const { showResultError, showMessage } = useMessages();
 	const { getTunnelConfiguration, getTunnelProviders } = useTunnelSystem();
@@ -66,7 +68,7 @@ export default function useSystems() {
 			clearVariablesSystem();
 
 			// En caso que no haya token de autentificación y se tenga marcado el tunel significa
-			// que presuntamente se quiere un tunel anónimo. En ese caso la URL tiene que estar informado.
+			// que presuntamente se quiere un tunel anónimo. En ese caso la URL tiene que estar informada.
 			if (
 				tunnelConfiguration.authToken == "" &&
 				systemSelected.url_manual_tunnel == "" &&
@@ -85,25 +87,48 @@ export default function useSystems() {
 							// Guardamos la URL base de conexión
 							systemActions.setURL2ConnectSystem(URL2ConnectSystem);
 
-							// Guardamos la URL para conectarse a los servicio core del sistema
-							sapController.setURLODataCore(
-								sapController.buildSAPUrl2Connect(URL2ConnectSystem)
-							);
+							// Verificamos si las SAPTools están instaladas
+							sapController.checkSAPToolsInstalled().then((responseCheck) => {
+								if (responseCheck instanceof ErrorGraphql) {
+									showResultError(responseCheck);
+								}
+								// Si esta instalada proceedemos a realizar la lectura
+								else {
+									// Se añade la app de ADT
+									sapController.addAdtApp2Store();
 
-							sapController
-								.executeServicesSystemSelect()
-								.then((responseSAP) => {
-									sapController.setLoadingListApps(false);
-									if (responseSAP.isSuccess) {
-										// Si el proceso de lectura de aplicaciones, metadata, etc. Se ejecutan con éxito
-										// Se lanza los procesos cuando se cambia de sistema.
-										changeSystemGeneralActions();
+									if (responseCheck) {
+										// Guardamos la URL para conectarse a los servicio core del sistema
+										sapController.setURLODataCore(
+											sapController.buildSAPUrl2Connect(URL2ConnectSystem)
+										);
+
+										sapController
+											.executeServicesSystemSelect()
+											.then((responseSAP) => {
+												sapController.setLoadingListApps(false);
+												if (responseSAP.isSuccess) {
+													// Si el proceso de lectura de aplicaciones, metadata, etc. Se ejecutan con éxito
+													// Se lanza los procesos cuando se cambia de sistema.
+													changeSystemGeneralActions();
+												} else {
+													showResultError(
+														responseSAP.getErrorValue() as ErrorGraphql
+													);
+												}
+											});
 									} else {
-										showResultError(
-											responseSAP.getErrorValue() as ErrorGraphql
+										// Este método se llamada igual para que sirva en app que no usen las SAP Tools que se ha cambiado
+										// El sistema
+										changeSystemGeneralActions();
+										sapController.setLoadingListApps(false);
+										showMessage(
+											getI18nText("sapGeneral.sapToolsNotInstalled"),
+											MessageType.info
 										);
 									}
-								});
+								}
+							});
 						} else {
 							sapController.setLoadingListApps(false);
 							showResultError(response.getErrorValue() as ErrorGraphql);

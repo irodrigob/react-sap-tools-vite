@@ -17,7 +17,6 @@ import {
 	ParamsObjectTranslate,
 } from "sap/translate/infraestructure/types/translate";
 import ObjectText from "sap/translate/domain/entities/objectText";
-import { ReturnsDTO } from "shared/dto/generalDTO";
 import { AddObjects2Order } from "sap/translate/infraestructure/dto/addObjects2Order";
 
 export default class TranslateApplication {

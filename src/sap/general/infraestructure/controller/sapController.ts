@@ -11,18 +11,25 @@ import AppStore from "shared/storage/appStore";
 import SAPGeneralActions from "sap/general/infraestructure/storage/SAPGeneralActions";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 import SystemController from "systems/infraestructure/controller/systemController";
+import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtController";
+import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants";
+import { SAP_TOOLS_OBJECT_NAMES } from "sap/general/infraestructure/utils/constants/constants";
+import { ADTSearchObjects } from "sap/adt/domain/entities/searchObject";
+import ErrorGraphql from "shared/errors/ErrorGraphql";
 
 export default class SAPController {
 	private appStore: AppStore;
 	private SAPGeneralApplication: SAPGeneralApplication;
 	private SAPGeneralActions: SAPGeneralActions;
 	private systemController: SystemController;
+	private sapAdtController: SAPAdtController;
 
 	constructor() {
 		this.SAPGeneralApplication = new SAPGeneralApplication();
 		this.appStore = new AppStore();
 		this.SAPGeneralActions = new SAPGeneralActions();
 		this.systemController = new SystemController();
+		this.sapAdtController = new SAPAdtController();
 	}
 
 	/**
@@ -137,5 +144,28 @@ export default class SAPController {
 	clearVariables(): void {
 		this.SAPGeneralActions.setAppsList([]);
 		this.SAPGeneralActions.setApplicationChanged(false);
+	}
+	/**
+	 * Verifica si la herramienta SAP Tools esta instalada
+	 * @returns Booleano si esta instalado o no
+	 */
+	async checkSAPToolsInstalled(): Promise<boolean | ErrorGraphql> {
+		// Se usa el ADT para verificar si existe la clase Z que gestiona las peticiones OData
+		let response = await this.sapAdtController.searchObjectSingleType(
+			ADT_OBJECT_TYPES.CLASSES.OBJECT_TYPE,
+			ADT_OBJECT_TYPES.CLASSES.LEGACY_TYPE,
+			SAP_TOOLS_OBJECT_NAMES.SAP_TOOLS_GW_CUSTOM_CLASS
+		);
+		if (response.isSuccess)
+			if ((response.getValue() as ADTSearchObjects).length > 0) return true;
+			else return false;
+		else return response.getErrorValue() as ErrorGraphql;
+	}
+	/**
+	 * Añade la aplicación de ADT al storage. Este método se usará cuando las
+	 * SAP Tools no están instaladas
+	 */
+	addAdtApp2Store() {
+		this.SAPGeneralApplication.addAdtApp2Store();
 	}
 }
