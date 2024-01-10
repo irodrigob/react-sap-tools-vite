@@ -151,15 +151,17 @@ export default class SAPController {
 	 */
 	async checkSAPToolsInstalled(): Promise<boolean | ErrorGraphql> {
 		// Se usa el ADT para verificar si existe la clase Z que gestiona las peticiones OData
-		let response = await this.sapAdtController.searchObjectSingleType(
+		let response = await this.sapAdtController.quickSearch(
 			ADT_OBJECT_TYPES.CLASSES.OBJECT_TYPE,
-			ADT_OBJECT_TYPES.CLASSES.LEGACY_TYPE,
 			SAP_TOOLS_OBJECT_NAMES.SAP_TOOLS_GW_CUSTOM_CLASS
 		);
-		if (response.isSuccess)
-			if ((response.getValue() as ADTSearchObjects).length > 0) return true;
+		if (response.isSuccess) {
+			let values = response.getValue() as ADTSearchObjects;
+			if (Array.isArray(values) && values.length > 0) return true;
 			else return false;
-		else return response.getErrorValue() as ErrorGraphql;
+		} else {
+			return response.getErrorValue() as ErrorGraphql;
+		}
 	}
 	/**
 	 * Añade la aplicación de ADT al storage. Este método se usará cuando las

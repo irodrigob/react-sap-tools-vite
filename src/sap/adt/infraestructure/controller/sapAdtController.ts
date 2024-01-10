@@ -31,6 +31,22 @@ export default class SAPAdtController {
 		);
 	}
 	/**
+	 * Búsqueda rapido de objeto por tipo
+	 * @param objectType
+	 * @param legacyType
+	 * @param searchQuery
+	 */
+	quickSearch(
+		objectType: string,
+		searchQuery: string
+	): Promise<ResponseSearchObject> {
+		return this.adtApplication.quickSearch(
+			this.getDataForConnection(),
+			objectType,
+			searchQuery
+		);
+	}
+	/**
 	 * Devuelve los datos de conexión al sistema
 	 * @returns Objetos con los datos de conexión al sistema
 	 */

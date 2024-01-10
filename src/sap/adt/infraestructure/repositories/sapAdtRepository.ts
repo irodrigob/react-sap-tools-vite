@@ -33,6 +33,33 @@ const SEARCH_OBJECT_SINGLE_TYPE = gql`
 	}
 `;
 
+const QUICK_SEARCH_OBJECT = gql`
+	query Query(
+		$system: String!
+		$sap_user: String!
+		$sap_password: String!
+		$language: String!
+		$client: String!
+		$objectType: String!
+		$searchQuery: String!
+	) {
+		adtQuickSearch(
+			system: $system
+			sap_user: $sap_user
+			sap_password: $sap_password
+			language: $language
+			client: $client
+			objectType: $objectType
+			searchQuery: $searchQuery
+		) {
+			uri
+			type
+			name
+			packageName
+		}
+	}
+`;
+
 export default class SAPAdtRepository
 	extends graphQLRepository
 	implements SAPAdtInterface
@@ -58,5 +85,25 @@ export default class SAPAdtRepository
 			},
 		});
 		return response.data.adtSearchObjectSingleType;
+	}
+	async quickSearchObject(
+		dataConnection: DataConnectionSystem,
+		objectType: string,
+		searchQuery: string
+	): Promise<ADTSearchObjects> {
+		const response = await this._apolloClient.query({
+			query: QUICK_SEARCH_OBJECT,
+			fetchPolicy: "network-only",
+			variables: {
+				system: dataConnection.host,
+				sap_user: dataConnection.sap_user,
+				sap_password: dataConnection.sap_password,
+				client: dataConnection.client,
+				language: dataConnection.language,
+				objectType: objectType,
+				searchQuery: searchQuery,
+			},
+		});
+		return response.data.adtQuickSearch;
 	}
 }

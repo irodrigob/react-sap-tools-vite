@@ -344,6 +344,12 @@
 			"uploadWithErrors": "Se han producido errores en la subida del Excel"
 		}
 	},
+	"adtIde": {
+		"favoritePackages": {
+			"titleToolbar": "Paquetes favoritos",
+			"addFavoritePackageTooltip": "Añadir paquete a favoritos"
+		}
+	},
 	"messageManager": {
 		"tooltipMessageIcon": "Mensajes",
 		"lblAllMessages": "Todo"

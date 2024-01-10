@@ -42,4 +42,29 @@ export default class AdtApplication {
 			);
 		}
 	}
+	/**
+	 * Búsqueda rápida de objetos por tipo
+	 * @param dataConnection Datos conexión
+	 * @param objectType Tipo de objeto
+	 * @param searchQuery objeto a buscar
+	 * @returns Resultado de la búsqueda
+	 */
+	async quickSearch(
+		dataConnection: DataConnectionSystem,
+		objectType: string,
+		searchQuery: string
+	): Promise<ResponseSearchObject> {
+		try {
+			let response = await this.adtRepository.quickSearchObject(
+				dataConnection,
+				objectType,
+				searchQuery
+			);
+			return Result.ok(response);
+		} catch (error) {
+			return Result.fail<ErrorGraphql>(
+				ErrorGraphql.create(error as ApolloError)
+			);
+		}
+	}
 }

@@ -15,4 +15,14 @@ export default interface SAPAdtInterface {
 		legacyType: string,
 		searchQuery: string
 	): Promise<ADTSearchObjects>;
+	/**
+	 * Búsqueda rápida de objetos por tipo
+	 * @param objectType Tipo de objeto
+	 * @param searchQuery Texto del objeto a buscar
+	 */
+	quickSearchObject(
+		dataConnection: DataConnectionSystem,
+		objectType: string,
+		searchQuery: string
+	): Promise<ADTSearchObjects>;
 }
