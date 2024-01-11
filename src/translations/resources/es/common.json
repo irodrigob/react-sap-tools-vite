@@ -347,7 +347,13 @@
 	"adtIde": {
 		"favoritePackages": {
 			"titleToolbar": "Paquetes favoritos",
-			"addFavoritePackageTooltip": "Añadir paquete a favoritos"
+			"addFavoritePackageTooltip": "Añadir paquete a favoritos",
+			"popupAddPackage": {
+				"title": "Seleccione un paquete",
+				"placeholder": "Introduzca al menos tres carácteres del paquete",
+				"btnConfirm": "Añadir",
+				"packagesNotFound": "No se han encontrado paquetes"
+			}
 		}
 	},
 	"messageManager": {
