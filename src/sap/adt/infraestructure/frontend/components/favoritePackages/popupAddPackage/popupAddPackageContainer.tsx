@@ -1,8 +1,9 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import {
 	Dialog,
 	Input,
 	InputDomRef,
+	Label,
 	SuggestionItem,
 	Ui5CustomEvent,
 } from "@ui5/webcomponents-react";
@@ -28,6 +29,7 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 	const { getI18nText } = useTranslations();
 	const { showResultError, showMessage } = useMessages();
 	const adtController = new SAPAdtController();
+	const refInput = useRef<InputDomRef>(null);
 
 	const searchPackages = useCallback(
 		(event: Ui5CustomEvent<InputDomRef, never>) => {
@@ -63,7 +65,9 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 
 	return (
 		<Dialog
+			draggable
 			open={open}
+			style={{ width: "20%" }}
 			headerText={getI18nText("adtIde.favoritePackages.popupAddPackage.title")}
 			footer={
 				<FooterDialog
@@ -74,12 +78,20 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 					onEndButton={() => {
 						onCloseButton();
 					}}
-					onStartButton={() => onConfirmButton()}
+					onStartButton={() => {
+						console.log(refInput.current?.value);
+						//onConfirmButton()
+					}}
 				/>
 			}
 		>
+			{refInput.current!.value!.length > 0 && (
+				<Label showColon>
+					{getI18nText("adtIde.favoritePackages.popupAddPackage.placeholder")}
+				</Label>
+			)}
 			<Input
-				icon={null}
+				id="inputPackageSearch"
 				onInput={(event: Ui5CustomEvent<InputDomRef, never>) => {
 					event.preventDefault();
 					searchPackages(event);
@@ -88,6 +100,8 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 				placeholder={getI18nText(
 					"adtIde.favoritePackages.popupAddPackage.placeholder"
 				)}
+				style={{ width: "100%" }}
+				ref={refInput}
 				showSuggestions
 			>
 				{packagesFound.map((row) => {
