@@ -1,5 +1,10 @@
 import { Result } from "shared/core/Result";
-import { ResponseSearchObject } from "sap/adt/infraestructure/types/adt";
+import {
+	ResponseSearchObject,
+	ResponseAddFavoritePackage,
+	ResponseDeleteFavoritePackage,
+	ResponseFavoritePackages,
+} from "sap/adt/infraestructure/types/adt";
 import AppStore from "shared/storage/appStore";
 import AdtApplication from "sap/adt/application/adtApplication";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
@@ -45,6 +50,33 @@ export default class SAPAdtController {
 			objectType,
 			searchQuery
 		);
+	}
+	/**
+	 * Añade un paquete favorito
+	 * @param user Usuario
+	 * @param packageName Nombre del paquete
+	 */
+	async AddFavoritePackage(
+		user: string,
+		packageName: string
+	): Promise<ResponseAddFavoritePackage> {
+		return this.adtApplication.AddFavoritePackage(user, packageName);
+	}
+	/**
+	 * Devuelve los paquetes favoritos de un usuario
+	 * @param user Usuario
+	 */
+	async getFavoritePackages(user: string): Promise<ResponseFavoritePackages> {
+		return this.adtApplication.getFavoritePackages(user);
+	}
+	/**
+	 * Borra un paquete favorito
+	 * @param id Id del paquete favorito
+	 */
+	async deleteFavoritePackage(
+		id: string
+	): Promise<ResponseDeleteFavoritePackage> {
+		return this.adtApplication.deleteFavoritePackage(id);
 	}
 	/**
 	 * Devuelve los datos de conexión al sistema

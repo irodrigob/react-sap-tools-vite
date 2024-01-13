@@ -1,6 +1,10 @@
 import { ResponseSearchObject } from "sap/adt/infraestructure/types/adt";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
-import { ADTSearchObjects } from "../entities/searchObject";
+import { ADTSearchObjects } from "sap/adt/domain/entities/searchObject";
+import {
+	ADTFavoritePackagesDTO,
+	ADTFavoritePackageDTO,
+} from "sap/adt/infraestructure/dto/favoritePackagesDTO";
 
 export default interface SAPAdtInterface {
 	/**
@@ -25,4 +29,23 @@ export default interface SAPAdtInterface {
 		objectType: string,
 		searchQuery: string
 	): Promise<ADTSearchObjects>;
+	/**
+	 * Añade un paquete favorito
+	 * @param user Usuario
+	 * @param packageName Nombre del paquete
+	 */
+	AddFavoritePackage(
+		user: string,
+		packageName: string
+	): Promise<ADTFavoritePackageDTO>;
+	/**
+	 * Devuelve los paquetes favoritos de un usuario
+	 * @param user Usuario
+	 */
+	getFavoritePackages(user: string): Promise<ADTFavoritePackagesDTO>;
+	/**
+	 * Borra un paquete favorito
+	 * @param id Id del paquete favorito
+	 */
+	deleteFavoritePackage(id: string): void;
 }

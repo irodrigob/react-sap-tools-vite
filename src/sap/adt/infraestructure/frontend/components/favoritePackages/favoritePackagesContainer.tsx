@@ -10,12 +10,14 @@ import {
 	TreeItemCustom,
 } from "@ui5/webcomponents-react";
 import ToolbarFavoritePackages from "./toolbarFavoritePackages";
+import { useTranslations } from "translations/i18nContext";
 
 export default function FavoritePackagesContainer() {
+	const { getI18nText } = useTranslations();
 	return (
 		<Panel
 			header={<ToolbarFavoritePackages />}
-			headerText="Paquetes favoritos"
+			headerText={getI18nText("adtIde.favoritePackages.titleToolbar")}
 			onToggle={function _a() {}}
 			style={{ marginLeft: "0.5rem", paddingTop: "0.5rem" }}
 		>

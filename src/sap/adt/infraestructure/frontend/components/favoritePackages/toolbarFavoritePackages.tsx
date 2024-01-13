@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import {
 	Button,
 	Title,
@@ -18,6 +18,7 @@ const ToolbarFavoritePackages: FC<Props> = (props: Props) => {
 	const [openAddPackage, setOpenAddPackage] = useState(false);
 	const { getI18nText } = useTranslations();
 	const { slot } = props;
+	const handlerAddPackage = useCallback((addPackage: string) => {}, []);
 	return (
 		<>
 			<Toolbar slot={slot}>
@@ -37,9 +38,12 @@ const ToolbarFavoritePackages: FC<Props> = (props: Props) => {
 			<PopupAddPackageContainer
 				open={openAddPackage}
 				onCloseButton={() => {
-					setOpenAddPackage(false);
+					setOpenAddPackage(!openAddPackage);
 				}}
-				onConfirmButton={() => {}}
+				onConfirmButton={(addPackage: string) => {
+					setOpenAddPackage(!openAddPackage);
+					handlerAddPackage(addPackage);
+				}}
 			/>
 		</>
 	);

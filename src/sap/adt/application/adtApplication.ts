@@ -2,7 +2,12 @@ import { ApolloError } from "@apollo/client";
 import { Result } from "shared/core/Result";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import AppStore from "shared/storage/appStore";
-import { ResponseSearchObject } from "sap/adt/infraestructure/types/adt";
+import {
+	ResponseAddFavoritePackage,
+	ResponseSearchObject,
+	ResponseDeleteFavoritePackage,
+	ResponseFavoritePackages,
+} from "sap/adt/infraestructure/types/adt";
 import SAPAdtRepository from "sap/adt/infraestructure/repositories/sapAdtRepository";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 
@@ -61,6 +66,60 @@ export default class AdtApplication {
 				searchQuery
 			);
 			return Result.ok(response);
+		} catch (error) {
+			return Result.fail<ErrorGraphql>(
+				ErrorGraphql.create(error as ApolloError)
+			);
+		}
+	}
+	/**
+	 * Añade un paquete favorito
+	 * @param user Usuario
+	 * @param packageName Nombre del paquete
+	 */
+	async AddFavoritePackage(
+		user: string,
+		packageName: string
+	): Promise<ResponseAddFavoritePackage> {
+		try {
+			let response = await this.adtRepository.AddFavoritePackage(
+				user,
+				packageName
+			);
+			// Como es un PUT la actualización SAP no devuelve datos por ello devuelvo un undefinied, porque el void no me deja.
+			return Result.ok({ ...response });
+		} catch (error) {
+			return Result.fail<ErrorGraphql>(
+				ErrorGraphql.create(error as ApolloError)
+			);
+		}
+	}
+	/**
+	 * Devuelve los paquetes favoritos de un usuario
+	 * @param user Usuario
+	 */
+	async getFavoritePackages(user: string): Promise<ResponseFavoritePackages> {
+		try {
+			let response = await this.adtRepository.getFavoritePackages(user);
+			// Como es un PUT la actualización SAP no devuelve datos por ello devuelvo un undefinied, porque el void no me deja.
+			return Result.ok([...response]);
+		} catch (error) {
+			return Result.fail<ErrorGraphql>(
+				ErrorGraphql.create(error as ApolloError)
+			);
+		}
+	}
+	/**
+	 * Borra un paquete favorito
+	 * @param id Id del paquete favorito
+	 */
+	async deleteFavoritePackage(
+		id: string
+	): Promise<ResponseDeleteFavoritePackage> {
+		try {
+			let response = await this.adtRepository.deleteFavoritePackage(id);
+			// Como es un PUT la actualización SAP no devuelve datos por ello devuelvo un undefinied, porque el void no me deja.
+			return Result.ok({ ...response });
 		} catch (error) {
 			return Result.fail<ErrorGraphql>(
 				ErrorGraphql.create(error as ApolloError)
