@@ -77,7 +77,7 @@ const GET_FAVORITE_PACKAGES = gql`
 const MUTATION_ADD_FAVORITE_PACKAGE = gql`
 	mutation Mutation($input: InputAddFavoritePackage) {
 		newFavoritePackage(input: $input) {
-			package
+			packageName
 			user
 			_id
 		}
@@ -87,7 +87,7 @@ const MUTATION_ADD_FAVORITE_PACKAGE = gql`
 export const MUTATION_DELETE_FAVORITE_PACKAGE = gql`
 	mutation Mutation($id: String!) {
 		deleteFavoritePackage(id: $id) {
-			package
+			packageName
 			user
 			_id
 		}
@@ -154,7 +154,7 @@ export default class SAPAdtRepository
 			variables: {
 				input: {
 					user: user,
-					package: packageName,
+					packageName: packageName,
 				},
 			},
 		});

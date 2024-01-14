@@ -10,10 +10,14 @@ import {
 	TreeItemCustom,
 } from "@ui5/webcomponents-react";
 import ToolbarFavoritePackages from "./toolbarFavoritePackages";
+import "@ui5/webcomponents-icons/dist/delete";
 import { useTranslations } from "translations/i18nContext";
+import { useAppSelector } from "shared/storage/useStore";
+import { ADTFavoritePackage } from "sap/adt/domain/entities/favoritePackage";
 
 export default function FavoritePackagesContainer() {
 	const { getI18nText } = useTranslations();
+	const { favoritePackages } = useAppSelector((state) => state.ADT);
 	return (
 		<Panel
 			header={<ToolbarFavoritePackages />}
@@ -29,53 +33,25 @@ export default function FavoritePackagesContainer() {
 				onItemToggle={function _a() {}}
 				onSelectionChange={function _a() {}}
 			>
-				<TreeItem
-					expanded
-					icon="paste"
-					selected
-					text="Tree 1"
-				>
-					<TreeItem
-						expanded
-						selected
-						text="Tree 1.1"
-					>
-						<TreeItem text="Tree 1.1.1" />
-						<TreeItem text="Tree 1.1.2" />
-					</TreeItem>
-				</TreeItem>
-				<TreeItem
-					icon="copy"
-					text="Tree 2"
-				>
-					<TreeItem text="Tree 2.1">
-						<TreeItem text="Tree 2.1.1" />
-						<TreeItem text="Tree 2.1.2">
-							<TreeItem text="Tree 2.1.2.1" />
-							<TreeItem text="Tree 2.1.2.2" />
-							<TreeItem text="Tree 2.1.2.3" />
-							<TreeItem text="Tree 2.1.2.5" />
-						</TreeItem>
-					</TreeItem>
-					<TreeItem text="Tree 2.2" />
-				</TreeItem>
-				<TreeItem text="Tree 3 (no icon)" />
-				<TreeItemCustom
-					content={
-						<div style={{ alignItems: "center", display: "flex" }}>
-							<Icon
-								name="general-leave-request"
-								style={{ marginInlineEnd: "2rem" }}
+				{favoritePackages &&
+					favoritePackages.length > 0 &&
+					favoritePackages.map((favoritePackage: ADTFavoritePackage) => {
+						return (
+							<TreeItemCustom
+								content={
+									<div style={{ alignItems: "center", display: "flex" }}>
+										<Text>{favoritePackage.packageName}</Text>
+										<Icon
+											name="delete"
+											interactive={true}
+											design="Negative"
+											style={{ marginInlineStart: "2rem" }}
+										/>
+									</div>
+								}
 							/>
-							<Text>I'm a fully customizable TreeItemCustom!</Text>
-							<Button>Btn</Button>
-							<Icon
-								name="general-leave-request"
-								style={{ marginInlineStart: "2rem" }}
-							/>
-						</div>
-					}
-				/>
+						);
+					})}
 			</Tree>
 		</Panel>
 	);

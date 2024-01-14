@@ -22,6 +22,9 @@ import {
 	InputSuggestionItemPreviewEventDetail,
 	InputSuggestionItemSelectEventDetail,
 } from "@ui5/webcomponents/dist/Input.js";
+import { useSession } from "auth/authProvider";
+import ADTActions from "sap/adt/infraestructure/storage/adtActions";
+import { ADTFavoritePackage } from "sap/adt/domain/entities/favoritePackage";
 
 interface Props {
 	open: boolean;
@@ -41,6 +44,8 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 	const adtController = new SAPAdtController();
 	const [packageValue, setPackageValue] = useState("");
 	const [showLabel, setShowLabel] = useState(false);
+	const { session } = useSession();
+	const adtActions = new ADTActions();
 
 	const searchPackages = useCallback(
 		(event: Ui5CustomEvent<InputDomRef, never>) => {
@@ -74,13 +79,27 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 		},
 		[]
 	);
-	const packageSelected = useCallback(
-		(event: Ui5CustomEvent<InputDomRef, never>) => {
-			let values = event.target.value as string;
-			console.log(values);
-		},
-		[]
-	);
+	/**
+	 * Gestiona el proceso de añadir el paquete tanto al modelo de datos como a la base de datos
+	 */
+	const handlerAddFavoritePackage = useCallback(() => {
+		if (packagesState == ValueState.None) {
+			adtController
+				.AddFavoritePackage(session.email, packageValue)
+				.then((response) => {
+					if (response.isSuccess) {
+						adtActions.addFavoritePackage(
+							response.getValue() as ADTFavoritePackage
+						);
+						onConfirmButton(packageValue);
+					} else {
+						showResultError(response.getErrorValue() as ErrorGraphql);
+					}
+					setPackageValue("");
+				});
+			onConfirmButton(packageValue);
+		}
+	}, [packageValue]);
 	return (
 		<Dialog
 			draggable
@@ -97,9 +116,7 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 						onCloseButton();
 					}}
 					onStartButton={() => {
-						if (packagesState == ValueState.None) {
-							onConfirmButton(packageValue);
-						}
+						handlerAddFavoritePackage();
 					}}
 				/>
 			}

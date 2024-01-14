@@ -10,6 +10,7 @@ import {
 } from "sap/adt/infraestructure/types/adt";
 import SAPAdtRepository from "sap/adt/infraestructure/repositories/sapAdtRepository";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
+import { ADTFavoritePackage } from "sap/adt/domain/entities/favoritePackage";
 
 export default class AdtApplication {
 	private appStore: AppStore;
@@ -87,7 +88,7 @@ export default class AdtApplication {
 				packageName
 			);
 			// Como es un PUT la actualización SAP no devuelve datos por ello devuelvo un undefinied, porque el void no me deja.
-			return Result.ok({ ...response });
+			return Result.ok<ADTFavoritePackage>({ ...response });
 		} catch (error) {
 			return Result.fail<ErrorGraphql>(
 				ErrorGraphql.create(error as ApolloError)

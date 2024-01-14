@@ -5,6 +5,8 @@ import SystemReducer from "systems/infraestructure/storage/systemSlice";
 import SAPTransportOrderReducer from "sap/transportOrder/infraestructure/storage/sapTransportOrderSlice";
 import MessageManagerReducer from "messageManager/infraestructure/storage/messageManagerSlice";
 import SAPTranslateReducer from "sap/translate/infraestructure/storage/sapTranslateSlice";
+import ADTReducer from "sap/adt/infraestructure/storage/adtSlice";
+
 // El middleware es para evitar el warning: A non-serializable value was detected in an action, in the path: `payload`
 export const store = configureStore({
 	reducer: {
@@ -13,6 +15,7 @@ export const store = configureStore({
 		SAPTransportOrder: SAPTransportOrderReducer,
 		MessageManager: MessageManagerReducer,
 		SAPTranslate: SAPTranslateReducer,
+		ADT: ADTReducer,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
