@@ -49,16 +49,14 @@ export default class SAPController {
 		this.SAPGeneralActions.setURLODataCore(url);
 	}
 	/**
-	 * Ejecuta los servicios al seleccionar un sistema
+	 * Ejecuta los servicios de SAP Tools al seleccionar un sistema.
 	 */
-	async executeServicesSystemSelect(): Promise<responseMetadata> {
+	async executeServicesSAPTools(): Promise<responseMetadata> {
 		// Primero se lee el metadata del core. Si este va bien se continuan con el resto de servicio
 		let result = await this.SAPGeneralApplication.callMetaData(
 			this.getDataForConnection()
 		);
 		if (result.isSuccess) {
-			this.systemController.setConnectedToSystem(true);
-
 			// Se llama al servicio de obtención de usuarios
 			this.readUserInfo();
 

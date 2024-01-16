@@ -92,8 +92,11 @@ export default function useSystems() {
 								if (responseCheck instanceof ErrorGraphql) {
 									showResultError(responseCheck);
 								}
-								// Si esta instalada proceedemos a realizar la lectura
+								// Si no hay errores de conectividad se continua el proceso
 								else {
+									// Se marca que se ha conectado al sistema
+									systemController.setConnectedToSystem(true);
+
 									// Se añade la app de ADT
 									sapController.addAdtApp2Store();
 
@@ -104,7 +107,7 @@ export default function useSystems() {
 										);
 
 										sapController
-											.executeServicesSystemSelect()
+											.executeServicesSAPTools()
 											.then((responseSAP) => {
 												sapController.setLoadingListApps(false);
 												if (responseSAP.isSuccess) {
