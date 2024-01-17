@@ -18,7 +18,7 @@ export default function AdtIdeContainer() {
 
 	return (
 		<SplitterLayout>
-			<SplitterElement size="30%">
+			<SplitterElement size="25%">
 				<FavoritePackagesContainer />
 			</SplitterElement>
 			<SplitterElement>

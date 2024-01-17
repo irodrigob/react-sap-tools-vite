@@ -26,6 +26,8 @@ export default function useAdt() {
 	const loadInitialData = useCallback(() => {
 		sapController.setSystemChanged(false);
 		sapController.setApplicationChanged(false);
+
+		loadFavoritePackages();
 	}, []);
 
 	/**

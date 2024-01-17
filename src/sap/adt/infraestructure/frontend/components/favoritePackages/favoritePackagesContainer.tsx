@@ -38,16 +38,23 @@ export default function FavoritePackagesContainer() {
 					favoritePackages.map((favoritePackage: ADTFavoritePackage) => {
 						return (
 							<TreeItemCustom
+								key={favoritePackage.packageName}
 								content={
-									<div style={{ alignItems: "center", display: "flex" }}>
+									<section
+										style={{
+											width: "100%",
+											display: "flex",
+										}}
+									>
 										<Text>{favoritePackage.packageName}</Text>
-										<Icon
-											name="delete"
-											interactive={true}
-											design="Negative"
-											style={{ marginInlineStart: "2rem" }}
-										/>
-									</div>
+										<div style={{ marginLeft: "auto" }}>
+											<Icon
+												name="delete"
+												interactive={true}
+												design="Negative"
+											/>
+										</div>
+									</section>
 								}
 							/>
 						);

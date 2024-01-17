@@ -353,7 +353,8 @@
 				"title": "Seleccione un paquete",
 				"placeholder": "Búsqueda (> 1 carácteres)...",
 				"btnConfirm": "Añadir",
-				"packagesNotFound": "No se han encontrado paquetes"
+				"packagesNotFound": "No se han encontrado paquetes",
+				"packageDuplicate": "El paquete ya esta en favoritos"
 			}
 		}
 	},

@@ -65,8 +65,8 @@ const QUICK_SEARCH_OBJECT = gql`
 `;
 
 const GET_FAVORITE_PACKAGES = gql`
-	query Query($user: String!, $packageName: String!) {
-		adtFavoritePackages(user: $user, packageName: $packageName) {
+	query Query($user: String!) {
+		adtFavoritePackages(user: $user) {
 			_id
 			user
 			packageName

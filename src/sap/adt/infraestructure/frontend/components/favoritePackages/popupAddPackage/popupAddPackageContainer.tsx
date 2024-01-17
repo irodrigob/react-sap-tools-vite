@@ -25,6 +25,7 @@ import {
 import { useSession } from "auth/authProvider";
 import ADTActions from "sap/adt/infraestructure/storage/adtActions";
 import { ADTFavoritePackage } from "sap/adt/domain/entities/favoritePackage";
+import { useAppSelector } from "shared/storage/useStore";
 
 interface Props {
 	open: boolean;
@@ -46,6 +47,7 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 	const [showLabel, setShowLabel] = useState(false);
 	const { session } = useSession();
 	const adtActions = new ADTActions();
+	const { favoritePackages } = useAppSelector((state) => state.ADT);
 
 	const searchPackages = useCallback(
 		(event: Ui5CustomEvent<InputDomRef, never>) => {
@@ -84,20 +86,32 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 	 */
 	const handlerAddFavoritePackage = useCallback(() => {
 		if (packagesState == ValueState.None) {
-			adtController
-				.AddFavoritePackage(session.email, packageValue)
-				.then((response) => {
-					if (response.isSuccess) {
-						adtActions.addFavoritePackage(
-							response.getValue() as ADTFavoritePackage
-						);
-						onConfirmButton(packageValue);
-					} else {
-						showResultError(response.getErrorValue() as ErrorGraphql);
-					}
-					setPackageValue("");
-				});
-			onConfirmButton(packageValue);
+			if (
+				favoritePackages.findIndex((row) => row.packageName == packageValue) ==
+				-1
+			) {
+				adtController
+					.AddFavoritePackage(session.email, packageValue)
+					.then((response) => {
+						if (response.isSuccess) {
+							adtActions.addFavoritePackage(
+								response.getValue() as ADTFavoritePackage
+							);
+							onConfirmButton(packageValue);
+						} else {
+							showResultError(response.getErrorValue() as ErrorGraphql);
+						}
+						setPackageValue("");
+					});
+				onConfirmButton(packageValue);
+			} else {
+				setPackagesState(ValueState.Error);
+				setPackagesStateMessage(
+					getI18nText(
+						"adtIde.favoritePackages.popupAddPackage.packageDuplicate"
+					)
+				);
+			}
 		}
 	}, [packageValue]);
 	return (
