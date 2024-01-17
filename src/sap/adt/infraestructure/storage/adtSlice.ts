@@ -25,9 +25,16 @@ export const ADTSlice = createSlice({
 			);
 			state.favoritePackages.splice(index, index >= 0 ? 1 : 0);
 		},
+		setFavoritePackages(state, action: PayloadAction<ADTFavoritePackages>) {
+			state.favoritePackages = action.payload;
+		},
 	},
 });
 
-export const { addFavoritePackage, deleteFavoritePackage } = ADTSlice.actions;
+export const {
+	addFavoritePackage,
+	deleteFavoritePackage,
+	setFavoritePackages,
+} = ADTSlice.actions;
 
 export default ADTSlice.reducer;

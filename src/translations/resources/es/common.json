@@ -348,6 +348,7 @@
 		"favoritePackages": {
 			"titleToolbar": "Paquetes favoritos",
 			"addFavoritePackageTooltip": "Añadir paquete a favoritos",
+			"errorLoad": "Error al leer los paquetes favoritos",
 			"popupAddPackage": {
 				"title": "Seleccione un paquete",
 				"placeholder": "Búsqueda (> 1 carácteres)...",
