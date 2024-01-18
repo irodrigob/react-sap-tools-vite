@@ -21,6 +21,7 @@ import { responseSystemRepoArray } from "systems/infraestructure/types/applicati
 import useTunnelSystem from "tunnelSystem/infraestructure/frontend/hooks/useTunnelSystem";
 import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtController";
+import useSAPGeneralStore from "sap/general/infraestructure/frontend/hooks/useSAPGeneralStore";
 
 export default function useSystems() {
 	const {
@@ -33,6 +34,13 @@ export default function useSystems() {
 	} = useSystemData();
 	const navigate = useNavigate();
 	const { systemSelected } = useAppSelector((state) => state.System);
+	const {
+		setShowListApps,
+		setLoadingListApps,
+		clearVariables: sapGeneralClearVariables,
+		addAdtApp2Store,
+		setURLODataCore,
+	} = useSAPGeneralStore();
 	const systemActions = new SystemActions();
 	const systemController = new SystemController();
 	const sapController = new SAPController();
@@ -49,7 +57,7 @@ export default function useSystems() {
 	 * @param(System) systemSelected - Sistema seleccionado
 	 */
 	const processSelectedSystem = useCallback(
-		(systemSelected: System) => {
+		async (systemSelected: System) => {
 			document.title = `${getI18nText("app.title")}: ${systemSelected.name}`;
 			systemActions.setSystemSelected(systemSelected);
 
@@ -59,9 +67,9 @@ export default function useSystems() {
 			// Oculto las tiles de selección de systema
 			setShowSystemList(false);
 			// Se indica que se mostrará la lista de aplicación
-			sapController.setShowListApps(true);
+			setShowListApps(true);
 			// Y el loader que se están leyendo las aplicaciones
-			sapController.setLoadingListApps(true);
+			setLoadingListApps(true);
 
 			// Se borras las variables principales de las aplicaciones para que no se visualice
 			// datos de otro sistema si falla algo del sistema seleccionado.
@@ -95,21 +103,21 @@ export default function useSystems() {
 								// Si no hay errores de conectividad se continua el proceso
 								else {
 									// Se marca que se ha conectado al sistema
-									systemController.setConnectedToSystem(true);
+									systemActions.setConnectedToSystem(true);
 
 									// Se añade la app de ADT
-									sapController.addAdtApp2Store();
+									addAdtApp2Store();
 
 									if (responseCheck) {
 										// Guardamos la URL para conectarse a los servicio core del sistema
-										sapController.setURLODataCore(
+										setURLODataCore(
 											sapController.buildSAPUrl2Connect(URL2ConnectSystem)
 										);
 
 										sapController
 											.executeServicesSAPTools()
 											.then((responseSAP) => {
-												sapController.setLoadingListApps(false);
+												setLoadingListApps(false);
 												if (responseSAP.isSuccess) {
 													// Si el proceso de lectura de aplicaciones, metadata, etc. Se ejecutan con éxito
 													// Se lanza los procesos cuando se cambia de sistema.
@@ -124,7 +132,7 @@ export default function useSystems() {
 										// Este método se llamada igual para que sirva en app que no usen las SAP Tools que se ha cambiado
 										// El sistema
 										changeSystemGeneralActions();
-										sapController.setLoadingListApps(false);
+										setLoadingListApps(false);
 										showMessage(
 											getI18nText("sapGeneral.sapToolsNotInstalled"),
 											MessageType.info
@@ -133,7 +141,7 @@ export default function useSystems() {
 								}
 							});
 						} else {
-							sapController.setLoadingListApps(false);
+							setLoadingListApps(false);
 							showResultError(response.getErrorValue() as ErrorGraphql);
 						}
 					});
@@ -270,7 +278,7 @@ export default function useSystems() {
 	 * Borrado de variables generales de las aplicación. Esto servirá en borrado de sistema o cambio de sistema
 	 */
 	const clearVariablesSystem = useCallback(() => {
-		sapController.clearVariables();
+		sapGeneralClearVariables();
 		sapTransportOrderController.clearVariables();
 		sapTranslateController.clearVariables();
 		messageController.clearVariables();

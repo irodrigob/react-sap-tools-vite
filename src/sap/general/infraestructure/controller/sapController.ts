@@ -1,9 +1,10 @@
 import i18n from "i18next";
 import { Result } from "shared/core/Result";
 import {
-	responseMetadata,
-	responseGetUserInfoRepo,
-	responseGetAppsList,
+	ResponseMetadata,
+	ResponseGetUserInfoRepo,
+	ResponseGetAppsList,
+	ResponseExecuteServicesSystemSelect,
 } from "sap/general/infraestructure/types/general";
 import SAPGeneralApplication from "sap/general/application/SAPGeneralApplication";
 import AppsList from "sap/general/domain/entities/appsList";
@@ -42,16 +43,9 @@ export default class SAPController {
 		return this.SAPGeneralApplication.buildSAPUrl2Connect(host, service);
 	}
 	/**
-	 * Guarda en el modelo la URL base para conectarse a servicio Odat
-	 * @param url | Url
-	 */
-	setURLODataCore(url: string): void {
-		this.SAPGeneralActions.setURLODataCore(url);
-	}
-	/**
 	 * Ejecuta los servicios de SAP Tools al seleccionar un sistema.
 	 */
-	async executeServicesSAPTools(): Promise<responseMetadata> {
+	async executeServicesSAPTools(): Promise<ResponseExecuteServicesSystemSelect> {
 		// Primero se lee el metadata del core. Si este va bien se continuan con el resto de servicio
 		let result = await this.SAPGeneralApplication.callMetaData(
 			this.getDataForConnection()
@@ -66,14 +60,22 @@ export default class SAPController {
 
 			return Result.ok<void>();
 		} else {
-			return result;
+			return result as ErrorGraphql;
 		}
+	}
+	/**
+	 * Llama a los servicios de metadata
+	 */
+	async callMetadata(): Promise<ResponseMetadata> {
+		return await this.SAPGeneralApplication.callMetaData(
+			this.getDataForConnection()
+		);
 	}
 	/**
 	 * Devuelve los datos del usuario de conexión
 	 * @returns | Promesa con el resultado del proceso
 	 */
-	async readUserInfo(): Promise<responseGetUserInfoRepo> {
+	async readUserInfo(): Promise<ResponseGetUserInfoRepo> {
 		return this.SAPGeneralApplication.readUserInfo(this.getDataForConnection());
 	}
 	/**
@@ -82,7 +84,7 @@ export default class SAPController {
 	 */
 	async readAppsList(
 		language: string = i18n.language
-	): Promise<responseGetAppsList> {
+	): Promise<ResponseGetAppsList> {
 		return this.SAPGeneralApplication.readAppsList(this.getDataForConnection());
 	}
 	/**
@@ -98,13 +100,6 @@ export default class SAPController {
 	 */
 	setShowListApps(value: boolean) {
 		this.SAPGeneralActions.setShowListApps(value);
-	}
-	/**
-	 * Indicador si se muestra el loader de leyendo aplicaciones
-	 * @param value
-	 */
-	setLoadingListApps(value: boolean) {
-		this.SAPGeneralActions.setLoadingListApps(value);
 	}
 	/**
 	 * Devuelve los datos de conexión al sistema
@@ -162,10 +157,9 @@ export default class SAPController {
 		}
 	}
 	/**
-	 * Añade la aplicación de ADT al storage. Este método se usará cuando las
-	 * SAP Tools no están instaladas
+	 * Devuelve al app para el acceso al ADT
 	 */
-	addAdtApp2Store() {
-		this.SAPGeneralApplication.addAdtApp2Store();
+	ADTAppList() {
+		return this.SAPGeneralApplication.ADTAppList();
 	}
 }

@@ -2,9 +2,9 @@ import { ApolloError } from "@apollo/client";
 import { Result } from "shared/core/Result";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import {
-	responseMetadata,
-	responseGetUserInfoRepo,
-	responseGetAppsList,
+	ResponseMetadata,
+	ResponseGetUserInfoRepo,
+	ResponseGetAppsList,
 } from "sap/general/infraestructure/types/general";
 import SAPFormatters from "sap/general/infraestructure/utils/formatters";
 import AppStore from "shared/storage/appStore";
@@ -33,12 +33,12 @@ export default class SAPGeneralApplication {
 	 */
 	async callMetaData(
 		dataConnection: DataConnectionSystem
-	): Promise<responseMetadata> {
+	): Promise<ResponseMetadata> {
 		try {
 			let response = await this.SAPGeneralRepository.callMetadataCore(
 				dataConnection
 			);
-			return Result.ok<responseMetadata>(response);
+			return Result.ok(response);
 		} catch (error) {
 			return Result.fail<ErrorGraphql>(
 				ErrorGraphql.create(error as ApolloError)
@@ -51,7 +51,7 @@ export default class SAPGeneralApplication {
 	 */
 	async readUserInfo(
 		dataConnection: DataConnectionSystem
-	): Promise<responseGetUserInfoRepo> {
+	): Promise<ResponseGetUserInfoRepo> {
 		try {
 			let response = await this.SAPGeneralRepository.getUserInfo(
 				dataConnection
@@ -71,7 +71,7 @@ export default class SAPGeneralApplication {
 	 */
 	async readAppsList(
 		dataConnection: DataConnectionSystem
-	): Promise<responseGetAppsList> {
+	): Promise<ResponseGetAppsList> {
 		try {
 			let response = await this.SAPGeneralRepository.getAppsList(
 				dataConnection
