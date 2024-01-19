@@ -22,7 +22,8 @@ import useTunnelSystem from "tunnelSystem/infraestructure/frontend/hooks/useTunn
 import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtController";
 import useSAPGeneralStore from "sap/general/infraestructure/frontend/hooks/useSAPGeneralStore";
-
+import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
+import useSystemStore from "./useSystemsStore";
 export default function useSystems() {
 	const {
 		systemsList,
@@ -35,11 +36,10 @@ export default function useSystems() {
 	const navigate = useNavigate();
 	const { systemSelected } = useAppSelector((state) => state.System);
 	const {
-		setShowListApps,
-		setLoadingListApps,
-		clearVariables: sapGeneralClearVariables,
-		addAdtApp2Store,
-		setURLODataCore,
+		setShowListAppsAction,
+		setLoadingListAppsAction,
+		clearVariablesAction: sapGeneralClearVariablesAction,
+		addAdtApp2StoreAction,
 	} = useSAPGeneralStore();
 	const systemActions = new SystemActions();
 	const systemController = new SystemController();
@@ -47,10 +47,16 @@ export default function useSystems() {
 	const sapTransportOrderController = new SAPTransportOrderController();
 	const sapTranslateController = new SAPTranslateController();
 	const sapAdtController = new SAPAdtController();
+	const {
+		setSystemSelectedAction,
+		setConnectedToSystemAction,
+		setURL2ConnectSystemAction,
+	} = useSystemStore();
 	const { getI18nText } = useTranslations();
 	const { showResultError, showMessage } = useMessages();
 	const { getTunnelConfiguration, getTunnelProviders } = useTunnelSystem();
 	const messageController = new MessageManagerController();
+	const { initialServicesSAPTools } = useSAPGeneral();
 
 	/**
 	 * Proceso que se lanza cuando se selecciona un sistema
@@ -59,17 +65,17 @@ export default function useSystems() {
 	const processSelectedSystem = useCallback(
 		async (systemSelected: System) => {
 			document.title = `${getI18nText("app.title")}: ${systemSelected.name}`;
-			systemActions.setSystemSelected(systemSelected);
+			setSystemSelectedAction(systemSelected);
 
 			// Indico que no se esta conectado al sistema.
-			systemActions.setConnectedToSystem(false);
+			setConnectedToSystemAction(false);
 
 			// Oculto las tiles de selección de systema
 			setShowSystemList(false);
 			// Se indica que se mostrará la lista de aplicación
-			setShowListApps(true);
+			setShowListAppsAction(true);
 			// Y el loader que se están leyendo las aplicaciones
-			setLoadingListApps(true);
+			setLoadingListAppsAction(true);
 
 			// Se borras las variables principales de las aplicaciones para que no se visualice
 			// datos de otro sistema si falla algo del sistema seleccionado.
@@ -93,7 +99,8 @@ export default function useSystems() {
 						if (response.isSuccess) {
 							let URL2ConnectSystem = response.getValue() as string;
 							// Guardamos la URL base de conexión
-							systemActions.setURL2ConnectSystem(URL2ConnectSystem);
+							setURL2ConnectSystemAction(URL2ConnectSystem);
+							setLoadingListAppsAction(false);
 
 							// Verificamos si las SAPTools están instaladas
 							sapController.checkSAPToolsInstalled().then((responseCheck) => {
@@ -103,36 +110,18 @@ export default function useSystems() {
 								// Si no hay errores de conectividad se continua el proceso
 								else {
 									// Se marca que se ha conectado al sistema
-									systemActions.setConnectedToSystem(true);
+									setConnectedToSystemAction(true);
 
 									// Se añade la app de ADT
-									addAdtApp2Store();
+									addAdtApp2StoreAction();
 
 									if (responseCheck) {
-										// Guardamos la URL para conectarse a los servicio core del sistema
-										setURLODataCore(
-											sapController.buildSAPUrl2Connect(URL2ConnectSystem)
-										);
-
-										sapController
-											.executeServicesSAPTools()
-											.then((responseSAP) => {
-												setLoadingListApps(false);
-												if (responseSAP.isSuccess) {
-													// Si el proceso de lectura de aplicaciones, metadata, etc. Se ejecutan con éxito
-													// Se lanza los procesos cuando se cambia de sistema.
-													changeSystemGeneralActions();
-												} else {
-													showResultError(
-														responseSAP.getErrorValue() as ErrorGraphql
-													);
-												}
-											});
+										initialServicesSAPTools();
 									} else {
 										// Este método se llamada igual para que sirva en app que no usen las SAP Tools que se ha cambiado
 										// El sistema
 										changeSystemGeneralActions();
-										setLoadingListApps(false);
+										setLoadingListAppsAction(false);
 										showMessage(
 											getI18nText("sapGeneral.sapToolsNotInstalled"),
 											MessageType.info
@@ -141,7 +130,7 @@ export default function useSystems() {
 								}
 							});
 						} else {
-							setLoadingListApps(false);
+							setLoadingListAppsAction(false);
 							showResultError(response.getErrorValue() as ErrorGraphql);
 						}
 					});
@@ -278,7 +267,7 @@ export default function useSystems() {
 	 * Borrado de variables generales de las aplicación. Esto servirá en borrado de sistema o cambio de sistema
 	 */
 	const clearVariablesSystem = useCallback(() => {
-		sapGeneralClearVariables();
+		sapGeneralClearVariablesAction();
 		sapTransportOrderController.clearVariables();
 		sapTranslateController.clearVariables();
 		messageController.clearVariables();

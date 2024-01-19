@@ -56,7 +56,6 @@ export default class SAPGeneralApplication {
 			let response = await this.SAPGeneralRepository.getUserInfo(
 				dataConnection
 			);
-			this.SAPGeneralActions.setUserInfo(response);
 
 			return Result.ok<UserInfo>(response);
 		} catch (error) {

@@ -132,7 +132,8 @@
 		}
 	},
 	"sapGeneral": {
-		"sapToolsNotInstalled": "Las SAP Tools no están instaladas"
+		"sapToolsNotInstalled": "Las SAP Tools no están instaladas",
+		"errorLoadApps": "Se ha producido un error al obtener las aplicaciones"
 	},
 	"transportOrder": {
 		"title": "Transporte de ordenes",

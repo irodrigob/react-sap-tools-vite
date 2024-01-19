@@ -34,6 +34,21 @@ export default class SAPController {
 	}
 
 	/**
+	 * Ejecuta los servicios de SAP Tools al seleccionar un sistema.
+	 */
+	async executeServicesSAPTools(): Promise<void> {
+		// Primero se lee el metadata del core. Si este va bien se continuan con el resto de servicio
+		let result = await this.SAPGeneralApplication.callMetaData(
+			this.getDataForConnection()
+		);
+		if (result.isSuccess) {
+			return undefined;
+		} else {
+			return undefined;
+		}
+	}
+
+	/**
 	 * Devuelve la URL completa para la conexión al sistema SAP
 	 * @param host | Host del sistema
 	 * @param service | Servicio
@@ -42,34 +57,14 @@ export default class SAPController {
 	buildSAPUrl2Connect(host: string, service?: string): string {
 		return this.SAPGeneralApplication.buildSAPUrl2Connect(host, service);
 	}
-	/**
-	 * Ejecuta los servicios de SAP Tools al seleccionar un sistema.
-	 */
-	async executeServicesSAPTools(): Promise<ResponseExecuteServicesSystemSelect> {
-		// Primero se lee el metadata del core. Si este va bien se continuan con el resto de servicio
-		let result = await this.SAPGeneralApplication.callMetaData(
-			this.getDataForConnection()
-		);
-		if (result.isSuccess) {
-			// Se llama al servicio de obtención de usuarios
-			this.readUserInfo();
 
-			// Listado de aplicaciones, me espero porque aparte de leer las aplicaciones lanza el metadata
-			// de cada una de ellas. Y el metadata se tiene que lanzar antes que los servicios de cada aplicación.
-			await this.readAppsList();
-
-			return Result.ok<void>();
-		} else {
-			return result as ErrorGraphql;
-		}
-	}
 	/**
 	 * Llama a los servicios de metadata
 	 */
-	async callMetadata(): Promise<ResponseMetadata> {
-		return await this.SAPGeneralApplication.callMetaData(
-			this.getDataForConnection()
-		);
+	async callMetadata(
+		dataConnection: DataConnectionSystem
+	): Promise<ResponseMetadata> {
+		return await this.SAPGeneralApplication.callMetaData(dataConnection);
 	}
 	/**
 	 * Devuelve los datos del usuario de conexión
@@ -83,9 +78,10 @@ export default class SAPController {
 	 * @returns | Promesa con el resultado del proceso
 	 */
 	async readAppsList(
+		dataConnection: DataConnectionSystem,
 		language: string = i18n.language
 	): Promise<ResponseGetAppsList> {
-		return this.SAPGeneralApplication.readAppsList(this.getDataForConnection());
+		return this.SAPGeneralApplication.readAppsList(dataConnection);
 	}
 	/**
 	 * Devuelve la lista de aplicaciones del modelo

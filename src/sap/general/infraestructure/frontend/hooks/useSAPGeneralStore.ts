@@ -1,33 +1,63 @@
 import { useCallback } from "react";
+import { useDispatch } from "react-redux";
 import SAPController from "sap/general/infraestructure/controller/sapController";
 import SAPGeneralActions from "sap/general/infraestructure/storage/SAPGeneralActions";
+import UserInfo from "sap/general/domain/entities/userInfo";
+import { useAppSelector } from "shared/storage/useStore";
+import AppsList from "sap/general/domain/entities/appsList";
+import {
+	setURLODataCore,
+	setUserInfo,
+	setAppsList,
+	setLoadingListApps,
+	setShowListApps,
+	setSystemChanged,
+	setApplicationChanged,
+} from "sap/general/infraestructure/storage/SAPGeneralSlice";
 
+/**
+ * NOTA: Mezco las dos manera de guardar en la store para tener el conocimiento de como hacerlo.
+ */
 export default function useSAPGeneralStore() {
 	const sapController = new SAPController();
 	const sapGeneralActions = new SAPGeneralActions();
+	const { appsList, URLODataCore } = useAppSelector(
+		(state) => state.SAPGeneral
+	);
+	const dispatch = useDispatch();
 
-	const setShowListApps = useCallback((visible: boolean) => {
-		sapGeneralActions.setShowListApps(visible);
+	const setShowListAppsAction = useCallback((visible: boolean) => {
+		dispatch(setShowListApps(visible));
 	}, []);
-	const setLoadingListApps = useCallback((loading: boolean) => {
+	const setLoadingListAppsAction = useCallback((loading: boolean) => {
 		sapGeneralActions.setLoadingListApps(loading);
 	}, []);
-	const clearVariables = useCallback(() => {
+	const clearVariablesAction = useCallback(() => {
 		sapGeneralActions.setAppsList([]);
 		sapGeneralActions.setApplicationChanged(false);
 	}, []);
-	const addAdtApp2Store = useCallback(() => {
+	const addAdtApp2StoreAction = useCallback(() => {
 		sapGeneralActions.setAppsList([{ ...sapController.ADTAppList() }]);
 	}, []);
-	const setURLODataCore = useCallback((url: string) => {
+	const setURLODataCoreAction = useCallback((url: string) => {
 		sapGeneralActions.setURLODataCore(url);
+	}, []);
+	const setUserInfoAction = useCallback((userInfo: UserInfo) => {
+		dispatch(setUserInfo(userInfo));
+	}, []);
+	const setAppsListAction = useCallback((appsList: AppsList[]) => {
+		dispatch(setAppsList(appsList));
 	}, []);
 
 	return {
-		setShowListApps,
-		setLoadingListApps,
-		clearVariables,
-		addAdtApp2Store,
-		setURLODataCore,
+		setShowListAppsAction,
+		setLoadingListAppsAction,
+		clearVariablesAction,
+		addAdtApp2StoreAction,
+		setURLODataCoreAction,
+		setUserInfoAction,
+		appsList,
+		setAppsListAction,
+		URLODataCore,
 	};
 }
