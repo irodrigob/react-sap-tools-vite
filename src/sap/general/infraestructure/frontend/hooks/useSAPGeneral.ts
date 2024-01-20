@@ -7,7 +7,6 @@ import useMessages, {
 } from "shared/infraestructure/hooks/useMessages";
 import useSAPGeneralStore from "./useSAPGeneralStore";
 import UserInfo from "sap/general/domain/entities/userInfo";
-import { useAppSelector } from "shared/storage/useStore";
 import SAPFormatters from "sap/general/infraestructure/utils/formatters";
 import useSystemStore from "systems/infraestructure/frontend/hooks/useSystemsStore";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
@@ -21,37 +20,58 @@ export default function useSAPGeneral() {
 		setUserInfoAction,
 		appsList,
 		setAppsListAction,
-		setURLODataCoreAction,
 		URLODataCore,
+		setLoadingListAppsAction,
+		setSystemChangedAction,
 	} = useSAPGeneralStore();
-	//const { URL2ConnectSystem, systemSelected } = useSystemStore();
-	const { URL2ConnectSystem, systemSelected } = useAppSelector(
-		(state) => state.System
-	);
+	const { setConnectedToSystemAction } = useSystemStore();
+	const { URL2ConnectSystem, systemSelected } = useSystemStore();
 	const { getI18nText, language } = useTranslations();
 
 	const initialServicesSAPTools = useCallback(() => {
-		// URL de conexion a los sistemas core
-		setURLODataCoreAction(buildSAPUrl2Connect(URL2ConnectSystem));
-
 		sapController
-			.callMetadata(getDataForConnection())
-			.then((responseMetadata: ResponseMetadata) => {
-				if (responseMetadata.isSuccess) {
-					readUserInfo();
-					readAppsList();
-				} else {
-					showResultError(responseMetadata.getErrorValue() as ErrorGraphql);
+			.checkSAPToolsInstalled(getDataForConnection("base"))
+			.then((responseCheck) => {
+				if (responseCheck instanceof ErrorGraphql) {
+					showResultError(responseCheck);
+				}
+				// Si no hay errores de conectividad se continua el proceso
+				else {
+					setConnectedToSystemAction(true); // Se marca que se ha conectado al sistema
+					setSystemChangedAction(true); // Se indica que el sistema ha cambiado
+					if (responseCheck) {
+						sapController
+							.callMetadata(getDataForConnection())
+							.then((responseMetadata: ResponseMetadata) => {
+								if (responseMetadata.isSuccess) {
+									readUserInfo();
+									readAppsList();
+									setLoadingListAppsAction(false);
+								} else {
+									setLoadingListAppsAction(false);
+									showResultError(
+										responseMetadata.getErrorValue() as ErrorGraphql
+									);
+								}
+							});
+					} else {
+						setLoadingListAppsAction(false);
+						showMessage(
+							getI18nText("sapGeneral.sapToolsNotInstalled"),
+							MessageType.info
+						);
+					}
 				}
 			});
-	}, [appsList, URL2ConnectSystem]);
+	}, [systemSelected, URL2ConnectSystem]);
+
 	const readUserInfo = useCallback(() => {
-		sapController.readUserInfo().then((response) => {
+		sapController.readUserInfo(getDataForConnection()).then((response) => {
 			if (response.isSuccess) {
 				setUserInfoAction(response.getValue() as UserInfo);
 			}
 		});
-	}, []);
+	}, [systemSelected, URL2ConnectSystem]);
 	/**
 	 * Lectura de las aplicaciones
 	 */
@@ -77,7 +97,7 @@ export default function useSAPGeneral() {
 					);
 				}
 			});
-	}, [appsList, URL2ConnectSystem]);
+	}, [appsList, URL2ConnectSystem, systemSelected]);
 	/**
 	 * Devuelve los datos de conexión al sistema
 	 * @returns Objetos con los datos de conexión al sistema
@@ -85,14 +105,18 @@ export default function useSAPGeneral() {
 	const getDataForConnection = useCallback(
 		(app?: string): DataConnectionSystem => {
 			return {
-				host: app ? getURLConnectionApp(app) : URLODataCore,
+				host: app
+					? app == "base"
+						? URL2ConnectSystem
+						: getURLConnectionApp(app)
+					: buildSAPUrl2Connect(URL2ConnectSystem),
 				sap_user: systemSelected.sap_user,
 				sap_password: systemSelected.sap_password,
 				client: systemSelected.client,
 				language: systemSelected.language,
 			};
 		},
-		[appsList, URL2ConnectSystem, URLODataCore]
+		[systemSelected, URL2ConnectSystem]
 	);
 
 	/**
@@ -103,20 +127,22 @@ export default function useSAPGeneral() {
 			let service = appsList.find((row) => row.app == app)?.service ?? "";
 			return buildSAPUrl2Connect(URL2ConnectSystem, service);
 		},
-		[appsList, URL2ConnectSystem]
+		[URL2ConnectSystem]
 	);
 	/**
 	 * Devuelve la URL completa para la conexión al sistema SAP
 	 * @param host | Host del sistema
-	 * @param service | Servicio
+	 * @param service | Servicio. Si no se le pasa se devuelve el servicio Core
 	 * @returns URL completa del servicio
 	 */
-	const buildSAPUrl2Connect = useCallback(
-		(host: string, service?: string): string => {
-			return SAPFormatters.buildSAPUrl2Connect(host, service);
-		},
-		[]
-	);
+	const buildSAPUrl2Connect = (host: string, service?: string): string => {
+		return SAPFormatters.buildSAPUrl2Connect(host, service);
+	};
 
-	return { initialServicesSAPTools, getDataForConnection, getURLConnectionApp };
+	return {
+		initialServicesSAPTools,
+		getDataForConnection,
+		getURLConnectionApp,
+		buildSAPUrl2Connect,
+	};
 }

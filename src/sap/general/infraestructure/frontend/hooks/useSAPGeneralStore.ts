@@ -48,6 +48,12 @@ export default function useSAPGeneralStore() {
 	const setAppsListAction = useCallback((appsList: AppsList[]) => {
 		dispatch(setAppsList(appsList));
 	}, []);
+	const setSystemChangedAction = useCallback((value: boolean) => {
+		dispatch(setSystemChanged(value));
+	}, []);
+	const setApplicationChangedAction = useCallback((value: boolean) => {
+		dispatch(setApplicationChanged(value));
+	}, []);
 
 	return {
 		setShowListAppsAction,
@@ -59,5 +65,7 @@ export default function useSAPGeneralStore() {
 		appsList,
 		setAppsListAction,
 		URLODataCore,
+		setSystemChangedAction,
+		setApplicationChangedAction,
 	};
 }

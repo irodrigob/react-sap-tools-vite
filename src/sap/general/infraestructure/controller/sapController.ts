@@ -34,21 +34,6 @@ export default class SAPController {
 	}
 
 	/**
-	 * Ejecuta los servicios de SAP Tools al seleccionar un sistema.
-	 */
-	async executeServicesSAPTools(): Promise<void> {
-		// Primero se lee el metadata del core. Si este va bien se continuan con el resto de servicio
-		let result = await this.SAPGeneralApplication.callMetaData(
-			this.getDataForConnection()
-		);
-		if (result.isSuccess) {
-			return undefined;
-		} else {
-			return undefined;
-		}
-	}
-
-	/**
 	 * Devuelve la URL completa para la conexión al sistema SAP
 	 * @param host | Host del sistema
 	 * @param service | Servicio
@@ -70,8 +55,10 @@ export default class SAPController {
 	 * Devuelve los datos del usuario de conexión
 	 * @returns | Promesa con el resultado del proceso
 	 */
-	async readUserInfo(): Promise<ResponseGetUserInfoRepo> {
-		return this.SAPGeneralApplication.readUserInfo(this.getDataForConnection());
+	async readUserInfo(
+		dataConnection: DataConnectionSystem
+	): Promise<ResponseGetUserInfoRepo> {
+		return this.SAPGeneralApplication.readUserInfo(dataConnection);
 	}
 	/**
 	 * Obtiene la lista de aplicaciones configuradas
@@ -138,9 +125,12 @@ export default class SAPController {
 	 * Verifica si la herramienta SAP Tools esta instalada
 	 * @returns Booleano si esta instalado o no
 	 */
-	async checkSAPToolsInstalled(): Promise<boolean | ErrorGraphql> {
+	async checkSAPToolsInstalled(
+		dataConnection: DataConnectionSystem
+	): Promise<boolean | ErrorGraphql> {
 		// Se usa el ADT para verificar si existe la clase Z que gestiona las peticiones OData
 		let response = await this.sapAdtController.quickSearch(
+			dataConnection,
 			ADT_OBJECT_TYPES.CLASSES.OBJECT_TYPE,
 			SAP_TOOLS_OBJECT_NAMES.SAP_TOOLS_GW_CUSTOM_CLASS
 		);

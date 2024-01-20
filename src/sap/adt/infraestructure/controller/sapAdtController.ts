@@ -42,11 +42,12 @@ export default class SAPAdtController {
 	 * @param searchQuery
 	 */
 	quickSearch(
+		dataConnection: DataConnectionSystem,
 		objectType: string,
 		searchQuery: string
 	): Promise<ResponseSearchObject> {
 		return this.adtApplication.quickSearch(
-			this.getDataForConnection(),
+			dataConnection,
 			objectType,
 			searchQuery
 		);

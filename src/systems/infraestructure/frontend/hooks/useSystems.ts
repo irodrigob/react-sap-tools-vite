@@ -7,11 +7,9 @@ import {
 	DEFAULT_SYSTEM,
 } from "systems/infraestructure/context/systemContext";
 import SystemController from "systems/infraestructure/controller/systemController";
-import SAPController from "sap/general/infraestructure/controller/sapController";
 import SAPTransportOrderController from "sap/transportOrder/infraestructure/controller/sapTransportOrderController";
 import SAPTranslateController from "sap/translate/infraestructure/controller/sapTranslateController";
 import { useAppSelector } from "shared/storage/useStore";
-import SystemActions from "systems/infraestructure/storage/systemActions";
 import { useTranslations } from "translations/i18nContext";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import useMessages, {
@@ -20,10 +18,10 @@ import useMessages, {
 import { responseSystemRepoArray } from "systems/infraestructure/types/application";
 import useTunnelSystem from "tunnelSystem/infraestructure/frontend/hooks/useTunnelSystem";
 import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
-import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtController";
 import useSAPGeneralStore from "sap/general/infraestructure/frontend/hooks/useSAPGeneralStore";
 import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
 import useSystemStore from "./useSystemsStore";
+
 export default function useSystems() {
 	const {
 		systemsList,
@@ -41,12 +39,9 @@ export default function useSystems() {
 		clearVariablesAction: sapGeneralClearVariablesAction,
 		addAdtApp2StoreAction,
 	} = useSAPGeneralStore();
-	const systemActions = new SystemActions();
 	const systemController = new SystemController();
-	const sapController = new SAPController();
 	const sapTransportOrderController = new SAPTransportOrderController();
 	const sapTranslateController = new SAPTranslateController();
-	const sapAdtController = new SAPAdtController();
 	const {
 		setSystemSelectedAction,
 		setConnectedToSystemAction,
@@ -56,7 +51,7 @@ export default function useSystems() {
 	const { showResultError, showMessage } = useMessages();
 	const { getTunnelConfiguration, getTunnelProviders } = useTunnelSystem();
 	const messageController = new MessageManagerController();
-	const { initialServicesSAPTools } = useSAPGeneral();
+	const { initialServicesSAPTools, buildSAPUrl2Connect } = useSAPGeneral();
 
 	/**
 	 * Proceso que se lanza cuando se selecciona un sistema
@@ -75,7 +70,6 @@ export default function useSystems() {
 			// Se indica que se mostrará la lista de aplicación
 			setShowListAppsAction(true);
 			// Y el loader que se están leyendo las aplicaciones
-			setLoadingListAppsAction(true);
 
 			// Se borras las variables principales de las aplicaciones para que no se visualice
 			// datos de otro sistema si falla algo del sistema seleccionado.
@@ -100,35 +94,10 @@ export default function useSystems() {
 							let URL2ConnectSystem = response.getValue() as string;
 							// Guardamos la URL base de conexión
 							setURL2ConnectSystemAction(URL2ConnectSystem);
-							setLoadingListAppsAction(false);
+							// Se añade la app de ADT
+							addAdtApp2StoreAction();
 
-							// Verificamos si las SAPTools están instaladas
-							sapController.checkSAPToolsInstalled().then((responseCheck) => {
-								if (responseCheck instanceof ErrorGraphql) {
-									showResultError(responseCheck);
-								}
-								// Si no hay errores de conectividad se continua el proceso
-								else {
-									// Se marca que se ha conectado al sistema
-									setConnectedToSystemAction(true);
-
-									// Se añade la app de ADT
-									addAdtApp2StoreAction();
-
-									if (responseCheck) {
-										initialServicesSAPTools();
-									} else {
-										// Este método se llamada igual para que sirva en app que no usen las SAP Tools que se ha cambiado
-										// El sistema
-										changeSystemGeneralActions();
-										setLoadingListAppsAction(false);
-										showMessage(
-											getI18nText("sapGeneral.sapToolsNotInstalled"),
-											MessageType.info
-										);
-									}
-								}
-							});
+							setLoadingListAppsAction(true);
 						} else {
 							setLoadingListAppsAction(false);
 							showResultError(response.getErrorValue() as ErrorGraphql);
@@ -138,14 +107,6 @@ export default function useSystems() {
 		},
 		[tunnelConfiguration]
 	);
-
-	/**
-	 * Acciones generales cuando se cambia un sistema
-	 */
-	const changeSystemGeneralActions = useCallback(() => {
-		// Si indica que el sistema se ha cambiado y la aplicación de SAP tiene que volver a releer los datos
-		sapController.setSystemChanged(true);
-	}, []);
 
 	/**
 	 * Devuelve si el sistema pasado esta seleccionado
@@ -196,8 +157,7 @@ export default function useSystems() {
 			setSystemsList(aSystemsAux);
 
 			// Ahora miro si el sistema seleccionado es el mismo que el modificado. Si es así, le cambio el nombre
-			if (system._id == systemSelected._id)
-				systemActions.setSystemSelected(system);
+			if (system._id == systemSelected._id) setSystemSelectedAction(system);
 		},
 		[systemsList, systemSelected]
 	);
@@ -216,7 +176,7 @@ export default function useSystems() {
 			setSystemsList(aSystemsAux);
 
 			// El sistema marcado por defecto lo dejo en blanco.
-			systemActions.setSystemSelected(DEFAULT_SYSTEM);
+			setSystemSelectedAction(DEFAULT_SYSTEM);
 
 			// Acciones generales cuando se cambia o borra un sistema
 			deleteSystemGeneralActions();
