@@ -7,15 +7,14 @@ import {
 } from "sap/translate/infraestructure/types/translate";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import SAPTranslateController from "sap/translate/infraestructure/controller/sapTranslateController";
-import SAPController from "sap/general/infraestructure/controller/sapController";
 import useMessages, {
 	MessageType,
 } from "shared/infraestructure/hooks/useMessages";
 import { useTranslations } from "translations/i18nContext";
 import { useAppSelector } from "shared/storage/useStore";
 import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
-
 import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
+import useSAPGeneralStore from "sap/general/infraestructure/frontend/hooks/useSAPGeneralStore";
 
 export default function useTranslate() {
 	const { getI18nText, language } = useTranslations();
@@ -33,8 +32,6 @@ export default function useTranslate() {
 	const [originLanguage, setOriginLanguage] = useState(language);
 	const [loadingObjectsText, setLoadingObjectsText] = useState(false);
 	const [loadObjectsText, setLoadObjectsText] = useState(false);
-
-	const sapController = new SAPController();
 	const sapTranslateActions = new SAPTranslateActions();
 	const {
 		showResultError,
@@ -44,13 +41,15 @@ export default function useTranslate() {
 		convertServiceSAPMsgType,
 	} = useMessages();
 	const messageManagerController = new MessageManagerController();
+	const { setSystemChangedAction, setApplicationChangedAction } =
+		useSAPGeneralStore();
 
 	/**
 	 * Lectura inicial de datos
 	 */
 	const loadInitialData = useCallback(() => {
-		sapController.setSystemChanged(false);
-		sapController.setApplicationChanged(false);
+		setSystemChangedAction(false);
+		setApplicationChangedAction(false);
 
 		loadLanguages();
 		loadSelectableObjects();

@@ -160,7 +160,7 @@ export const SAPTransportOrderSlice = createSlice({
 		setOpenConfirmeDelete: (state, action: PayloadAction<boolean>) => {
 			state.openConfirmeDelete = action.payload;
 		},
-		setRowOrderCellAction: (
+		setRowOrderCell: (
 			state,
 			action: PayloadAction<FieldsOrdersTreeTable | FieldsTaskTreeTable | null>
 		) => {
@@ -221,7 +221,7 @@ export const {
 	setRowDataForUpdate,
 	setSystemUsers,
 	setOpenConfirmeDelete,
-	setRowOrderCellAction,
+	setRowOrderCell,
 	setTextSearchOrders,
 	setShowOrderObjects,
 	setOrderObjects,

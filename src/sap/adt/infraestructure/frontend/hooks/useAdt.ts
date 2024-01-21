@@ -11,6 +11,7 @@ import useMessages, {
 } from "shared/infraestructure/hooks/useMessages";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import { ADTFavoritePackages } from "sap/adt/domain/entities/favoritePackage";
+import useSAPGeneralStore from "sap/general/infraestructure/frontend/hooks/useSAPGeneralStore";
 
 export default function useAdt() {
 	const adtController = new SAPAdtController();
@@ -19,13 +20,14 @@ export default function useAdt() {
 	const adtActions = new ADTActions();
 	const { session } = useSession();
 	const { showResultError, showMessage } = useMessages();
-
+	const { setSystemChangedAction, setApplicationChangedAction } =
+		useSAPGeneralStore();
 	/**
 	 * Lectura inicial de datos
 	 */
 	const loadInitialData = useCallback(() => {
-		sapController.setSystemChanged(false);
-		sapController.setApplicationChanged(false);
+		setSystemChangedAction(false);
+		setApplicationChangedAction(false);
 
 		loadFavoritePackages();
 	}, []);

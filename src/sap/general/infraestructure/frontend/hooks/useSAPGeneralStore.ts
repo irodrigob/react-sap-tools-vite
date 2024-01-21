@@ -6,10 +6,8 @@ import UserInfo from "sap/general/domain/entities/userInfo";
 import { useAppSelector } from "shared/storage/useStore";
 import AppsList from "sap/general/domain/entities/appsList";
 import {
-	setURLODataCore,
 	setUserInfo,
 	setAppsList,
-	setLoadingListApps,
 	setShowListApps,
 	setSystemChanged,
 	setApplicationChanged,

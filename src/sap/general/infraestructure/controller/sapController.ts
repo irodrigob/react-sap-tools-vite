@@ -1,17 +1,13 @@
 import i18n from "i18next";
-import { Result } from "shared/core/Result";
 import {
 	ResponseMetadata,
 	ResponseGetUserInfoRepo,
 	ResponseGetAppsList,
-	ResponseExecuteServicesSystemSelect,
 } from "sap/general/infraestructure/types/general";
 import SAPGeneralApplication from "sap/general/application/SAPGeneralApplication";
 import AppsList from "sap/general/domain/entities/appsList";
 import AppStore from "shared/storage/appStore";
-import SAPGeneralActions from "sap/general/infraestructure/storage/SAPGeneralActions";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
-import SystemController from "systems/infraestructure/controller/systemController";
 import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtController";
 import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants";
 import { SAP_TOOLS_OBJECT_NAMES } from "sap/general/infraestructure/utils/constants/constants";
@@ -21,15 +17,11 @@ import ErrorGraphql from "shared/errors/ErrorGraphql";
 export default class SAPController {
 	private appStore: AppStore;
 	private SAPGeneralApplication: SAPGeneralApplication;
-	private SAPGeneralActions: SAPGeneralActions;
-	private systemController: SystemController;
 	private sapAdtController: SAPAdtController;
 
 	constructor() {
 		this.SAPGeneralApplication = new SAPGeneralApplication();
 		this.appStore = new AppStore();
-		this.SAPGeneralActions = new SAPGeneralActions();
-		this.systemController = new SystemController();
 		this.sapAdtController = new SAPAdtController();
 	}
 
@@ -78,13 +70,6 @@ export default class SAPController {
 		return this.appStore.getState().SAPGeneral.appsList;
 	}
 	/**
-	 * Indicador si se tiene que mostrar el listado de aplicaciones
-	 * @param value | Booleano con la acción
-	 */
-	setShowListApps(value: boolean) {
-		this.SAPGeneralActions.setShowListApps(value);
-	}
-	/**
 	 * Devuelve los datos de conexión al sistema
 	 * @returns Objetos con los datos de conexión al sistema
 	 */
@@ -98,28 +83,6 @@ export default class SAPController {
 			client: this.appStore.getState().System.systemSelected.client,
 			language: this.appStore.getState().System.systemSelected.language,
 		};
-	}
-	/**
-	 * Actualiza si el sistema ha cambiado.
-	 * @param change Valor si ha cambiado el sistema o no.
-	 */
-	setSystemChanged(change: boolean = true) {
-		this.SAPGeneralActions.setSystemChanged(change);
-	}
-	/**
-	 * Actualiza si se cambia de aplicación
-	 * @param change Valor si ha cambiado la aplicación
-	 */
-	setApplicationChanged(change: boolean = true) {
-		this.SAPGeneralActions.setApplicationChanged(change);
-	}
-	/**
-	 * Limpieza de variables principales de SAP. Se usará en cambios de sistemas
-	 * u otras operación que requiera resetear los valores.
-	 */
-	clearVariables(): void {
-		this.SAPGeneralActions.setAppsList([]);
-		this.SAPGeneralActions.setApplicationChanged(false);
 	}
 	/**
 	 * Verifica si la herramienta SAP Tools esta instalada

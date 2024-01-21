@@ -1,7 +1,5 @@
 import { useCallback } from "react";
 import useFilterValues from "sap/transportOrder/infraestructure/frontend/components/filtersOrdersTable/useFilterValues";
-import { GATEWAY_CONF } from "sap/general/infraestructure/utils/constants/constants";
-import SAPController from "sap/general/infraestructure/controller/sapController";
 import SAPTransportOrderController from "sap/transportOrder/infraestructure/controller/sapTransportOrderController";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import { useTranslations } from "translations/i18nContext";
@@ -21,11 +19,14 @@ import useMessages, {
 	MessageType,
 } from "shared/infraestructure/hooks/useMessages";
 import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
-import SystemController from "systems/infraestructure/controller/systemController";
 import { useAppSelector } from "shared/storage/useStore";
-import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage/sapTransportOrderActions";
 import UpdateOrder from "sap/transportOrder/domain/entities/updateOrder";
 import useDataManager from "sap/transportOrder/infraestructure/frontend/hooks/useDataManager";
+import useSAPGeneralStore from "sap/general/infraestructure/frontend/hooks/useSAPGeneralStore";
+import useSAPTransportOrderStore from "./useSAPTransportOrderStore";
+import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
+import { APP } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder";
+import SystemsTransport from "sap/transportOrder/domain/entities/systemsTransport";
 
 export default function useTransportOrder() {
 	const { getDefaultFilters, convertFilter2paramsGraphql } = useFilterValues();
@@ -33,10 +34,7 @@ export default function useTransportOrder() {
 	const { orderTaskSelected, toolbarFilters, orderListTree } = useAppSelector(
 		(state) => state.SAPTransportOrder
 	);
-	const sapTransportOrderActions = new SAPTransportOrderActions();
 	const { updateDataFromReleaseOrder, postLoadUserOrder } = useDataManager();
-	const sapController = new SAPController();
-	const systemController = new SystemController();
 	const transportOrderController = new SAPTransportOrderController();
 	const { getI18nText } = useTranslations();
 	const {
@@ -47,6 +45,20 @@ export default function useTransportOrder() {
 		updateResultError,
 	} = useMessages();
 	const messageManagerController = new MessageManagerController();
+	const { setSystemChangedAction, setApplicationChangedAction } =
+		useSAPGeneralStore();
+	const { getDataForConnection } = useSAPGeneral();
+	const {
+		setToolbarFiltersAction,
+		setOrderTaskSelectedAction,
+		setLoadingOrdersAction,
+		setRowsExpandedAction,
+		setAutoResetExpandedAction,
+		clearVariablesObjects,
+		setSystemTransportCopyAction,
+		setSystemUsersAction,
+		setSystemsTransportCopyAction,
+	} = useSAPTransportOrderStore();
 
 	/*************************************
 	 * Funciones
@@ -55,30 +67,36 @@ export default function useTransportOrder() {
 	 * Proceso de lectura de datos de las ordenes del usuario
 	 */
 	const loadInitialData = useCallback(() => {
-		sapTransportOrderActions.setLoadingOrders(true);
-		sapController.setSystemChanged(false);
-		sapController.setApplicationChanged(false);
+		setLoadingOrdersAction(true);
+		setSystemChangedAction(false);
+		setApplicationChangedAction(false);
 
 		// Obtención de los filtros por defecto
 		let filterValues = getDefaultFilters();
-		sapTransportOrderActions.setToolbarFilters(filterValues);
+		setToolbarFiltersAction(filterValues);
 
 		// Parametros para poder llamar al servicio
 		let paramsService = convertFilter2paramsGraphql(filterValues);
 
+		let dataConnection = getDataForConnection(APP);
+
 		// Lista inicial de las ordenes del usuario
 		transportOrderController
-			.getUserOrdersList(paramsService)
+			.getUserOrdersList(dataConnection, dataConnection.sap_user, paramsService)
 			.then((resultGetOrderList) => {
-				sapTransportOrderActions.setLoadingOrders(false);
+				setLoadingOrdersAction(false);
 				if (resultGetOrderList.isSuccess) {
 					postLoadUserOrder(resultGetOrderList.getValue() as userOrdersDTO[]);
 
 					// Leemos los sistemas a los que se puede hacer el transport de copia
 					transportOrderController
-						.getSystemsTransport()
+						.getSystemsTransport(getDataForConnection(APP))
 						.then((resultSystemsTransport) => {
-							if (resultSystemsTransport.isFailure) {
+							if (resultSystemsTransport.isSuccess) {
+								setSystemsTransportCopyAction(
+									resultSystemsTransport.getValue() as SystemsTransport[]
+								);
+							} else {
 								showResultError(
 									resultSystemsTransport.getErrorValue() as ErrorGraphql
 								);
@@ -99,16 +117,20 @@ export default function useTransportOrder() {
 	 * que hacer nada más ya que los loader o lo que sea ya se gestiona desde fuera de esta llamada.
 	 */
 	const reloadUserOrders = useCallback(() => {
-		sapTransportOrderActions.setOrderTaskSelected([]);
-		sapTransportOrderActions.setLoadingOrders(true);
-		sapTransportOrderActions.setRowsExpanded([]);
-		sapTransportOrderActions.setAutoResetExpanded(true); // Fuerzo el reset para que al cargar nuevos datos las filas se vuelvan a resetear
-		transportOrderController.clearVariablesObjects();
-
+		setOrderTaskSelectedAction([]);
+		setLoadingOrdersAction(true);
+		setRowsExpandedAction([]);
+		setAutoResetExpandedAction(true); // Fuerzo el reset para que al cargar nuevos datos las filas se vuelvan a resetear
+		clearVariablesObjects();
+		let dataConnection = getDataForConnection(APP);
 		transportOrderController
-			.getUserOrdersList(convertFilter2paramsGraphql(toolbarFilters))
+			.getUserOrdersList(
+				dataConnection,
+				dataConnection.sap_user,
+				convertFilter2paramsGraphql(toolbarFilters)
+			)
 			.then((response) => {
-				sapTransportOrderActions.setLoadingOrders(false);
+				setLoadingOrdersAction(false);
 				if (response.isSuccess) {
 					postLoadUserOrder(response.getValue() as userOrdersDTO[]);
 				}
@@ -122,7 +144,7 @@ export default function useTransportOrder() {
 				MessageType.info,
 				{ autoClose: false, isLoading: true }
 			);
-			sapTransportOrderActions.setSystemTransportCopy(data.system);
+			setSystemTransportCopyAction(data.system);
 
 			transportOrderController
 				.doTransportCopy(
@@ -177,12 +199,12 @@ export default function useTransportOrder() {
 	 * Lectura de los usuarios de SAP que pueden estar en una orden/tarea
 	 */
 	const getSystemsUsers = useCallback(() => {
-		transportOrderController.getSystemsUsers().then((response) => {
-			if (response.isSuccess)
-				sapTransportOrderActions.setSystemUsers(
-					response.getValue() as SystemUsers
-				);
-		});
+		transportOrderController
+			.getSystemsUsers(getDataForConnection())
+			.then((response) => {
+				if (response.isSuccess)
+					setSystemUsersAction(response.getValue() as SystemUsers);
+			});
 	}, []);
 
 	/**
@@ -201,7 +223,7 @@ export default function useTransportOrder() {
 				if (response.isSuccess) {
 					// Como al actualiar la tabla se desmarca las filas seleccionadas y me desajusta la toolbar de acciones. Por ello
 					// las desmarco para que se resetee todo bien.
-					sapTransportOrderActions.setOrderTaskSelected([]);
+					setOrderTaskSelectedAction([]);
 
 					let returnRelease = response.getValue() as releaseOrdersDTOArray;
 

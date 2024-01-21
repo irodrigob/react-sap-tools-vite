@@ -7,7 +7,6 @@ import {
 	OrderObjects,
 } from "sap/transportOrder/infraestructure/types/transport";
 import { useAppSelector } from "shared/storage/useStore";
-import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage/sapTransportOrderActions";
 import Properties from "shared/utils/types/properties";
 import { initialrowDataForUpdate } from "sap/transportOrder/infraestructure/storage/initialValues";
 import {
@@ -16,6 +15,7 @@ import {
 } from "sap/transportOrder/infraestructure/dto/transportOrderDTO";
 import ArrayUtils from "shared/utils/array/arrayUtils";
 import { STATUS } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder";
+import useSAPTransportOrderStore from "./useSAPTransportOrderStore";
 
 /**
  * Devuelve si una orden/tarea es editable
@@ -46,10 +46,15 @@ const isOrderTaskDeletable = (
 };
 
 export default function useDataManager() {
-	const sapTransportOrderActions = new SAPTransportOrderActions();
 	const { rowDataForUpdate, orderListTree, ordersObjectsSelected } =
 		useAppSelector((state) => state.SAPTransportOrder);
-
+	const {
+		setOrderListTreeAction,
+		setEditingRowAction,
+		setAutoResetExpandedAction,
+		setRowDataForUpdateAction,
+		setRowsExpandedAction,
+	} = useSAPTransportOrderStore();
 	/**
 	 * Convierte la lista de ordenes del usuario en una jerarquía
 	 * @param userOrdersList Lista de ordenes del usuario
@@ -134,7 +139,7 @@ export default function useDataManager() {
 	const postLoadUserOrder = (orders: userOrdersDTO[]) => {
 		let orderTreeList = adaptSAPOrders2TreeTable(orders);
 		// Se guarda los datos de manera original, es decir, por si es necesario hacer comprobaciones
-		sapTransportOrderActions.setOrderListTree(orderTreeList);
+		setOrderListTreeAction(orderTreeList);
 	};
 
 	/**
@@ -142,7 +147,7 @@ export default function useDataManager() {
 	 * @param editing | Editando verdadero o falso
 	 */
 	const setEditingRow = useCallback((editing: boolean) => {
-		sapTransportOrderActions.setEditingRow(editing);
+		setEditingRowAction(editing);
 	}, []);
 	/**
 	 * Habilita/Deshabilita un registro editable
@@ -172,7 +177,7 @@ export default function useDataManager() {
 				newOrderList[orderIndex].row_editing = enabled;
 			}
 
-			sapTransportOrderActions.setOrderListTree(newOrderList);
+			setOrderListTreeAction(newOrderList);
 		},
 		[orderListTree]
 	);
@@ -185,7 +190,7 @@ export default function useDataManager() {
 		(updateData: FieldsOrdersTreeTable | FieldsTaskTreeTable) => {
 			// Fuerzo a que no se resete las columnas expandidas una vez el modelo cambia de datos para que
 			// en pantalla se vea el cambio realizado
-			sapTransportOrderActions.setAutoResetExpanded(false);
+			setAutoResetExpandedAction(false);
 
 			let orderIndex = getOrderIndexFromOrder(
 				updateData.levelTree == "task"
@@ -206,7 +211,7 @@ export default function useDataManager() {
 			} else {
 				newOrderList[orderIndex] = updateData as FieldsOrdersTreeTable;
 			}
-			sapTransportOrderActions.setOrderListTree(newOrderList);
+			setOrderListTreeAction(newOrderList);
 		},
 		[orderListTree]
 	);
@@ -236,7 +241,7 @@ export default function useDataManager() {
 			let newValues = { ...rowDataForUpdate };
 
 			Properties.set(newValues, field, value);
-			sapTransportOrderActions.setRowDataForUpdate(newValues);
+			setRowDataForUpdateAction(newValues);
 		},
 		[rowDataForUpdate]
 	);
@@ -251,7 +256,7 @@ export default function useDataManager() {
 			newValues.user = row.user;
 			newValues.orderTask = row.orderTask;
 
-			sapTransportOrderActions.setRowDataForUpdate(newValues);
+			setRowDataForUpdateAction(newValues);
 		},
 		[initialrowDataForUpdate]
 	);
@@ -259,7 +264,7 @@ export default function useDataManager() {
 	 * Inicializa la estructura de los datos que se editan
 	 */
 	const resetValuesDataEditingRow = useCallback(() => {
-		sapTransportOrderActions.setRowDataForUpdate({
+		setRowDataForUpdateAction({
 			...initialrowDataForUpdate,
 		});
 	}, [initialrowDataForUpdate]);
@@ -313,7 +318,7 @@ export default function useDataManager() {
 	) => {
 		// Fuerzo a que no se resete las columnas expandidas una vez el modelo cambia de datos para que
 		// en pantalla se vea el cambio realizado
-		sapTransportOrderActions.setAutoResetExpanded(false);
+		setAutoResetExpandedAction(false);
 
 		let newOrderList = structuredClone(orderListTree);
 		ordersReleased.map((orderReleased) => {
@@ -346,7 +351,7 @@ export default function useDataManager() {
 				}
 			}
 		});
-		sapTransportOrderActions.setOrderListTree(newOrderList);
+		setOrderListTreeAction(newOrderList);
 	};
 
 	/**
@@ -357,7 +362,7 @@ export default function useDataManager() {
 		(deleteData: FieldsOrdersTreeTable | FieldsTaskTreeTable) => {
 			// Fuerzo a que no se resete las columnas expandidas una vez el modelo cambia de datos para que
 			// en pantalla se vea el cambio realizado
-			sapTransportOrderActions.setAutoResetExpanded(false);
+			setAutoResetExpandedAction(false);
 
 			let orderIndex = getOrderIndexFromOrder(
 				deleteData.levelTree == "task"
@@ -378,7 +383,7 @@ export default function useDataManager() {
 			} else {
 				newOrderList.splice(orderIndex, orderIndex >= 0 ? 1 : 0);
 			}
-			sapTransportOrderActions.setOrderListTree(newOrderList);
+			setOrderListTreeAction(newOrderList);
 		},
 		[orderListTree]
 	);
@@ -392,7 +397,7 @@ export default function useDataManager() {
 			let newTreeOrder = adaptSAPOrders2TreeTable(Array(data));
 			let treeOrder = newTreeOrder.concat(orderListTree);
 
-			sapTransportOrderActions.setOrderListTree(treeOrder);
+			setOrderListTreeAction(treeOrder);
 		},
 		[orderListTree]
 	);
@@ -449,8 +454,8 @@ export default function useDataManager() {
 					}
 				});
 			}
-			sapTransportOrderActions.setAutoResetExpanded(autoResetExpanded);
-			sapTransportOrderActions.setRowsExpanded(newRowsExpanded);
+			setAutoResetExpandedAction(autoResetExpanded);
+			setRowsExpandedAction(newRowsExpanded);
 
 			return newOrdersList;
 		},
@@ -512,7 +517,7 @@ export default function useDataManager() {
 					}
 				}
 			});
-			sapTransportOrderActions.setOrderListTree(newOrderListTree);
+			setOrderListTreeAction(newOrderListTree);
 		},
 		[orderListTree]
 	);
