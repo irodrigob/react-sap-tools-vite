@@ -11,19 +11,22 @@ import SAPFormatters from "sap/general/infraestructure/utils/formatters";
 import useSystemStore from "systems/infraestructure/frontend/hooks/useSystemsStore";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 import { useTranslations } from "translations/i18nContext";
+import { useAppSelector } from "shared/storage/useStore";
 import AppsList from "sap/general/domain/entities/appsList";
 
 export default function useSAPGeneral() {
 	const sapController = new SAPController();
+	const { appsList, URLODataCore } = useAppSelector(
+		(state) => state.SAPGeneral
+	);
 	const { showResultError, showMessage } = useMessages();
 	const {
 		setUserInfoAction,
-		appsList,
 		setAppsListAction,
-		URLODataCore,
 		setLoadingListAppsAction,
 		setSystemChangedAction,
 	} = useSAPGeneralStore();
+
 	const { setConnectedToSystemAction } = useSystemStore();
 	const { URL2ConnectSystem, systemSelected } = useSystemStore();
 	const { getI18nText, language } = useTranslations();
@@ -116,7 +119,7 @@ export default function useSAPGeneral() {
 				language: systemSelected.language,
 			};
 		},
-		[systemSelected, URL2ConnectSystem]
+		[systemSelected, URL2ConnectSystem, appsList]
 	);
 
 	/**
@@ -127,7 +130,7 @@ export default function useSAPGeneral() {
 			let service = appsList.find((row) => row.app == app)?.service ?? "";
 			return buildSAPUrl2Connect(URL2ConnectSystem, service);
 		},
-		[URL2ConnectSystem]
+		[URL2ConnectSystem, appsList]
 	);
 	/**
 	 * Devuelve la URL completa para la conexión al sistema SAP

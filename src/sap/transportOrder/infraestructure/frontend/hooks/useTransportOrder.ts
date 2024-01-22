@@ -34,6 +34,7 @@ export default function useTransportOrder() {
 	const { orderTaskSelected, toolbarFilters, orderListTree } = useAppSelector(
 		(state) => state.SAPTransportOrder
 	);
+	const { appsList } = useAppSelector((state) => state.SAPGeneral);
 	const { updateDataFromReleaseOrder, postLoadUserOrder } = useDataManager();
 	const transportOrderController = new SAPTransportOrderController();
 	const { getI18nText } = useTranslations();
@@ -109,7 +110,7 @@ export default function useTransportOrder() {
 
 		// Usuarios del sistema que pueden estar en una orden. Se usará para el contro que permite cambiar el usuario de una orden
 		getSystemsUsers();
-	}, []);
+	}, [appsList]);
 
 	/**
 	 * Función que realiza la lectura de nuevo de las ordendes del usuario

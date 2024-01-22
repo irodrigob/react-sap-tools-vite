@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import SAPController from "sap/general/infraestructure/controller/sapController";
 import SAPGeneralActions from "sap/general/infraestructure/storage/SAPGeneralActions";
 import UserInfo from "sap/general/domain/entities/userInfo";
-import { useAppSelector } from "shared/storage/useStore";
 import AppsList from "sap/general/domain/entities/appsList";
 import {
 	setUserInfo,
@@ -19,9 +18,6 @@ import {
 export default function useSAPGeneralStore() {
 	const sapController = new SAPController();
 	const sapGeneralActions = new SAPGeneralActions();
-	const { appsList, URLODataCore } = useAppSelector(
-		(state) => state.SAPGeneral
-	);
 	const dispatch = useDispatch();
 
 	const setShowListAppsAction = useCallback((visible: boolean) => {
@@ -60,9 +56,7 @@ export default function useSAPGeneralStore() {
 		addAdtApp2StoreAction,
 		setURLODataCoreAction,
 		setUserInfoAction,
-		appsList,
 		setAppsListAction,
-		URLODataCore,
 		setSystemChangedAction,
 		setApplicationChangedAction,
 	};

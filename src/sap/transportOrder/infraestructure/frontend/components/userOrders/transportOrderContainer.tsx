@@ -23,6 +23,9 @@ const TransportOrderContainer: FC = () => {
 
 	useEffect(() => {
 		// Verifico por sistema o cambio de aplicación leer los datos del proceso.
+		console.log(
+			`System changed: ${systemChanged} - ApplicationChanged ${applicationChanged}`
+		);
 		if (systemChanged || applicationChanged) {
 			loadInitialData();
 		}
