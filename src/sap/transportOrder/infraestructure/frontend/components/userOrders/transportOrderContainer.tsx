@@ -10,7 +10,6 @@ import useTransportOrder from "sap/transportOrder/infraestructure/frontend/hooks
 import OrdersTreeTable from "./ordersTreeTable";
 import { useAppSelector } from "shared/storage/useStore";
 import OrderObjectsContainer from "sap/transportOrder/infraestructure/frontend/components/orderObjects/orderObjectsContainer";
-import { APP } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder";
 
 const TransportOrderContainer: FC = () => {
 	const { loadInitialData } = useTransportOrder();

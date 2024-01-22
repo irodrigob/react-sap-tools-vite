@@ -19,7 +19,7 @@ import { responseSystemRepoArray } from "systems/infraestructure/types/applicati
 import useTunnelSystem from "tunnelSystem/infraestructure/frontend/hooks/useTunnelSystem";
 import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 import useSAPGeneralStore from "sap/general/infraestructure/frontend/hooks/useSAPGeneralStore";
-import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
+import useSAPTransportOrderStore from "sap/transportOrder/infraestructure/frontend/hooks/useSAPTransportOrderStore";
 import useSystemStore from "./useSystemsStore";
 
 export default function useSystems() {
@@ -51,7 +51,8 @@ export default function useSystems() {
 	const { showResultError, showMessage } = useMessages();
 	const { getTunnelConfiguration, getTunnelProviders } = useTunnelSystem();
 	const messageController = new MessageManagerController();
-	const { initialServicesSAPTools, buildSAPUrl2Connect } = useSAPGeneral();
+	const { clearVariables: sapTransportOrderClearVariables } =
+		useSAPTransportOrderStore();
 
 	/**
 	 * Proceso que se lanza cuando se selecciona un sistema
@@ -228,7 +229,7 @@ export default function useSystems() {
 	 */
 	const clearVariablesSystem = useCallback(() => {
 		sapGeneralClearVariablesAction();
-		sapTransportOrderController.clearVariables();
+		sapTransportOrderClearVariables();
 		sapTranslateController.clearVariables();
 		messageController.clearVariables();
 	}, []);
@@ -240,5 +241,6 @@ export default function useSystems() {
 		updateSystem,
 		deleteSystem,
 		readSystemsUser,
+		clearVariablesSystem,
 	};
 }

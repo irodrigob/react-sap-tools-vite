@@ -22,10 +22,7 @@ import {
 	responseMoveOrderObjects,
 } from "sap/transportOrder/infraestructure/types/application";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
-import SystemsTransport from "sap/transportOrder/domain/entities/systemsTransport";
 import UpdateOrder from "sap/transportOrder/domain/entities/updateOrder";
-import AppStore from "shared/storage/appStore";
-import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage/sapTransportOrderActions";
 import OrderObject from "sap/transportOrder/domain/entities/orderObject";
 import NewOrder from "sap/transportOrder/domain/entities/newOrder";
 import ArrayUtils from "shared/utils/array/arrayUtils";
@@ -41,13 +38,9 @@ import { DataConnectionSystem } from "systems/infraestructure/types/system";
 
 export default class TransportOrderApplication {
 	private transportOrderRepository: TransportOrderRepository;
-	private appStore: AppStore;
-	private sapTransportOrderActions: SAPTransportOrderActions;
 
 	constructor() {
 		this.transportOrderRepository = new TransportOrderRepository();
-		this.appStore = new AppStore();
-		this.sapTransportOrderActions = new SAPTransportOrderActions();
 	}
 
 	/**
@@ -122,34 +115,6 @@ export default class TransportOrderApplication {
 			return Result.fail<ErrorGraphql>(
 				ErrorGraphql.create(error as ApolloError)
 			);
-		}
-	}
-	/**
-   * Añade un registro al principio en blanco y por defecto lo selecciono para que se tenga que selecionar un sistema.
-     Lo tengo que hacer porque el componente Select de UI5 no lo hace y parece que tengas un sistema preseleccionado cuando no es así.
-   * @param data | Array con los sistema a realizar el transpore de copias
-   * @returns | Array con los sistema a realizar el transpore de copias
-   */
-	addInitialSystemTransport(data: SystemsTransport[]): SystemsTransport[] {
-		//
-		let values = [...data];
-		values.unshift({ systemName: "", systemDesc: "" });
-		return values;
-	}
-	/**
-	 * Elimina el sistema inicial dummy que se añade al leer los datos
-	 * que se usará para el desplegable
-	 */
-	eliminateInitialSystem() {
-		if (
-			this.appStore.getState().SAPTransportOrder.systemsTransportCopy[0]
-				.systemName == ""
-		) {
-			let values = [
-				...this.appStore.getState().SAPTransportOrder.systemsTransportCopy,
-			];
-			values.shift();
-			this.sapTransportOrderActions.setSystemsTransportCopy(values);
 		}
 	}
 	/**

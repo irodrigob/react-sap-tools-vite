@@ -19,44 +19,18 @@ import {
 	OrderObjectsKey,
 } from "sap/transportOrder/infraestructure/types/transport";
 import UpdateOrder from "sap/transportOrder/domain/entities/updateOrder";
-import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage/sapTransportOrderActions";
 import NewOrder from "sap/transportOrder/domain/entities/newOrder";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 import SAPController from "sap/general/infraestructure/controller/sapController";
 import { APP } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder";
 
 export default class SAPTransportOrderController {
-	private appStore: AppStore;
 	private transportOrderApplication: TransportOrderApplication;
-	private sapTransportOrderActions: SAPTransportOrderActions;
 	private sapController: SAPController;
 
 	constructor() {
-		this.appStore = new AppStore();
 		this.transportOrderApplication = new TransportOrderApplication();
-		this.sapTransportOrderActions = new SAPTransportOrderActions();
 		this.sapController = new SAPController();
-	}
-	/**
-	 * Limpia las variables principales del transporte de copia
-	 */
-	clearVariables(): void {
-		// Ordenes del usuario
-		this.sapTransportOrderActions.setOrderListTree([]);
-		this.sapTransportOrderActions.setOrderTaskSelected([]);
-
-		// Sistema seleccionado
-		this.sapTransportOrderActions.setSystemsTransportCopy([]);
-		this.sapTransportOrderActions.setSystemTransportCopy("");
-
-		// Objetos
-		this.clearVariablesObjects();
-	}
-	clearVariablesObjects(): void {
-		this.sapTransportOrderActions.setOrderObjects([]);
-		this.sapTransportOrderActions.setOrdersObjectsSelected([]);
-		this.sapTransportOrderActions.setShowOrderObjects(false);
-		this.sapTransportOrderActions.setSelectedOrder("");
 	}
 	/**
 	 * Llama al servicio al metadata del core

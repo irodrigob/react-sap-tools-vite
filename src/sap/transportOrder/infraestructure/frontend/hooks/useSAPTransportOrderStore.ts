@@ -159,6 +159,17 @@ export default function useSAPTransportOrderStore() {
 		setShowOrderObjectsAction(false);
 		setSelectedOrderAction("");
 	}, []);
+	const clearVariables = useCallback((): void => {
+		// Ordenes del usuario
+		setOrderListTreeAction([]);
+		setOrderTaskSelectedAction([]);
+
+		// Sistema seleccionado
+		setSystemsTransportCopyAction([]);
+		setSystemTransportCopyAction("");
+
+		clearVariablesObjects();
+	}, []);
 
 	return {
 		setToolbarFiltersAction,
@@ -189,5 +200,6 @@ export default function useSAPTransportOrderStore() {
 		setLoadingSelectableOrdersAction,
 		setSelectedOrderAction,
 		clearVariablesObjects,
+		clearVariables,
 	};
 }
