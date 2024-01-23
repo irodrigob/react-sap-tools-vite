@@ -61,17 +61,19 @@ export default class SAPTransportOrderController {
 	}
 	/**
 	 * Realizar transporte de copias
+	 * @param dataConnection | Datos conexion
 	 * @param systemTransport | Sistema a transportar
 	 * @param description | Descripción de la orden
 	 * @param orders | Ordenes
 	 */
 	async doTransportCopy(
+		dataConnection: DataConnectionSystem,
 		systemTransport: string,
 		description: string,
 		orders: Orders
 	) {
 		return this.transportOrderApplication.doTransportCopy(
-			this.getDataForConnection(),
+			dataConnection,
 			systemTransport,
 			description,
 			orders
@@ -79,13 +81,17 @@ export default class SAPTransportOrderController {
 	}
 	/**
 	 * Actualiza los datos de la orden
+	 * @param dataConnection | Datos conexion
 	 * @param orderData | Datos de la orden
 	 * @param language | Idioma
 	 * @returns | Resultado del proceso
 	 */
-	async UpdateOrder(orderData: UpdateOrder): Promise<responseUpdateOrder> {
+	async UpdateOrder(
+		dataConnection: DataConnectionSystem,
+		orderData: UpdateOrder
+	): Promise<responseUpdateOrder> {
 		return this.transportOrderApplication.updateOrder(
-			this.getDataForConnection(),
+			dataConnection,
 			orderData
 		);
 	}
@@ -99,86 +105,96 @@ export default class SAPTransportOrderController {
 	}
 	/**
 	 * Libera las ordenes pasadas por parámetro
+	 * @param dataConnection | Datos conexion
 	 * @param orders | Ordenes
 	 */
-	async releaseOrders(orders: Orders) {
-		return this.transportOrderApplication.releaseOrders(
-			this.getDataForConnection(),
-			orders
-		);
+	async releaseOrders(dataConnection: DataConnectionSystem, orders: Orders) {
+		return this.transportOrderApplication.releaseOrders(dataConnection, orders);
 	}
 	/**
 	 *  Recupera los objetos de una orden/tarea
+	 * @param dataConnection | Datos conexion
 	 * @param orders | Ordenes
 	 * @returns | Resultado del transporte de copias
 	 */
-	async getOrderObjects(orders: Orders): Promise<responseGetOrderObjects> {
+	async getOrderObjects(
+		dataConnection: DataConnectionSystem,
+		orders: Orders
+	): Promise<responseGetOrderObjects> {
 		return this.transportOrderApplication.getOrderObjects(
-			this.getDataForConnection(),
+			dataConnection,
 			orders
 		);
 	}
 	/**
-	 *  Borra una orden o tarea
+	 * Borra una orden o tarea
+	 * @param dataConnection | Datos conexion
 	 * @param order | Orden
 	 * @returns | Resultado del transporte de copias
 	 */
-	async deleteOrder(order: string): Promise<responseDeleteOrders> {
-		return this.transportOrderApplication.deleteOrder(
-			this.getDataForConnection(),
-			order
-		);
+	async deleteOrder(
+		dataConnection: DataConnectionSystem,
+		order: string
+	): Promise<responseDeleteOrders> {
+		return this.transportOrderApplication.deleteOrder(dataConnection, order);
 	}
 	/**
 	 * Crea una orden
+	 * @param dataConnection | Datos conexion
 	 * @param order | Orden
 	 * @returns | Resultado del transporte de copias
 	 */
-	async newOrder(order: NewOrder): Promise<responseNewOrder> {
-		return this.transportOrderApplication.newOrder(
-			this.getDataForConnection(),
-			order
-		);
+	async newOrder(
+		dataConnection: DataConnectionSystem,
+		order: NewOrder
+	): Promise<responseNewOrder> {
+		return this.transportOrderApplication.newOrder(dataConnection, order);
 	}
 	/**
-	 *  Borra un objeto de una orden o tarea
+	 * Borra un objeto de una orden o tarea
+	 * @param dataConnection | Datos conexion
 	 * @param objectData | Objeto a borrar
 	 * @returns | Resultado del transporte de copias
 	 */
 	async deleteOrderObject(
+		dataConnection: DataConnectionSystem,
 		objectData: OrderObjectKey
 	): Promise<responseDeleteOrderObject> {
 		return this.transportOrderApplication.deleteOrderObject(
-			this.getDataForConnection(),
+			dataConnection,
 			objectData
 		);
 	}
 	/**
 	 * Obtiene las ordenes seleccionables para poder trabajar
+	 * @param dataConnection | Datos conexion
 	 * @param orderType | Tipo de orden
 	 * @returns | Resultado de las ordenes de desarrollo
 	 */
 	async getSelectableOrders(
+		dataConnection: DataConnectionSystem,
 		orderType: string
 	): Promise<responseSelectableOrders> {
 		return this.transportOrderApplication.getSelectableOrders(
-			this.getDataForConnection(),
+			dataConnection,
 			orderType
 		);
 	}
 	/**
 	 *  Mueve los objetos de una orden a otra
+	 * @param dataConnection | Datos conexion
 	 * @param language | Idioma
 	 * @param orderObjects | Objetos de la orden a mover
 	 * @param orderTo | Orden destino
 	 * @returns | Resultado del transporte de copias
 	 */
 	async moveOrderObjects(
+		dataConnection: DataConnectionSystem,
 		orderTo: string,
 		orderObjects: OrderObjectsKey
 	): Promise<responseMoveOrderObjects> {
 		return this.transportOrderApplication.moveOrderObjects(
-			this.getDataForConnection(),
+			dataConnection,
 			orderTo,
 			orderObjects
 		);

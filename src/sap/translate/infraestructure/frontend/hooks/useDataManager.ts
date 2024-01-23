@@ -10,14 +10,14 @@ import {
 	FIELDS_TEXT,
 	NUMBER_FIELD_TLANG,
 } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
-import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
+import useSAPTranslateStore from "sap/translate/infraestructure/frontend/hooks/useSAPTranslateStore";
 import ObjectText from "sap/translate/domain/entities/objectText";
 
 export default function useDataManager() {
 	const { objectsText, objectsTextOriginal } = useAppSelector(
 		(state) => state.SAPTranslate
 	);
-	const translateActions = new SAPTranslateActions();
+	const { setObjectsTextAction } = useSAPTranslateStore();
 
 	/**
 	 * Convierte la tabla de textos de los objetos en una tabla con los objetos únicos
@@ -147,7 +147,7 @@ export default function useDataManager() {
 				newObjectsText[returnColumnChanged.rowIndex] =
 					returnColumnChanged.rowObjectText;
 				// Los datos se cambian siempre porque puede haber cambios en el tipo de propuesta, aunque se indique que los valores sean iguales.
-				translateActions.setObjectsText(newObjectsText);
+				setObjectsTextAction(newObjectsText);
 			}
 		},
 		[objectsTextOriginal, objectsText]
@@ -202,7 +202,7 @@ export default function useDataManager() {
 				}
 			});
 
-			translateActions.setObjectsText(newObjectsText);
+			setObjectsTextAction(newObjectsText);
 			return processError;
 		},
 		[objectsText]

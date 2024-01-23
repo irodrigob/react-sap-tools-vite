@@ -21,6 +21,7 @@ import MessageManagerController from "messageManager/infraestructure/controller/
 import useSAPGeneralStore from "sap/general/infraestructure/frontend/hooks/useSAPGeneralStore";
 import useSAPTransportOrderStore from "sap/transportOrder/infraestructure/frontend/hooks/useSAPTransportOrderStore";
 import useSystemStore from "./useSystemsStore";
+import useSAPTranslateStore from "sap/translate/infraestructure/frontend/hooks/useSAPTranslateStore";
 
 export default function useSystems() {
 	const {
@@ -53,6 +54,8 @@ export default function useSystems() {
 	const messageController = new MessageManagerController();
 	const { clearVariables: sapTransportOrderClearVariables } =
 		useSAPTransportOrderStore();
+	const { clearVariables: sapTransalateClearVariables } =
+		useSAPTranslateStore();
 
 	/**
 	 * Proceso que se lanza cuando se selecciona un sistema
@@ -230,7 +233,7 @@ export default function useSystems() {
 	const clearVariablesSystem = useCallback(() => {
 		sapGeneralClearVariablesAction();
 		sapTransportOrderClearVariables();
-		sapTranslateController.clearVariables();
+		sapTransalateClearVariables();
 		messageController.clearVariables();
 	}, []);
 

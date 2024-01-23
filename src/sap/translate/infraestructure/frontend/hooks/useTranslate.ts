@@ -12,7 +12,7 @@ import useMessages, {
 } from "shared/infraestructure/hooks/useMessages";
 import { useTranslations } from "translations/i18nContext";
 import { useAppSelector } from "shared/storage/useStore";
-import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
+import useSAPTranslateStore from "sap/translate/infraestructure/frontend/hooks/useSAPTranslateStore";
 import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 import useSAPGeneralStore from "sap/general/infraestructure/frontend/hooks/useSAPGeneralStore";
 
@@ -32,7 +32,7 @@ export default function useTranslate() {
 	const [originLanguage, setOriginLanguage] = useState(language);
 	const [loadingObjectsText, setLoadingObjectsText] = useState(false);
 	const [loadObjectsText, setLoadObjectsText] = useState(false);
-	const sapTranslateActions = new SAPTranslateActions();
+	const { setParamsObjectsTranslateAction } = useSAPTranslateStore();
 	const {
 		showResultError,
 		showMessage,
@@ -43,6 +43,8 @@ export default function useTranslate() {
 	const messageManagerController = new MessageManagerController();
 	const { setSystemChangedAction, setApplicationChangedAction } =
 		useSAPGeneralStore();
+	const { setObjectsTextAction, setObjectsTextOriginalAction } =
+		useSAPTranslateStore();
 
 	/**
 	 * Lectura inicial de datos
@@ -104,7 +106,7 @@ export default function useTranslate() {
 		if (systemLanguage) oLang = systemLanguage.language;
 
 		setOriginLanguage(oLang);
-		sapTranslateActions.setParamsObjectsTranslate({
+		setParamsObjectsTranslateAction({
 			...paramsObjectsTranslate,
 			oLang: oLang,
 		});
@@ -119,10 +121,8 @@ export default function useTranslate() {
 			.then((resultObjectTranslate) => {
 				setLoadingObjectsText(false);
 				if (resultObjectTranslate.isSuccess) {
-					sapTranslateActions.setObjectsText(
-						resultObjectTranslate.getValue() as ObjectsText
-					);
-					sapTranslateActions.setObjectsTextOriginal(
+					setObjectsTextAction(resultObjectTranslate.getValue() as ObjectsText);
+					setObjectsTextOriginalAction(
 						resultObjectTranslate.getValue() as ObjectsText
 					);
 				} else {
@@ -157,8 +157,8 @@ export default function useTranslate() {
 					);
 
 					// Actualizo el modelo con los datos devueltos.
-					sapTranslateActions.setObjectsText(result.objectText);
-					sapTranslateActions.setObjectsTextOriginal(result.objectText);
+					setObjectsTextAction(result.objectText);
+					setObjectsTextOriginalAction(result.objectText);
 				} else {
 					updateResultError(
 						toastID,

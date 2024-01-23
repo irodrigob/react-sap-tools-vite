@@ -13,7 +13,6 @@ import { useCallback, useState } from "react";
 import useDataManager from "./useDataManager";
 import useExcelManager from "./useExcelManager";
 import SAPTranslateController from "sap/translate/infraestructure/controller/sapTranslateController";
-import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import { ReturnsDTO } from "shared/dto/generalDTO";
 import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
@@ -42,7 +41,6 @@ export default function useToolbarTable() {
 	const { saveObjectsText } = useTranslate();
 	const { generateExcel, processExcelFile } = useExcelManager();
 	const [openPopupUploadTemplate, setOpenPopupUploadTemplate] = useState(false);
-	const sapTranslateActions = new SAPTranslateActions();
 
 	/**
 	 * Gestiona añadir objetos a una orden

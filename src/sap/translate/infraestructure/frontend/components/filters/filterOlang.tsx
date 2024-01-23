@@ -1,106 +1,95 @@
 import { FC, useEffect, useState } from "react";
 import {
-    ComboBox,
-    ComboBoxItem,
-    Ui5CustomEvent,
-    ComboBoxDomRef,
-    Text,
-    ValueState,
+	ComboBox,
+	ComboBoxItem,
+	Ui5CustomEvent,
+	ComboBoxDomRef,
+	Text,
+	ValueState,
 } from "@ui5/webcomponents-react";
 import { useTranslations } from "translations/i18nContext";
 import {
-    FiltersValueState,
-    Languages,
-    ParamsObjectTranslate,
+	FiltersValueState,
+	Languages,
 } from "sap/translate/infraestructure/types/translate";
-import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
+import useSAPTranslateStore from "sap/translate/infraestructure/frontend/hooks/useSAPTranslateStore";
 import { useAppSelector } from "shared/storage/useStore";
 
 interface Props {
-    languages: Languages;
-    loadingLanguages: boolean;
-    filterValueState: FiltersValueState;
-    setFilterValueState: (value: FiltersValueState) => void;
+	languages: Languages;
+	loadingLanguages: boolean;
+	filterValueState: FiltersValueState;
+	setFilterValueState: (value: FiltersValueState) => void;
 }
 const FilterOlang: FC<Props> = (props: Props) => {
-    const {
-        languages,
-        loadingLanguages,
-        filterValueState,
-        setFilterValueState,
-    } = props;
-    const { paramsObjectsTranslate } = useAppSelector(
-        (state) => state.SAPTranslate
-    );
-    const sapTranslateActions = new SAPTranslateActions();
-    const [valueSelected, setValueSelected] = useState("");
-    const { getI18nText } = useTranslations();
+	const { languages, loadingLanguages, filterValueState, setFilterValueState } =
+		props;
+	const { paramsObjectsTranslate } = useAppSelector(
+		(state) => state.SAPTranslate
+	);
+	const { setParamsObjectsTranslateAction } = useSAPTranslateStore();
+	const [valueSelected, setValueSelected] = useState("");
+	const { getI18nText } = useTranslations();
 
-    useEffect(() => {
-        let languagefind = languages.find(
-            (row) => row.language == paramsObjectsTranslate.oLang
-        );
-        if (languagefind)
-            setValueSelected(
-                `${languagefind.language} - ${languagefind.description}`
-            );
-    }, [paramsObjectsTranslate.oLang, languages]);
+	useEffect(() => {
+		let languagefind = languages.find(
+			(row) => row.language == paramsObjectsTranslate.oLang
+		);
+		if (languagefind)
+			setValueSelected(
+				`${languagefind.language} - ${languagefind.description}`
+			);
+	}, [paramsObjectsTranslate.oLang, languages]);
 
-    return (
-        <ComboBox
-            filter="Contains"
-            placeholder={getI18nText("translate.filters.placeholderOriginLanguage")}
-            onChange={(event: Ui5CustomEvent<ComboBoxDomRef, never>) => {
-                event.preventDefault();
-                let olang = (event.target.value as string).split("-")[0].trim();
-                if (olang == "") {
-                    setFilterValueState({
-                        ...filterValueState,
-                        olangState: ValueState.Error,
-                        olangStateMessage: getI18nText("translate.filters.fieldMandatory"),
-                    });
-                }
-                else {
-                    if (languages.findIndex(
-                        (row) => row.language == olang
-                    ) != -1) {
-                        setFilterValueState({
-                            ...filterValueState,
-                            olangState: ValueState.None,
-                            olangStateMessage: "",
-                        });
-                        sapTranslateActions.setParamsObjectsTranslate({
-                            ...paramsObjectsTranslate,
-                            oLang: olang,
-                        });
-
-
-
-                    } else {
-                        setFilterValueState({
-                            ...filterValueState,
-                            olangState: ValueState.Error,
-                            olangStateMessage: getI18nText("translate.filters.valueNotValid"),
-                        });
-                    }
-                }
-            }}
-            value={valueSelected}
-            loading={loadingLanguages}
-            valueState={filterValueState.olangState}
-            valueStateMessage={<Text>{filterValueState.olangStateMessage}</Text>}
-        >
-            {languages.map((rowLanguage) => {
-                return (
-                    <ComboBoxItem
-                        text={`${rowLanguage.language} - ${rowLanguage.description}`}
-                        key={rowLanguage.language}
-                        id={rowLanguage.language}
-                    />
-                );
-            })}
-        </ComboBox>
-    );
+	return (
+		<ComboBox
+			filter="Contains"
+			placeholder={getI18nText("translate.filters.placeholderOriginLanguage")}
+			onChange={(event: Ui5CustomEvent<ComboBoxDomRef, never>) => {
+				event.preventDefault();
+				let olang = (event.target.value as string).split("-")[0].trim();
+				if (olang == "") {
+					setFilterValueState({
+						...filterValueState,
+						olangState: ValueState.Error,
+						olangStateMessage: getI18nText("translate.filters.fieldMandatory"),
+					});
+				} else {
+					if (languages.findIndex((row) => row.language == olang) != -1) {
+						setFilterValueState({
+							...filterValueState,
+							olangState: ValueState.None,
+							olangStateMessage: "",
+						});
+						setParamsObjectsTranslateAction({
+							...paramsObjectsTranslate,
+							oLang: olang,
+						});
+					} else {
+						setFilterValueState({
+							...filterValueState,
+							olangState: ValueState.Error,
+							olangStateMessage: getI18nText("translate.filters.valueNotValid"),
+						});
+					}
+				}
+			}}
+			value={valueSelected}
+			loading={loadingLanguages}
+			valueState={filterValueState.olangState}
+			valueStateMessage={<Text>{filterValueState.olangStateMessage}</Text>}
+		>
+			{languages.map((rowLanguage) => {
+				return (
+					<ComboBoxItem
+						text={`${rowLanguage.language} - ${rowLanguage.description}`}
+						key={rowLanguage.language}
+						id={rowLanguage.language}
+					/>
+				);
+			})}
+		</ComboBox>
+	);
 };
 
 export default FilterOlang;

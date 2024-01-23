@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 import SAPTransportOrderController from "sap/transportOrder/infraestructure/controller/sapTransportOrderController";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import { useTranslations } from "translations/i18nContext";
-import SAPTransportOrderActions from "sap/transportOrder/infraestructure/storage/sapTransportOrderActions";
 import {
 	OrderObjectsKey,
 	OrderObjectKey,
@@ -21,9 +20,11 @@ import { ReturnsDTO } from "shared/dto/generalDTO";
 import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 import { SAPMessageType } from "messageManager/infraestructure/types/msgManagerTypes";
 import useDataManager from "./useDataManager";
+import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
+import useSAPTransportOrderStore from "./useSAPTransportOrderStore";
+import { APP } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder";
 
 export default function useOrderObjects() {
-	const sapTransportOrderActions = new SAPTransportOrderActions();
 	const transportOrderController = new SAPTransportOrderController();
 	const { getI18nText } = useTranslations();
 	const { orderObjects, ordersObjectsSelected, orderListTree } = useAppSelector(
@@ -35,6 +36,8 @@ export default function useOrderObjects() {
 	const messageManagerController = new MessageManagerController();
 	const { udpateHasObjects } = useDataManager();
 	const [loadingObjects, setLoadingObjects] = useState(false);
+	const { getDataForConnection } = useSAPGeneral();
+	const { setOrderObjectsAction } = useSAPTransportOrderStore();
 
 	/**
 	 * Lectura de los objetos de las ordenes pasadas por parámetro. Este proceso
@@ -69,9 +72,9 @@ export default function useOrderObjects() {
 			// Si hay que buscar ordenes guardo las nuevas ordenes y lanzo el proceso de lectura
 			if (ordersToSearch.length > 0) {
 				setLoadingObjects(true);
-				sapTransportOrderActions.setOrderObjects(newOrderObjects);
+				setOrderObjectsAction(newOrderObjects);
 				transportOrderController
-					.getOrderObjects(ordersToSearch)
+					.getOrderObjects(getDataForConnection(APP), ordersToSearch)
 					.then((response) => {
 						setLoadingObjects(false);
 
@@ -101,7 +104,7 @@ export default function useOrderObjects() {
 									postOrderObjects[index].loadingData = false;
 								});
 						}
-						sapTransportOrderActions.setOrderObjects(postOrderObjects);
+						setOrderObjectsAction(postOrderObjects);
 						// Sincronizo si hay objetos en la orden en los procesos de lectura
 						udpateHasObjects(postOrderObjects);
 					});
@@ -121,7 +124,12 @@ export default function useOrderObjects() {
 		);
 		let promises: Promise<responseDeleteOrderObject>[] = [];
 		objects.forEach((row: OrderObjectKey) => {
-			promises.push(transportOrderController.deleteOrderObject(row));
+			promises.push(
+				transportOrderController.deleteOrderObject(
+					getDataForConnection(APP),
+					row
+				)
+			);
 		});
 		Promise.allSettled(promises).then((responsesPromise) => {
 			let deletedOrderObjects: OrderObjectsKey = [];
@@ -262,7 +270,7 @@ export default function useOrderObjects() {
 		uniqueOrders.push({ order: orderTo });
 
 		transportOrderController
-			.moveOrderObjects(orderTo, orderObjects)
+			.moveOrderObjects(getDataForConnection(APP), orderTo, orderObjects)
 			.then((response) => {
 				if (response.isSuccess) {
 					let responseReturn = response.getValue() as ReturnsDTO;

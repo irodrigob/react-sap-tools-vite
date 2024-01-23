@@ -4,7 +4,7 @@ import { ObjectsText } from "sap/translate/infraestructure/types/translate.d";
 import { useTranslations } from "translations/i18nContext";
 import { useAppSelector } from "shared/storage/useStore";
 import useDataManager from "sap/translate/infraestructure/frontend/hooks/useDataManager";
-import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
+import useSAPTranslateStore from "sap/translate/infraestructure/frontend/hooks/useSAPTranslateStore";
 import CellTextLang from "sap/translate/infraestructure/frontend/components/tableText/cellTextLang";
 import ObjectText from "sap/translate/domain/entities/objectText";
 import {
@@ -17,8 +17,7 @@ export default function useObjectTextTable() {
 	const { objectsText, columnsObjectsText } = useAppSelector(
 		(state) => state.SAPTranslate
 	);
-	const { determinePpsalTypeFromColumnId } = useDataManager();
-	const translateActions = new SAPTranslateActions();
+	const { setColumnsObjectsTextAction } = useSAPTranslateStore();
 	const [selectedObjectText, setSelectedObjectText] = useState<ObjectsText>([]);
 
 	useEffect(() => {
@@ -71,7 +70,7 @@ export default function useObjectTextTable() {
 					});
 				}
 			}
-			translateActions.setColumnsObjectsText(columnsTmp);
+			setColumnsObjectsTextAction(columnsTmp);
 		}
 	}, [objectsText]);
 

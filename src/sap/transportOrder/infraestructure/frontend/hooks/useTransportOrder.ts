@@ -34,7 +34,6 @@ export default function useTransportOrder() {
 	const { orderTaskSelected, toolbarFilters, orderListTree } = useAppSelector(
 		(state) => state.SAPTransportOrder
 	);
-	const { appsList } = useAppSelector((state) => state.SAPGeneral);
 	const { updateDataFromReleaseOrder, postLoadUserOrder } = useDataManager();
 	const transportOrderController = new SAPTransportOrderController();
 	const { getI18nText } = useTranslations();
@@ -110,7 +109,7 @@ export default function useTransportOrder() {
 
 		// Usuarios del sistema que pueden estar en una orden. Se usará para el contro que permite cambiar el usuario de una orden
 		getSystemsUsers();
-	}, [appsList]);
+	}, []);
 
 	/**
 	 * Función que realiza la lectura de nuevo de las ordendes del usuario
@@ -149,6 +148,7 @@ export default function useTransportOrder() {
 
 			transportOrderController
 				.doTransportCopy(
+					getDataForConnection(APP),
 					data.system,
 					data.description,
 					orderTaskSelected.map((row: FieldsOrdersTreeTable) => {
@@ -186,6 +186,7 @@ export default function useTransportOrder() {
 	const changeDataOrder = useCallback(
 		(orderData: FieldsOrdersTreeTable | FieldsTaskTreeTable) => {
 			return transportOrderController.UpdateOrder(
+				getDataForConnection(APP),
 				new UpdateOrder(
 					orderData.orderTask,
 					orderData.description,
@@ -220,31 +221,36 @@ export default function useTransportOrder() {
 				{ autoClose: false, isLoading: true }
 			);
 
-			transportOrderController.releaseOrders(orders).then((response) => {
-				if (response.isSuccess) {
-					// Como al actualiar la tabla se desmarca las filas seleccionadas y me desajusta la toolbar de acciones. Por ello
-					// las desmarco para que se resetee todo bien.
-					setOrderTaskSelectedAction([]);
+			transportOrderController
+				.releaseOrders(getDataForConnection(APP), orders)
+				.then((response) => {
+					if (response.isSuccess) {
+						// Como al actualiar la tabla se desmarca las filas seleccionadas y me desajusta la toolbar de acciones. Por ello
+						// las desmarco para que se resetee todo bien.
+						setOrderTaskSelectedAction([]);
 
-					let returnRelease = response.getValue() as releaseOrdersDTOArray;
+						let returnRelease = response.getValue() as releaseOrdersDTOArray;
 
-					messageManagerController.addFromSAPArrayReturn(
-						returnRelease.map((row) => {
-							return row.return;
-						})
-					);
+						messageManagerController.addFromSAPArrayReturn(
+							returnRelease.map((row) => {
+								return row.return;
+							})
+						);
 
-					updateDataFromReleaseOrder(returnRelease);
+						updateDataFromReleaseOrder(returnRelease);
 
-					updateMessage(
-						toastID,
-						getI18nText("transportOrder.releaseOrders.releaseCompleted"),
-						MessageType.success
-					);
-				} else {
-					updateResultError(toastID, response.getErrorValue() as ErrorGraphql);
-				}
-			});
+						updateMessage(
+							toastID,
+							getI18nText("transportOrder.releaseOrders.releaseCompleted"),
+							MessageType.success
+						);
+					} else {
+						updateResultError(
+							toastID,
+							response.getErrorValue() as ErrorGraphql
+						);
+					}
+				});
 		},
 		[orderListTree]
 	);

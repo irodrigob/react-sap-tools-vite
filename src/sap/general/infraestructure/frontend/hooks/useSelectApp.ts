@@ -2,13 +2,14 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSystemData } from "systems/infraestructure/context/systemContext";
 import useSAPGeneralStore from "./useSAPGeneralStore";
-import useSystems from "systems/infraestructure/frontend/hooks/useSystems";
+import useSAPTransportOrderStore from "sap/transportOrder/infraestructure/frontend/hooks/useSAPTransportOrderStore";
 
 export default function useSelectApp() {
 	const { setExpandSidebar, setShowSidebar } = useSystemData();
 	const navigate = useNavigate();
 	const { setApplicationChangedAction } = useSAPGeneralStore();
-	const { clearVariablesSystem } = useSystems();
+	const { clearVariables: sapTransportOrderClearVariables } =
+		useSAPTransportOrderStore();
 
 	const appSelected = useCallback((frontendPage: string, app: string) => {
 		// Estos dos set no sirven para nada porque no se usan, pero lo dejo por
@@ -17,7 +18,7 @@ export default function useSelectApp() {
 		setShowSidebar(true);
 
 		// Limpieza de variable
-		clearVariablesSystem();
+		sapTransportOrderClearVariables();
 
 		// Se indica que hay cambio de aplicación
 		setApplicationChangedAction(true);
