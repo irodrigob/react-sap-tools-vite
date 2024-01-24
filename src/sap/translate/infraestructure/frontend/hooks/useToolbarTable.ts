@@ -3,7 +3,6 @@ import {
 	ObjectsText,
 	ParamsObjectTranslate,
 } from "sap/translate/infraestructure/types/translate.d";
-import ObjectText from "sap/translate/domain/entities/objectText";
 
 import useMessages, {
 	MessageType,
@@ -15,7 +14,6 @@ import useExcelManager from "./useExcelManager";
 import SAPTranslateController from "sap/translate/infraestructure/controller/sapTranslateController";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import { ReturnsDTO } from "shared/dto/generalDTO";
-import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 import useTranslate from "./useTranslate";
 import {
 	TEXT_PPSAL_TYPE,
@@ -24,6 +22,7 @@ import {
 } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
 import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
 import { APP } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
+import useMessageManager from "messageManager/infraestructure/frontend/hooks/useMessageManager";
 
 export default function useToolbarTable() {
 	const { getI18nText } = useTranslations();
@@ -39,11 +38,11 @@ export default function useToolbarTable() {
 		(state) => state.SAPTranslate
 	);
 	const sapTranslateController = new SAPTranslateController();
-	const messageManagerController = new MessageManagerController();
 	const { saveObjectsText } = useTranslate();
 	const { generateExcel, processExcelFile } = useExcelManager();
 	const [openPopupUploadTemplate, setOpenPopupUploadTemplate] = useState(false);
 	const { getDataForConnection } = useSAPGeneral();
+	const { addFromSAPArrayReturn } = useMessageManager();
 
 	/**
 	 * Gestiona añadir objetos a una orden
@@ -73,7 +72,7 @@ export default function useToolbarTable() {
 								let returnMessages =
 									responseAddObjects.getValue() as ReturnsDTO;
 
-								messageManagerController.addFromSAPArrayReturn(returnMessages);
+								addFromSAPArrayReturn(returnMessages);
 
 								updateMessage(
 									toastID,

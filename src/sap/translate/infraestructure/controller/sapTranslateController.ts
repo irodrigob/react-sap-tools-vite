@@ -1,7 +1,6 @@
 import TranslateApplication from "sap/translate/application/translateApplication";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 import SAPController from "sap/general/infraestructure/controller/sapController";
-import AppStore from "shared/storage/appStore";
 import {
 	ResponseLanguages,
 	ReponseSaveTranslate,
@@ -15,22 +14,16 @@ import {
 	ObjectsText,
 	ParamsObjectTranslate,
 } from "sap/translate/infraestructure/types/translate";
-import { APP } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
-import SAPTranslateActions from "sap/translate/infraestructure/storage/sapTranslateActions";
-import { INIT_PARAMS_OBJECT_TRANSLATE } from "sap/translate/infraestructure/utils/initValues";
+
 import { AddObjects2Order } from "sap/translate/infraestructure/dto/addObjects2Order";
 
 export default class SAPTranslateController {
-	private appStore: AppStore;
 	private translateApplication: TranslateApplication;
 	private sapController: SAPController;
-	private sapTranslateActions: SAPTranslateActions;
 
 	constructor() {
-		this.appStore = new AppStore();
 		this.translateApplication = new TranslateApplication();
 		this.sapController = new SAPController();
-		this.sapTranslateActions = new SAPTranslateActions();
 	}
 	/**
 	 * Obtiene los idiomas a traducir
@@ -113,17 +106,7 @@ export default class SAPTranslateController {
 	): Promise<ResponseCheckOrder> {
 		return await this.translateApplication.checkOrder(dataConnection, order);
 	}
-	/**
-	 * Borrado de variables principales de la aplicación.
-	 * Se usará en cambios de sistema, borrado de aplicación, etc..
-	 */
-	clearVariables(): void {
-		this.sapTranslateActions.setObjectsText([]);
-		this.sapTranslateActions.setObjectsTextOriginal([]);
-		this.sapTranslateActions.setParamsObjectsTranslate(
-			INIT_PARAMS_OBJECT_TRANSLATE
-		);
-	}
+
 	/**
 	 * Graba los textos traducidos
 	 * @param dataConnection | Datos conexion

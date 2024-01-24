@@ -13,10 +13,10 @@ import useMessages, {
 import { useTranslations } from "translations/i18nContext";
 import { useAppSelector } from "shared/storage/useStore";
 import useSAPTranslateStore from "sap/translate/infraestructure/frontend/hooks/useSAPTranslateStore";
-import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 import useSAPGeneralStore from "sap/general/infraestructure/frontend/hooks/useSAPGeneralStore";
 import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
 import { APP } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
+import useMessageManager from "messageManager/infraestructure/frontend/hooks/useMessageManager";
 
 export default function useTranslate() {
 	const { getI18nText, language } = useTranslations();
@@ -42,12 +42,13 @@ export default function useTranslate() {
 		updateResultError,
 		convertServiceSAPMsgType,
 	} = useMessages();
-	const messageManagerController = new MessageManagerController();
 	const { setSystemChangedAction, setApplicationChangedAction } =
 		useSAPGeneralStore();
 	const { setObjectsTextAction, setObjectsTextOriginalAction } =
 		useSAPTranslateStore();
 	const { getDataForConnection } = useSAPGeneral();
+	const { addFromSAPArrayReturn } = useMessageManager();
+
 	/**
 	 * Lectura inicial de datos
 	 */
@@ -158,7 +159,7 @@ export default function useTranslate() {
 				if (resultSave.isSuccess) {
 					let result = resultSave.getValue() as ResponseSaveObjectText;
 
-					messageManagerController.addFromSAPArrayReturn(result.return);
+					addFromSAPArrayReturn(result.return);
 
 					updateMessage(
 						toastID,

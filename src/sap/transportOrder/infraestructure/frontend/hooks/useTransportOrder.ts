@@ -18,7 +18,6 @@ import {
 import useMessages, {
 	MessageType,
 } from "shared/infraestructure/hooks/useMessages";
-import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 import { useAppSelector } from "shared/storage/useStore";
 import UpdateOrder from "sap/transportOrder/domain/entities/updateOrder";
 import useDataManager from "sap/transportOrder/infraestructure/frontend/hooks/useDataManager";
@@ -27,6 +26,7 @@ import useSAPTransportOrderStore from "./useSAPTransportOrderStore";
 import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
 import { APP } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder";
 import SystemsTransport from "sap/transportOrder/domain/entities/systemsTransport";
+import useMessageManager from "messageManager/infraestructure/frontend/hooks/useMessageManager";
 
 export default function useTransportOrder() {
 	const { getDefaultFilters, convertFilter2paramsGraphql } = useFilterValues();
@@ -44,7 +44,6 @@ export default function useTransportOrder() {
 		updateMessage,
 		updateResultError,
 	} = useMessages();
-	const messageManagerController = new MessageManagerController();
 	const { setSystemChangedAction, setApplicationChangedAction } =
 		useSAPGeneralStore();
 	const { getDataForConnection } = useSAPGeneral();
@@ -59,6 +58,7 @@ export default function useTransportOrder() {
 		setSystemUsersAction,
 		setSystemsTransportCopyAction,
 	} = useSAPTransportOrderStore();
+	const { addFromSAPArrayReturn } = useMessageManager();
 
 	/*************************************
 	 * Funciones
@@ -159,9 +159,7 @@ export default function useTransportOrder() {
 					if (response.isSuccess) {
 						let returnTransport = response.getValue() as transportCopyDTO;
 
-						messageManagerController.addFromSAPArrayReturn(
-							returnTransport.return
-						);
+						addFromSAPArrayReturn(returnTransport.return);
 
 						updateMessage(
 							toastID,
@@ -231,7 +229,7 @@ export default function useTransportOrder() {
 
 						let returnRelease = response.getValue() as releaseOrdersDTOArray;
 
-						messageManagerController.addFromSAPArrayReturn(
+						addFromSAPArrayReturn(
 							returnRelease.map((row) => {
 								return row.return;
 							})

@@ -7,8 +7,6 @@ import {
 	DEFAULT_SYSTEM,
 } from "systems/infraestructure/context/systemContext";
 import SystemController from "systems/infraestructure/controller/systemController";
-import SAPTransportOrderController from "sap/transportOrder/infraestructure/controller/sapTransportOrderController";
-import SAPTranslateController from "sap/translate/infraestructure/controller/sapTranslateController";
 import { useAppSelector } from "shared/storage/useStore";
 import { useTranslations } from "translations/i18nContext";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
@@ -17,11 +15,11 @@ import useMessages, {
 } from "shared/infraestructure/hooks/useMessages";
 import { responseSystemRepoArray } from "systems/infraestructure/types/application";
 import useTunnelSystem from "tunnelSystem/infraestructure/frontend/hooks/useTunnelSystem";
-import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 import useSAPGeneralStore from "sap/general/infraestructure/frontend/hooks/useSAPGeneralStore";
 import useSAPTransportOrderStore from "sap/transportOrder/infraestructure/frontend/hooks/useSAPTransportOrderStore";
 import useSystemStore from "./useSystemsStore";
 import useSAPTranslateStore from "sap/translate/infraestructure/frontend/hooks/useSAPTranslateStore";
+import useMessageManagerStore from "messageManager/infraestructure/frontend/hooks/useMessageManagerStore";
 
 export default function useSystems() {
 	const {
@@ -41,8 +39,6 @@ export default function useSystems() {
 		addAdtApp2StoreAction,
 	} = useSAPGeneralStore();
 	const systemController = new SystemController();
-	const sapTransportOrderController = new SAPTransportOrderController();
-	const sapTranslateController = new SAPTranslateController();
 	const {
 		setSystemSelectedAction,
 		setConnectedToSystemAction,
@@ -51,11 +47,12 @@ export default function useSystems() {
 	const { getI18nText } = useTranslations();
 	const { showResultError, showMessage } = useMessages();
 	const { getTunnelConfiguration, getTunnelProviders } = useTunnelSystem();
-	const messageController = new MessageManagerController();
 	const { clearVariables: sapTransportOrderClearVariables } =
 		useSAPTransportOrderStore();
 	const { clearVariables: sapTransalateClearVariables } =
 		useSAPTranslateStore();
+	const { clearVariables: messageManagerClearVariables } =
+		useMessageManagerStore();
 
 	/**
 	 * Proceso que se lanza cuando se selecciona un sistema
@@ -234,7 +231,7 @@ export default function useSystems() {
 		sapGeneralClearVariablesAction();
 		sapTransportOrderClearVariables();
 		sapTransalateClearVariables();
-		messageController.clearVariables();
+		messageManagerClearVariables();
 	}, []);
 
 	return {

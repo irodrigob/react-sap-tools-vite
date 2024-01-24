@@ -17,12 +17,12 @@ import { responseDeleteOrderObject } from "sap/transportOrder/infraestructure/ty
 import useDataManagerObjects from "./useDataManagerObjects";
 import ArrayUtils from "shared/utils/array/arrayUtils";
 import { ReturnsDTO } from "shared/dto/generalDTO";
-import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 import { SAPMessageType } from "messageManager/infraestructure/types/msgManagerTypes";
 import useDataManager from "./useDataManager";
 import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
 import useSAPTransportOrderStore from "./useSAPTransportOrderStore";
 import { APP } from "sap/transportOrder/infraestructure/utils/constants/constantsTransportOrder";
+import useMessageManager from "messageManager/infraestructure/frontend/hooks/useMessageManager";
 
 export default function useOrderObjects() {
 	const transportOrderController = new SAPTransportOrderController();
@@ -33,11 +33,11 @@ export default function useOrderObjects() {
 	const { showResultError, updateMessage, updateResultError, showMessage } =
 		useMessages();
 	const { deleteObjectsModel } = useDataManagerObjects();
-	const messageManagerController = new MessageManagerController();
 	const { udpateHasObjects } = useDataManager();
 	const [loadingObjects, setLoadingObjects] = useState(false);
 	const { getDataForConnection } = useSAPGeneral();
 	const { setOrderObjectsAction } = useSAPTransportOrderStore();
+	const { addFromSAPArrayReturn } = useMessageManager();
 
 	/**
 	 * Lectura de los objetos de las ordenes pasadas por parámetro. Este proceso
@@ -276,7 +276,7 @@ export default function useOrderObjects() {
 					let responseReturn = response.getValue() as ReturnsDTO;
 
 					// Se pasa al gestor de mensajes para que se puedan consultar todos los mensajes devueltos
-					messageManagerController.addFromSAPArrayReturn(responseReturn);
+					addFromSAPArrayReturn(responseReturn);
 
 					// Se muestra un error generico en caso de ir todo bien o de existir errores.
 					if (
