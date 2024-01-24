@@ -12,6 +12,8 @@ import { TYPE } from "sap/transportOrder/infraestructure/utils/constants/constan
 import { SelectorComponentType } from "sap/transportOrder/infraestructure/types/selectOrder.d";
 import useSAPTranslateStore from "sap/translate/infraestructure/frontend/hooks/useSAPTranslateStore";
 import { useAppSelector } from "shared/storage/useStore";
+import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
+import { APP } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
 
 interface Props {
 	filterValueState: FiltersValueState;
@@ -30,19 +32,22 @@ const FilterOrder: FC<Props> = (props: Props) => {
 	);
 	const [orderValueStateMessage, setOrderValueStateMessage] = useState("");
 	const translateController = new SAPTranslateController();
+	const { getDataForConnection } = useSAPGeneral();
 
 	const onSelectedOrder = useCallback((orderSelected: string) => {
 		setSelectedOrder(orderSelected);
-		translateController.checkOrder(orderSelected).then((response) => {
-			if (response.isFailure) {
-				let error = (response.getErrorValue() as ErrorGraphql).getError();
-				setOrderValueState(ValueState.Error);
-				setOrderValueStateMessage(error.singleMessage as string);
-			} else {
-				setOrderValueState(ValueState.None);
-				setOrderValueStateMessage("");
-			}
-		});
+		translateController
+			.checkOrder(getDataForConnection(APP), orderSelected)
+			.then((response) => {
+				if (response.isFailure) {
+					let error = (response.getErrorValue() as ErrorGraphql).getError();
+					setOrderValueState(ValueState.Error);
+					setOrderValueStateMessage(error.singleMessage as string);
+				} else {
+					setOrderValueState(ValueState.None);
+					setOrderValueStateMessage("");
+				}
+			});
 	}, []);
 
 	/**

@@ -199,13 +199,4 @@ export default class SAPTransportOrderController {
 			orderObjects
 		);
 	}
-	/**
-	 * Devuelve los datos de conexión al sistema
-	 * @returns Objetos con los datos de conexión al sistema
-	 */
-	getDataForConnection(): DataConnectionSystem {
-		return {
-			...this.sapController.getDataForConnection(APP),
-		};
-	}
 }

@@ -3,7 +3,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ObjectsText } from "sap/translate/infraestructure/types/translate.d";
 import { useTranslations } from "translations/i18nContext";
 import { useAppSelector } from "shared/storage/useStore";
-import useDataManager from "sap/translate/infraestructure/frontend/hooks/useDataManager";
 import useSAPTranslateStore from "sap/translate/infraestructure/frontend/hooks/useSAPTranslateStore";
 import CellTextLang from "sap/translate/infraestructure/frontend/components/tableText/cellTextLang";
 import ObjectText from "sap/translate/domain/entities/objectText";

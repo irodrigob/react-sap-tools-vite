@@ -22,6 +22,8 @@ import {
 	FIELDS_TEXT,
 	NUMBER_FIELD_TLANG,
 } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
+import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
+import { APP } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
 
 export default function useToolbarTable() {
 	const { getI18nText } = useTranslations();
@@ -41,6 +43,7 @@ export default function useToolbarTable() {
 	const { saveObjectsText } = useTranslate();
 	const { generateExcel, processExcelFile } = useExcelManager();
 	const [openPopupUploadTemplate, setOpenPopupUploadTemplate] = useState(false);
+	const { getDataForConnection } = useSAPGeneral();
 
 	/**
 	 * Gestiona añadir objetos a una orden
@@ -61,6 +64,7 @@ export default function useToolbarTable() {
 					);
 					sapTranslateController
 						.addObjects2Order(
+							getDataForConnection(APP),
 							paramsObjectsTranslate,
 							convertObjectTexts2AddObjects(selectedObjectText)
 						)

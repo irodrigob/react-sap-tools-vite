@@ -34,82 +34,84 @@ export default class SAPTranslateController {
 	}
 	/**
 	 * Obtiene los idiomas a traducir
+	 * @param dataConnection | Datos conexion
 	 * @returns | Resultado con los idiomas
 	 */
-	async getLanguages(): Promise<ResponseLanguages> {
-		return this.translateApplication.getLanguages(this.getDataForConnection());
+	async getLanguages(
+		dataConnection: DataConnectionSystem
+	): Promise<ResponseLanguages> {
+		return this.translateApplication.getLanguages(dataConnection);
 	}
 	/**
 	 * Obtiene los objetos que se pueden traducir
+	 * @param dataConnection | Datos conexion
 	 * @returns | Resultado con los objetos seleccionables
 	 */
-	async getSelectableObjects(): Promise<ResponseSelectableObjects> {
-		return this.translateApplication.getSelectableObjects(
-			this.getDataForConnection()
-		);
+	async getSelectableObjects(
+		dataConnection: DataConnectionSystem
+	): Promise<ResponseSelectableObjects> {
+		return this.translateApplication.getSelectableObjects(dataConnection);
 	}
 	/**
 	 * Obtiene los textos a traducir del objeto pasado por parámetro
+	 * @param dataConnection | Datos conexion
 	 * @param paramsTranslate | Parametros del objeto a traducción
 	 * @returns | Resultado con las traducciones
 	 */
 	async getObjectTranslate(
+		dataConnection: DataConnectionSystem,
 		paramsTranslate: ParamsObjectTranslate
 	): Promise<ReponseGetObjectsTranslate> {
 		return this.translateApplication.getObjectTranslate(
-			this.getDataForConnection(),
+			dataConnection,
 			paramsTranslate
 		);
 	}
 	/**
 	 * Graba los textos traducidos
+	 * @param dataConnection | Datos conexion
 	 * @param paramsTranslate | Parametros del objeto a traducción
 	 * @param ObjectsText | Textos a traducir
 	 * @returns | Resultado con las traducciones confirmadas y resultado del proceso
 	 */
 	async saveObjectTranslate(
+		dataConnection: DataConnectionSystem,
 		paramsTranslate: ParamsObjectTranslate,
 		objectsText: ObjectsText
 	): Promise<ReponseSaveTranslate> {
 		return this.translateApplication.saveObjectTranslate(
-			this.getDataForConnection(),
+			dataConnection,
 			paramsTranslate,
 			objectsText
 		);
 	}
 	/**
 	 * Verifica que el objeto exista
+	 * @param dataConnection | Datos conexion
 	 * @param object | Tipo de objeto
 	 * @param objectName | Nombre de objeto
 	 */
 	async checkObject(
+		dataConnection: DataConnectionSystem,
 		object: string,
 		objectName: string
 	): Promise<ResponseCheckObject> {
 		return await this.translateApplication.checkObject(
-			this.getDataForConnection(),
+			dataConnection,
 			object,
 			objectName
 		);
 	}
 	/**
 	 * Verifica que la orden exista
+	 * @param dataConnection | Datos conexion
 	 * @param order | Orden
 	 */
-	async checkOrder(order: string): Promise<ResponseCheckOrder> {
-		return await this.translateApplication.checkOrder(
-			this.getDataForConnection(),
-			order
-		);
-	}
-	/**
-	 * Devuelve los datos de conexión al sistema
-	 * @returns Objetos con los datos de conexión al sistema
-	 */
-	getDataForConnection(): DataConnectionSystem {
-		return {
-			...this.sapController.getDataForConnection(APP),
-		};
+	async checkOrder(
+		dataConnection: DataConnectionSystem,
+		order: string
+	): Promise<ResponseCheckOrder> {
+		return await this.translateApplication.checkOrder(dataConnection, order);
 	}
 	/**
 	 * Borrado de variables principales de la aplicación.
@@ -124,16 +126,18 @@ export default class SAPTranslateController {
 	}
 	/**
 	 * Graba los textos traducidos
+	 * @param dataConnection | Datos conexion
 	 * @param paramsTranslate | Parametros del objeto a traducción
 	 * @param ObjectsText | Textos a traducir
 	 * @returns | Resultado con las traducciones confirmadas y resultado del proceso
 	 */
 	async addObjects2Order(
+		dataConnection: DataConnectionSystem,
 		paramsTranslate: ParamsObjectTranslate,
 		objects: AddObjects2Order
 	): Promise<ResponseAddObject2Order> {
 		return this.translateApplication.addObjects2Order(
-			this.getDataForConnection(),
+			dataConnection,
 			paramsTranslate,
 			objects
 		);

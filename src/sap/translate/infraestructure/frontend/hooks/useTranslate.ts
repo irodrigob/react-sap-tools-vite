@@ -15,6 +15,8 @@ import { useAppSelector } from "shared/storage/useStore";
 import useSAPTranslateStore from "sap/translate/infraestructure/frontend/hooks/useSAPTranslateStore";
 import MessageManagerController from "messageManager/infraestructure/controller/messageManagerController";
 import useSAPGeneralStore from "sap/general/infraestructure/frontend/hooks/useSAPGeneralStore";
+import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
+import { APP } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
 
 export default function useTranslate() {
 	const { getI18nText, language } = useTranslations();
@@ -45,7 +47,7 @@ export default function useTranslate() {
 		useSAPGeneralStore();
 	const { setObjectsTextAction, setObjectsTextOriginalAction } =
 		useSAPTranslateStore();
-
+	const { getDataForConnection } = useSAPGeneral();
 	/**
 	 * Lectura inicial de datos
 	 */
@@ -62,15 +64,19 @@ export default function useTranslate() {
 	 */
 	const loadLanguages = useCallback(() => {
 		setLoadingLanguages(true);
-		translateController.getLanguages().then((resultLanguages) => {
-			setLoadingLanguages(false);
-			if (resultLanguages.isSuccess) {
-				setLanguages(resultLanguages.getValue() as Languages);
-				determineDefaultOriginLanguage(resultLanguages.getValue() as Languages);
-			} else {
-				showResultError(resultLanguages.getErrorValue() as ErrorGraphql);
-			}
-		});
+		translateController
+			.getLanguages(getDataForConnection(APP))
+			.then((resultLanguages) => {
+				setLoadingLanguages(false);
+				if (resultLanguages.isSuccess) {
+					setLanguages(resultLanguages.getValue() as Languages);
+					determineDefaultOriginLanguage(
+						resultLanguages.getValue() as Languages
+					);
+				} else {
+					showResultError(resultLanguages.getErrorValue() as ErrorGraphql);
+				}
+			});
 	}, []);
 	/**
 	 * Lectura de los objetos que se pueden traduccir
@@ -78,7 +84,7 @@ export default function useTranslate() {
 	const loadSelectableObjects = useCallback(() => {
 		setLoadingSelectableLanguages(true);
 		translateController
-			.getSelectableObjects()
+			.getSelectableObjects(getDataForConnection(APP))
 			.then((resultSelecttableLanguages) => {
 				setLoadingSelectableLanguages(false);
 				if (resultSelecttableLanguages.isSuccess) {
@@ -117,7 +123,7 @@ export default function useTranslate() {
 	const getObjectTranslate = useCallback(() => {
 		setLoadingObjectsText(true);
 		translateController
-			.getObjectTranslate(paramsObjectsTranslate)
+			.getObjectTranslate(getDataForConnection(APP), paramsObjectsTranslate)
 			.then((resultObjectTranslate) => {
 				setLoadingObjectsText(false);
 				if (resultObjectTranslate.isSuccess) {
@@ -143,7 +149,11 @@ export default function useTranslate() {
 			MessageType.info
 		);
 		translateController
-			.saveObjectTranslate(paramsObjectsTranslate, objectsTextToSave)
+			.saveObjectTranslate(
+				getDataForConnection(APP),
+				paramsObjectsTranslate,
+				objectsTextToSave
+			)
 			.then((resultSave) => {
 				if (resultSave.isSuccess) {
 					let result = resultSave.getValue() as ResponseSaveObjectText;

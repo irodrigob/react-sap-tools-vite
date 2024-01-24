@@ -19,6 +19,8 @@ import SAPTranslateController from "sap/translate/infraestructure/controller/sap
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import { useAppSelector } from "shared/storage/useStore";
 import useSAPTranslateStore from "sap/translate/infraestructure/frontend/hooks/useSAPTranslateStore";
+import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
+import { APP } from "sap/translate/infraestructure/utils/constants/constantsTranslate";
 
 interface Props {
 	selectableObjects: SelectableObjects;
@@ -41,6 +43,7 @@ const FilterObject: FC<Props> = (props: Props) => {
 	const { getI18nText } = useTranslations();
 	const [valueSelected, setValueSelected] = useState("");
 	const translateController = new SAPTranslateController();
+	const { getDataForConnection } = useSAPGeneral();
 
 	/**
 	 * Efecto que informa el objeto y nombre para que se vea en el combo
@@ -60,6 +63,7 @@ const FilterObject: FC<Props> = (props: Props) => {
 		) {
 			translateController
 				.checkObject(
+					getDataForConnection(APP),
 					paramsObjectsTranslate.object,
 					paramsObjectsTranslate.objectName
 				)
