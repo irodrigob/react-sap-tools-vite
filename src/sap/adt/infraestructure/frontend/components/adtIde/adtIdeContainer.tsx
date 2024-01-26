@@ -1,8 +1,13 @@
-import { SplitterElement, SplitterLayout } from "@ui5/webcomponents-react";
+import {
+	ResizableHandle,
+	ResizablePanel,
+	ResizablePanelGroup,
+} from "@/components/ui/resizable";
 import { useEffect } from "react";
 import FavoritePackagesContainer from "sap/adt/infraestructure/frontend/components/favoritePackages/favoritePackagesContainer";
 import { useAppSelector } from "shared/storage/useStore";
 import useAdt from "sap/adt/infraestructure/frontend/hooks/useAdt";
+import CollapsibleCustom from "@/shared/frontend/components/collapsibleCustom";
 
 export default function AdtIdeContainer() {
 	const { systemChanged, applicationChanged } = useAppSelector(
@@ -15,15 +20,16 @@ export default function AdtIdeContainer() {
 			loadInitialData();
 		}
 	}, [systemChanged, applicationChanged]);
-
+	return <CollapsibleCustom />;
 	return (
-		<SplitterLayout>
-			<SplitterElement size="25%">
+		<ResizablePanelGroup direction="horizontal">
+			<ResizablePanel defaultSize={20}>
 				<FavoritePackagesContainer />
-			</SplitterElement>
-			<SplitterElement>
+			</ResizablePanel>
+			<ResizableHandle withHandle />
+			<ResizablePanel>
 				<p>Codigo</p>
-			</SplitterElement>
-		</SplitterLayout>
+			</ResizablePanel>
+		</ResizablePanelGroup>
 	);
 }

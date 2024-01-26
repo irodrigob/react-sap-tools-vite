@@ -1,4 +1,3 @@
-import { Result } from "shared/core/Result";
 import {
 	ResponseSearchObject,
 	ResponseAddFavoritePackage,

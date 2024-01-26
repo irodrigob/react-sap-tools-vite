@@ -11,12 +11,12 @@ import { initializeApollo } from "shared/graphql/client";
 // Esto hará muchas cosas pero una de ellas es cargar textos en los idiomas en los componentes. Si no
 // Se carga al inicio salen en ingles.
 import "@ui5/webcomponents-react/dist/Assets";
-import { ThemeProvider as ThemeProviderMaterial } from '@emotion/react';
-import { CssBaseline } from '@mui/material';
+import { ThemeProvider as ThemeProviderMaterial } from "@emotion/react";
+import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@ui5/webcomponents-react";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import "translations/i18n";
 import theme from "theme";
 import { store } from "shared/storage/storageConfiguration";
@@ -25,32 +25,34 @@ import App from "./App.tsx";
 import GlobalProvider from "shared/context/globalDataContext";
 import SystemProvider from "systems/infraestructure/context/systemContext";
 import { AuthProvider } from "./auth/authProvider";
-
+import { ThemeProvider as ThemeProviderTailwind } from "@/components/theme-provider";
 
 const apolloClient = initializeApollo();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <I18nProvider>
-      <Provider store={store}>
-        <ApolloProvider client={apolloClient}>
-          <AuthProvider client_id={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-            <GlobalProvider>
-              <SystemProvider>
-                <BrowserRouter>
-                  <ThemeProviderMaterial theme={theme}>
-                    <ThemeProvider>
-                      <CssBaseline />
-                      <App />
-                      <ToastContainer />
-                    </ThemeProvider>
-                  </ThemeProviderMaterial>
-                </BrowserRouter>
-              </SystemProvider>
-            </GlobalProvider>
-          </AuthProvider>
-        </ApolloProvider>
-      </Provider>
-    </I18nProvider>
-  </React.StrictMode>
+	<React.StrictMode>
+		<I18nProvider>
+			<Provider store={store}>
+				<ApolloProvider client={apolloClient}>
+					<AuthProvider client_id={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+						<GlobalProvider>
+							<SystemProvider>
+								<BrowserRouter>
+									<ThemeProviderMaterial theme={theme}>
+										<ThemeProvider>
+											<ThemeProviderTailwind>
+												<CssBaseline />
+												<App />
+												<ToastContainer />
+											</ThemeProviderTailwind>
+										</ThemeProvider>
+									</ThemeProviderMaterial>
+								</BrowserRouter>
+							</SystemProvider>
+						</GlobalProvider>
+					</AuthProvider>
+				</ApolloProvider>
+			</Provider>
+		</I18nProvider>
+	</React.StrictMode>
 );
