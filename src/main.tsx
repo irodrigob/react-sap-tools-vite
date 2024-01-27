@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-
+import "./App.css";
 import { Provider } from "react-redux";
 import { ApolloProvider } from "@apollo/client";
 import { initializeApollo } from "shared/graphql/client";
@@ -25,7 +25,7 @@ import App from "./App.tsx";
 import GlobalProvider from "shared/context/globalDataContext";
 import SystemProvider from "systems/infraestructure/context/systemContext";
 import { AuthProvider } from "./auth/authProvider";
-import { ThemeProvider as ThemeProviderTailwind } from "@/components/theme-provider";
+import { ThemeProvider as ThemeProviderTailwind } from "@/components/theme-provider.tsx";
 
 const apolloClient = initializeApollo();
 

@@ -403,5 +403,8 @@
 	},
 	"appSystemSelected": {
 		"label": "Sistema"
+	},
+	"collapsibleCustom": {
+		"toggle": "Expandir/Contraer"
 	}
 }
