@@ -352,6 +352,7 @@
 			"errorLoad": "Error al leer los paquetes favoritos",
 			"popupAddPackage": {
 				"title": "Seleccione un paquete",
+				"description": "Introduzca el nombre del paquete, o parte de el, y pulsa sobre el botón \"Añadir\" para añadirlo a favoritos.",
 				"placeholder": "Búsqueda (> 1 carácteres)...",
 				"btnConfirm": "Añadir",
 				"packagesNotFound": "No se han encontrado paquetes",

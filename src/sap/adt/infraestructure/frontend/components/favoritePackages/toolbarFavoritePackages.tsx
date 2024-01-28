@@ -5,6 +5,15 @@ import { Button } from "@/components/ui/button";
 import { useTranslations } from "translations/i18nContext";
 import PopupAddPackageContainer from "./popupAddPackage/popupAddPackageContainer";
 import AddFavorite from "shared/frontend/icons/add-Favorite";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface Props {
 	slot?: string;
@@ -44,25 +53,30 @@ const ToolbarFavoritePackages: FC<Props> = (props: Props) => {
 			/>
 		</>
 	*/
+
+	/*
+
+	*/
 	return (
-		<div className="flex items-center justify-between space-x-1 px-2">
-			<Button onClick={() => setOpenAddPackage(true)}>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					strokeWidth="1.5"
-					stroke="currentColor"
-					className="w-4 h-4"
+		<>
+			<div className="flex items-center justify-between space-x-1 px-2">
+				<Button
+					onClick={() => setOpenAddPackage(true)}
+					variant="ghost"
+					size="sm"
 				>
-					<path
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						d="M7 160h145q5 0 7-5L218 5q3-5 7-5t6 5l59 150q2 5 6 5h145q5 0 7 5t-2 8l-115 88q-3 3-2 8l12 32-82 60-31-22q-2-2-4-2l-1 1h-1q-1 0-2 1L67 447q-1 1-4 1t-5.5-2.5-.5-6.5l63-170q2-5-3-8L3 173q-4-3-2.5-8t6.5-5zm281 224h96v-96h32v96h96v32h-96v96h-32v-96h-96v-32z"
-					/>
-				</svg>
-			</Button>
-		</div>
+					<AddFavorite className="h-5 w-5 text-blue-500" />
+				</Button>
+			</div>
+			<PopupAddPackageContainer
+				open={openAddPackage}
+				onOpenChange={setOpenAddPackage}
+				onCloseButton={() => {
+					setOpenAddPackage(false);
+				}}
+				onConfirmButton={() => {}}
+			/>
+		</>
 	);
 };
 

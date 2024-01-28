@@ -43,7 +43,7 @@ const CollapsibleCustom: FC<Props> = (props: Props) => {
 						</span>
 					</Button>
 				</CollapsibleTrigger>
-				<h4 className="text-sm font-semibold">{titleCollapsed}</h4>
+				<h4 className="text-lg font-semibold">{titleCollapsed}</h4>
 				<div style={{ marginLeft: "auto" }}>{headerToolbar}</div>
 			</div>
 			<div className="rounded-md border px-4 py-2 font-mono text-sm shadow-sm">

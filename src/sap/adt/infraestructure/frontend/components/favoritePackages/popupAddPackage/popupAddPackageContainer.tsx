@@ -1,15 +1,42 @@
-import { FC, useCallback, useEffect, useRef, useState } from "react";
 import {
-	Dialog,
-	Input,
+	FC,
+	FormEvent,
+	FormEventHandler,
+	useCallback,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
+import {
 	InputDomRef,
-	Label,
 	SuggestionItem,
 	Text,
 	Ui5CustomEvent,
 	ValueState,
 } from "@ui5/webcomponents-react";
 import "@ui5/webcomponents/dist/features/InputSuggestions.js";
+
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+	Command,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+	CommandSeparator,
+	CommandShortcut,
+} from "@/components/ui/command";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import FooterDialog from "shared/frontend/components/footerDialog";
 import { useTranslations } from "translations/i18nContext";
 import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtController";
@@ -26,15 +53,17 @@ import { useSession } from "auth/authProvider";
 import ADTActions from "sap/adt/infraestructure/storage/adtActions";
 import { ADTFavoritePackage } from "sap/adt/domain/entities/favoritePackage";
 import { useAppSelector } from "shared/storage/useStore";
+import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
 
 interface Props {
 	open: boolean;
+	onOpenChange: (value: boolean) => void;
 	onCloseButton: () => void;
 	onConfirmButton: (addPackage: string) => void;
 }
 
 const PopupAddPackageContainer: FC<Props> = (props) => {
-	const { open, onCloseButton, onConfirmButton } = props;
+	const { open, onCloseButton, onConfirmButton, onOpenChange } = props;
 	const [packagesFound, setPackagesFound] = useState<ADTSearchObjects>([]);
 	const [packagesState, setPackagesState] = useState<ValueState>(
 		ValueState.None
@@ -48,39 +77,44 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 	const { session } = useSession();
 	const adtActions = new ADTActions();
 	const { favoritePackages } = useAppSelector((state) => state.ADT);
+	const { getDataForConnection } = useSAPGeneral();
+	const minCharSearch = 2;
 
-	const searchPackages = useCallback(
-		(event: Ui5CustomEvent<InputDomRef, never>) => {
-			let values = event.target.value as string;
-			if (values.length >= 2) {
-				setShowLabel(true);
-				adtController
-					.quickSearch(ADT_OBJECT_TYPES.PACKAGES.OBJECT_TYPE, `${values}*`)
-					.then((response: ResponseSearchObject) => {
-						if (response.isSuccess) {
-							let packagesFounded = response.getValue() as ADTSearchObjects;
-							setPackagesFound(packagesFounded);
-							if (packagesFounded.length == 0) {
-								setPackagesState(ValueState.Error);
-								setPackagesStateMessage(
-									getI18nText(
-										"adtIde.favoritePackages.popupAddPackage.packagesNotFound"
-									)
-								);
-							} else {
-								setPackagesState(ValueState.None);
-								setPackagesStateMessage("");
-							}
+	const searchPackages = useCallback((event: any) => {
+		let values = event.target.value as string;
+		if (values.length >= minCharSearch) {
+			setPackageValue(values);
+
+			setShowLabel(true);
+			adtController
+				.quickSearch(
+					getDataForConnection(""),
+					ADT_OBJECT_TYPES.PACKAGES.OBJECT_TYPE,
+					`${values}*`
+				)
+				.then((response: ResponseSearchObject) => {
+					if (response.isSuccess) {
+						let packagesFounded = response.getValue() as ADTSearchObjects;
+						setPackagesFound(packagesFounded);
+						if (packagesFounded.length == 0) {
+							setPackagesState(ValueState.Error);
+							setPackagesStateMessage(
+								getI18nText(
+									"adtIde.favoritePackages.popupAddPackage.packagesNotFound"
+								)
+							);
 						} else {
-							showResultError(response.getErrorValue() as ErrorGraphql);
+							setPackagesState(ValueState.None);
+							setPackagesStateMessage("");
 						}
-					});
-			} else if (values.length == 0) {
-				setShowLabel(false);
-			}
-		},
-		[]
-	);
+					} else {
+						showResultError(response.getErrorValue() as ErrorGraphql);
+					}
+				});
+		} else if (values.length == 0) {
+			setShowLabel(false);
+		}
+	}, []);
 	/**
 	 * Gestiona el proceso de añadir el paquete tanto al modelo de datos como a la base de datos
 	 */
@@ -114,8 +148,8 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 			}
 		}
 	}, [packageValue]);
-	return (
-		<Dialog
+	/*
+	<Dialog
 			draggable
 			open={open}
 			style={{ width: "25%" }}
@@ -186,6 +220,46 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 					);
 				})}
 			</Input>
+		</Dialog>
+	*/
+	/*
+	 */
+	return (
+		<Dialog
+			open={open}
+			onOpenChange={onOpenChange}
+		>
+			<DialogContent className="sm:max-w-[425px]">
+				<DialogHeader>
+					<DialogTitle>
+						{getI18nText("adtIde.favoritePackages.popupAddPackage.title")}
+					</DialogTitle>
+					<DialogDescription>
+						{getI18nText("adtIde.favoritePackages.popupAddPackage.description")}
+					</DialogDescription>
+				</DialogHeader>
+				<div className="grid w-full max-w-sm items-center gap-1.5 pt-2">
+					<Command>
+						<CommandInput
+							placeholder={getI18nText(
+								"adtIde.favoritePackages.popupAddPackage.placeholder"
+							)}
+							onInput={(event: any) => {
+								searchPackages(event);
+							}}
+						/>
+						{packageValue.length >= minCharSearch &&
+							packagesFound.length == 0 && (
+								<CommandEmpty>
+									{getI18nText(
+										"adtIde.favoritePackages.popupAddPackage.packagesNotFound"
+									)}
+								</CommandEmpty>
+							)}
+					</Command>
+				</div>
+				<DialogFooter></DialogFooter>
+			</DialogContent>
 		</Dialog>
 	);
 };
