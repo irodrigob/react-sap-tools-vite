@@ -23,7 +23,6 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "@/components/ui/dialog";
 import {
 	Command,
@@ -35,6 +34,8 @@ import {
 	CommandSeparator,
 	CommandShortcut,
 } from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import { CheckIcon } from "@radix-ui/react-icons";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import FooterDialog from "shared/frontend/components/footerDialog";
@@ -54,6 +55,8 @@ import ADTActions from "sap/adt/infraestructure/storage/adtActions";
 import { ADTFavoritePackage } from "sap/adt/domain/entities/favoritePackage";
 import { useAppSelector } from "shared/storage/useStore";
 import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
+import { Button } from "@/components/ui/button";
+import { text } from "stream/consumers";
 
 interface Props {
 	open: boolean;
@@ -65,9 +68,7 @@ interface Props {
 const PopupAddPackageContainer: FC<Props> = (props) => {
 	const { open, onCloseButton, onConfirmButton, onOpenChange } = props;
 	const [packagesFound, setPackagesFound] = useState<ADTSearchObjects>([]);
-	const [packagesState, setPackagesState] = useState<ValueState>(
-		ValueState.None
-	);
+	const [packagesStateError, setPackagesState] = useState(false);
 	const [packagesStateMessage, setPackagesStateMessage] = useState("");
 	const { getI18nText } = useTranslations();
 	const { showResultError, showMessage } = useMessages();
@@ -77,53 +78,60 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 	const { session } = useSession();
 	const adtActions = new ADTActions();
 	const { favoritePackages } = useAppSelector((state) => state.ADT);
+	const { URL2ConnectSystem } = useAppSelector((state) => state.System);
+
 	const { getDataForConnection } = useSAPGeneral();
 	const minCharSearch = 2;
 
-	const searchPackages = useCallback((event: any) => {
-		let values = event.target.value as string;
-		if (values.length >= minCharSearch) {
-			setPackageValue(values);
-
-			setShowLabel(true);
-			adtController
-				.quickSearch(
-					getDataForConnection(""),
-					ADT_OBJECT_TYPES.PACKAGES.OBJECT_TYPE,
-					`${values}*`
-				)
-				.then((response: ResponseSearchObject) => {
-					if (response.isSuccess) {
-						let packagesFounded = response.getValue() as ADTSearchObjects;
-						setPackagesFound(packagesFounded);
-						if (packagesFounded.length == 0) {
-							setPackagesState(ValueState.Error);
-							setPackagesStateMessage(
-								getI18nText(
-									"adtIde.favoritePackages.popupAddPackage.packagesNotFound"
-								)
-							);
+	const searchPackages = useCallback(
+		(event: any) => {
+			let values = event.target.value as string;
+			if (values.length >= minCharSearch) {
+				setShowLabel(true);
+				adtController
+					.quickSearch(
+						getDataForConnection("base"),
+						ADT_OBJECT_TYPES.PACKAGES.OBJECT_TYPE,
+						`${values}*`
+					)
+					.then((response: ResponseSearchObject) => {
+						if (response.isSuccess) {
+							let packagesFounded = response.getValue() as ADTSearchObjects;
+							setPackagesFound(packagesFounded);
+							if (packagesFounded.length == 0) {
+								setPackagesState(true);
+								setPackagesStateMessage(
+									getI18nText(
+										"adtIde.favoritePackages.popupAddPackage.packagesNotFound"
+									)
+								);
+							} else {
+								setPackagesState(false);
+								setPackagesStateMessage("");
+							}
 						} else {
-							setPackagesState(ValueState.None);
-							setPackagesStateMessage("");
+							showResultError(response.getErrorValue() as ErrorGraphql);
 						}
-					} else {
-						showResultError(response.getErrorValue() as ErrorGraphql);
-					}
-				});
-		} else if (values.length == 0) {
-			setShowLabel(false);
-		}
-	}, []);
+					});
+			} else if (values.length == 0) {
+				setShowLabel(false);
+			}
+		},
+		[URL2ConnectSystem]
+	);
+	useEffect(() => {
+		console.log(packageValue);
+	}, [packageValue]);
 	/**
 	 * Gestiona el proceso de añadir el paquete tanto al modelo de datos como a la base de datos
 	 */
 	const handlerAddFavoritePackage = useCallback(() => {
-		if (packagesState == ValueState.None) {
+		if (!packagesStateError) {
 			if (
 				favoritePackages.findIndex((row) => row.packageName == packageValue) ==
 				-1
 			) {
+				setPackagesStateMessage("");
 				adtController
 					.AddFavoritePackage(session.email, packageValue)
 					.then((response) => {
@@ -139,7 +147,6 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 					});
 				onConfirmButton(packageValue);
 			} else {
-				setPackagesState(ValueState.Error);
 				setPackagesStateMessage(
 					getI18nText(
 						"adtIde.favoritePackages.popupAddPackage.packageDuplicate"
@@ -242,7 +249,10 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 					<Command>
 						<CommandInput
 							placeholder={getI18nText(
-								"adtIde.favoritePackages.popupAddPackage.placeholder"
+								"adtIde.favoritePackages.popupAddPackage.placeholder",
+								{
+									numChar: minCharSearch,
+								}
 							)}
 							onInput={(event: any) => {
 								searchPackages(event);
@@ -256,9 +266,48 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 									)}
 								</CommandEmpty>
 							)}
+						<CommandGroup>
+							{packagesFound.map((row) => {
+								return (
+									<CommandItem
+										key={row.packageName}
+										id={row.packageName}
+										value={row.packageName}
+										onSelect={(currentValue) => {
+											setPackageValue(currentValue.toUpperCase());
+										}}
+									>
+										<span
+											className={cn(
+												packageValue === row.packageName && packagesStateError
+													? "text-red-500"
+													: "text-current"
+											)}
+										>
+											{row.packageName}
+										</span>
+										<CheckIcon
+											className={cn(
+												"ml-auto h-4 w-4",
+												packageValue === row.packageName
+													? "opacity-100"
+													: "opacity-0"
+											)}
+										/>
+									</CommandItem>
+								);
+							})}
+						</CommandGroup>
 					</Command>
 				</div>
-				<DialogFooter></DialogFooter>
+				<DialogFooter>
+					<Button
+						type="submit"
+						onClick={handlerAddFavoritePackage}
+					>
+						{getI18nText("adtIde.favoritePackages.popupAddPackage.btnConfirm")}
+					</Button>
+				</DialogFooter>
 			</DialogContent>
 		</Dialog>
 	);

@@ -351,9 +351,9 @@
 			"addFavoritePackageTooltip": "Añadir paquete a favoritos",
 			"errorLoad": "Error al leer los paquetes favoritos",
 			"popupAddPackage": {
-				"title": "Seleccione un paquete",
+				"title": "Añadir paquete a favoritos",
 				"description": "Introduzca el nombre del paquete, o parte de el, y pulsa sobre el botón \"Añadir\" para añadirlo a favoritos.",
-				"placeholder": "Búsqueda (> 1 carácteres)...",
+				"placeholder": "Búsqueda (> {{numChar}} carácteres)...",
 				"btnConfirm": "Añadir",
 				"packagesNotFound": "No se han encontrado paquetes",
 				"packageDuplicate": "El paquete ya esta en favoritos"
