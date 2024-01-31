@@ -10,6 +10,7 @@ import {
 	setShowListApps,
 	setSystemChanged,
 	setApplicationChanged,
+	setLoadingListApps,
 } from "sap/general/infraestructure/storage/SAPGeneralSlice";
 
 /**
@@ -24,11 +25,10 @@ export default function useSAPGeneralStore() {
 		dispatch(setShowListApps(visible));
 	}, []);
 	const setLoadingListAppsAction = useCallback((loading: boolean) => {
-		sapGeneralActions.setLoadingListApps(loading);
+		setLoadingListApps(loading);
 	}, []);
 	const clearVariablesAction = useCallback(() => {
-		sapGeneralActions.setAppsList([]);
-		sapGeneralActions.setApplicationChanged(false);
+		setApplicationChangedAction(false);
 	}, []);
 	const addAdtApp2StoreAction = useCallback(() => {
 		sapGeneralActions.setAppsList([{ ...sapController.ADTAppList() }]);

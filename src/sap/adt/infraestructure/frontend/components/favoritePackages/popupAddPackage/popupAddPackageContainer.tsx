@@ -51,12 +51,11 @@ import {
 	InputSuggestionItemSelectEventDetail,
 } from "@ui5/webcomponents/dist/Input.js";
 import { useSession } from "auth/authProvider";
-import ADTActions from "sap/adt/infraestructure/storage/adtActions";
 import { ADTFavoritePackage } from "sap/adt/domain/entities/favoritePackage";
 import { useAppSelector } from "shared/storage/useStore";
 import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
 import { Button } from "@/components/ui/button";
-import { text } from "stream/consumers";
+import useAdtStore from "sap/adt/infraestructure/frontend/hooks/useAdtStore";
 
 interface Props {
 	open: boolean;
@@ -68,7 +67,7 @@ interface Props {
 const PopupAddPackageContainer: FC<Props> = (props) => {
 	const { open, onCloseButton, onConfirmButton, onOpenChange } = props;
 	const [packagesFound, setPackagesFound] = useState<ADTSearchObjects>([]);
-	const [packagesStateError, setPackagesState] = useState(false);
+	const [packagesStateError, setPackagesStateError] = useState(false);
 	const [packagesStateMessage, setPackagesStateMessage] = useState("");
 	const { getI18nText } = useTranslations();
 	const { showResultError, showMessage } = useMessages();
@@ -76,9 +75,9 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 	const [packageValue, setPackageValue] = useState("");
 	const [showLabel, setShowLabel] = useState(false);
 	const { session } = useSession();
-	const adtActions = new ADTActions();
 	const { favoritePackages } = useAppSelector((state) => state.ADT);
 	const { URL2ConnectSystem } = useAppSelector((state) => state.System);
+	const { addFavoritePackageAction } = useAdtStore();
 
 	const { getDataForConnection } = useSAPGeneral();
 	const minCharSearch = 2;
@@ -98,17 +97,6 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 						if (response.isSuccess) {
 							let packagesFounded = response.getValue() as ADTSearchObjects;
 							setPackagesFound(packagesFounded);
-							if (packagesFounded.length == 0) {
-								setPackagesState(true);
-								setPackagesStateMessage(
-									getI18nText(
-										"adtIde.favoritePackages.popupAddPackage.packagesNotFound"
-									)
-								);
-							} else {
-								setPackagesState(false);
-								setPackagesStateMessage("");
-							}
 						} else {
 							showResultError(response.getErrorValue() as ErrorGraphql);
 						}
@@ -119,9 +107,7 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 		},
 		[URL2ConnectSystem]
 	);
-	useEffect(() => {
-		console.log(packageValue);
-	}, [packageValue]);
+
 	/**
 	 * Gestiona el proceso de añadir el paquete tanto al modelo de datos como a la base de datos
 	 */
@@ -136,7 +122,7 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 					.AddFavoritePackage(session.email, packageValue)
 					.then((response) => {
 						if (response.isSuccess) {
-							adtActions.addFavoritePackage(
+							addFavoritePackageAction(
 								response.getValue() as ADTFavoritePackage
 							);
 							onConfirmButton(packageValue);
@@ -155,82 +141,26 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 			}
 		}
 	}, [packageValue]);
-	/*
-	<Dialog
-			draggable
-			open={open}
-			style={{ width: "25%" }}
-			headerText={getI18nText("adtIde.favoritePackages.popupAddPackage.title")}
-			footer={
-				<FooterDialog
-					textStartButton={getI18nText(
-						"adtIde.favoritePackages.popupAddPackage.btnConfirm"
-					)}
-					textEndButton={getI18nText("general.btnTxtCancel")}
-					onEndButton={() => {
-						onCloseButton();
-					}}
-					onStartButton={() => {
-						handlerAddFavoritePackage();
-					}}
-				/>
+	const checkDuplicatePackage = useCallback(
+		(packageValue: string) => {
+			if (
+				favoritePackages.findIndex((row) => row.packageName == packageValue) ==
+				-1
+			) {
+				setPackagesStateError(false);
+				setPackagesStateMessage("");
+			} else {
+				setPackagesStateError(true);
+				setPackagesStateMessage(
+					getI18nText(
+						"adtIde.favoritePackages.popupAddPackage.packageDuplicate"
+					)
+				);
 			}
-		>
-			{showLabel && (
-				<Label showColon>
-					{getI18nText("adtIde.favoritePackages.popupAddPackage.placeholder")}
-				</Label>
-			)}
-			<Input
-				style={{ width: "100%" }}
-				showSuggestions={true}
-				value={packageValue}
-				valueState={packagesState}
-				valueStateMessage={<Text>{packagesStateMessage}</Text>}
-				placeholder={getI18nText(
-					"adtIde.favoritePackages.popupAddPackage.placeholder"
-				)}
-				onSuggestionItemSelect={(
-					event: Ui5CustomEvent<
-						InputDomRef,
-						InputSuggestionItemSelectEventDetail
-					>
-				) => {
-					event.preventDefault();
-					setPackageValue(event.detail.item.id as string);
-				}}
-				onSuggestionItemPreview={(
-					event: Ui5CustomEvent<
-						InputDomRef,
-						InputSuggestionItemPreviewEventDetail
-					>
-				) => {
-					event.preventDefault();
-				}}
-				onInput={(event: Ui5CustomEvent<InputDomRef, never>) => {
-					event.preventDefault();
-					searchPackages(event);
-				}}
-				onChange={(event: Ui5CustomEvent<InputDomRef, never>) => {
-					event.preventDefault();
-					setPackageValue(event.target.value as string);
-				}}
-			>
-				{packagesFound.map((row) => {
-					return (
-						<SuggestionItem
-							key={row.packageName}
-							id={row.packageName}
-							data-id={row.packageName}
-							text={row.packageName}
-						/>
-					);
-				})}
-			</Input>
-		</Dialog>
-	*/
-	/*
-	 */
+		},
+		[favoritePackages]
+	);
+
 	return (
 		<Dialog
 			open={open}
@@ -274,7 +204,9 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 										id={row.packageName}
 										value={row.packageName}
 										onSelect={(currentValue) => {
-											setPackageValue(currentValue.toUpperCase());
+											let value = currentValue.toUpperCase();
+											setPackageValue(value);
+											checkDuplicatePackage(value);
 										}}
 									>
 										<span
@@ -284,7 +216,7 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 													: "text-current"
 											)}
 										>
-											{row.packageName}
+											{`${row.packageName}`}
 										</span>
 										<CheckIcon
 											className={cn(
