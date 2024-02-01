@@ -20,12 +20,8 @@ export default function useSAPGeneral() {
 		(state) => state.SAPGeneral
 	);
 	const { showResultError, showMessage } = useMessages();
-	const {
-		setUserInfoAction,
-		setAppsListAction,
-		setLoadingListAppsAction,
-		setSystemChangedAction,
-	} = useSAPGeneralStore();
+	const { setUserInfoAction, setAppsListAction, setLoadingListAppsAction } =
+		useSAPGeneralStore();
 
 	const { setConnectedToSystemAction } = useSystemStore();
 	const { URL2ConnectSystem, systemSelected } = useSystemStore();
@@ -41,7 +37,6 @@ export default function useSAPGeneral() {
 				// Si no hay errores de conectividad se continua el proceso
 				else {
 					setConnectedToSystemAction(true); // Se marca que se ha conectado al sistema
-					setSystemChangedAction(true); // Se indica que el sistema ha cambiado
 					if (responseCheck) {
 						sapController
 							.callMetadata(getDataForConnection())

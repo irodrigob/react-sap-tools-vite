@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import SAPController from "sap/general/infraestructure/controller/sapController";
-import SAPGeneralActions from "sap/general/infraestructure/storage/SAPGeneralActions";
 import UserInfo from "sap/general/domain/entities/userInfo";
 import AppsList from "sap/general/domain/entities/appsList";
 import {
@@ -11,6 +10,7 @@ import {
 	setSystemChanged,
 	setApplicationChanged,
 	setLoadingListApps,
+	setURLODataCore,
 } from "sap/general/infraestructure/storage/SAPGeneralSlice";
 
 /**
@@ -18,23 +18,22 @@ import {
  */
 export default function useSAPGeneralStore() {
 	const sapController = new SAPController();
-	const sapGeneralActions = new SAPGeneralActions();
 	const dispatch = useDispatch();
 
 	const setShowListAppsAction = useCallback((visible: boolean) => {
 		dispatch(setShowListApps(visible));
 	}, []);
 	const setLoadingListAppsAction = useCallback((loading: boolean) => {
-		setLoadingListApps(loading);
+		dispatch(setLoadingListApps(loading));
 	}, []);
 	const clearVariablesAction = useCallback(() => {
-		setApplicationChangedAction(false);
+		dispatch(setApplicationChanged(false));
 	}, []);
 	const addAdtApp2StoreAction = useCallback(() => {
-		sapGeneralActions.setAppsList([{ ...sapController.ADTAppList() }]);
+		dispatch(setAppsList([{ ...sapController.ADTAppList() }]));
 	}, []);
 	const setURLODataCoreAction = useCallback((url: string) => {
-		sapGeneralActions.setURLODataCore(url);
+		dispatch(setURLODataCore(url));
 	}, []);
 	const setUserInfoAction = useCallback((userInfo: UserInfo) => {
 		dispatch(setUserInfo(userInfo));

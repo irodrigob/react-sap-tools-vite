@@ -166,7 +166,7 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 			open={open}
 			onOpenChange={onOpenChange}
 		>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogContent className="sm:max-w-[40rem]">
 				<DialogHeader>
 					<DialogTitle>
 						{getI18nText("adtIde.favoritePackages.popupAddPackage.title")}
@@ -218,14 +218,24 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 										>
 											{`${row.packageName}`}
 										</span>
-										<CheckIcon
-											className={cn(
-												"ml-auto h-4 w-4",
-												packageValue === row.packageName
-													? "opacity-100"
-													: "opacity-0"
+										{packageValue === row.packageName &&
+											!packagesStateError && (
+												<CheckIcon
+													className={cn(
+														"ml-auto h-4 w-4",
+														packageValue === row.packageName
+															? "opacity-100"
+															: "opacity-0"
+													)}
+												/>
 											)}
-										/>
+										{packageValue === row.packageName && packagesStateError && (
+											<span className="text-red-500 ml-auto">
+												{getI18nText(
+													"adtIde.favoritePackages.popupAddPackage.packageDuplicate"
+												)}
+											</span>
+										)}
 									</CommandItem>
 								);
 							})}

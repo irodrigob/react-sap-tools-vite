@@ -356,7 +356,7 @@
 				"placeholder": "Búsqueda (> {{numChar}} carácteres)...",
 				"btnConfirm": "Añadir",
 				"packagesNotFound": "No se han encontrado paquetes",
-				"packageDuplicate": "El paquete ya esta en favoritos"
+				"packageDuplicate": "Paquete ya esta en favoritos"
 			}
 		}
 	},

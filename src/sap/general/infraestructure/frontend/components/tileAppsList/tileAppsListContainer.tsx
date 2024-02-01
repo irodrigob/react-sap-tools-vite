@@ -12,20 +12,17 @@ const TileAppsListContainer: FC = () => {
 	const { loadingListApps, appsList } = useAppSelector(
 		(state) => state.SAPGeneral
 	);
-	const {
-		setShowListAppsAction,
-		setLoadingListAppsAction,
-		addAdtApp2StoreAction,
-		setURLODataCoreAction,
-	} = useSAPGeneralStore();
+	const { connectedToSystem, systemSelected, URL2ConnectSystem } =
+		useAppSelector((state) => state.System);
+	const {} = useSAPGeneralStore();
 	const { initialServicesSAPTools } = useSAPGeneral();
 	const { getI18nText } = useTranslations();
 
 	useEffect(() => {
-		if (loadingListApps) {
+		if (!connectedToSystem && systemSelected.name && URL2ConnectSystem != "") {
 			initialServicesSAPTools();
 		}
-	}, [loadingListApps]);
+	}, [connectedToSystem, systemSelected, URL2ConnectSystem]);
 
 	return (
 		<>

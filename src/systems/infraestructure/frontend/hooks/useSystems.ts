@@ -37,6 +37,7 @@ export default function useSystems() {
 		setLoadingListAppsAction,
 		clearVariablesAction: sapGeneralClearVariablesAction,
 		addAdtApp2StoreAction,
+		setSystemChangedAction,
 	} = useSAPGeneralStore();
 	const systemController = new SystemController();
 	const {
@@ -61,16 +62,22 @@ export default function useSystems() {
 	const processSelectedSystem = useCallback(
 		async (systemSelected: System) => {
 			document.title = `${getI18nText("app.title")}: ${systemSelected.name}`;
+
 			setSystemSelectedAction(systemSelected);
+
+			setSystemChangedAction(true); // Se indica que el sistema ha cambiado
 
 			// Indico que no se esta conectado al sistema.
 			setConnectedToSystemAction(false);
 
 			// Oculto las tiles de selección de systema
 			setShowSystemList(false);
+
 			// Se indica que se mostrará la lista de aplicación
 			setShowListAppsAction(true);
+
 			// Y el loader que se están leyendo las aplicaciones
+			setLoadingListAppsAction(true);
 
 			// Se borras las variables principales de las aplicaciones para que no se visualice
 			// datos de otro sistema si falla algo del sistema seleccionado.
@@ -97,8 +104,6 @@ export default function useSystems() {
 							setURL2ConnectSystemAction(URL2ConnectSystem);
 							// Se añade la app de ADT
 							addAdtApp2StoreAction();
-
-							setLoadingListAppsAction(true);
 						} else {
 							setLoadingListAppsAction(false);
 							showResultError(response.getErrorValue() as ErrorGraphql);
