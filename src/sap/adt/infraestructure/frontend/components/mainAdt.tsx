@@ -1,4 +1,3 @@
-import TileSystemListContainer from "systems/infraestructure/frontend/components/tileSystemList/tileSystemListContainer";
 import { useNavigate } from "react-router-dom";
 import AdtIdeContainer from "./adtIde/adtIdeContainer";
 import { useAppSelector } from "shared/storage/useStore";
@@ -6,17 +5,13 @@ import { useEffect } from "react";
 
 export default function MainAdt() {
 	const navigate = useNavigate();
-	const { systemSelected } = useAppSelector((state) => state.System);
-	const { connectedToSystem } = useAppSelector((state) => state.System);
+	const { systemSelected, connectedToSystem } = useAppSelector(
+		(state) => state.System
+	);
 
 	useEffect(() => {
 		if (!connectedToSystem) navigate("/");
 	}, [connectedToSystem]);
 
-	return (
-		<>
-			{systemSelected.name && <AdtIdeContainer />}
-			{!systemSelected.name && <TileSystemListContainer />}
-		</>
-	);
+	return <>{systemSelected.name && <AdtIdeContainer />}</>;
 }

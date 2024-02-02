@@ -356,7 +356,9 @@
 				"placeholder": "Búsqueda (> {{numChar}} carácteres)...",
 				"btnConfirm": "Añadir",
 				"packagesNotFound": "No se han encontrado paquetes",
-				"packageDuplicate": "Paquete ya esta en favoritos"
+				"packageDuplicate": "Paquete ya en favoritos",
+				"addWithErrors": "Solucione el error para poder añadir el paquete",
+				"packageAdded": "Paquete {{packageName}} añadido correctamente"
 			}
 		}
 	},

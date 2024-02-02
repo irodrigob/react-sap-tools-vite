@@ -1,21 +1,4 @@
-import {
-	FC,
-	FormEvent,
-	FormEventHandler,
-	useCallback,
-	useEffect,
-	useRef,
-	useState,
-} from "react";
-import {
-	InputDomRef,
-	SuggestionItem,
-	Text,
-	Ui5CustomEvent,
-	ValueState,
-} from "@ui5/webcomponents-react";
-import "@ui5/webcomponents/dist/features/InputSuggestions.js";
-
+import { FC, useCallback, useState } from "react";
 import {
 	Dialog,
 	DialogContent,
@@ -27,29 +10,21 @@ import {
 import {
 	Command,
 	CommandEmpty,
-	CommandGroup,
 	CommandInput,
 	CommandItem,
 	CommandList,
-	CommandSeparator,
-	CommandShortcut,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { CheckIcon } from "@radix-ui/react-icons";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import FooterDialog from "shared/frontend/components/footerDialog";
 import { useTranslations } from "translations/i18nContext";
 import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtController";
 import { ADTSearchObjects } from "sap/adt/domain/entities/searchObject";
 import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
-import useMessages from "shared/infraestructure/hooks/useMessages";
+import useMessages, {
+	MessageType,
+} from "shared/infraestructure/hooks/useMessages";
 import { ResponseSearchObject } from "sap/adt/infraestructure/types/adt";
-import {
-	InputSuggestionItemPreviewEventDetail,
-	InputSuggestionItemSelectEventDetail,
-} from "@ui5/webcomponents/dist/Input.js";
 import { useSession } from "auth/authProvider";
 import { ADTFavoritePackage } from "sap/adt/domain/entities/favoritePackage";
 import { useAppSelector } from "shared/storage/useStore";
@@ -61,7 +36,7 @@ interface Props {
 	open: boolean;
 	onOpenChange: (value: boolean) => void;
 	onCloseButton: () => void;
-	onConfirmButton: (addPackage: string) => void;
+	onConfirmButton: (packageName: string) => void;
 }
 
 const PopupAddPackageContainer: FC<Props> = (props) => {
@@ -73,7 +48,6 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 	const { showResultError, showMessage } = useMessages();
 	const adtController = new SAPAdtController();
 	const [packageValue, setPackageValue] = useState("");
-	const [showLabel, setShowLabel] = useState(false);
 	const { session } = useSession();
 	const { favoritePackages } = useAppSelector((state) => state.ADT);
 	const { URL2ConnectSystem } = useAppSelector((state) => state.System);
@@ -84,14 +58,13 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 
 	const searchPackages = useCallback(
 		(event: any) => {
-			let values = event.target.value as string;
-			if (values.length >= minCharSearch) {
-				setShowLabel(true);
+			let packageName = event.target.value as string;
+			if (packageName.length >= minCharSearch) {
 				adtController
 					.quickSearch(
 						getDataForConnection("base"),
 						ADT_OBJECT_TYPES.PACKAGES.OBJECT_TYPE,
-						`${values}*`
+						`${packageName}*`
 					)
 					.then((response: ResponseSearchObject) => {
 						if (response.isSuccess) {
@@ -101,8 +74,6 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 							showResultError(response.getErrorValue() as ErrorGraphql);
 						}
 					});
-			} else if (values.length == 0) {
-				setShowLabel(false);
 			}
 		},
 		[URL2ConnectSystem]
@@ -112,7 +83,12 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 	 * Gestiona el proceso de añadir el paquete tanto al modelo de datos como a la base de datos
 	 */
 	const handlerAddFavoritePackage = useCallback(() => {
-		if (!packagesStateError) {
+		if (packagesStateError) {
+			showMessage(
+				getI18nText("adtIde.favoritePackages.popupAddPackage.addWithErrors"),
+				MessageType.warning
+			);
+		} else {
 			if (
 				favoritePackages.findIndex((row) => row.packageName == packageValue) ==
 				-1
@@ -124,6 +100,13 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 						if (response.isSuccess) {
 							addFavoritePackageAction(
 								response.getValue() as ADTFavoritePackage
+							);
+							showMessage(
+								getI18nText(
+									"adtIde.favoritePackages.popupAddPackage.packageAdded",
+									{ packageName: packageValue }
+								),
+								MessageType.success
 							);
 							onConfirmButton(packageValue);
 						} else {
@@ -175,7 +158,7 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 						{getI18nText("adtIde.favoritePackages.popupAddPackage.description")}
 					</DialogDescription>
 				</DialogHeader>
-				<div className="grid w-full max-w-sm items-center gap-1.5 pt-2">
+				<div className="grid w-full max-w-[35rem] items-center gap-1.5 pt-2">
 					<Command>
 						<CommandInput
 							placeholder={getI18nText(
@@ -196,7 +179,7 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 									)}
 								</CommandEmpty>
 							)}
-						<CommandGroup>
+						<CommandList>
 							{packagesFound.map((row) => {
 								return (
 									<CommandItem
@@ -231,15 +214,13 @@ const PopupAddPackageContainer: FC<Props> = (props) => {
 											)}
 										{packageValue === row.packageName && packagesStateError && (
 											<span className="text-red-500 ml-auto">
-												{getI18nText(
-													"adtIde.favoritePackages.popupAddPackage.packageDuplicate"
-												)}
+												{packagesStateMessage}
 											</span>
 										)}
 									</CommandItem>
 								);
 							})}
-						</CommandGroup>
+						</CommandList>
 					</Command>
 				</div>
 				<DialogFooter>

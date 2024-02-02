@@ -1,14 +1,17 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import TranslateContainer from "./translateContainer";
-import TileSystemListContainer from "systems/infraestructure/frontend/components/tileSystemList/tileSystemListContainer";
 import { useAppSelector } from "shared/storage/useStore";
 
 export default function MainTranslate() {
-    const { systemSelected } = useAppSelector((state) => state.System);
+	const navigate = useNavigate();
+	const { systemSelected, connectedToSystem } = useAppSelector(
+		(state) => state.System
+	);
 
-    return (
-        <>
-            {systemSelected.name && <TranslateContainer />}
-            {!systemSelected.name && <TileSystemListContainer />}
-        </>
-    );
+	useEffect(() => {
+		if (!connectedToSystem) navigate("/");
+	}, [connectedToSystem]);
+
+	return <>{systemSelected.name && <TranslateContainer />}</>;
 }
