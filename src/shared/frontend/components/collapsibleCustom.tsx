@@ -1,9 +1,5 @@
 import { FC, ReactNode, useState } from "react";
-import {
-	CaretSortIcon,
-	CaretDownIcon,
-	CaretUpIcon,
-} from "@radix-ui/react-icons";
+import { CaretDownIcon, CaretUpIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import {
 	Collapsible,
@@ -12,18 +8,25 @@ import {
 } from "@/components/ui/collapsible";
 import { useTranslations } from "@/translations/i18nContext";
 interface Props {
+	defaultOpen?: boolean;
 	titleCollapsed: string;
 	headerToolbar?: ReactNode;
+	contentExpanded?: ReactNode;
+	contentCollapsed?: ReactNode;
 }
 const CollapsibleCustom: FC<Props> = (props: Props) => {
-	const { titleCollapsed, headerToolbar } = props;
-	const [isOpen, setIsOpen] = useState(false);
+	const {
+		titleCollapsed,
+		headerToolbar,
+		contentExpanded,
+		contentCollapsed,
+		defaultOpen,
+	} = props;
+	const [isOpen, setIsOpen] = useState<boolean>(
+		defaultOpen ? defaultOpen : true
+	);
 	const { getI18nText } = useTranslations();
 
-	/*
-
-	
-	*/
 	return (
 		<Collapsible
 			open={isOpen}
@@ -44,18 +47,16 @@ const CollapsibleCustom: FC<Props> = (props: Props) => {
 					</Button>
 				</CollapsibleTrigger>
 				<h4 className="text-lg font-semibold">{titleCollapsed}</h4>
-				<div style={{ marginLeft: "auto" }}>{headerToolbar}</div>
+				{headerToolbar && <div className="ml-auto">{headerToolbar}</div>}
 			</div>
-			<div className="rounded-md border px-4 py-2 font-mono text-sm shadow-sm">
-				@radix-ui/primitives
-			</div>
+
+			{contentCollapsed && (
+				<div className="rounded-md border px-4 py-2 font-mono text-sm shadow-sm">
+					{contentCollapsed}
+				</div>
+			)}
 			<CollapsibleContent className="space-y-2">
-				<div className="rounded-md border px-4 py-2 font-mono text-sm shadow-sm">
-					@radix-ui/colors
-				</div>
-				<div className="rounded-md border px-4 py-2 font-mono text-sm shadow-sm">
-					@stitches/react
-				</div>
+				{contentExpanded}
 			</CollapsibleContent>
 		</Collapsible>
 	);

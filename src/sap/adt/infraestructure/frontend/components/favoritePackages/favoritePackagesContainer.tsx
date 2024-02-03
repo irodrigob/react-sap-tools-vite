@@ -1,26 +1,9 @@
-import {
-	Button,
-	Icon,
-	Panel,
-	Text,
-	Title,
-	Toolbar,
-	Tree,
-	TreeItem,
-	TreeItemCustom,
-} from "@ui5/webcomponents-react";
-import { CaretSortIcon } from "@radix-ui/react-icons";
-import {
-	Collapsible,
-	CollapsibleContent,
-	CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import ToolbarFavoritePackages from "./toolbarFavoritePackages";
 import CollapsibleCustom from "@/shared/frontend/components/collapsibleCustom";
 import "@ui5/webcomponents-icons/dist/delete";
 import { useTranslations } from "translations/i18nContext";
 import { useAppSelector } from "shared/storage/useStore";
-import { ADTFavoritePackage } from "sap/adt/domain/entities/favoritePackage";
+import TreeFavoritePackages from "./treeFavoritePackages";
 
 export default function FavoritePackagesContainer() {
 	const { getI18nText } = useTranslations();
@@ -79,6 +62,9 @@ export default function FavoritePackagesContainer() {
 		<CollapsibleCustom
 			titleCollapsed={getI18nText("adtIde.favoritePackages.titleToolbar")}
 			headerToolbar={<ToolbarFavoritePackages />}
+			contentExpanded={
+				<TreeFavoritePackages favoritePackages={favoritePackages} />
+			}
 		/>
 	);
 }
