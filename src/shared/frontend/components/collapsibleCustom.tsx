@@ -31,7 +31,7 @@ const CollapsibleCustom: FC<Props> = (props: Props) => {
 		<Collapsible
 			open={isOpen}
 			onOpenChange={setIsOpen}
-			className="space-y-2"
+			className="space-y-1 rounded-md border"
 		>
 			<div className="flex items-center space-x-1 px-2">
 				<CollapsibleTrigger asChild>

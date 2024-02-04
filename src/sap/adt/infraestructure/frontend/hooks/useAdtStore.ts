@@ -1,4 +1,3 @@
-import { TreeAttributes } from "sap/adt/domain/entities/treeAttributes";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import {
@@ -9,7 +8,6 @@ import {
 	addFavoritePackage,
 	deleteFavoritePackage,
 	setFavoritePackages,
-	setFavPackageTreeAttributes,
 } from "sap/adt/infraestructure/storage/adtSlice";
 export default function useAdtStore() {
 	const dispatch = useDispatch();
@@ -29,17 +27,10 @@ export default function useAdtStore() {
 		},
 		[]
 	);
-	const setFavPackageTreeAttributesAction = useCallback(
-		(treeAttributes: TreeAttributes) => {
-			dispatch(setFavPackageTreeAttributes(treeAttributes));
-		},
-		[]
-	);
 
 	return {
 		addFavoritePackageAction,
 		deleteFavoritePackageAction,
 		setFavoritePackagesAction,
-		setFavPackageTreeAttributesAction,
 	};
 }

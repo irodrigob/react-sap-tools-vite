@@ -1,27 +1,23 @@
 import { useCallback } from "react";
 import { useAppSelector } from "shared/storage/useStore";
 import useAdtStore from "./useAdtStore";
-import { TreeAttribute } from "sap/adt/domain/entities/treeAttributes";
+import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
 
 export default function useTreeFavoritePackages() {
-	const { favoritePackagesTreeAttributes } = useAppSelector(
-		(state) => state.ADT
-	);
-	const { setFavPackageTreeAttributesAction } = useAdtStore();
+	const {} = useAppSelector((state) => state.ADT);
+	const {} = useAdtStore();
 
 	const expandCollapseNode = useCallback(
-		(node: string) => {
-			let newAttributes = [...favoritePackagesTreeAttributes];
-			let index = favoritePackagesTreeAttributes.findIndex(
-				(row: TreeAttribute) => row.node == node
-			);
-			if (index != -1)
-				newAttributes[index].expanded = !newAttributes[index].expanded;
-			else newAttributes.push({ node: node, expanded: true });
+		(node: string, treeAttributeMap: TreeAttributeMap): TreeAttributeMap => {
+			let newTreeAttributes = { ...treeAttributeMap };
+			if (newTreeAttributes[node])
+				newTreeAttributes[node].expanded = !newTreeAttributes[node].expanded;
+			else
+				newTreeAttributes = { ...treeAttributeMap, [node]: { expanded: true } };
 
-			setFavPackageTreeAttributesAction(newAttributes);
+			return newTreeAttributes;
 		},
-		[favoritePackagesTreeAttributes]
+		[]
 	);
 
 	return { expandCollapseNode };

@@ -22,7 +22,7 @@ export default function AdtIdeContainer() {
 
 	return (
 		<ResizablePanelGroup direction="horizontal">
-			<ResizablePanel defaultSize={20}>
+			<ResizablePanel defaultSize={30}>
 				<FavoritePackagesContainer />
 			</ResizablePanel>
 			<ResizableHandle withHandle />

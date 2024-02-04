@@ -4,7 +4,7 @@ import { IconProps } from "./types";
 /**
  * Sacado de https://tailwindtoolbox.com/icons
  */
-export const AddFavorite = React.forwardRef<SVGSVGElement, IconProps>(
+export const EliminateFavorite = React.forwardRef<SVGSVGElement, IconProps>(
 	({ color = "currentColor", ...props }, forwardedRef) => {
 		return (
 			<svg
@@ -42,4 +42,4 @@ export const AddFavorite = React.forwardRef<SVGSVGElement, IconProps>(
 	}
 );
 
-export default AddFavorite;
+export default EliminateFavorite;

@@ -3,16 +3,13 @@ import {
 	ADTFavoritePackage,
 	ADTFavoritePackages,
 } from "sap/adt/domain/entities/favoritePackage";
-import { TreeAttributes } from "sap/adt/domain/entities/treeAttributes";
 
 export interface ADTRedux {
 	favoritePackages: ADTFavoritePackages;
-	favoritePackagesTreeAttributes: TreeAttributes;
 }
 
 const initialState: ADTRedux = {
 	favoritePackages: [],
-	favoritePackagesTreeAttributes: [],
 };
 
 export const ADTSlice = createSlice({
@@ -31,9 +28,6 @@ export const ADTSlice = createSlice({
 		setFavoritePackages(state, action: PayloadAction<ADTFavoritePackages>) {
 			state.favoritePackages = action.payload;
 		},
-		setFavPackageTreeAttributes(state, action: PayloadAction<TreeAttributes>) {
-			state.favoritePackagesTreeAttributes = action.payload;
-		},
 	},
 });
 
@@ -41,7 +35,6 @@ export const {
 	addFavoritePackage,
 	deleteFavoritePackage,
 	setFavoritePackages,
-	setFavPackageTreeAttributes,
 } = ADTSlice.actions;
 
 export default ADTSlice.reducer;
