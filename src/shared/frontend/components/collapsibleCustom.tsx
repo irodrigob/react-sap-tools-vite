@@ -47,7 +47,7 @@ const CollapsibleCustom: FC<Props> = (props: Props) => {
 					</Button>
 				</CollapsibleTrigger>
 				<h4 className="text-lg font-semibold">{titleCollapsed}</h4>
-				{headerToolbar && <div className="ml-auto">{headerToolbar}</div>}
+				{headerToolbar && <div className="grow">{headerToolbar}</div>}
 			</div>
 
 			{contentCollapsed && (

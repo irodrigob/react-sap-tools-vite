@@ -8,6 +8,7 @@ import {
 import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
 import useTreeFavoritePackages from "sap/adt/infraestructure/frontend/hooks/useTreeFavoritePackages";
 import EliminateFavorite from "shared/frontend/icons/eliminate-Favorite";
+import PopupDeleteFavoritePackage from "./popupDeleteFavoritePackage";
 
 interface Props {
 	favoritePackages: ADTFavoritePackages;
@@ -18,54 +19,70 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 		{}
 	);
 	const { expandCollapseNode } = useTreeFavoritePackages();
+	const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+	const [packageSelected, setPackageSelected] = useState("");
 
 	return (
-		<ul className="list-none">
-			{favoritePackages.map((rowFavoritePackage: ADTFavoritePackage) => {
-				return (
-					<section key={rowFavoritePackage.packageName}>
-						<li className="hover:bg-slate-800">
-							<div className="flex items-center flex-row">
-								<div className="flex-none">
-									<Button
-										variant="ghost"
-										size="sm"
-										onClick={() => {
-											setTreeAttributesMap(
-												expandCollapseNode(
-													rowFavoritePackage.packageName,
-													treeAttributesMap
-												)
-											);
-										}}
-									>
-										{treeAttributesMap[rowFavoritePackage.packageName] &&
-										treeAttributesMap[rowFavoritePackage.packageName]
-											.expanded ? (
-											<ChevronDownIcon className="h-4 w-4" />
-										) : (
-											<ChevronRightIcon className="h-4 w-4" />
-										)}
-									</Button>
+		<>
+			<ul className="list-none">
+				{favoritePackages.map((rowFavoritePackage: ADTFavoritePackage) => {
+					return (
+						<section key={rowFavoritePackage.packageName}>
+							<li className="hover:bg-slate-800">
+								<div className="flex items-center flex-row space-x-1 px-2">
+									<div className="flex-none">
+										<Button
+											variant="ghost"
+											size="sm"
+											onClick={() => {
+												setTreeAttributesMap(
+													expandCollapseNode(
+														rowFavoritePackage.packageName,
+														treeAttributesMap
+													)
+												);
+											}}
+										>
+											{treeAttributesMap[rowFavoritePackage.packageName] &&
+											treeAttributesMap[rowFavoritePackage.packageName]
+												.expanded ? (
+												<ChevronDownIcon className="h-5 w-5" />
+											) : (
+												<ChevronRightIcon className="h-5 w-5" />
+											)}
+										</Button>
+									</div>
+									<div className="shrink px-2 text-sm w-52">
+										{rowFavoritePackage.packageName}
+									</div>
+									<div className="grow">
+										<div className="flex items-center justify-between flex-row-reverse">
+											<Button
+												variant="ghost"
+												size="sm"
+											>
+												<EliminateFavorite
+													className="h-5 w-5"
+													onClick={() => {
+														setPackageSelected(rowFavoritePackage.packageName);
+														setOpenDeleteDialog(true);
+													}}
+												/>
+											</Button>
+										</div>
+									</div>
 								</div>
-								<div className="shrink px-2 text-sm w-52">
-									{rowFavoritePackage.packageName}
-								</div>
-								<div className="ml-auto">
-									<Button
-										variant="ghost"
-										size="sm"
-										className="ml-6"
-									>
-										<EliminateFavorite className="h-4 w-4 " />
-									</Button>
-								</div>
-							</div>
-						</li>
-					</section>
-				);
-			})}
-		</ul>
+							</li>
+						</section>
+					);
+				})}
+			</ul>
+			<PopupDeleteFavoritePackage
+				openDialog={openDeleteDialog}
+				onOpenChange={setOpenDeleteDialog}
+				packageName={packageSelected}
+			/>
+		</>
 	);
 };
 

@@ -1,6 +1,6 @@
 import { FC, useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
-import PopupAddPackageContainer from "./popupAddPackage/popupAddPackageContainer";
+import PopupAddPackageContainer from "./popupAddPackageContainer";
 import AddFavorite from "shared/frontend/icons/add-Favorite";
 import TooltipCustom from "shared/frontend/components/tooltipCustom";
 import { useTranslations } from "translations/i18nContext";
@@ -14,28 +14,27 @@ const ToolbarFavoritePackages: FC = () => {
 
 	return (
 		<>
-			<div className="flex items-center justify-between space-x-1 px-2">
+			<div className="flex items-center justify-between flex-row-reverse">
 				<Button
 					onClick={() => setOpenAddPackage(true)}
 					variant="ghost"
 					size="sm"
 				>
-					<TooltipCustom
-						text={getI18nText(
-							"adtIde.favoritePackages.addFavoritePackageTooltip"
-						)}
-						side="bottom"
-					>
-						<AddFavorite className="h-5 w-5 text-blue-500" />
-					</TooltipCustom>
+					<div className="ml-auto">
+						<TooltipCustom
+							text={getI18nText(
+								"adtIde.favoritePackages.addFavoritePackageTooltip"
+							)}
+							side="bottom"
+						>
+							<AddFavorite className="h-5 w-5 text-blue-500" />
+						</TooltipCustom>
+					</div>
 				</Button>
 			</div>
 			<PopupAddPackageContainer
 				open={openAddPackage}
 				onOpenChange={setOpenAddPackage}
-				onCloseButton={() => {
-					setOpenAddPackage(false);
-				}}
 				onConfirmButton={handlerAddPackage}
 			/>
 		</>

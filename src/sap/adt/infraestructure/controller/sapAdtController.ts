@@ -71,12 +71,12 @@ export default class SAPAdtController {
 	}
 	/**
 	 * Borra un paquete favorito
-	 * @param id Id del paquete favorito
+	 * @param packageName Id del paquete favorito
 	 */
 	async deleteFavoritePackage(
-		id: string
+		packageName: string
 	): Promise<ResponseDeleteFavoritePackage> {
-		return this.adtApplication.deleteFavoritePackage(id);
+		return this.adtApplication.deleteFavoritePackage(packageName);
 	}
 	/**
 	 * Devuelve los datos de conexión al sistema

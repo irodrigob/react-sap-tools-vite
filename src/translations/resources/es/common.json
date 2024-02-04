@@ -359,6 +359,13 @@
 				"packageDuplicate": "Paquete ya en favoritos",
 				"addWithErrors": "Solucione el error para poder añadir el paquete",
 				"packageAdded": "Paquete {{packageName}} añadido correctamente"
+			},
+			"popupDeletePackage": {
+				"title": "Borrado de paquete favorito",
+				"description": "¿Esta seguro que desea borrar el paquete {{packageName}} como favorito?",
+				"confirm": "Borrar",
+				"cancel": "Cancelar",
+				"packageDeleted": "Paquete {{packageName}} eliminado de favoritos"
 			}
 		}
 	},

@@ -35,12 +35,11 @@ import useAdtStore from "sap/adt/infraestructure/frontend/hooks/useAdtStore";
 interface Props {
 	open: boolean;
 	onOpenChange: (value: boolean) => void;
-	onCloseButton: () => void;
 	onConfirmButton: (packageName: string) => void;
 }
 
 const PopupAddPackageContainer: FC<Props> = (props) => {
-	const { open, onCloseButton, onConfirmButton, onOpenChange } = props;
+	const { open, onConfirmButton, onOpenChange } = props;
 	const [packagesFound, setPackagesFound] = useState<ADTSearchObjects>([]);
 	const [packagesStateError, setPackagesStateError] = useState(false);
 	const [packagesStateMessage, setPackagesStateMessage] = useState("");
