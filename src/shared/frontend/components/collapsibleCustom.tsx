@@ -33,14 +33,14 @@ const CollapsibleCustom: FC<Props> = (props: Props) => {
 			onOpenChange={setIsOpen}
 			className="space-y-1 rounded-md border"
 		>
-			<div className="flex items-center space-x-1 px-2">
+			<div className="flex items-center">
 				<CollapsibleTrigger asChild>
 					<Button
 						variant="ghost"
 						size="sm"
 					>
-						{isOpen && <CaretUpIcon className="h-4 w-4" />}
-						{!isOpen && <CaretDownIcon className="h-4 w-4" />}
+						{isOpen && <CaretUpIcon className="h-5 w-5" />}
+						{!isOpen && <CaretDownIcon className="h-5 w-5" />}
 						<span className="sr-only">
 							{getI18nText("collapsibleCustom.toggle")}
 						</span>

@@ -14,36 +14,38 @@ import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtControlle
 import useMessages from "shared/infraestructure/hooks/useMessages";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import useAdtStore from "sap/adt/infraestructure/frontend/hooks/useAdtStore";
+import { ADTFavoritePackage } from "sap/adt/domain/entities/favoritePackage";
 
 interface Props {
 	openDialog: boolean;
 	onOpenChange: (value: boolean) => void;
-	packageName: string;
+	packageData: ADTFavoritePackage;
 }
 const PopupDeleteFavoritePackage: FC<Props> = ({
 	openDialog,
 	onOpenChange,
-	packageName,
+	packageData,
 }) => {
 	const { getI18nText } = useTranslations();
 	const sapAdtController = new SAPAdtController();
 	const { showResultError, showMessage } = useMessages();
 	const { deleteFavoritePackageAction } = useAdtStore();
 	const handlerDelete = useCallback(() => {
-		sapAdtController.deleteFavoritePackage(packageName).then((response) => {
+		sapAdtController.deleteFavoritePackage(packageData._id).then((response) => {
 			if (response.isSuccess) {
-				deleteFavoritePackageAction(packageName);
+				deleteFavoritePackageAction(packageData._id);
 				showMessage(
 					getI18nText(
 						"adtIde.favoritePackages.popupDeletePackage.packageDeleted",
-						{ packageName: packageName }
+						{ packageName: packageData.packageName }
 					)
 				);
+				onOpenChange(false);
 			} else {
 				showResultError(response.getErrorValue() as ErrorGraphql);
 			}
 		});
-	}, []);
+	}, [packageData]);
 
 	return (
 		<AlertDialog
@@ -58,7 +60,7 @@ const PopupDeleteFavoritePackage: FC<Props> = ({
 					<AlertDialogDescription>
 						{getI18nText(
 							"adtIde.favoritePackages.popupDeletePackage.description",
-							{ packageName: packageName }
+							{ packageName: packageData.packageName }
 						)}
 					</AlertDialogDescription>
 				</AlertDialogHeader>

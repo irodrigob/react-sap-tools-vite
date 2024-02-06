@@ -9,6 +9,7 @@ import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
 import useTreeFavoritePackages from "sap/adt/infraestructure/frontend/hooks/useTreeFavoritePackages";
 import EliminateFavorite from "shared/frontend/icons/eliminate-Favorite";
 import PopupDeleteFavoritePackage from "./popupDeleteFavoritePackage";
+import PackageContentContainer from "./packageContent/packageContentContainer";
 
 interface Props {
 	favoritePackages: ADTFavoritePackages;
@@ -20,16 +21,22 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 	);
 	const { expandCollapseNode } = useTreeFavoritePackages();
 	const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-	const [packageSelected, setPackageSelected] = useState("");
+	const [packageSelected, setPackageSelected] = useState<ADTFavoritePackage>({
+		_id: "",
+		packageName: "",
+	});
 
 	return (
 		<>
 			<ul className="list-none">
 				{favoritePackages.map((rowFavoritePackage: ADTFavoritePackage) => {
 					return (
-						<section key={rowFavoritePackage.packageName}>
-							<li className="hover:bg-slate-800">
-								<div className="flex items-center flex-row space-x-1 px-2">
+						<div key={`${rowFavoritePackage.packageName}_container`}>
+							<li
+								className="hover:bg-slate-800"
+								key={rowFavoritePackage.packageName}
+							>
+								<div className="flex items-center flex-row">
 									<div className="flex-none">
 										<Button
 											variant="ghost"
@@ -52,7 +59,7 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 											)}
 										</Button>
 									</div>
-									<div className="shrink px-2 text-sm w-52">
+									<div className="shrink text-sm w-52">
 										{rowFavoritePackage.packageName}
 									</div>
 									<div className="grow">
@@ -64,7 +71,7 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 												<EliminateFavorite
 													className="h-5 w-5"
 													onClick={() => {
-														setPackageSelected(rowFavoritePackage.packageName);
+														setPackageSelected(rowFavoritePackage);
 														setOpenDeleteDialog(true);
 													}}
 												/>
@@ -73,14 +80,23 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 									</div>
 								</div>
 							</li>
-						</section>
+							<div key={`${rowFavoritePackage.packageName}_content`}>
+								{treeAttributesMap[rowFavoritePackage.packageName] &&
+									treeAttributesMap[rowFavoritePackage.packageName]
+										.expanded && (
+										<PackageContentContainer
+											packageName={rowFavoritePackage.packageName}
+										/>
+									)}
+							</div>
+						</div>
 					);
 				})}
 			</ul>
 			<PopupDeleteFavoritePackage
 				openDialog={openDeleteDialog}
 				onOpenChange={setOpenDeleteDialog}
-				packageName={packageSelected}
+				packageData={packageSelected as ADTFavoritePackage}
 			/>
 		</>
 	);
