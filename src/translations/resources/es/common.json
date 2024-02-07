@@ -366,6 +366,9 @@
 				"confirm": "Borrar",
 				"cancel": "Cancelar",
 				"packageDeleted": "Paquete {{packageName}} eliminado de favoritos"
+			},
+			"packageContent": {
+				"loadingData": "Leyendo objetos del paquete"
 			}
 		}
 	},

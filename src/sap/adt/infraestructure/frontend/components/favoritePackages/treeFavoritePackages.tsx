@@ -24,6 +24,7 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 	const [packageSelected, setPackageSelected] = useState<ADTFavoritePackage>({
 		_id: "",
 		packageName: "",
+		content: [],
 	});
 
 	return (

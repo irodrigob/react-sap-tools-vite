@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { ADTSearchObjects } from "sap/adt/domain/entities/searchObject";
 import SAPAdtInterface from "sap/adt/domain/interfaces/sapAdtInterface";
 import graphQLRepository from "shared/infraestructure/repository/graphQLRepository";
@@ -7,92 +6,15 @@ import {
 	ADTFavoritePackagesDTO,
 	ADTFavoritePackageDTO,
 } from "sap/adt/infraestructure/dto/favoritePackagesDTO";
-
-const SEARCH_OBJECT_SINGLE_TYPE = gql`
-	query Query(
-		$system: String!
-		$sap_user: String!
-		$sap_password: String!
-		$language: String!
-		$client: String!
-		$objectType: String!
-		$legacyType: String!
-		$searchQuery: String!
-	) {
-		adtSearchObjectSingleType(
-			system: $system
-			sap_user: $sap_user
-			sap_password: $sap_password
-			language: $language
-			client: $client
-			objectType: $objectType
-			legacyType: $legacyType
-			searchQuery: $searchQuery
-		) {
-			uri
-			type
-			name
-			packageName
-		}
-	}
-`;
-
-const QUICK_SEARCH_OBJECT = gql`
-	query Query(
-		$system: String!
-		$sap_user: String!
-		$sap_password: String!
-		$language: String!
-		$client: String!
-		$objectType: String!
-		$searchQuery: String!
-	) {
-		adtQuickSearch(
-			system: $system
-			sap_user: $sap_user
-			sap_password: $sap_password
-			language: $language
-			client: $client
-			objectType: $objectType
-			searchQuery: $searchQuery
-		) {
-			uri
-			type
-			name
-			packageName
-		}
-	}
-`;
-
-const GET_FAVORITE_PACKAGES = gql`
-	query Query($user: String!) {
-		adtFavoritePackages(user: $user) {
-			_id
-			user
-			packageName
-		}
-	}
-`;
-
-const MUTATION_ADD_FAVORITE_PACKAGE = gql`
-	mutation Mutation($input: InputAddFavoritePackage) {
-		newFavoritePackage(input: $input) {
-			packageName
-			user
-			_id
-		}
-	}
-`;
-
-export const MUTATION_DELETE_FAVORITE_PACKAGE = gql`
-	mutation Mutation($id: String!) {
-		deleteFavoritePackage(id: $id) {
-			packageName
-			user
-			_id
-		}
-	}
-`;
+import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
+import {
+	GET_FAVORITE_PACKAGES,
+	MUTATION_ADD_FAVORITE_PACKAGE,
+	MUTATION_DELETE_FAVORITE_PACKAGE,
+	QUICK_SEARCH_OBJECT,
+	SEARCH_OBJECT_SINGLE_TYPE,
+	PACKAGE_CONTENT,
+} from "./graphqlSchema";
 
 export default class SAPAdtRepository
 	extends graphQLRepository
@@ -186,5 +108,28 @@ export default class SAPAdtRepository
 			},
 		});
 		return response.data.deleteFavoritePackage;
+	}
+	/**
+	 * Devuelve el contenido de un paquete y sus posibles subpaquetes
+	 * @param packageName Nombre del paquete
+	 * @param dataConnection: DataConnectionSystem,
+	 */
+	async getPackageContent(
+		dataConnection: DataConnectionSystem,
+		packageName: string
+	): Promise<AdtPackageContents> {
+		const response = await this._apolloClient.query({
+			query: PACKAGE_CONTENT,
+			fetchPolicy: "network-only",
+			variables: {
+				system: dataConnection.host,
+				sap_user: dataConnection.sap_user,
+				sap_password: dataConnection.sap_password,
+				client: dataConnection.client,
+				language: dataConnection.language,
+				packageName: packageName,
+			},
+		});
+		return response.data.adtPackageReadContent;
 	}
 }

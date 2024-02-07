@@ -5,6 +5,7 @@ import {
 	ADTFavoritePackagesDTO,
 	ADTFavoritePackageDTO,
 } from "sap/adt/infraestructure/dto/favoritePackagesDTO";
+import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
 
 export default interface SAPAdtInterface {
 	/**
@@ -48,4 +49,13 @@ export default interface SAPAdtInterface {
 	 * @param id Id del paquete favorito
 	 */
 	deleteFavoritePackage(id: string): void;
+	/**
+	 * Devuelve el contenido de un paquete y sus posibles subpaquetes
+	 * @param dataConnection Datos del conexión
+	 * @param packageName Nombre del paquete
+	 */
+	getPackageContent(
+		dataConnection: DataConnectionSystem,
+		packageName: string
+	): Promise<AdtPackageContents>;
 }

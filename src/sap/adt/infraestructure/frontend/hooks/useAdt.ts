@@ -11,7 +11,7 @@ import useAdtStore from "./useAdtStore";
 
 export default function useAdt() {
 	const adtController = new SAPAdtController();
-	const { getI18nText, language } = useTranslations();
+	const { getI18nText } = useTranslations();
 	const { session } = useSession();
 	const { showMessage } = useMessages();
 	const { setSystemChangedAction, setApplicationChangedAction } =

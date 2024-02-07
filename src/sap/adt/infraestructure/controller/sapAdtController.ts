@@ -3,6 +3,7 @@ import {
 	ResponseAddFavoritePackage,
 	ResponseDeleteFavoritePackage,
 	ResponseFavoritePackages,
+	ResponsePackageContent,
 } from "sap/adt/infraestructure/types/adt";
 import AppStore from "shared/storage/appStore";
 import AdtApplication from "sap/adt/application/adtApplication";
@@ -90,5 +91,16 @@ export default class SAPAdtController {
 			client: this.appStore.getState().System.systemSelected.client,
 			language: this.appStore.getState().System.systemSelected.language,
 		};
+	}
+	/**
+	 * Devuelve el contenido de un paquete y sus posibles subpaquetes
+	 * @param packageName Nombre del paquete
+	 * @param dataConnection: DataConnectionSystem,
+	 */
+	async getPackageContent(
+		dataConnection: DataConnectionSystem,
+		packageName: string
+	): Promise<ResponsePackageContent> {
+		return this.adtApplication.getPackageContent(dataConnection, packageName);
 	}
 }
