@@ -8,7 +8,9 @@ import {
 	addFavoritePackage,
 	deleteFavoritePackage,
 	setFavoritePackages,
+	setLoadingContentPackage,
 } from "sap/adt/infraestructure/storage/adtSlice";
+
 export default function useAdtStore() {
 	const dispatch = useDispatch();
 
@@ -27,10 +29,14 @@ export default function useAdtStore() {
 		},
 		[]
 	);
+	const setLoadingContentPackageAction = useCallback((packageName: string) => {
+		dispatch(setLoadingContentPackage(packageName));
+	}, []);
 
 	return {
 		addFavoritePackageAction,
 		deleteFavoritePackageAction,
 		setFavoritePackagesAction,
+		setLoadingContentPackageAction,
 	};
 }

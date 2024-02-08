@@ -101,7 +101,6 @@ export const PACKAGE_CONTENT = gql`
 			sap_password: $sap_password
 			language: $language
 			client: $client
-			objectType: $objectType
 			packageName: $packageName
 		) {
 			level

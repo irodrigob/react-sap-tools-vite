@@ -28,6 +28,18 @@ export const ADTSlice = createSlice({
 		setFavoritePackages(state, action: PayloadAction<ADTFavoritePackages>) {
 			state.favoritePackages = action.payload;
 		},
+		setLoadingContentPackage(state, action: PayloadAction<string>) {
+			let index = state.favoritePackages.findIndex(
+				(row) => row.packageName == action.payload
+			);
+			if (index != -1)
+				state.favoritePackages[index].loadingContent = state.favoritePackages[
+					index
+				].loadingContent
+					? !state.favoritePackages[index].loadingContent
+					: true;
+		},
+		//setContentPackage(state,action:)
 	},
 });
 
@@ -35,6 +47,7 @@ export const {
 	addFavoritePackage,
 	deleteFavoritePackage,
 	setFavoritePackages,
+	setLoadingContentPackage,
 } = ADTSlice.actions;
 
 export default ADTSlice.reducer;

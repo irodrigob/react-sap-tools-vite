@@ -10,6 +10,7 @@ import useTreeFavoritePackages from "sap/adt/infraestructure/frontend/hooks/useT
 import EliminateFavorite from "shared/frontend/icons/eliminate-Favorite";
 import PopupDeleteFavoritePackage from "./popupDeleteFavoritePackage";
 import PackageContentContainer from "./packageContent/packageContentContainer";
+import { INIT_FAVORITE_PACKAGE } from "sap/adt/infraestructure/constants/treeConstants";
 
 interface Props {
 	favoritePackages: ADTFavoritePackages;
@@ -21,11 +22,9 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 	);
 	const { expandCollapseNode } = useTreeFavoritePackages();
 	const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-	const [packageSelected, setPackageSelected] = useState<ADTFavoritePackage>({
-		_id: "",
-		packageName: "",
-		content: [],
-	});
+	const [packageSelected, setPackageSelected] = useState<ADTFavoritePackage>(
+		INIT_FAVORITE_PACKAGE
+	);
 
 	return (
 		<>

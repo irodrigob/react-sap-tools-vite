@@ -6,19 +6,21 @@ import { ResponsePackageContent } from "sap/adt/infraestructure/types/adt";
 import useMessages from "shared/infraestructure/hooks/useMessages";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
+import useAdtStore from "./useAdtStore";
 
 export default function usePackageContent() {
-	const { getI18nText, language } = useTranslations();
+	const { getI18nText } = useTranslations();
 	const adtController = new SAPAdtController();
 	const { getDataForConnection } = useSAPGeneral();
 	const { showResultError } = useMessages();
-	const [loadingPackage, setLoadingPackage] = useState(false);
+	const { setLoadingContentPackageAction } = useAdtStore();
 
 	const getPackageContent = useCallback((packageName: string) => {
-		setLoadingPackage(true);
+		setLoadingContentPackageAction(packageName);
 		adtController
 			.getPackageContent(getDataForConnection("base"), packageName)
 			.then((response: ResponsePackageContent) => {
+				setLoadingContentPackageAction(packageName);
 				if (response.isSuccess) {
 					let content = response.getValue() as AdtPackageContents;
 					console.log(content);
@@ -28,5 +30,5 @@ export default function usePackageContent() {
 			});
 	}, []);
 
-	return { getPackageContent, loadingPackage };
+	return { getPackageContent };
 }
