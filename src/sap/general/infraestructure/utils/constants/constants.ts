@@ -4,5 +4,5 @@ export const GATEWAY_CONF = {
 	ODATA_PATH: "/sap/opu/odata/sap",
 };
 export const SAP_TOOLS_OBJECT_NAMES = {
-	SAP_TOOLS_GW_CUSTOM_CLASS: "zcl_zsap_tools_core_dpc_ext",
+	SAP_TOOLS_GW_CUSTOM_CLASS: "ZCL_ZSAP_TOOLS_CORE_DPC_EXT",
 };

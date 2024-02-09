@@ -5,4 +5,5 @@ export const INIT_FAVORITE_PACKAGE: ADTFavoritePackage = {
 	packageName: "",
 	content: [],
 	loadingContent: false,
+	loadedContent: false,
 };

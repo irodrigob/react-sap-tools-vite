@@ -13,7 +13,11 @@ export default function usePackageContent() {
 	const adtController = new SAPAdtController();
 	const { getDataForConnection } = useSAPGeneral();
 	const { showResultError } = useMessages();
-	const { setLoadingContentPackageAction } = useAdtStore();
+	const {
+		setLoadingContentPackageAction,
+		setLoadedContentPackageAction,
+		setContentPackageAction,
+	} = useAdtStore();
 
 	const getPackageContent = useCallback((packageName: string) => {
 		setLoadingContentPackageAction(packageName);
@@ -21,9 +25,12 @@ export default function usePackageContent() {
 			.getPackageContent(getDataForConnection("base"), packageName)
 			.then((response: ResponsePackageContent) => {
 				setLoadingContentPackageAction(packageName);
+				setLoadedContentPackageAction(packageName);
 				if (response.isSuccess) {
-					let content = response.getValue() as AdtPackageContents;
-					console.log(content);
+					setContentPackageAction({
+						packageName: packageName,
+						content: response.getValue() as AdtPackageContents,
+					});
 				} else {
 					showResultError(response.getErrorValue() as ErrorGraphql);
 				}

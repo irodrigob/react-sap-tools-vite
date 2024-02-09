@@ -3,6 +3,7 @@ import {
 	ADTFavoritePackage,
 	ADTFavoritePackages,
 } from "sap/adt/domain/entities/favoritePackage";
+import { PackageContentStorage } from "sap/adt/infraestructure/types/storage";
 
 export interface ADTRedux {
 	favoritePackages: ADTFavoritePackages;
@@ -32,14 +33,26 @@ export const ADTSlice = createSlice({
 			let index = state.favoritePackages.findIndex(
 				(row) => row.packageName == action.payload
 			);
-			if (index != -1)
-				state.favoritePackages[index].loadingContent = state.favoritePackages[
-					index
-				].loadingContent
-					? !state.favoritePackages[index].loadingContent
-					: true;
+			if (index != -1) {
+				state.favoritePackages[index].loadingContent =
+					!state.favoritePackages[index].loadingContent;
+			}
 		},
-		//setContentPackage(state,action:)
+		setContentPackage(state, action: PayloadAction<PackageContentStorage>) {
+			let index = state.favoritePackages.findIndex(
+				(row) => row.packageName == action.payload.packageName
+			);
+			if (index != -1)
+				state.favoritePackages[index].content = action.payload.content;
+		},
+		setLoadedContentPackage(state, action: PayloadAction<string>) {
+			let index = state.favoritePackages.findIndex(
+				(row) => row.packageName == action.payload
+			);
+			if (index != -1)
+				state.favoritePackages[index].loadedContent =
+					!state.favoritePackages[index].loadedContent;
+		},
 	},
 });
 
@@ -48,6 +61,8 @@ export const {
 	deleteFavoritePackage,
 	setFavoritePackages,
 	setLoadingContentPackage,
+	setContentPackage,
+	setLoadedContentPackage,
 } = ADTSlice.actions;
 
 export default ADTSlice.reducer;

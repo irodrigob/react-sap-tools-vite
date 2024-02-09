@@ -368,7 +368,8 @@
 				"packageDeleted": "Paquete {{packageName}} eliminado de favoritos"
 			},
 			"packageContent": {
-				"loadingData": "Leyendo objetos del paquete"
+				"loadingData": "Leyendo objetos del paquete",
+				"noData": "No hay objetos"
 			}
 		}
 	},

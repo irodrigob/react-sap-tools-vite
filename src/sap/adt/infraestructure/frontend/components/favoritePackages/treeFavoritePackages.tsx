@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { ChevronRightIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,6 +11,7 @@ import EliminateFavorite from "shared/frontend/icons/eliminate-Favorite";
 import PopupDeleteFavoritePackage from "./popupDeleteFavoritePackage";
 import PackageContentContainer from "./packageContent/packageContentContainer";
 import { INIT_FAVORITE_PACKAGE } from "sap/adt/infraestructure/constants/treeConstants";
+import usePackageContent from "sap/adt/infraestructure/frontend/hooks/usePackageContent";
 
 interface Props {
 	favoritePackages: ADTFavoritePackages;
@@ -25,7 +26,17 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 	const [packageSelected, setPackageSelected] = useState<ADTFavoritePackage>(
 		INIT_FAVORITE_PACKAGE
 	);
-
+	const { getPackageContent } = usePackageContent();
+	const handlerExpandPackage = useCallback(
+		(rowFavoritePackage: ADTFavoritePackage) => {
+			setTreeAttributesMap(
+				expandCollapseNode(rowFavoritePackage.packageName, treeAttributesMap)
+			);
+			if (!rowFavoritePackage.loadedContent)
+				getPackageContent(rowFavoritePackage.packageName);
+		},
+		[favoritePackages]
+	);
 	return (
 		<>
 			<ul className="list-none">
@@ -42,12 +53,7 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 											variant="ghost"
 											size="sm"
 											onClick={() => {
-												setTreeAttributesMap(
-													expandCollapseNode(
-														rowFavoritePackage.packageName,
-														treeAttributesMap
-													)
-												);
+												handlerExpandPackage(rowFavoritePackage);
 											}}
 										>
 											{treeAttributesMap[rowFavoritePackage.packageName] &&
@@ -85,7 +91,7 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 									treeAttributesMap[rowFavoritePackage.packageName]
 										.expanded && (
 										<PackageContentContainer
-											packageName={rowFavoritePackage.packageName}
+											favoritePackage={rowFavoritePackage}
 										/>
 									)}
 							</div>

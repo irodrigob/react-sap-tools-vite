@@ -1,7 +1,6 @@
 import { ApolloError } from "@apollo/client";
 import { Result } from "shared/core/Result";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
-import AppStore from "shared/storage/appStore";
 import {
 	ResponseAddFavoritePackage,
 	ResponseSearchObject,
@@ -15,15 +14,13 @@ import {
 	ADTFavoritePackage,
 	ADTFavoritePackages,
 } from "sap/adt/domain/entities/favoritePackage";
-import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
 import { ADTFavoritePackageDTO } from "sap/adt/infraestructure/dto/favoritePackagesDTO";
+import { INIT_FAVORITE_PACKAGE } from "sap/adt/infraestructure/constants/treeConstants";
 
 export default class AdtApplication {
-	private appStore: AppStore;
 	private adtRepository: SAPAdtRepository;
 
 	constructor() {
-		this.appStore = new AppStore();
 		this.adtRepository = new SAPAdtRepository();
 	}
 	/**
@@ -95,9 +92,9 @@ export default class AdtApplication {
 			);
 			// Como es un PUT la actualización SAP no devuelve datos por ello devuelvo un undefinied, porque el void no me deja.
 			return Result.ok<ADTFavoritePackage>({
+				...INIT_FAVORITE_PACKAGE,
 				_id: response._id,
 				packageName: response.packageName,
-				content: [],
 			});
 		} catch (error) {
 			return Result.fail<ErrorGraphql>(
@@ -115,9 +112,9 @@ export default class AdtApplication {
 			let values: ADTFavoritePackages = response.map(
 				(row: ADTFavoritePackageDTO) => {
 					return {
+						...INIT_FAVORITE_PACKAGE,
 						_id: row._id,
 						packageName: row.packageName,
-						content: [],
 					};
 				}
 			);
@@ -137,8 +134,7 @@ export default class AdtApplication {
 	): Promise<ResponseDeleteFavoritePackage> {
 		try {
 			let response = await this.adtRepository.deleteFavoritePackage(id);
-			// Como es un PUT la actualización SAP no devuelve datos por ello devuelvo un undefinied, porque el void no me deja.
-			return Result.ok({ ...response, content: [] });
+			return Result.ok({ ...INIT_FAVORITE_PACKAGE, ...response });
 		} catch (error) {
 			return Result.fail<ErrorGraphql>(
 				ErrorGraphql.create(error as ApolloError)
