@@ -1,31 +1,23 @@
-import { useTranslations } from "translations/i18nContext";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { ADTFavoritePackage } from "sap/adt/domain/entities/favoritePackage";
-import { LoadingSpinner } from "shared/frontend/components/loadingSpinner";
 import usePackageContent from "sap/adt/infraestructure/frontend/hooks/usePackageContent";
-
+import PackageWOData from "./packageWOData";
+import PackageContent from "./packageContent";
+import LoadingPackageSpinner from "./loadingPackageSpinner";
 interface Props {
 	favoritePackage: ADTFavoritePackage;
 }
 const PackageContentContainer: FC<Props> = ({ favoritePackage }) => {
-	const { getI18nText } = useTranslations();
-	const { getPackageContent } = usePackageContent();
-	const [loading, setLoading] = useState(false);
+	const {} = usePackageContent();
 
 	return (
 		<>
-			{favoritePackage.loadingContent && (
-				<LoadingSpinner
-					className="ml-9 py-2"
-					text={getI18nText(
-						"adtIde.favoritePackages.packageContent.loadingData"
-					)}
+			{favoritePackage.loadingContent && <LoadingPackageSpinner />}
+			{favoritePackage.loadedContent && (
+				<PackageContent
+					packageName={favoritePackage.packageName}
+					content={favoritePackage.content}
 				/>
-			)}
-			{favoritePackage.loadedContent && favoritePackage.content.length == 0 && (
-				<h5 className="text-md ml-9 py-2 italic">
-					{getI18nText("adtIde.favoritePackages.packageContent.noData")}
-				</h5>
 			)}
 		</>
 	);
