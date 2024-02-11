@@ -1,5 +1,9 @@
 import { FC, useCallback, useState } from "react";
-import { ChevronRightIcon, ChevronDownIcon } from "@radix-ui/react-icons";
+import {
+	ChevronRightIcon,
+	ChevronDownIcon,
+	ArchiveIcon,
+} from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import {
 	ADTFavoritePackages,
@@ -51,31 +55,35 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 									<div className="flex-none">
 										<Button
 											variant="ghost"
-											size="sm"
 											onClick={() => {
 												handlerExpandPackage(rowFavoritePackage);
 											}}
+											size="icon"
+											className="h-2"
 										>
 											{treeAttributesMap[rowFavoritePackage.packageName] &&
 											treeAttributesMap[rowFavoritePackage.packageName]
 												.expanded ? (
-												<ChevronDownIcon className="h-5 w-5" />
+												<ChevronDownIcon className="h-4 w-4" />
 											) : (
-												<ChevronRightIcon className="h-5 w-5" />
+												<ChevronRightIcon className="h-4 w-4" />
 											)}
 										</Button>
 									</div>
 									<div className="shrink text-sm w-52">
-										{rowFavoritePackage.packageName}
+										<div className="flex items-center flex-row space-x-2">
+											<ArchiveIcon className="h-4 w-4" />
+											<span>{rowFavoritePackage.packageName}</span>
+										</div>
 									</div>
 									<div className="grow">
 										<div className="flex items-center justify-between flex-row-reverse">
 											<Button
 												variant="ghost"
-												size="sm"
+												size="icon"
 											>
 												<EliminateFavorite
-													className="h-5 w-5"
+													className="h-5 w-5 text-red-500"
 													onClick={() => {
 														setPackageSelected(rowFavoritePackage);
 														setOpenDeleteDialog(true);

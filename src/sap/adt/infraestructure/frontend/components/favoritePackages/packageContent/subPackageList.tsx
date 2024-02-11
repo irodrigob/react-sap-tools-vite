@@ -1,5 +1,9 @@
 import { FC, useState } from "react";
-import { ChevronRightIcon, ChevronDownIcon } from "@radix-ui/react-icons";
+import {
+	ChevronRightIcon,
+	ChevronDownIcon,
+	ArchiveIcon,
+} from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
 import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
@@ -31,22 +35,28 @@ const SubPackageList: FC<Props> = ({ packageParent, content }) => {
 									<div className="flex-none">
 										<Button
 											variant="ghost"
-											size="sm"
+											size="icon"
 											onClick={() => {
 												setTreeAttributesMap(
 													expandCollapseNode(row.objectName, treeAttributesMap)
 												);
 											}}
+											className="h-2"
 										>
 											{treeAttributesMap[row.objectName] &&
 											treeAttributesMap[row.objectName].expanded ? (
-												<ChevronDownIcon className="h-5 w-5" />
+												<ChevronDownIcon className="h-4 w-4" />
 											) : (
-												<ChevronRightIcon className="h-5 w-5" />
+												<ChevronRightIcon className="h-4 w-4" />
 											)}
 										</Button>
 									</div>
-									<div className="shrink text-sm w-52">{row.objectName}</div>
+									<div className="shrink text-sm w-52">
+										<div className="flex items-center flex-row space-x-2">
+											<ArchiveIcon className="h-4 w-4" />
+											<span>{row.objectName}</span>
+										</div>
+									</div>
 									<div className="grow">
 										<div className="flex items-center justify-between flex-row-reverse"></div>
 									</div>

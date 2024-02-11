@@ -37,7 +37,7 @@ const CollapsibleCustom: FC<Props> = (props: Props) => {
 				<CollapsibleTrigger asChild>
 					<Button
 						variant="ghost"
-						size="sm"
+						size="icon"
 					>
 						{isOpen && <CaretUpIcon className="h-5 w-5" />}
 						{!isOpen && <CaretDownIcon className="h-5 w-5" />}

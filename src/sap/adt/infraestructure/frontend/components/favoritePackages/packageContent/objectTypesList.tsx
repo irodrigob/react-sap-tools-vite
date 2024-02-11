@@ -32,18 +32,19 @@ const ObjectTypesList: FC<Props> = ({ packageName, category, objectTypes }) => {
 									{row.objects.length > 0 && (
 										<Button
 											variant="ghost"
-											size="sm"
+											size="icon"
 											onClick={() => {
 												setTreeAttributesMap(
 													expandCollapseNode(nodeKey, treeAttributesMap)
 												);
 											}}
+											className="h-2"
 										>
 											{treeAttributesMap[nodeKey] &&
 											treeAttributesMap[nodeKey].expanded ? (
-												<ChevronDownIcon className="h-5 w-5" />
+												<ChevronDownIcon className="h-4 w-4" />
 											) : (
-												<ChevronRightIcon className="h-5 w-5" />
+												<ChevronRightIcon className="h-4 w-4" />
 											)}
 										</Button>
 									)}

@@ -18,9 +18,9 @@ const ToolbarFavoritePackages: FC = () => {
 				<Button
 					onClick={() => setOpenAddPackage(true)}
 					variant="ghost"
-					size="sm"
+					size="icon"
 				>
-					<div className="ml-auto">
+					<div className="ml-auto px-3">
 						<TooltipCustom
 							text={getI18nText(
 								"adtIde.favoritePackages.addFavoritePackageTooltip"
