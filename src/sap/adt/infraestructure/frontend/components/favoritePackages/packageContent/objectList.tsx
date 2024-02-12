@@ -2,6 +2,7 @@ import { FC } from "react";
 import { AdtPackageObjects } from "sap/adt/domain/entities/packageContent";
 import FileCode from "shared/frontend/icons/fileCode";
 import Database from "shared/frontend/icons/database";
+import { OBJECTTYPES_DEVELOP_EDIT } from "sap/adt/infraestructure/constants/adtConstants";
 
 interface Props {
 	packageName: string;
@@ -25,6 +26,12 @@ const ObjectsList: FC<Props> = ({
 		<div className="ml-8">
 			{objects.map((row) => {
 				const nodeKey = `${packageName}_${category}_${objectType}_${row.objectName}`;
+				const editorDeveloped =
+					OBJECTTYPES_DEVELOP_EDIT.findIndex(
+						(rowObjectTypEditor) => rowObjectTypEditor == objectType
+					) == -1
+						? false
+						: true;
 				return (
 					<div key={`${nodeKey}`}>
 						<li
@@ -35,7 +42,16 @@ const ObjectsList: FC<Props> = ({
 								<div className="shrink text-sm">
 									<div className="flex items-center flex-row space-x-2">
 										{iconFromCategory(category)}
-										<span>{row.objectName}</span>
+										<span
+											className={`${editorDeveloped ? "cursor-pointer" : ""}`}
+											onClick={() => {
+												if (editorDeveloped) {
+													alert("hola");
+												}
+											}}
+										>
+											{row.objectName}
+										</span>
 									</div>
 								</div>
 								<div className="grow">

@@ -8,7 +8,7 @@ import ErrorGraphql from "shared/errors/ErrorGraphql";
 import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
 import useAdtStore from "./useAdtStore";
 
-export default function usePackageContent() {
+export default function useFavoritePackages() {
 	const { getI18nText } = useTranslations();
 	const adtController = new SAPAdtController();
 	const { getDataForConnection } = useSAPGeneral();

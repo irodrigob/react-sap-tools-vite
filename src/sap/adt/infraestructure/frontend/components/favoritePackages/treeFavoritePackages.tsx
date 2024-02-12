@@ -15,7 +15,7 @@ import EliminateFavorite from "shared/frontend/icons/eliminate-Favorite";
 import PopupDeleteFavoritePackage from "./popupDeleteFavoritePackage";
 import PackageContentContainer from "./packageContent/packageContentContainer";
 import { INIT_FAVORITE_PACKAGE } from "sap/adt/infraestructure/constants/treeConstants";
-import usePackageContent from "sap/adt/infraestructure/frontend/hooks/usePackageContent";
+import useFavoritePackages from "@/sap/adt/infraestructure/frontend/hooks/useFavoritePackages";
 
 interface Props {
 	favoritePackages: ADTFavoritePackages;
@@ -30,7 +30,7 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 	const [packageSelected, setPackageSelected] = useState<ADTFavoritePackage>(
 		INIT_FAVORITE_PACKAGE
 	);
-	const { getPackageContent } = usePackageContent();
+	const { getPackageContent } = useFavoritePackages();
 	const handlerExpandPackage = useCallback(
 		(rowFavoritePackage: ADTFavoritePackage) => {
 			setTreeAttributesMap(

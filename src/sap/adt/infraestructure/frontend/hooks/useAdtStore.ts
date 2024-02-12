@@ -11,8 +11,14 @@ import {
 	setLoadingContentPackage,
 	setContentPackage,
 	setLoadedContentPackage,
+	addObjectOpenEditor,
+	deleteObjectOpenEditor,
 } from "sap/adt/infraestructure/storage/adtSlice";
-import { PackageContentStorage } from "sap/adt/infraestructure/types/storage";
+import {
+	PackageContentStorage,
+	ADTObjectTypesOpenEditor,
+	ADTObjectTypeOpenEditor,
+} from "sap/adt/infraestructure/types/adt";
 
 export default function useAdtStore() {
 	const dispatch = useDispatch();
@@ -44,6 +50,18 @@ export default function useAdtStore() {
 	const setLoadedContentPackageAction = useCallback((packageName: string) => {
 		dispatch(setLoadedContentPackage(packageName));
 	}, []);
+	const addObjectTypeInEditorAction = useCallback(
+		(objectTypeEditor: ADTObjectTypeOpenEditor) => {
+			dispatch(addObjectOpenEditor(objectTypeEditor));
+		},
+		[]
+	);
+	const deleteObjectTypeInEditorAction = useCallback(
+		(objectTypeEditor: ADTObjectTypeOpenEditor) => {
+			dispatch(deleteObjectOpenEditor(objectTypeEditor));
+		},
+		[]
+	);
 	const clearVariables = useCallback(() => {
 		setFavoritePackagesAction([]);
 	}, []);
@@ -56,5 +74,7 @@ export default function useAdtStore() {
 		setContentPackageAction,
 		setLoadedContentPackageAction,
 		clearVariables,
+		addObjectTypeInEditorAction,
+		deleteObjectTypeInEditorAction,
 	};
 }
