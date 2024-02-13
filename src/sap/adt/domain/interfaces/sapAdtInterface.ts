@@ -1,4 +1,4 @@
-import { ResponseSearchObject } from "sap/adt/infraestructure/types/adt";
+import { ADTObjectVersion } from "sap/adt/infraestructure/types/adt";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 import { ADTSearchObjects } from "sap/adt/domain/entities/searchObject";
 import {
@@ -6,6 +6,7 @@ import {
 	ADTFavoritePackageDTO,
 } from "sap/adt/infraestructure/dto/favoritePackagesDTO";
 import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
+import { ADTClassContent } from "sap/adt/domain/entities/classContent";
 
 export default interface SAPAdtInterface {
 	/**
@@ -58,4 +59,16 @@ export default interface SAPAdtInterface {
 		dataConnection: DataConnectionSystem,
 		packageName: string
 	): Promise<AdtPackageContents>;
+
+	/**
+	 * Devuelve el contenido de una clase
+	 * @param dataConnection Datos del conexión
+	 * @param objectUri URL de la clase
+	 * @param Objectversion Versión de la clase
+	 */
+	getClassContent(
+		dataConnection: DataConnectionSystem,
+		objectUri: string,
+		Objectversion?: ADTObjectVersion
+	): Promise<ADTClassContent>;
 }

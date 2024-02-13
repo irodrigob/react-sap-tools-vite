@@ -10,7 +10,6 @@ import {
 	ADTFavoritePackage,
 } from "sap/adt/domain/entities/favoritePackage";
 import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
-import useTreeFavoritePackages from "sap/adt/infraestructure/frontend/hooks/useTreeFavoritePackages";
 import EliminateFavorite from "shared/frontend/icons/eliminate-Favorite";
 import PopupDeleteFavoritePackage from "./popupDeleteFavoritePackage";
 import PackageContentContainer from "./packageContent/packageContentContainer";
@@ -25,12 +24,11 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 	const [treeAttributesMap, setTreeAttributesMap] = useState<TreeAttributeMap>(
 		{}
 	);
-	const { expandCollapseNode } = useTreeFavoritePackages();
 	const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 	const [packageSelected, setPackageSelected] = useState<ADTFavoritePackage>(
 		INIT_FAVORITE_PACKAGE
 	);
-	const { getPackageContent } = useFavoritePackages();
+	const { getPackageContent, expandCollapseNode } = useFavoritePackages();
 	const handlerExpandPackage = useCallback(
 		(rowFavoritePackage: ADTFavoritePackage) => {
 			setTreeAttributesMap(

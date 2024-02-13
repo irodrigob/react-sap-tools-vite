@@ -7,6 +7,7 @@ import {
 	ADTFavoritePackageDTO,
 } from "sap/adt/infraestructure/dto/favoritePackagesDTO";
 import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
+import { ADTClassContent } from "sap/adt/domain/entities/classContent";
 import {
 	GET_FAVORITE_PACKAGES,
 	MUTATION_ADD_FAVORITE_PACKAGE,
@@ -14,7 +15,9 @@ import {
 	QUICK_SEARCH_OBJECT,
 	SEARCH_OBJECT_SINGLE_TYPE,
 	PACKAGE_CONTENT,
+	CLASS_CONTENT,
 } from "./graphqlSchema";
+import { ADTObjectVersion } from "sap/adt/infraestructure/types/adt";
 
 export default class SAPAdtRepository
 	extends graphQLRepository
@@ -131,5 +134,31 @@ export default class SAPAdtRepository
 			},
 		});
 		return response.data.adtPackageReadContent;
+	}
+	/**
+	 * Devuelve el contenido de una clase
+	 * @param dataConnection Datos del conexión
+	 * @param objectUri URL de la clase
+	 * @param Objectversion Versión de la clase
+	 */
+	async getClassContent(
+		dataConnection: DataConnectionSystem,
+		objectUri: string,
+		Objectversion?: ADTObjectVersion
+	): Promise<ADTClassContent> {
+		const response = await this._apolloClient.query({
+			query: CLASS_CONTENT,
+			fetchPolicy: "network-only",
+			variables: {
+				system: dataConnection.host,
+				sap_user: dataConnection.sap_user,
+				sap_password: dataConnection.sap_password,
+				client: dataConnection.client,
+				language: dataConnection.language,
+				urlClass: objectUri,
+				versionClass: Objectversion,
+			},
+		});
+		return response.data.adtClassContent;
 	}
 }

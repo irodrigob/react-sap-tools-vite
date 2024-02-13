@@ -7,15 +7,18 @@ import useTreeFavoritePackages from "sap/adt/infraestructure/frontend/hooks/useT
 import ObjectTypesList from "./objectTypesList";
 import ObjectsList from "./objectList";
 import { CATEGORIES_SHOW_OBJECTLIST } from "sap/adt/infraestructure/constants/adtConstants";
+import useFavoritePackages from "@/sap/adt/infraestructure/frontend/hooks/useFavoritePackages";
+
 interface Props {
 	packageName: string;
 	categories: AdtPackageCategories;
 }
 const CategoriesList: FC<Props> = ({ packageName, categories }) => {
-	const { expandCollapseNode } = useTreeFavoritePackages();
+	const { expandCollapseNode } = useFavoritePackages();
 	const [treeAttributesMap, setTreeAttributesMap] = useState<TreeAttributeMap>(
 		{}
 	);
+
 	return (
 		<>
 			{categories.map((row) => {

@@ -10,20 +10,23 @@ import {
 	AdtPackageContents,
 	AdtPackageObject,
 } from "sap/adt/domain/entities/packageContent";
+import { ADTClassContent } from "sap/adt/domain/entities/classContent";
 
+export type ADTObjectVersion = "active" | "inactive";
 export type PackageContentStorage = {
 	packageName: string;
 	content: AdtPackageContents;
 };
 
-export type ADTObjectTypeOpenEditor = {
+export type ADTObjectOpenEditor = {
 	packageName: string;
 	category: string;
 	objectType: string;
 	objectTypeDesc: string;
 	object: AdtPackageObject;
+	content: ADTClassContent;
 };
-export type ADTObjectTypesOpenEditor = ADTObjectTypeOpenEditor[];
+export type ADTObjectsOpenEditor = ADTObjectOpenEditor[];
 
 export type ResponseSearchObject =
 	| Result<ADTSearchObjects>
@@ -47,5 +50,10 @@ export type ResponseFavoritePackages =
 
 export type ResponsePackageContent =
 	| Result<AdtPackageContents>
+	| Result<ErrorGeneral>
+	| Result<ErrorGraphql>;
+
+export type ResponseAdtClassContent =
+	| Result<ADTClassContent>
 	| Result<ErrorGeneral>
 	| Result<ErrorGraphql>;

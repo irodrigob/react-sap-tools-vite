@@ -5,8 +5,13 @@ import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGene
 import { ResponsePackageContent } from "sap/adt/infraestructure/types/adt";
 import useMessages from "shared/infraestructure/hooks/useMessages";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
-import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
+import {
+	AdtPackageContents,
+	AdtPackageObject,
+} from "sap/adt/domain/entities/packageContent";
 import useAdtStore from "./useAdtStore";
+import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
+import { useAppSelector } from "shared/storage/useStore";
 
 export default function useFavoritePackages() {
 	const { getI18nText } = useTranslations();
@@ -17,7 +22,25 @@ export default function useFavoritePackages() {
 		setLoadingContentPackageAction,
 		setLoadedContentPackageAction,
 		setContentPackageAction,
+		addObjectEditorAction,
 	} = useAdtStore();
+	const { objectOpenEditor } = useAppSelector((state) => state.ADT);
+
+	const expandCollapseNode = useCallback(
+		(node: string, treeAttributeMap: TreeAttributeMap): TreeAttributeMap => {
+			let newTreeAttributes = { ...treeAttributeMap };
+			if (newTreeAttributes[node])
+				newTreeAttributes[node].expanded = !newTreeAttributes[node].expanded;
+			else
+				newTreeAttributes = {
+					...treeAttributeMap,
+					[node]: { expanded: true },
+				};
+
+			return newTreeAttributes;
+		},
+		[]
+	);
 
 	const getPackageContent = useCallback((packageName: string) => {
 		setLoadingContentPackageAction(packageName);
@@ -36,6 +59,25 @@ export default function useFavoritePackages() {
 				}
 			});
 	}, []);
+	const processObjectSelected = useCallback(
+		(
+			packageName: string,
+			category: string,
+			objectType: string,
+			object: AdtPackageObject
+		) => {
+			// Si esta abierto inicialmente no haremos nada.
+			if (
+				objectOpenEditor.findIndex(
+					(row) =>
+						row.objectType == objectType &&
+						row.object.objectName == object.objectName
+				) != -1
+			) {
+			}
+		},
+		[objectOpenEditor]
+	);
 
-	return { getPackageContent };
+	return { getPackageContent, expandCollapseNode };
 }

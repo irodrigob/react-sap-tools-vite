@@ -4,14 +4,14 @@ import {
 	ADTFavoritePackages,
 } from "sap/adt/domain/entities/favoritePackage";
 import {
-	ADTObjectTypesOpenEditor,
-	ADTObjectTypeOpenEditor,
+	ADTObjectsOpenEditor,
+	ADTObjectOpenEditor,
 	PackageContentStorage,
 } from "sap/adt/infraestructure/types/adt";
 
 export interface ADTRedux {
 	favoritePackages: ADTFavoritePackages;
-	objectOpenEditor: ADTObjectTypesOpenEditor;
+	objectOpenEditor: ADTObjectsOpenEditor;
 }
 
 const initialState: ADTRedux = {
@@ -59,13 +59,10 @@ export const ADTSlice = createSlice({
 				state.favoritePackages[index].loadedContent =
 					!state.favoritePackages[index].loadedContent;
 		},
-		addObjectOpenEditor(state, action: PayloadAction<ADTObjectTypeOpenEditor>) {
+		addObjectOpenEditor(state, action: PayloadAction<ADTObjectOpenEditor>) {
 			state.objectOpenEditor.push(action.payload);
 		},
-		deleteObjectOpenEditor(
-			state,
-			action: PayloadAction<ADTObjectTypeOpenEditor>
-		) {
+		deleteObjectOpenEditor(state, action: PayloadAction<ADTObjectOpenEditor>) {
 			let index = state.objectOpenEditor.findIndex(
 				(row) =>
 					row.packageName == action.payload.packageName &&

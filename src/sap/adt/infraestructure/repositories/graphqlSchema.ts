@@ -125,3 +125,62 @@ export const PACKAGE_CONTENT = gql`
 		}
 	}
 `;
+
+export const CLASS_CONTENT = gql`
+	query Query(
+		$system: String!
+		$sap_user: String!
+		$sap_password: String!
+		$language: String!
+		$client: String!
+		$objectUri: String!
+		$version: String
+	) {
+		adtClassContent(
+			system: $system
+			sap_user: $sap_user
+			sap_password: $sap_password
+			language: $language
+			objectUri: $objectUri
+			version: $version
+		) {
+			metadata {
+				modeled
+				activeUnicodeCheck
+				fixPointArithmetic
+				changedAt
+				changedBy
+				createdAt
+				createdBy
+				description
+				descriptionTextLimit
+				language
+				masterLanguage
+				masterSystem
+				name
+				responsible
+				type
+				version
+				abstract
+				category
+				final
+				sharedMemoryEnabled
+				visibility
+				packageRefName
+				packageRefType
+			}
+			sourceIncludes {
+				sourceUri
+				contentSource
+				changedAt
+				changedBy
+				createdAt
+				createdBy
+				name
+				type
+				version
+				includeType
+			}
+		}
+	}
+`;
