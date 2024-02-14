@@ -6,7 +6,7 @@ import {
 	ADTFavoritePackageDTO,
 } from "sap/adt/infraestructure/dto/favoritePackagesDTO";
 import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
-import { ADTClassContent } from "sap/adt/domain/entities/classContent";
+import { ADTClassContent } from "@/sap/adt/domain/entities/classContent";
 
 export default interface SAPAdtInterface {
 	/**

@@ -24,7 +24,8 @@ export type ADTObjectOpenEditor = {
 	objectType: string;
 	objectTypeDesc: string;
 	object: AdtPackageObject;
-	content: ADTClassContent;
+	loadingContent: boolean;
+	objectContent?: ADTClassContent;
 };
 export type ADTObjectsOpenEditor = ADTObjectOpenEditor[];
 
@@ -53,7 +54,7 @@ export type ResponsePackageContent =
 	| Result<ErrorGeneral>
 	| Result<ErrorGraphql>;
 
-export type ResponseAdtClassContent =
-	| Result<ADTClassContent>
+export type ResponseAdtObjectContent =
+	| Result<ADTClassContent | undefined>
 	| Result<ErrorGeneral>
 	| Result<ErrorGraphql>;

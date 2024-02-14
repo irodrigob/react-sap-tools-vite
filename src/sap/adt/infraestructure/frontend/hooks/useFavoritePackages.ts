@@ -64,6 +64,7 @@ export default function useFavoritePackages() {
 			packageName: string,
 			category: string,
 			objectType: string,
+			objectTypeDesc: string,
 			object: AdtPackageObject
 		) => {
 			// Si esta abierto inicialmente no haremos nada.
@@ -74,6 +75,15 @@ export default function useFavoritePackages() {
 						row.object.objectName == object.objectName
 				) != -1
 			) {
+				/* Se añade el el objeto al modelo de datos para el editor*/
+				addObjectEditorAction({
+					packageName: packageName,
+					category: category,
+					objectType: objectType,
+					objectTypeDesc: objectTypeDesc,
+					object: object,
+					loadingContent: true,
+				});
 			}
 		},
 		[objectOpenEditor]

@@ -7,6 +7,8 @@ import {
 	ResponseDeleteFavoritePackage,
 	ResponseFavoritePackages,
 	ResponsePackageContent,
+	ResponseAdtObjectContent,
+	ADTObjectVersion,
 } from "sap/adt/infraestructure/types/adt";
 import SAPAdtRepository from "sap/adt/infraestructure/repositories/sapAdtRepository";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
