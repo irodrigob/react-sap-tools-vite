@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtController";
 import { useTranslations } from "translations/i18nContext";
 import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
@@ -12,6 +12,7 @@ import {
 import useAdtStore from "./useAdtStore";
 import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
 import { useAppSelector } from "shared/storage/useStore";
+import useEditor from "./useEditor";
 
 export default function useFavoritePackages() {
 	const { getI18nText } = useTranslations();
@@ -25,6 +26,7 @@ export default function useFavoritePackages() {
 		addObjectEditorAction,
 	} = useAdtStore();
 	const { objectOpenEditor } = useAppSelector((state) => state.ADT);
+	const { getObjectContent } = useEditor();
 
 	const expandCollapseNode = useCallback(
 		(node: string, treeAttributeMap: TreeAttributeMap): TreeAttributeMap => {
@@ -73,7 +75,7 @@ export default function useFavoritePackages() {
 					(row) =>
 						row.objectType == objectType &&
 						row.object.objectName == object.objectName
-				) != -1
+				) == -1
 			) {
 				/* Se añade el el objeto al modelo de datos para el editor*/
 				addObjectEditorAction({
@@ -84,10 +86,12 @@ export default function useFavoritePackages() {
 					object: object,
 					loadingContent: true,
 				});
+				// Lectura del contenido del objeto
+				getObjectContent(objectType, objectTypeDesc, object);
 			}
 		},
 		[objectOpenEditor]
 	);
 
-	return { getPackageContent, expandCollapseNode };
+	return { getPackageContent, expandCollapseNode, processObjectSelected };
 }

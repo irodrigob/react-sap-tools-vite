@@ -371,6 +371,9 @@
 				"loadingData": "Leyendo objetos del paquete",
 				"noData": "No hay objetos"
 			}
+		},
+		"editor": {
+			"objectTypeNotImplemented": "El tipo de objeto {{objectTypeDesc}} no esta implementado"
 		}
 	},
 	"messageManager": {

@@ -61,8 +61,7 @@ const ObjectTypesList: FC<Props> = ({ packageName, category, objectTypes }) => {
 									<ObjectsList
 										packageName={packageName}
 										category={category}
-										objectType={row.objectType}
-										objects={row.objects}
+										objectType={row}
 									/>
 								)}
 						</div>

@@ -134,7 +134,7 @@ export const CLASS_CONTENT = gql`
 		$language: String!
 		$client: String!
 		$objectUri: String!
-		$version: String
+		$objectVersion: String
 	) {
 		adtClassContent(
 			system: $system
@@ -142,7 +142,7 @@ export const CLASS_CONTENT = gql`
 			sap_password: $sap_password
 			language: $language
 			objectUri: $objectUri
-			version: $version
+			objectVersion: $objectVersion
 		) {
 			metadata {
 				modeled

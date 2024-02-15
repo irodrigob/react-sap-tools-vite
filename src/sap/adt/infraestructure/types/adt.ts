@@ -12,7 +12,10 @@ import {
 } from "sap/adt/domain/entities/packageContent";
 import { ADTClassContent } from "sap/adt/domain/entities/classContent";
 
-export type ADTObjectVersion = "active" | "inactive";
+export enum ADTObjectVersion {
+	active = "active",
+	inactive = "inactive",
+}
 export type PackageContentStorage = {
 	packageName: string;
 	content: AdtPackageContents;
