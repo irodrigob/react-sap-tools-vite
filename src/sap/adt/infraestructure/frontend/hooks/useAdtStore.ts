@@ -11,13 +11,16 @@ import {
 	setLoadingContentPackage,
 	setContentPackage,
 	setLoadedContentPackage,
-	addObjectOpenEditor,
-	deleteObjectOpenEditor,
+	addObjectEditor,
+	deleteObjectEditor,
+	setLoadingObject,
+	setContentObject,
 } from "sap/adt/infraestructure/storage/adtSlice";
 import {
 	PackageContentStorage,
-	ADTObjectsOpenEditor,
-	ADTObjectOpenEditor,
+	ADTObjectEditor,
+	ADTObjectInfoEditor,
+	ADTObjectContent,
 } from "sap/adt/infraestructure/types/adt";
 
 export default function useAdtStore() {
@@ -50,15 +53,24 @@ export default function useAdtStore() {
 	const setLoadedContentPackageAction = useCallback((packageName: string) => {
 		dispatch(setLoadedContentPackage(packageName));
 	}, []);
-	const addObjectEditorAction = useCallback(
-		(objectTypeEditor: ADTObjectOpenEditor) => {
-			dispatch(addObjectOpenEditor(objectTypeEditor));
+	const addObjectEditorAction = useCallback((objectEditor: ADTObjectEditor) => {
+		dispatch(addObjectEditor(objectEditor));
+	}, []);
+	const deleteObjectEditorAction = useCallback(
+		(objectTypeEditor: ADTObjectEditor) => {
+			dispatch(deleteObjectEditor(objectTypeEditor));
 		},
 		[]
 	);
-	const deleteObjectEditorAction = useCallback(
-		(objectTypeEditor: ADTObjectOpenEditor) => {
-			dispatch(deleteObjectOpenEditor(objectTypeEditor));
+	const setLoadingObjectAction = useCallback(
+		(objectInfo: ADTObjectInfoEditor) => {
+			dispatch(setLoadingObject(objectInfo));
+		},
+		[]
+	);
+	const setContentObjectAction = useCallback(
+		(objectInfo: ADTObjectInfoEditor, content: ADTObjectContent) => {
+			dispatch(setContentObject({ objectInfo: objectInfo, content: content }));
 		},
 		[]
 	);
@@ -76,5 +88,7 @@ export default function useAdtStore() {
 		clearVariables,
 		addObjectEditorAction,
 		deleteObjectEditorAction,
+		setLoadingObjectAction,
+		setContentObjectAction,
 	};
 }

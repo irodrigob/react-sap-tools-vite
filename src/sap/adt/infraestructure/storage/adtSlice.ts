@@ -4,19 +4,21 @@ import {
 	ADTFavoritePackages,
 } from "sap/adt/domain/entities/favoritePackage";
 import {
-	ADTObjectsOpenEditor,
-	ADTObjectOpenEditor,
+	ADTObjectsEditor,
+	ADTObjectEditor,
 	PackageContentStorage,
+	ADTObjectInfoEditor,
+	ADTObjectContent,
 } from "sap/adt/infraestructure/types/adt";
 
 export interface ADTRedux {
 	favoritePackages: ADTFavoritePackages;
-	objectOpenEditor: ADTObjectsOpenEditor;
+	objectEditor: ADTObjectsEditor;
 }
 
 const initialState: ADTRedux = {
 	favoritePackages: [],
-	objectOpenEditor: [],
+	objectEditor: [],
 };
 
 export const ADTSlice = createSlice({
@@ -59,18 +61,49 @@ export const ADTSlice = createSlice({
 				state.favoritePackages[index].loadedContent =
 					!state.favoritePackages[index].loadedContent;
 		},
-		addObjectOpenEditor(state, action: PayloadAction<ADTObjectOpenEditor>) {
-			state.objectOpenEditor.push(action.payload);
+		addObjectEditor(state, action: PayloadAction<ADTObjectEditor>) {
+			state.objectEditor.push(action.payload);
 		},
-		deleteObjectOpenEditor(state, action: PayloadAction<ADTObjectOpenEditor>) {
-			let index = state.objectOpenEditor.findIndex(
+		setLoadingObject(state, action: PayloadAction<ADTObjectInfoEditor>) {
+			let index = state.objectEditor.findIndex(
 				(row) =>
-					row.packageName == action.payload.packageName &&
-					row.category == action.payload.category &&
-					row.objectType == action.payload.objectType &&
-					row.object.objectName == action.payload.object.objectName
+					row.objectInfo.packageName == action.payload.packageName &&
+					row.objectInfo.category == action.payload.category &&
+					row.objectInfo.objectType == action.payload.objectType &&
+					row.objectInfo.object.objectName == action.payload.object.objectName
 			);
-			state.objectOpenEditor.splice(index, index >= 0 ? 1 : 0);
+			if (index != -1)
+				state.objectEditor[index].loadingContent =
+					!state.objectEditor[index].loadingContent;
+		},
+		setContentObject(
+			state,
+			action: PayloadAction<{
+				objectInfo: ADTObjectInfoEditor;
+				content: ADTObjectContent;
+			}>
+		) {
+			let index = state.objectEditor.findIndex(
+				(row) =>
+					row.objectInfo.packageName == action.payload.objectInfo.packageName &&
+					row.objectInfo.category == action.payload.objectInfo.category &&
+					row.objectInfo.objectType == action.payload.objectInfo.objectType &&
+					row.objectInfo.object.objectName ==
+						action.payload.objectInfo.object.objectName
+			);
+			if (index != -1)
+				state.objectEditor[index].objectContent = action.payload.content;
+		},
+		deleteObjectEditor(state, action: PayloadAction<ADTObjectEditor>) {
+			let index = state.objectEditor.findIndex(
+				(row) =>
+					row.objectInfo.packageName == action.payload.objectInfo.packageName &&
+					row.objectInfo.category == action.payload.objectInfo.category &&
+					row.objectInfo.objectType == action.payload.objectInfo.objectType &&
+					row.objectInfo.object.objectName ==
+						action.payload.objectInfo.object.objectName
+			);
+			state.objectEditor.splice(index, index >= 0 ? 1 : 0);
 		},
 	},
 });
@@ -82,8 +115,10 @@ export const {
 	setLoadingContentPackage,
 	setContentPackage,
 	setLoadedContentPackage,
-	addObjectOpenEditor,
-	deleteObjectOpenEditor,
+	addObjectEditor,
+	deleteObjectEditor,
+	setLoadingObject,
+	setContentObject,
 } = ADTSlice.actions;
 
 export default ADTSlice.reducer;

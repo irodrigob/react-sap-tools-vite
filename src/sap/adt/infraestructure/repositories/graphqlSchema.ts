@@ -141,6 +141,7 @@ export const CLASS_CONTENT = gql`
 			sap_user: $sap_user
 			sap_password: $sap_password
 			language: $language
+			client: $client
 			objectUri: $objectUri
 			objectVersion: $objectVersion
 		) {

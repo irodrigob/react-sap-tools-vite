@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import AdtIdeContainer from "./adtIde/adtIdeContainer";
+import AdtContainer from "./adtContainer";
 import { useAppSelector } from "shared/storage/useStore";
 import { useEffect } from "react";
 
@@ -13,5 +13,5 @@ export default function MainAdt() {
 		if (!connectedToSystem) navigate("/");
 	}, [connectedToSystem]);
 
-	return <>{systemSelected.name && <AdtIdeContainer />}</>;
+	return <>{systemSelected.name && <AdtContainer />}</>;
 }

@@ -21,16 +21,20 @@ export type PackageContentStorage = {
 	content: AdtPackageContents;
 };
 
-export type ADTObjectOpenEditor = {
+export type ADTObjectInfoEditor = {
 	packageName: string;
 	category: string;
 	objectType: string;
 	objectTypeDesc: string;
 	object: AdtPackageObject;
-	loadingContent: boolean;
-	objectContent?: ADTClassContent;
 };
-export type ADTObjectsOpenEditor = ADTObjectOpenEditor[];
+export type ADTObjectContent = ADTClassContent;
+export type ADTObjectEditor = {
+	objectInfo: ADTObjectInfoEditor;
+	loadingContent: boolean;
+	objectContent?: ADTObjectContent;
+};
+export type ADTObjectsEditor = ADTObjectEditor[];
 
 export type ResponseSearchObject =
 	| Result<ADTSearchObjects>

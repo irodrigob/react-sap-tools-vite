@@ -45,13 +45,13 @@ const ObjectsList: FC<Props> = ({ packageName, category, objectType }) => {
 											className={`${editorDeveloped ? "cursor-pointer" : ""}`}
 											onClick={() => {
 												if (editorDeveloped) {
-													processObjectSelected(
-														packageName,
-														category,
-														objectType.objectType,
-														objectType.objectTypeDesc,
-														row
-													);
+													processObjectSelected({
+														category: category,
+														objectType: objectType.objectType,
+														objectTypeDesc: objectType.objectTypeDesc,
+														object: row,
+														packageName: packageName,
+													});
 												}
 											}}
 										>

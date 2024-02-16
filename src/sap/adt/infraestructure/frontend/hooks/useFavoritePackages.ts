@@ -2,17 +2,18 @@ import { useCallback } from "react";
 import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtController";
 import { useTranslations } from "translations/i18nContext";
 import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
-import { ResponsePackageContent } from "sap/adt/infraestructure/types/adt";
+import {
+	ADTObjectEditor,
+	ResponsePackageContent,
+} from "sap/adt/infraestructure/types/adt";
 import useMessages from "shared/infraestructure/hooks/useMessages";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
-import {
-	AdtPackageContents,
-	AdtPackageObject,
-} from "sap/adt/domain/entities/packageContent";
+import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
 import useAdtStore from "./useAdtStore";
 import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
 import { useAppSelector } from "shared/storage/useStore";
 import useEditor from "./useEditor";
+import { ADTObjectInfoEditor } from "sap/adt/infraestructure/types/adt";
 
 export default function useFavoritePackages() {
 	const { getI18nText } = useTranslations();
@@ -23,10 +24,9 @@ export default function useFavoritePackages() {
 		setLoadingContentPackageAction,
 		setLoadedContentPackageAction,
 		setContentPackageAction,
-		addObjectEditorAction,
 	} = useAdtStore();
-	const { objectOpenEditor } = useAppSelector((state) => state.ADT);
-	const { getObjectContent } = useEditor();
+	const { objectEditor } = useAppSelector((state) => state.ADT);
+	const { getObjectContent, checkObjectExist } = useEditor();
 
 	const expandCollapseNode = useCallback(
 		(node: string, treeAttributeMap: TreeAttributeMap): TreeAttributeMap => {
@@ -62,35 +62,13 @@ export default function useFavoritePackages() {
 			});
 	}, []);
 	const processObjectSelected = useCallback(
-		(
-			packageName: string,
-			category: string,
-			objectType: string,
-			objectTypeDesc: string,
-			object: AdtPackageObject
-		) => {
+		(objectInfo: ADTObjectInfoEditor) => {
 			// Si esta abierto inicialmente no haremos nada.
-			if (
-				objectOpenEditor.findIndex(
-					(row) =>
-						row.objectType == objectType &&
-						row.object.objectName == object.objectName
-				) == -1
-			) {
-				/* Se añade el el objeto al modelo de datos para el editor*/
-				addObjectEditorAction({
-					packageName: packageName,
-					category: category,
-					objectType: objectType,
-					objectTypeDesc: objectTypeDesc,
-					object: object,
-					loadingContent: true,
-				});
+			if (!checkObjectExist(objectInfo))
 				// Lectura del contenido del objeto
-				getObjectContent(objectType, objectTypeDesc, object);
-			}
+				getObjectContent(objectInfo);
 		},
-		[objectOpenEditor]
+		[objectEditor]
 	);
 
 	return { getPackageContent, expandCollapseNode, processObjectSelected };

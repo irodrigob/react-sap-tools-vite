@@ -146,8 +146,6 @@ export default class SAPAdtRepository
 		objectUri: string,
 		Objectversion?: ADTObjectVersion
 	): Promise<ADTClassContent> {
-		debugger;
-
 		const response = await this._apolloClient.query({
 			query: CLASS_CONTENT,
 			fetchPolicy: "network-only",

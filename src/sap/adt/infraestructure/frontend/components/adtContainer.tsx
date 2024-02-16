@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
 	ResizableHandle,
 	ResizablePanel,
@@ -8,17 +9,21 @@ import FavoritePackagesContainer from "sap/adt/infraestructure/frontend/componen
 import { useAppSelector } from "shared/storage/useStore";
 import useAdt from "sap/adt/infraestructure/frontend/hooks/useAdt";
 
-export default function AdtIdeContainer() {
+export default function AdtContainer() {
 	const { systemChanged, applicationChanged } = useAppSelector(
 		(state) => state.SAPGeneral
 	);
 	const { loadInitialData } = useAdt();
+	const navigate = useNavigate();
+	const { systemSelected, connectedToSystem } = useAppSelector(
+		(state) => state.System
+	);
 
 	useEffect(() => {
 		if (systemChanged || applicationChanged) {
 			loadInitialData();
 		}
-	}, [systemChanged, applicationChanged]);
+	}, [systemChanged, applicationChanged, connectedToSystem]);
 
 	return (
 		<ResizablePanelGroup direction="horizontal">
