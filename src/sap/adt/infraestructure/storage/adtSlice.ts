@@ -13,12 +13,14 @@ import {
 
 export interface ADTRedux {
 	favoritePackages: ADTFavoritePackages;
-	objectEditor: ADTObjectsEditor;
+	objectsEditor: ADTObjectsEditor;
+	objectKeyActive: string;
 }
 
 const initialState: ADTRedux = {
 	favoritePackages: [],
-	objectEditor: [],
+	objectsEditor: [],
+	objectKeyActive: "",
 };
 
 export const ADTSlice = createSlice({
@@ -62,10 +64,10 @@ export const ADTSlice = createSlice({
 					!state.favoritePackages[index].loadedContent;
 		},
 		addObjectEditor(state, action: PayloadAction<ADTObjectEditor>) {
-			state.objectEditor.push(action.payload);
+			state.objectsEditor.push(action.payload);
 		},
 		setLoadingObject(state, action: PayloadAction<ADTObjectInfoEditor>) {
-			let index = state.objectEditor.findIndex(
+			let index = state.objectsEditor.findIndex(
 				(row) =>
 					row.objectInfo.packageName == action.payload.packageName &&
 					row.objectInfo.category == action.payload.category &&
@@ -73,8 +75,8 @@ export const ADTSlice = createSlice({
 					row.objectInfo.object.objectName == action.payload.object.objectName
 			);
 			if (index != -1)
-				state.objectEditor[index].loadingContent =
-					!state.objectEditor[index].loadingContent;
+				state.objectsEditor[index].loadingContent =
+					!state.objectsEditor[index].loadingContent;
 		},
 		setContentObject(
 			state,
@@ -83,7 +85,7 @@ export const ADTSlice = createSlice({
 				content: ADTObjectContent;
 			}>
 		) {
-			let index = state.objectEditor.findIndex(
+			let index = state.objectsEditor.findIndex(
 				(row) =>
 					row.objectInfo.packageName == action.payload.objectInfo.packageName &&
 					row.objectInfo.category == action.payload.objectInfo.category &&
@@ -92,10 +94,13 @@ export const ADTSlice = createSlice({
 						action.payload.objectInfo.object.objectName
 			);
 			if (index != -1)
-				state.objectEditor[index].objectContent = action.payload.content;
+				state.objectsEditor[index].objectContent = action.payload.content;
+		},
+		setObjectsEditor(state, action: PayloadAction<ADTObjectsEditor>) {
+			state.objectsEditor = action.payload;
 		},
 		deleteObjectEditor(state, action: PayloadAction<ADTObjectEditor>) {
-			let index = state.objectEditor.findIndex(
+			let index = state.objectsEditor.findIndex(
 				(row) =>
 					row.objectInfo.packageName == action.payload.objectInfo.packageName &&
 					row.objectInfo.category == action.payload.objectInfo.category &&
@@ -103,7 +108,10 @@ export const ADTSlice = createSlice({
 					row.objectInfo.object.objectName ==
 						action.payload.objectInfo.object.objectName
 			);
-			state.objectEditor.splice(index, index >= 0 ? 1 : 0);
+			state.objectsEditor.splice(index, index >= 0 ? 1 : 0);
+		},
+		setObjectKeyActive(state, action: PayloadAction<string>) {
+			state.objectKeyActive = action.payload;
 		},
 	},
 });
@@ -119,6 +127,8 @@ export const {
 	deleteObjectEditor,
 	setLoadingObject,
 	setContentObject,
+	setObjectsEditor,
+	setObjectKeyActive,
 } = ADTSlice.actions;
 
 export default ADTSlice.reducer;

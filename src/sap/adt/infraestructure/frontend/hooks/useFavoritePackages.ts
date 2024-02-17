@@ -2,10 +2,7 @@ import { useCallback } from "react";
 import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtController";
 import { useTranslations } from "translations/i18nContext";
 import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
-import {
-	ADTObjectEditor,
-	ResponsePackageContent,
-} from "sap/adt/infraestructure/types/adt";
+import { ResponsePackageContent } from "sap/adt/infraestructure/types/adt";
 import useMessages from "shared/infraestructure/hooks/useMessages";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
@@ -24,8 +21,10 @@ export default function useFavoritePackages() {
 		setLoadingContentPackageAction,
 		setLoadedContentPackageAction,
 		setContentPackageAction,
+		addObjectEditorAction,
+		setObjectKeyActiveAction,
 	} = useAdtStore();
-	const { objectEditor } = useAppSelector((state) => state.ADT);
+	const { objectsEditor } = useAppSelector((state) => state.ADT);
 	const { getObjectContent, checkObjectExist } = useEditor();
 
 	const expandCollapseNode = useCallback(
@@ -64,11 +63,22 @@ export default function useFavoritePackages() {
 	const processObjectSelected = useCallback(
 		(objectInfo: ADTObjectInfoEditor) => {
 			// Si esta abierto inicialmente no haremos nada.
-			if (!checkObjectExist(objectInfo))
+			if (!checkObjectExist(objectInfo)) {
+				let objectKey = `${objectInfo.objectType}_${objectInfo.object.objectName}`;
+
+				if (objectsEditor.length == 0) setObjectKeyActiveAction(objectKey);
+
+				addObjectEditorAction({
+					objectInfo: objectInfo,
+					loadingContent: true,
+					objectKey: objectKey,
+				});
+
 				// Lectura del contenido del objeto
 				getObjectContent(objectInfo);
+			}
 		},
-		[objectEditor]
+		[objectsEditor]
 	);
 
 	return { getPackageContent, expandCollapseNode, processObjectSelected };

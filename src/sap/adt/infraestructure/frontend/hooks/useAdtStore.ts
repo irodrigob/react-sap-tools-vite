@@ -15,12 +15,15 @@ import {
 	deleteObjectEditor,
 	setLoadingObject,
 	setContentObject,
+	setObjectKeyActive,
+	setObjectsEditor,
 } from "sap/adt/infraestructure/storage/adtSlice";
 import {
 	PackageContentStorage,
 	ADTObjectEditor,
 	ADTObjectInfoEditor,
 	ADTObjectContent,
+	ADTObjectsEditor,
 } from "sap/adt/infraestructure/types/adt";
 
 export default function useAdtStore() {
@@ -57,8 +60,8 @@ export default function useAdtStore() {
 		dispatch(addObjectEditor(objectEditor));
 	}, []);
 	const deleteObjectEditorAction = useCallback(
-		(objectTypeEditor: ADTObjectEditor) => {
-			dispatch(deleteObjectEditor(objectTypeEditor));
+		(objectInfo: ADTObjectEditor) => {
+			dispatch(deleteObjectEditor(objectInfo));
 		},
 		[]
 	);
@@ -74,8 +77,19 @@ export default function useAdtStore() {
 		},
 		[]
 	);
+	const setObjectsEditorAction = useCallback(
+		(objectsEditor: ADTObjectsEditor) => {
+			dispatch(setObjectsEditor(objectsEditor));
+		},
+		[]
+	);
+	const setObjectKeyActiveAction = useCallback((objectKey: string) => {
+		dispatch(setObjectKeyActive(objectKey));
+	}, []);
 	const clearVariables = useCallback(() => {
 		setFavoritePackagesAction([]);
+		setObjectsEditorAction([]);
+		setObjectKeyActiveAction("");
 	}, []);
 
 	return {
@@ -90,5 +104,7 @@ export default function useAdtStore() {
 		deleteObjectEditorAction,
 		setLoadingObjectAction,
 		setContentObjectAction,
+		setObjectKeyActiveAction,
+		setObjectsEditorAction,
 	};
 }

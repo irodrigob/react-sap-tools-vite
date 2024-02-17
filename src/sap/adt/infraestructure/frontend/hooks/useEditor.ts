@@ -1,4 +1,3 @@
-import { AdtPackageObject } from "sap/adt/domain/entities/packageContent";
 import { useCallback } from "react";
 import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtController";
 import SAPAdtObjectController from "sap/adt/infraestructure/controller/sapAdtObjectController";
@@ -20,18 +19,20 @@ export default function useEditor() {
 		setLoadingObjectAction,
 		addObjectEditorAction,
 		setContentObjectAction,
+		setObjectKeyActiveAction,
 	} = useAdtStore();
 	const { getDataForConnection } = useSAPGeneral();
 	const { showResultError, showMessage } = useMessages();
 	const { getI18nText } = useTranslations();
-	const { objectEditor } = useAppSelector((state) => state.ADT);
+	const { objectsEditor } = useAppSelector((state) => state.ADT);
 
 	const getObjectContent = useCallback(
 		(objectInfo: ADTObjectInfoEditor) => {
 			// Si el objeto existe se indica que se va cargar los datos y en caso contrario se añade
-			if (checkObjectExist(objectInfo)) setLoadingObjectAction(objectInfo);
-			else
-				addObjectEditorAction({ objectInfo: objectInfo, loadingContent: true });
+			if (checkObjectExist(objectInfo)) {
+				setLoadingObjectAction(objectInfo);
+			} else {
+			}
 
 			let objectController = new SAPAdtObjectController(objectInfo.objectType);
 			objectController
@@ -59,21 +60,19 @@ export default function useEditor() {
 					}
 				});
 		},
-		[objectEditor]
+		[objectsEditor]
 	);
 	const checkObjectExist = useCallback(
 		(objectInfo: ADTObjectInfoEditor) => {
-			return objectEditor.findIndex(
+			return objectsEditor.findIndex(
 				(row) =>
-					row.objectInfo.objectType == objectInfo.objectType &&
-					row.objectInfo.object.objectName == objectInfo.object.objectName &&
-					row.objectInfo.category == objectInfo.category &&
-					row.objectInfo.packageName == objectInfo.packageName
+					row.objectKey ==
+					`${objectInfo.objectType}_${objectInfo.object.objectName}`
 			) == -1
 				? false
 				: true;
 		},
-		[objectEditor]
+		[objectsEditor]
 	);
 
 	return { getObjectContent, checkObjectExist };

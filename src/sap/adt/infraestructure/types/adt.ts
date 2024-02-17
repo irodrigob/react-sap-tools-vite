@@ -31,6 +31,7 @@ export type ADTObjectInfoEditor = {
 export type ADTObjectContent = ADTClassContent;
 export type ADTObjectEditor = {
 	objectInfo: ADTObjectInfoEditor;
+	objectKey: string;
 	loadingContent: boolean;
 	objectContent?: ADTObjectContent;
 };
