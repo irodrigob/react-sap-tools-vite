@@ -1,8 +1,5 @@
 import { FC } from "react";
-import {
-	AdtPackageObjectType,
-	AdtPackageObjects,
-} from "sap/adt/domain/entities/packageContent";
+import { AdtPackageObjectType } from "sap/adt/domain/entities/packageContent";
 import FileCode from "shared/frontend/icons/fileCode";
 import Database from "shared/frontend/icons/database";
 import { OBJECTTYPES_DEVELOP_EDIT } from "sap/adt/infraestructure/constants/adtConstants";

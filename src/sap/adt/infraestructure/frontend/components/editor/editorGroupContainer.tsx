@@ -1,6 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAppSelector } from "shared/storage/useStore";
 import useAdtStore from "sap/adt/infraestructure/frontend/hooks/useAdtStore";
+import TabLabel from "./tabLabel";
 
 export default function EditorGroupContainer() {
 	const { objectsEditor, objectKeyActive } = useAppSelector(
@@ -23,8 +24,9 @@ export default function EditorGroupContainer() {
 								<TabsTrigger
 									value={row.objectKey}
 									key={row.objectKey}
+									className="hover:bg-gray-700 mr-2"
 								>
-									{row.objectInfo.object.objectName}
+									<TabLabel title={row.objectInfo.object.objectName} />
 								</TabsTrigger>
 							);
 						})}

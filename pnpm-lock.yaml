@@ -184,6 +184,9 @@ devDependencies:
   eslint-plugin-react-refresh:
     specifier: ^0.4.3
     version: 0.4.3(eslint@8.48.0)
+  eslint-plugin-tailwindcss:
+    specifier: ^3.14.2
+    version: 3.14.2(tailwindcss@3.4.1)
   postcss:
     specifier: ^8.4.33
     version: 8.4.33
@@ -3242,6 +3245,17 @@ packages:
       resolve: 2.0.0-next.4
       semver: 6.3.1
       string.prototype.matchall: 4.0.9
+    dev: true
+
+  /eslint-plugin-tailwindcss@3.14.2(tailwindcss@3.4.1):
+    resolution: {integrity: sha512-fNzdf4poZP2yQC0xC2prQxMuArMSb5mnellLQvwb9HC3NcLzxs+0IVKWIg1BqUqyui0c+bbjMmhWcKUWK67SLQ==}
+    engines: {node: '>=12.13.0'}
+    peerDependencies:
+      tailwindcss: ^3.4.0
+    dependencies:
+      fast-glob: 3.3.1
+      postcss: 8.4.33
+      tailwindcss: 3.4.1
     dev: true
 
   /eslint-scope@5.1.1:
