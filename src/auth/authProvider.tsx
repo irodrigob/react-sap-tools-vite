@@ -12,7 +12,7 @@ import { loadGSIScript } from "./hooks/useScript";
 import { Status } from "./types.d";
 import { GOOGLE_URL_SCRIPT } from "./constants";
 import useGoogle from "auth/hooks/useGoogle";
-import jwtDecode from "jwt-decode";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 
 interface authContextInterface {
   clientId: string;
@@ -79,7 +79,7 @@ export const AuthProvider: FC<Props> = (props: Props) => {
    ************************************/
 
   const callbackGoogleInit = useCallback((response: any) => {
-    if (response.credential) loginSuccess(jwtDecode(response.credential));
+    if (response.credential) loginSuccess(jwtDecode<JwtPayload>(response.credential));
     else loginError(response);
 
   }, [])

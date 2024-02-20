@@ -24,7 +24,7 @@ import I18nProvider from "./translations/i18nContext";
 import App from "./App.tsx";
 import GlobalProvider from "shared/context/globalDataContext";
 import SystemProvider from "systems/infraestructure/context/systemContext";
-import { AuthProvider } from "./auth/authProvider";
+import { AuthProvider } from "auth/authProvider";
 import { ThemeProvider as ThemeProviderTailwind } from "@/components/theme-provider.tsx";
 
 const apolloClient = initializeApollo();

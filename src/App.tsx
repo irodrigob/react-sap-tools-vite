@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import { useTranslations } from "./translations/i18nContext";
-import { AuthGuard } from "./auth/authGuard";
+import { useTranslations } from "translations/i18nContext";
+import { AuthGuard } from "auth/authGuard";
 import MainLayout from "main/frontend/layout/mainLayout";
 import Main from "main/frontend/main/main";
 import Login from "auth/components/login";
@@ -14,7 +14,7 @@ const LazyMainTransportOrder = lazy(
 );
 const LazyMainTranslate = lazy(
 	() =>
-		import("sap/translate/infraestructure/frontend/components/mainTranslate")
+		import("./sap/translate/infraestructure/frontend/components/mainTranslate")
 );
 const LazyMainAdt = lazy(
 	() => import("sap/adt/infraestructure/frontend/components/mainAdt")

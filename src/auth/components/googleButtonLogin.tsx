@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import jwtDecode from "jwt-decode";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 import { useSession } from "auth/authProvider";
 
 /**
@@ -14,7 +14,7 @@ export function GoogleButtonLogin() {
   //const from = location.state?.from?.pathname || "/";
 
   const handlerLogin = useCallback((response: any) => {
-    loginSuccess(jwtDecode(response.credential));
+    loginSuccess(jwtDecode<JwtPayload>(response.credential));
 
     // De momento vamos al ráiz de la página
     navigate("/", { replace: true });
