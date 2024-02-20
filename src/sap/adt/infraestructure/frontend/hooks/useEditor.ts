@@ -15,12 +15,7 @@ import { ADTClassContent } from "sap/adt/domain/entities/classContent";
 
 export default function useEditor() {
 	const adtController = new SAPAdtController();
-	const {
-		setLoadingObjectAction,
-		addObjectEditorAction,
-		setContentObjectAction,
-		setObjectKeyActiveAction,
-	} = useAdtStore();
+	const { setLoadingObjectAction, setContentObjectAction } = useAdtStore();
 	const { getDataForConnection } = useSAPGeneral();
 	const { showResultError, showMessage } = useMessages();
 	const { getI18nText } = useTranslations();

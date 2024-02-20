@@ -60,7 +60,7 @@ export default function useAdtStore() {
 		dispatch(addObjectEditor(objectEditor));
 	}, []);
 	const deleteObjectEditorAction = useCallback(
-		(objectInfo: ADTObjectEditor) => {
+		(objectInfo: ADTObjectInfoEditor) => {
 			dispatch(deleteObjectEditor(objectInfo));
 		},
 		[]

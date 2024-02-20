@@ -7,7 +7,7 @@ import {
 import EditorGroupContainer from "./editorGroupContainer";
 import StatusGroupContainer from "./statusGroupContainer";
 
-const EditorContainer: FC = () => {
+const EditorAreaContainer: FC = () => {
 	return (
 		<ResizablePanelGroup direction="vertical">
 			<ResizablePanel defaultSize={90}>
@@ -21,4 +21,4 @@ const EditorContainer: FC = () => {
 	);
 };
 
-export default EditorContainer;
+export default EditorAreaContainer;

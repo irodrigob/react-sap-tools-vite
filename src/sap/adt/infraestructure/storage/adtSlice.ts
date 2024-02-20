@@ -99,15 +99,24 @@ export const ADTSlice = createSlice({
 		setObjectsEditor(state, action: PayloadAction<ADTObjectsEditor>) {
 			state.objectsEditor = action.payload;
 		},
-		deleteObjectEditor(state, action: PayloadAction<ADTObjectEditor>) {
+		deleteObjectEditor(state, action: PayloadAction<ADTObjectInfoEditor>) {
 			let index = state.objectsEditor.findIndex(
 				(row) =>
-					row.objectInfo.packageName == action.payload.objectInfo.packageName &&
-					row.objectInfo.category == action.payload.objectInfo.category &&
-					row.objectInfo.objectType == action.payload.objectInfo.objectType &&
-					row.objectInfo.object.objectName ==
-						action.payload.objectInfo.object.objectName
+					row.objectInfo.packageName == action.payload.packageName &&
+					row.objectInfo.category == action.payload.category &&
+					row.objectInfo.objectType == action.payload.objectType &&
+					row.objectInfo.object.objectName == action.payload.object.objectName
 			);
+			/*
+			if (
+				state.objectsEditor[index].objectKey == state.objectKeyActive &&
+				state.objectsEditor.length > 1
+			) {
+				state.objectKeyActive = state.objectsEditor.find(
+					(row) => row.objectKey != state.objectKeyActive
+				)?.objectKey as string;
+			}*/
+
 			state.objectsEditor.splice(index, index >= 0 ? 1 : 0);
 		},
 		setObjectKeyActive(state, action: PayloadAction<string>) {
