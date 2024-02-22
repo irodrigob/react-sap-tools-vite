@@ -5,6 +5,12 @@ import {
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 
 export interface SAPAdtObjectContentInterface {
+	/**
+	 * Obtiene el contenio de un objeto
+	 * @param dataConnection
+	 * @param objectUri
+	 * @param Objectversion
+	 */
 	getObjectContent(
 		dataConnection: DataConnectionSystem,
 		objectUri: string,

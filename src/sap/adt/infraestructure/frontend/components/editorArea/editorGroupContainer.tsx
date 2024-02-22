@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import { useAppSelector } from "shared/storage/useStore";
 import useAdtStore from "sap/adt/infraestructure/frontend/hooks/useAdtStore";
 import TabLabel from "./tabLabel";
+import EditorMain from "./editor/editorMain";
 
 export default function EditorGroupContainer() {
 	const { objectsEditor, objectKeyActive } = useAppSelector(
@@ -10,7 +11,6 @@ export default function EditorGroupContainer() {
 
 	const { setObjectKeyActiveAction } = useAdtStore();
 
-	// objectKeyActive == row.objectKey ? true : false
 	return (
 		<>
 			{objectsEditor.length > 0 && (
@@ -40,7 +40,7 @@ export default function EditorGroupContainer() {
 								key={row.objectKey}
 								forceMount={objectKeyActive == row.objectKey ? true : undefined}
 							>
-								{`Make changes to your account here-> ${row.objectInfo.object.objectName}`}
+								<EditorMain objectEditor={row} />
 							</TabsContent>
 						);
 					})}

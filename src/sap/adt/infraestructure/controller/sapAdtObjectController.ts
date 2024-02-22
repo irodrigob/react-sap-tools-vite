@@ -7,11 +7,13 @@ import {
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 import { Result } from "shared/core/Result";
 import ErrorGeneral from "shared/errors/errorGeneral";
+import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants";
 
 export default class SAPAdtObjectController {
 	private objectContent: SAPAdtObjectContentInterface | undefined;
 	constructor(objectType: string) {
-		if (objectType.includes("CLAS")) this.objectContent = new ADTClassObject();
+		if (objectType.includes(ADT_OBJECT_TYPES.CLASSES.OBJECT_TYPE))
+			this.objectContent = new ADTClassObject();
 	}
 	/**
 	 * Devuelve el contenido de una clase

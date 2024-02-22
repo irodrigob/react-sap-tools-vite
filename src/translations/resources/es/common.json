@@ -373,7 +373,13 @@
 			}
 		},
 		"editor": {
-			"objectTypeNotImplemented": "El tipo de objeto {{objectTypeDesc}} no esta implementado"
+			"objectTypeNotImplemented": "El tipo de objeto {{objectTypeDesc}} no esta implementado",
+			"classes": {
+				"tabGlobalClass": "Global class",
+				"tabClassLocal": "Class-relevant Local Types",
+				"tabTestClasses": "Test classes",
+				"tabMacros": "Macros"
+			}
 		}
 	},
 	"messageManager": {

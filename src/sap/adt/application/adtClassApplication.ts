@@ -9,6 +9,8 @@ import {
 } from "sap/adt/infraestructure/types/adt";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 import { ADTClassContent } from "sap/adt/domain/entities/classContent";
+import EditorClassContainer from "sap/adt/infraestructure/frontend/components/editorArea/editor/class/editorClassContainer";
+import { FC, ReactNode } from "react";
 
 export default class ADTClassObject
 	extends AdtBaseObject

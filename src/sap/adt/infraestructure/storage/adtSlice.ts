@@ -107,15 +107,6 @@ export const ADTSlice = createSlice({
 					row.objectInfo.objectType == action.payload.objectType &&
 					row.objectInfo.object.objectName == action.payload.object.objectName
 			);
-			/*
-			if (
-				state.objectsEditor[index].objectKey == state.objectKeyActive &&
-				state.objectsEditor.length > 1
-			) {
-				state.objectKeyActive = state.objectsEditor.find(
-					(row) => row.objectKey != state.objectKeyActive
-				)?.objectKey as string;
-			}*/
 
 			state.objectsEditor.splice(index, index >= 0 ? 1 : 0);
 		},

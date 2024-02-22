@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { FC, useCallback } from "react";
 import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtController";
 import SAPAdtObjectController from "sap/adt/infraestructure/controller/sapAdtObjectController";
 import useAdtStore from "./useAdtStore";
@@ -9,9 +9,13 @@ import useMessages, {
 import ErrorGraphql from "shared/errors/ErrorGraphql";
 import ErrorGeneral from "shared/errors/errorGeneral";
 import { useTranslations } from "translations/i18nContext";
-import { ADTObjectInfoEditor } from "sap/adt/infraestructure/types/adt";
+import {
+	ADTObjectEditor,
+	ADTObjectInfoEditor,
+} from "sap/adt/infraestructure/types/adt";
 import { useAppSelector } from "shared/storage/useStore";
 import { ADTClassContent } from "sap/adt/domain/entities/classContent";
+import EditorClassContainer from "sap/adt/infraestructure/frontend/components/editorArea/editor/class/editorClassContainer";
 
 export default function useEditor() {
 	const adtController = new SAPAdtController();
