@@ -14,7 +14,10 @@ const EditorAreaContainer: FC = () => {
 				<EditorGroupContainer />
 			</ResizablePanel>
 			<ResizableHandle withHandle />
-			<ResizablePanel defaultSize={10}>
+			<ResizablePanel
+				defaultSize={10}
+				className="border-t-2"
+			>
 				<StatusGroupContainer />
 			</ResizablePanel>
 		</ResizablePanelGroup>

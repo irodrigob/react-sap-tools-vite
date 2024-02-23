@@ -19,8 +19,9 @@ export default function EditorGroupContainer() {
 					onValueChange={(value: string) => {
 						setObjectKeyActiveAction(value);
 					}}
+					orientation="horizontal"
 				>
-					<TabsList>
+					<TabsList className="ml-1">
 						{objectsEditor.map((row) => {
 							return (
 								<TabLabel

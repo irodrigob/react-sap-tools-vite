@@ -26,7 +26,10 @@ export default function AdtContainer() {
 			direction="horizontal"
 			style={{ height: "95vh" }}
 		>
-			<ResizablePanel defaultSize={30}>
+			<ResizablePanel
+				defaultSize={30}
+				className="border-r-2"
+			>
 				<FavoritePackagesContainer />
 			</ResizablePanel>
 			<ResizableHandle withHandle />

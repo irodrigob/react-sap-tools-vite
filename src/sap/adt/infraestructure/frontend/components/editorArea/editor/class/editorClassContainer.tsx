@@ -1,21 +1,38 @@
 import { FC } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ADTObjectEditor } from "sap/adt/infraestructure/types/adt";
+import { useTranslations } from "translations/i18nContext";
 
 interface Props {
 	objectEditor: ADTObjectEditor;
 }
 const EditorClassContainer: FC<Props> = ({ objectEditor }) => {
+	const { getI18nText } = useTranslations();
 	return (
-		<Tabs defaultValue="account">
+		<Tabs
+			defaultValue="globalClass"
+			className="border-2"
+		>
+			<div className="2xl:h-[78vh] xl:h[77vh] md:h-[77vh] ">
+				<TabsContent value="globalClass">codigo principal</TabsContent>
+				<TabsContent value="localClass">Clases locales</TabsContent>
+				<TabsContent value="testClass">Clases de test</TabsContent>
+				<TabsContent value="macros">Macros</TabsContent>
+			</div>
 			<TabsList>
-				<TabsTrigger value="account">Account</TabsTrigger>
-				<TabsTrigger value="password">Password</TabsTrigger>
+				<TabsTrigger value="globalClass">
+					{getI18nText("adtIde.editor.classes.tabGlobalClass")}
+				</TabsTrigger>
+				<TabsTrigger value="localClass">
+					{getI18nText("adtIde.editor.classes.tabClassLocal")}
+				</TabsTrigger>
+				<TabsTrigger value="testClass">
+					{getI18nText("adtIde.editor.classes.tabTestClasses")}
+				</TabsTrigger>
+				<TabsTrigger value="macros">
+					{getI18nText("adtIde.editor.classes.tabMacros")}
+				</TabsTrigger>
 			</TabsList>
-			<TabsContent value="account">
-				Make changes to your account here.
-			</TabsContent>
-			<TabsContent value="password">Change your password here.</TabsContent>
 		</Tabs>
 	);
 };
