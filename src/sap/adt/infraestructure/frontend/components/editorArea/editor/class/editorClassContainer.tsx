@@ -9,11 +9,8 @@ interface Props {
 const EditorClassContainer: FC<Props> = ({ objectEditor }) => {
 	const { getI18nText } = useTranslations();
 	return (
-		<Tabs
-			defaultValue="globalClass"
-			className="border-2"
-		>
-			<div className="2xl:h-[78vh] xl:h[77vh] md:h-[77vh] ">
+		<Tabs defaultValue="globalClass">
+			<div className="2xl:h-[79vh] xl:h-[77vh] md:h-[70vh] ">
 				<TabsContent value="globalClass">codigo principal</TabsContent>
 				<TabsContent value="localClass">Clases locales</TabsContent>
 				<TabsContent value="testClass">Clases de test</TabsContent>

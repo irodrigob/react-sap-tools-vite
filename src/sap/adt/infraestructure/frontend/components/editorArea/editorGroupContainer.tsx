@@ -1,14 +1,14 @@
-import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAppSelector } from "shared/storage/useStore";
 import useAdtStore from "sap/adt/infraestructure/frontend/hooks/useAdtStore";
-import TabLabel from "./tabLabel";
+import useEditorGroup from "sap/adt/infraestructure/frontend/hooks/useEditorGroup";
 import EditorMain from "./editor/editorMain";
 
 export default function EditorGroupContainer() {
 	const { objectsEditor, objectKeyActive } = useAppSelector(
 		(state) => state.ADT
 	);
-
+	const { closeTab } = useEditorGroup();
 	const { setObjectKeyActiveAction } = useAdtStore();
 
 	return (
@@ -24,11 +24,18 @@ export default function EditorGroupContainer() {
 					<TabsList className="ml-1">
 						{objectsEditor.map((row) => {
 							return (
-								<TabLabel
-									objectInfo={row.objectInfo}
-									objectKey={row.objectKey}
+								<TabsTrigger
+									value={row.objectKey}
 									key={row.objectKey}
-								/>
+									data-state={
+										objectKeyActive == row.objectKey ? "active" : "inactive"
+									}
+									onCloseTab={() => {
+										closeTab(row.objectInfo);
+									}}
+								>
+									{row.objectInfo.object.objectName}
+								</TabsTrigger>
 							);
 						})}
 					</TabsList>

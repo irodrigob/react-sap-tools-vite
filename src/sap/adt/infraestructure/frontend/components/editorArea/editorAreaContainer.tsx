@@ -6,12 +6,16 @@ import {
 } from "@/components/ui/resizable";
 import EditorGroupContainer from "./editorGroupContainer";
 import StatusGroupContainer from "./statusGroupContainer";
+import EditorToolbar from "./editor/editorToolbar";
 
 const EditorAreaContainer: FC = () => {
 	return (
 		<ResizablePanelGroup direction="vertical">
 			<ResizablePanel defaultSize={90}>
-				<EditorGroupContainer />
+				<div className="flex flex-col">
+					<EditorToolbar />
+					<EditorGroupContainer />
+				</div>
 			</ResizablePanel>
 			<ResizableHandle withHandle />
 			<ResizablePanel
