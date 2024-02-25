@@ -113,9 +113,6 @@ export const ADTSlice = createSlice({
 			state.objectsEditor.splice(index, index >= 0 ? 1 : 0);
 		},
 		setObjectKeyActive(state, action: PayloadAction<string>) {
-			// Me quedo con el valor previo
-			state.objectKeyPrevious = state.objectKeyActive;
-
 			state.objectKeyActive = action.payload;
 		},
 		setObjectKeyPrevious(state, action: PayloadAction<string>) {

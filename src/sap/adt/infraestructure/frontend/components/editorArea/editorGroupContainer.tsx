@@ -9,7 +9,8 @@ export default function EditorGroupContainer() {
 		(state) => state.ADT
 	);
 	const { closeTab } = useEditorGroup();
-	const { setObjectKeyActiveAction } = useAdtStore();
+	const { setObjectKeyActiveAction, setObjectKeyPreviousAction } =
+		useAdtStore();
 
 	return (
 		<>
@@ -17,6 +18,7 @@ export default function EditorGroupContainer() {
 				<Tabs
 					defaultValue={objectKeyActive}
 					onValueChange={(value: string) => {
+						setObjectKeyPreviousAction(objectKeyActive);
 						setObjectKeyActiveAction(value);
 					}}
 					orientation="horizontal"
@@ -30,7 +32,6 @@ export default function EditorGroupContainer() {
 									data-state={
 										objectKeyActive == row.objectKey ? "active" : "inactive"
 									}
-									isActive={objectKeyActive == row.objectKey ? true : false}
 									onCloseTab={() => {
 										closeTab(row.objectInfo);
 									}}

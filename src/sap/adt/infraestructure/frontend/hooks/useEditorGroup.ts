@@ -25,34 +25,32 @@ export default function useEditorGroup() {
 			);
 			if (objectEditorClose) {
 				if (objectEditorClose.objectKey == objectKeyActive) {
-					// Si la que se cierra es la activa, se activa la pestaña anterior
-					setObjectKeyActiveAction(objectKeyPrevious);
-					// El gap que tenemos es que la storage automáticamente poner la pestaña activa como previa, pero
-					// esta pestaña se ha cerrado. Por lo tanto, sobreescribo para que guarde la primera que sea distinta
-					// a la actual siempre y cuando haya más de una. Sino lo hay la dejo en blanco
-					if (objectsEditor.length > 1)
-						setObjectKeyPreviousAction(
-							objectsEditor.find((row) => row.objectKey != objectKeyActive)
-								?.objectKey as string
-						);
-					else setObjectKeyPreviousAction("");
+					// Si solo hay un registro se va a eliminar la ultima pestaña por lo que reseteo todos los valores
+					if (objectsEditor.length == 1) {
+						setObjectKeyActiveAction("");
+						setObjectKeyPreviousAction("");
+					} else {
+						// Si la que se cierra es la activa se activa la pestaña anterior siempre y cuando haya una anterior.
+						// Si la activa y la previa son iguales o la previa esta en blanco se activa cualquiera distinta a la actual.
+						if (
+							objectKeyPrevious == "" ||
+							objectKeyActive == objectKeyPrevious
+						) {
+							setObjectKeyActiveAction(
+								objectsEditor.find((row) => row.objectKey != objectKeyActive)
+									?.objectKey as string
+							);
+						} else {
+							setObjectKeyActiveAction(objectKeyPrevious);
+						}
+					}
 				} else {
-					// Si no es la activa
+					// Si no es la activa. Hay que mirar si la pestaña previa coincide con la que se cierra. Si es así, la previa se deja en blanco
+					if (objectEditorClose.objectKey == objectKeyPrevious) {
+						setObjectKeyPreviousAction("");
+					}
 				}
 			}
-			if (
-				objectsEditor.findIndex(
-					(row) =>
-						row.objectInfo.objectType == objectInfo.objectType &&
-						row.objectInfo.object.objectName == objectInfo.object.objectName &&
-						row.objectKey == objectKeyActive
-				) != 1 &&
-				objectsEditor.length > 1
-			)
-				setObjectKeyActiveAction(
-					objectsEditor.find((row) => row.objectKey != objectKeyActive)
-						?.objectKey as string
-				);
 
 			deleteObjectEditorAction(objectInfo);
 		},
