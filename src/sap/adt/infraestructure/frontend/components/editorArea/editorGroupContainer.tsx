@@ -30,6 +30,7 @@ export default function EditorGroupContainer() {
 									data-state={
 										objectKeyActive == row.objectKey ? "active" : "inactive"
 									}
+									isActive={objectKeyActive == row.objectKey ? true : false}
 									onCloseTab={() => {
 										closeTab(row.objectInfo);
 									}}

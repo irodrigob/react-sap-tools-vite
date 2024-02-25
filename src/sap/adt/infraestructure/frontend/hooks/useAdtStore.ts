@@ -17,6 +17,7 @@ import {
 	setContentObject,
 	setObjectKeyActive,
 	setObjectsEditor,
+	setObjectKeyPrevious,
 } from "sap/adt/infraestructure/storage/adtSlice";
 import {
 	PackageContentStorage,
@@ -86,6 +87,10 @@ export default function useAdtStore() {
 	const setObjectKeyActiveAction = useCallback((objectKey: string) => {
 		dispatch(setObjectKeyActive(objectKey));
 	}, []);
+	const setObjectKeyPreviousAction = useCallback((objectKey: string) => {
+		dispatch(setObjectKeyPrevious(objectKey));
+	}, []);
+
 	const clearVariables = useCallback(() => {
 		setFavoritePackagesAction([]);
 		setObjectsEditorAction([]);
@@ -106,5 +111,6 @@ export default function useAdtStore() {
 		setContentObjectAction,
 		setObjectKeyActiveAction,
 		setObjectsEditorAction,
+		setObjectKeyPreviousAction,
 	};
 }

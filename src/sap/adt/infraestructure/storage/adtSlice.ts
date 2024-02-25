@@ -15,12 +15,14 @@ export interface ADTRedux {
 	favoritePackages: ADTFavoritePackages;
 	objectsEditor: ADTObjectsEditor;
 	objectKeyActive: string;
+	objectKeyPrevious: string;
 }
 
 const initialState: ADTRedux = {
 	favoritePackages: [],
 	objectsEditor: [],
 	objectKeyActive: "",
+	objectKeyPrevious: "",
 };
 
 export const ADTSlice = createSlice({
@@ -111,7 +113,13 @@ export const ADTSlice = createSlice({
 			state.objectsEditor.splice(index, index >= 0 ? 1 : 0);
 		},
 		setObjectKeyActive(state, action: PayloadAction<string>) {
+			// Me quedo con el valor previo
+			state.objectKeyPrevious = state.objectKeyActive;
+
 			state.objectKeyActive = action.payload;
+		},
+		setObjectKeyPrevious(state, action: PayloadAction<string>) {
+			state.objectKeyPrevious = action.payload;
 		},
 	},
 });
@@ -129,6 +137,7 @@ export const {
 	setContentObject,
 	setObjectsEditor,
 	setObjectKeyActive,
+	setObjectKeyPrevious,
 } = ADTSlice.actions;
 
 export default ADTSlice.reducer;

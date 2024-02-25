@@ -6,6 +6,7 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 interface CustomPropsTrigger {
 	onCloseTab?: () => void;
 	textTab?: string;
+	isActive?: boolean;
 }
 const Tabs = TabsPrimitive.Root;
 
@@ -28,27 +29,27 @@ const TabsTrigger = React.forwardRef<
 	React.ElementRef<typeof TabsPrimitive.Trigger> & CustomPropsTrigger,
 	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> &
 		CustomPropsTrigger
->(({ className, onCloseTab, ...props }, ref) => (
+>(({ className, onCloseTab, isActive, ...props }, ref) => (
 	<>
 		<TabsPrimitive.Trigger
 			ref={ref}
 			className={cn(
-				"inline-flex items-center justify-center whitespace-nowrap border-r-2 px-4 py-3 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:border-t-2 data-[state=active]:border-t-indigo-500 data-[state=active]:text-foreground data-[state=active]:shadow",
+				"inline-flex items-center justify-center whitespace-nowrap  border-r-2 px-4 py-3 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:border-t-2 data-[state=active]:border-t-indigo-500 data-[state=active]:text-foreground data-[state=active]:shadow",
 				className
 			)}
 			{...props}
 		>
 			{props.children}
+			{onCloseTab && (
+				<Cross2Icon
+					className="ml-4 h-4 w-4 hover:text-red-600"
+					onClick={(event: any) => {
+						event.preventDefault();
+						onCloseTab();
+					}}
+				/>
+			)}
 		</TabsPrimitive.Trigger>
-		{onCloseTab && (
-			<Cross2Icon
-				className="ml-4 h-4 w-4 hover:text-red-600 data-[state=active]:border-t-indigo-500"
-				onClick={(event: any) => {
-					event.preventDefault();
-					onCloseTab();
-				}}
-			/>
-		)}
 	</>
 ));
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
