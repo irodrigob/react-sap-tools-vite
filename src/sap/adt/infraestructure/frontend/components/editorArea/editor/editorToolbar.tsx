@@ -12,7 +12,7 @@ const EditorToolbar: FC = () => {
 	return (
 		<>
 			{objectsEditor.length > 0 && (
-				<div className="mb-1 flex flex-col ml-1 w-[99%]  ">
+				<div className="mb-1 flex flex-col ml-1 w-[99%] ">
 					<div className="mt-4 mb-4 ml-4">
 						<div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
 							<Button

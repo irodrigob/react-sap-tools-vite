@@ -376,7 +376,7 @@
 			"objectTypeNotImplemented": "El tipo de objeto {{objectTypeDesc}} no esta implementado",
 			"classes": {
 				"tabGlobalClass": "Global class",
-				"tabClassLocal": "Class-relevant Local Types",
+				"tabClassLocal": "Local Types",
 				"tabTestClasses": "Test classes",
 				"tabMacros": "Macros"
 			}

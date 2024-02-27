@@ -13,10 +13,13 @@ const TabsList = React.forwardRef<
 	React.ElementRef<typeof TabsPrimitive.List>,
 	React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
 >(({ className, ...props }, ref) => (
+	/*
+	  border-b-2 border-l-2
+	 */
 	<TabsPrimitive.List
 		ref={ref}
 		className={cn(
-			"inline-flex h-10 items-center border-b-2 border-l-2 justify-center text-muted-foreground",
+			"inline-flex h-8 items-center justify-center text-muted-foreground",
 			className
 		)}
 		{...props}
@@ -32,7 +35,10 @@ const TabsTrigger = React.forwardRef<
 	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> &
 		CustomPropsTrigger
 >(({ className, onCloseTab, ...props }, ref) => (
-	<div className="flex grow items-center text-sm font-medium justify-center whitespace-nowrap border-r-2 py-2 px-4 border-t-2 transition-all disabled:pointer-events-none disabled:opacity-50">
+	/*
+	border-r-2 border-t-2
+	*/
+	<div className="flex grow items-center text-sm font-medium justify-center whitespace-nowrap  py-2 px-4 transition-all disabled:pointer-events-none disabled:opacity-50">
 		<TabsPrimitive.Trigger
 			ref={ref}
 			className={cn(
