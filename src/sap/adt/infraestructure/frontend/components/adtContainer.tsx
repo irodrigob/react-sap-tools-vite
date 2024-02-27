@@ -24,7 +24,7 @@ export default function AdtContainer() {
 	return (
 		<ResizablePanelGroup
 			direction="horizontal"
-			style={{ height: "95vh" }}
+			style={{ height: "94vh" }}
 		>
 			<ResizablePanel
 				defaultSize={30}
