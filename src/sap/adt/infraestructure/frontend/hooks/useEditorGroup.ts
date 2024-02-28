@@ -1,7 +1,11 @@
 import { useCallback } from "react";
 import useAdtStore from "./useAdtStore";
-import { ADTObjectInfoEditor } from "sap/adt/infraestructure/types/adt";
+import {
+	ADTObjectEditor,
+	ADTObjectInfoEditor,
+} from "sap/adt/infraestructure/types/adt";
 import { useAppSelector } from "shared/storage/useStore";
+import { INIT_OBJECT_EDITOR } from "sap/adt/infraestructure/constants/editorConstants";
 
 export default function useEditorGroup() {
 	const { objectKeyActive, objectsEditor, objectKeyPrevious } = useAppSelector(
@@ -12,6 +16,10 @@ export default function useEditorGroup() {
 		setObjectKeyActiveAction,
 		setObjectKeyPreviousAction,
 	} = useAdtStore();
+
+	/**
+	 * Proceso al cerrar una pestaña
+	 */
 	const closeTab = useCallback(
 		(objectInfo: ADTObjectInfoEditor) => {
 			// Debido a como esta montando el cierre dentro del trigger del compontente, cuando se cierra una pestaña que no es la activa
@@ -36,12 +44,15 @@ export default function useEditorGroup() {
 							objectKeyPrevious == "" ||
 							objectKeyActive == objectKeyPrevious
 						) {
-							setObjectKeyActiveAction(
-								objectsEditor.find((row) => row.objectKey != objectKeyActive)
-									?.objectKey as string
-							);
+							let objectEditor = objectsEditor.find(
+								(row) => row.objectKey != objectKeyActive
+							) as ADTObjectEditor;
+							setObjectKeyActiveAction(objectEditor.objectKey);
 						} else {
-							setObjectKeyActiveAction(objectKeyPrevious);
+							let objectEditor = objectsEditor.find(
+								(row) => row.objectKey == objectKeyPrevious
+							) as ADTObjectEditor;
+							setObjectKeyActiveAction(objectEditor.objectKey);
 						}
 					}
 				} else {
@@ -56,6 +67,16 @@ export default function useEditorGroup() {
 		},
 		[objectsEditor, objectKeyActive]
 	);
+	/**
+	 * Proceso cuando se selecciona una pestaña
+	 */
+	const selectTab = useCallback(
+		(objectKey: string) => {
+			setObjectKeyPreviousAction(objectKeyActive);
+			setObjectKeyActiveAction(objectKey);
+		},
+		[objectKeyActive, objectsEditor]
+	);
 
-	return { closeTab };
+	return { closeTab, selectTab };
 }

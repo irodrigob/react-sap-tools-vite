@@ -1,6 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAppSelector } from "shared/storage/useStore";
-import useAdtStore from "sap/adt/infraestructure/frontend/hooks/useAdtStore";
 import useEditorGroup from "sap/adt/infraestructure/frontend/hooks/useEditorGroup";
 import EditorMain from "./editor/editorMain";
 
@@ -8,9 +7,7 @@ export default function EditorGroupContainer() {
 	const { objectsEditor, objectKeyActive } = useAppSelector(
 		(state) => state.ADT
 	);
-	const { closeTab } = useEditorGroup();
-	const { setObjectKeyActiveAction, setObjectKeyPreviousAction } =
-		useAdtStore();
+	const { closeTab, selectTab } = useEditorGroup();
 
 	return (
 		<>
@@ -18,8 +15,7 @@ export default function EditorGroupContainer() {
 				<Tabs
 					defaultValue={objectKeyActive}
 					onValueChange={(value: string) => {
-						setObjectKeyPreviousAction(objectKeyActive);
-						setObjectKeyActiveAction(value);
+						selectTab(value);
 					}}
 					orientation="horizontal"
 				>

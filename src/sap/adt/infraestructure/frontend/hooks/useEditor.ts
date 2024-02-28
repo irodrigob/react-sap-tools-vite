@@ -23,7 +23,9 @@ export default function useEditor() {
 	const { getDataForConnection } = useSAPGeneral();
 	const { showResultError, showMessage } = useMessages();
 	const { getI18nText } = useTranslations();
-	const { objectsEditor } = useAppSelector((state) => state.ADT);
+	const { objectsEditor, objectKeyActive } = useAppSelector(
+		(state) => state.ADT
+	);
 
 	const getObjectContent = useCallback(
 		(objectInfo: ADTObjectInfoEditor) => {
@@ -73,6 +75,14 @@ export default function useEditor() {
 		},
 		[objectsEditor]
 	);
+	/**
+	 * Devuelve el objeto activo en el editor
+	 */
+	const getEditorObjectActive = useCallback(() => {
+		return objectsEditor.find(
+			(row) => row.objectKey == objectKeyActive
+		) as ADTObjectEditor;
+	}, [objectsEditor, objectKeyActive]);
 
-	return { getObjectContent, checkObjectExist };
+	return { getObjectContent, checkObjectExist, getEditorObjectActive };
 }

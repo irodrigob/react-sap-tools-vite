@@ -10,7 +10,13 @@ const EditorClassContainer: FC<Props> = ({ objectEditor }) => {
 	const { getI18nText } = useTranslations();
 	return (
 		<Tabs defaultValue="globalClass">
-			<TabsList>
+			<div className="">
+				<TabsContent value="globalClass">codigo principal</TabsContent>
+				<TabsContent value="localClass">Clases locales</TabsContent>
+				<TabsContent value="testClass">Clases de test</TabsContent>
+				<TabsContent value="macros">Macros</TabsContent>
+			</div>
+			<TabsList className="2xl:h-[150vh] xl:h-[147vh] md:h-[140vh]">
 				<TabsTrigger value="globalClass">
 					{getI18nText("adtIde.editor.classes.tabGlobalClass")}
 				</TabsTrigger>
@@ -24,12 +30,6 @@ const EditorClassContainer: FC<Props> = ({ objectEditor }) => {
 					{getI18nText("adtIde.editor.classes.tabMacros")}
 				</TabsTrigger>
 			</TabsList>
-			<div className="">
-				<TabsContent value="globalClass">codigo principal</TabsContent>
-				<TabsContent value="localClass">Clases locales</TabsContent>
-				<TabsContent value="testClass">Clases de test</TabsContent>
-				<TabsContent value="macros">Macros</TabsContent>
-			</div>
 		</Tabs>
 	);
 };

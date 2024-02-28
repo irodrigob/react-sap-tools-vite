@@ -34,6 +34,7 @@ export type ADTObjectEditor = {
 	objectKey: string;
 	loadingContent: boolean;
 	objectContent?: ADTObjectContent;
+	sectionSource?: string;
 };
 export type ADTObjectsEditor = ADTObjectEditor[];
 

@@ -378,7 +378,9 @@
 				"tabGlobalClass": "Global class",
 				"tabClassLocal": "Local Types",
 				"tabTestClasses": "Test classes",
-				"tabMacros": "Macros"
+				"tabMacros": "Macros",
+				"labelSectionSource": "Sección:",
+				"placeHolderSectionSource": "Sección código fuente"
 			}
 		}
 	},
