@@ -21,9 +21,15 @@ export default function useFavoritePackages() {
 		setContentPackageAction,
 		addObjectEditorAction,
 		setObjectKeyActiveAction,
+		setObjectEditorActiveAction,
 	} = useAdtStore();
 	const { objectsEditor } = useAppSelector((state) => state.ADT);
-	const { getObjectContent, checkObjectExist } = useEditor();
+	const {
+		getObjectContent,
+		checkObjectExist,
+		buildObjectKey,
+		getDefaultSectionSource,
+	} = useEditor();
 
 	const expandCollapseNode = useCallback(
 		(node: string, treeAttributeMap: TreeAttributeMap): TreeAttributeMap => {
@@ -62,14 +68,18 @@ export default function useFavoritePackages() {
 		(objectInfo: ADTObjectInfoEditor) => {
 			// Si esta abierto inicialmente no haremos nada.
 			if (!checkObjectExist(objectInfo)) {
-				let objectKey = `${objectInfo.objectType}_${objectInfo.object.objectName}`;
+				let objectKey = buildObjectKey(objectInfo);
 
-				if (objectsEditor.length == 0) setObjectKeyActiveAction(objectKey);
+				if (objectsEditor.length == 0) {
+					setObjectKeyActiveAction(objectKey);
+					//setObjectEditorActiveAction(objectKey);
+				}
 
 				addObjectEditorAction({
 					objectInfo: objectInfo,
 					loadingContent: true,
 					objectKey: objectKey,
+					sectionSource: getDefaultSectionSource(objectInfo.objectType),
 				});
 
 				// Lectura del contenido del objeto

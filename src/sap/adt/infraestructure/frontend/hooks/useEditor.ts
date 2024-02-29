@@ -15,7 +15,8 @@ import {
 } from "sap/adt/infraestructure/types/adt";
 import { useAppSelector } from "shared/storage/useStore";
 import { ADTClassContent } from "sap/adt/domain/entities/classContent";
-import EditorClassContainer from "sap/adt/infraestructure/frontend/components/editorArea/editor/class/editorClassContainer";
+import { CLASS_DEFAULT_SECTION } from "sap/adt/infraestructure/constants/editorConstants";
+import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants";
 
 export default function useEditor() {
 	const adtController = new SAPAdtController();
@@ -29,9 +30,10 @@ export default function useEditor() {
 
 	const getObjectContent = useCallback(
 		(objectInfo: ADTObjectInfoEditor) => {
+			let objectKey = buildObjectKey(objectInfo);
 			// Si el objeto existe se indica que se va cargar los datos y en caso contrario se añade
 			if (checkObjectExist(objectInfo)) {
-				setLoadingObjectAction(objectInfo);
+				setLoadingObjectAction(objectKey);
 			} else {
 			}
 
@@ -44,10 +46,10 @@ export default function useEditor() {
 				.then((response) => {
 					if (response.isSuccess) {
 						setContentObjectAction(
-							objectInfo,
+							objectKey,
 							response.getValue() as ADTClassContent
 						);
-						setLoadingObjectAction(objectInfo);
+						setLoadingObjectAction(objectKey);
 					} else {
 						let error = response.getErrorValue();
 						if (error instanceof ErrorGeneral)
@@ -63,13 +65,15 @@ export default function useEditor() {
 		},
 		[objectsEditor]
 	);
+	/**
+	 * Verifica si un objeto ya esta insertado en el modelo
+	 */
 	const checkObjectExist = useCallback(
-		(objectInfo: ADTObjectInfoEditor) => {
-			return objectsEditor.findIndex(
-				(row) =>
-					row.objectKey ==
-					`${objectInfo.objectType}_${objectInfo.object.objectName}`
-			) == -1
+		(objectInfo: ADTObjectInfoEditor | string) => {
+			let objectKey =
+				typeof objectInfo == "string" ? objectInfo : buildObjectKey(objectInfo);
+
+			return objectsEditor.findIndex((row) => row.objectKey == objectKey) == -1
 				? false
 				: true;
 		},
@@ -78,11 +82,30 @@ export default function useEditor() {
 	/**
 	 * Devuelve el objeto activo en el editor
 	 */
-	const getEditorObjectActive = useCallback(() => {
+	const getObjectEditorActive = useCallback(() => {
 		return objectsEditor.find(
 			(row) => row.objectKey == objectKeyActive
 		) as ADTObjectEditor;
 	}, [objectsEditor, objectKeyActive]);
+	/**
+	 * Construye la clave del objeto
+	 */
+	const buildObjectKey = useCallback((objectInfo: ADTObjectInfoEditor) => {
+		return `${objectInfo.objectType}_${objectInfo.object.objectName}`;
+	}, []);
 
-	return { getObjectContent, checkObjectExist, getEditorObjectActive };
+	const getDefaultSectionSource = useCallback((objectType: string): string => {
+		if (objectType.includes(ADT_OBJECT_TYPES.CLASSES.OBJECT_TYPE))
+			return CLASS_DEFAULT_SECTION;
+
+		return "";
+	}, []);
+
+	return {
+		getObjectContent,
+		checkObjectExist,
+		getObjectEditorActive,
+		buildObjectKey,
+		getDefaultSectionSource,
+	};
 }

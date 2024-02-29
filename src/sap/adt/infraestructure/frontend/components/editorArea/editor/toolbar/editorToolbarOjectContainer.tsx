@@ -7,11 +7,11 @@ import { ADTObjectEditor } from "sap/adt/infraestructure/types/adt";
 
 export default function EditorToolbarOjectContainer() {
 	const { objectKeyActive } = useAppSelector((state) => state.ADT);
-	const { getEditorObjectActive } = useEditor();
+	const { getObjectEditorActive } = useEditor();
 	const [objectEditor, setObjectEditor] = useState<ADTObjectEditor | null>();
 
 	useEffect(() => {
-		setObjectEditor(getEditorObjectActive());
+		setObjectEditor(getObjectEditorActive());
 	}, [objectKeyActive]);
 
 	return (

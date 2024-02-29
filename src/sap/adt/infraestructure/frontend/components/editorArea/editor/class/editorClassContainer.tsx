@@ -16,7 +16,7 @@ const EditorClassContainer: FC<Props> = ({ objectEditor }) => {
 				<TabsContent value="testClass">Clases de test</TabsContent>
 				<TabsContent value="macros">Macros</TabsContent>
 			</div>
-			<TabsList className="2xl:h-[150vh] xl:h-[147vh] md:h-[140vh]">
+			<TabsList className="">
 				<TabsTrigger value="globalClass">
 					{getI18nText("adtIde.editor.classes.tabGlobalClass")}
 				</TabsTrigger>

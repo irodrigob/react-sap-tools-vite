@@ -1,9 +1,10 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
 	ADTFavoritePackage,
 	ADTFavoritePackages,
 } from "sap/adt/domain/entities/favoritePackage";
+import { useAppSelector } from "shared/storage/useStore";
 import {
 	addFavoritePackage,
 	deleteFavoritePackage,
@@ -18,6 +19,7 @@ import {
 	setObjectKeyActive,
 	setObjectsEditor,
 	setObjectKeyPrevious,
+	setObjectEditorActive,
 } from "sap/adt/infraestructure/storage/adtSlice";
 import {
 	PackageContentStorage,
@@ -29,6 +31,7 @@ import {
 
 export default function useAdtStore() {
 	const dispatch = useDispatch();
+	const { objectKeyActive } = useAppSelector((state) => state.ADT);
 
 	const addFavoritePackageAction = useCallback(
 		(favoritePackage: ADTFavoritePackage) => {
@@ -60,21 +63,15 @@ export default function useAdtStore() {
 	const addObjectEditorAction = useCallback((objectEditor: ADTObjectEditor) => {
 		dispatch(addObjectEditor(objectEditor));
 	}, []);
-	const deleteObjectEditorAction = useCallback(
-		(objectInfo: ADTObjectInfoEditor) => {
-			dispatch(deleteObjectEditor(objectInfo));
-		},
-		[]
-	);
-	const setLoadingObjectAction = useCallback(
-		(objectInfo: ADTObjectInfoEditor) => {
-			dispatch(setLoadingObject(objectInfo));
-		},
-		[]
-	);
+	const deleteObjectEditorAction = useCallback((objectKey: string) => {
+		dispatch(deleteObjectEditor(objectKey));
+	}, []);
+	const setLoadingObjectAction = useCallback((objectKey: string) => {
+		dispatch(setLoadingObject(objectKey));
+	}, []);
 	const setContentObjectAction = useCallback(
-		(objectInfo: ADTObjectInfoEditor, content: ADTObjectContent) => {
-			dispatch(setContentObject({ objectInfo: objectInfo, content: content }));
+		(objectKey: string, content: ADTObjectContent) => {
+			dispatch(setContentObject({ objectKey: objectKey, content: content }));
 		},
 		[]
 	);
@@ -90,11 +87,14 @@ export default function useAdtStore() {
 	const setObjectKeyPreviousAction = useCallback((objectKey: string) => {
 		dispatch(setObjectKeyPrevious(objectKey));
 	}, []);
-
+	const setObjectEditorActiveAction = useCallback((objectKey: string) => {
+		dispatch(setObjectEditorActive(objectKey));
+	}, []);
 	const clearVariables = useCallback(() => {
 		setFavoritePackagesAction([]);
 		setObjectsEditorAction([]);
 		setObjectKeyActiveAction("");
+		setObjectEditorActiveAction("");
 	}, []);
 
 	return {
@@ -112,5 +112,6 @@ export default function useAdtStore() {
 		setObjectKeyActiveAction,
 		setObjectsEditorAction,
 		setObjectKeyPreviousAction,
+		setObjectEditorActiveAction,
 	};
 }

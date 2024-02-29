@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import {
 	Select,
 	SelectContent,
@@ -12,8 +12,13 @@ import {
 	CLASS_DEFAULT_SECTION,
 } from "sap/adt/infraestructure/constants/editorConstants";
 import { useTranslations } from "translations/i18nContext";
+import useEditor from "sap/adt/infraestructure/frontend/hooks/useEditor";
 
-export default function SelectSectionSource() {
+interface Props {
+	onChangeSection: (section: string) => void;
+	sectionSource: string;
+}
+const SelectSectionSource: FC<Props> = ({ sectionSource, onChangeSection }) => {
 	const { getI18nText } = useTranslations();
 	const [sectionSelected, setSectionSelected] = useState(CLASS_DEFAULT_SECTION);
 
@@ -26,11 +31,9 @@ export default function SelectSectionSource() {
 				{getI18nText("adtIde.editor.classes.labelSectionSource")}
 			</Label>
 			<Select
-				value={sectionSelected}
+				value={sectionSource}
 				key="selectClassSource"
-				onValueChange={(value: any) => {
-					setSectionSelected(value);
-				}}
+				onValueChange={onChangeSection}
 			>
 				<SelectTrigger className="w-[180px]">
 					<SelectValue
@@ -54,4 +57,6 @@ export default function SelectSectionSource() {
 			</Select>
 		</>
 	);
-}
+};
+
+export default SelectSectionSource;

@@ -63,7 +63,7 @@ export default function useEditorGroup() {
 				}
 			}
 
-			deleteObjectEditorAction(objectInfo);
+			deleteObjectEditorAction(objectInfo.);
 		},
 		[objectsEditor, objectKeyActive]
 	);
