@@ -7,7 +7,6 @@ import {
 	ADTObjectsEditor,
 	ADTObjectEditor,
 	PackageContentStorage,
-	ADTObjectInfoEditor,
 	ADTObjectContent,
 } from "sap/adt/infraestructure/types/adt";
 import { INIT_OBJECT_EDITOR } from "sap/adt/infraestructure/constants/editorConstants";
@@ -102,19 +101,46 @@ export const ADTSlice = createSlice({
 
 			state.objectsEditor.splice(index, index >= 0 ? 1 : 0);
 		},
+		updateObjectEditor(state, action: PayloadAction<ADTObjectEditor>) {
+			let index = state.objectsEditor.findIndex(
+				(row) => row.objectKey == action.payload.objectKey
+			);
+			if (index != -1) state.objectsEditor[index] = action.payload;
+		},
 		setObjectKeyActive(state, action: PayloadAction<string>) {
 			state.objectKeyActive = action.payload;
 		},
 		setObjectKeyPrevious(state, action: PayloadAction<string>) {
 			state.objectKeyPrevious = action.payload;
 		},
-		setObjectEditorActive(state, action: PayloadAction<string>) {
-			let objectEditor = state.objectsEditor.find(
-				(row) => row.objectKey == action.payload
+		setObjectEditorActive(
+			state,
+			action: PayloadAction<string | ADTObjectEditor>
+		) {
+			if (typeof action.payload == "string") {
+				let objectEditor = state.objectsEditor.find(
+					(row) => row.objectKey == action.payload
+				);
+				state.objectEditorActive = objectEditor
+					? objectEditor
+					: INIT_OBJECT_EDITOR;
+			} else {
+				state.objectEditorActive = action.payload as ADTObjectEditor;
+			}
+		},
+
+		setSectionSource(
+			state,
+			action: PayloadAction<{
+				objectKey: string;
+				sectionSource: string;
+			}>
+		) {
+			let index = state.objectsEditor.findIndex(
+				(row) => row.objectKey == action.payload.objectKey
 			);
-			state.objectEditorActive = objectEditor
-				? objectEditor
-				: INIT_OBJECT_EDITOR;
+			if (index != -1)
+				state.objectsEditor[index].sectionSource = action.payload.sectionSource;
 		},
 	},
 });
@@ -134,6 +160,8 @@ export const {
 	setObjectKeyActive,
 	setObjectKeyPrevious,
 	setObjectEditorActive,
+	setSectionSource,
+	updateObjectEditor,
 } = ADTSlice.actions;
 
 export default ADTSlice.reducer;

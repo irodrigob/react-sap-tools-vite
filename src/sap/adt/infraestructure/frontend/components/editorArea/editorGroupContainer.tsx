@@ -29,7 +29,7 @@ export default function EditorGroupContainer() {
 										objectKeyActive == row.objectKey ? "active" : "inactive"
 									}
 									onCloseTab={() => {
-										closeTab(row.objectInfo);
+										closeTab(row.objectKey);
 									}}
 								>
 									{row.objectInfo.object.objectName}

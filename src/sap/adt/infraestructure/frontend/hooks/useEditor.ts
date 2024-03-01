@@ -20,7 +20,11 @@ import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants
 
 export default function useEditor() {
 	const adtController = new SAPAdtController();
-	const { setLoadingObjectAction, setContentObjectAction } = useAdtStore();
+	const {
+		setLoadingObjectAction,
+		setContentObjectAction,
+		setObjectEditorActiveAction,
+	} = useAdtStore();
 	const { getDataForConnection } = useSAPGeneral();
 	const { showResultError, showMessage } = useMessages();
 	const { getI18nText } = useTranslations();
@@ -45,11 +49,15 @@ export default function useEditor() {
 				)
 				.then((response) => {
 					if (response.isSuccess) {
+						setLoadingObjectAction(objectKey);
 						setContentObjectAction(
 							objectKey,
 							response.getValue() as ADTClassContent
 						);
-						setLoadingObjectAction(objectKey);
+						// Si no hay registros o solo hay uno en el array de objetos en el editor fuerzo la lectura del editor
+						// activo porque la primera que se lee en un objeto no hay manera que se lea de manera automática sin hacer esta solución
+						if (objectsEditor.length <= 1)
+							setObjectEditorActiveAction(objectKey);
 					} else {
 						let error = response.getErrorValue();
 						if (error instanceof ErrorGeneral)

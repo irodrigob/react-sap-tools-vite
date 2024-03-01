@@ -70,10 +70,7 @@ export default function useFavoritePackages() {
 			if (!checkObjectExist(objectInfo)) {
 				let objectKey = buildObjectKey(objectInfo);
 
-				if (objectsEditor.length == 0) {
-					setObjectKeyActiveAction(objectKey);
-					//setObjectEditorActiveAction(objectKey);
-				}
+				if (objectsEditor.length == 0) setObjectKeyActiveAction(objectKey);
 
 				addObjectEditorAction({
 					objectInfo: objectInfo,

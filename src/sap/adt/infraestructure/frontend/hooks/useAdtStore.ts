@@ -20,11 +20,12 @@ import {
 	setObjectsEditor,
 	setObjectKeyPrevious,
 	setObjectEditorActive,
+	setSectionSource,
+	updateObjectEditor,
 } from "sap/adt/infraestructure/storage/adtSlice";
 import {
 	PackageContentStorage,
 	ADTObjectEditor,
-	ADTObjectInfoEditor,
 	ADTObjectContent,
 	ADTObjectsEditor,
 } from "sap/adt/infraestructure/types/adt";
@@ -83,13 +84,29 @@ export default function useAdtStore() {
 	);
 	const setObjectKeyActiveAction = useCallback((objectKey: string) => {
 		dispatch(setObjectKeyActive(objectKey));
+		setObjectEditorActiveAction(objectKey); // Actualizo el registro con el objeto activo
 	}, []);
 	const setObjectKeyPreviousAction = useCallback((objectKey: string) => {
 		dispatch(setObjectKeyPrevious(objectKey));
 	}, []);
-	const setObjectEditorActiveAction = useCallback((objectKey: string) => {
-		dispatch(setObjectEditorActive(objectKey));
-	}, []);
+	const setObjectEditorActiveAction = useCallback(
+		(objectKeyOrContent: string | ADTObjectEditor) => {
+			dispatch(setObjectEditorActive(objectKeyOrContent));
+		},
+		[]
+	);
+	const setSectionSourceAction = useCallback(
+		(objectKey: string, sectionSource: string) => {
+			dispatch(setSectionSource({ objectKey, sectionSource }));
+		},
+		[]
+	);
+	const updateObjectEditorAction = useCallback(
+		(objectEditor: ADTObjectEditor) => {
+			dispatch(updateObjectEditor(objectEditor));
+		},
+		[]
+	);
 	const clearVariables = useCallback(() => {
 		setFavoritePackagesAction([]);
 		setObjectsEditorAction([]);
@@ -113,5 +130,7 @@ export default function useAdtStore() {
 		setObjectsEditorAction,
 		setObjectKeyPreviousAction,
 		setObjectEditorActiveAction,
+		setSectionSourceAction,
+		updateObjectEditorAction,
 	};
 }

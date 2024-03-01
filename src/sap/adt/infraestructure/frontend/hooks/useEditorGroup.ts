@@ -21,15 +21,13 @@ export default function useEditorGroup() {
 	 * Proceso al cerrar una pestaña
 	 */
 	const closeTab = useCallback(
-		(objectInfo: ADTObjectInfoEditor) => {
+		(objectKey: string) => {
 			// Debido a como esta montando el cierre dentro del trigger del compontente, cuando se cierra una pestaña que no es la activa
 			// esta se activa y se cierra a la vez, haciendo que no quede ninguna pestaña activa.
 
 			// Busco la pestaña que se cierra
 			let objectEditorClose = objectsEditor.find(
-				(row) =>
-					row.objectInfo.objectType == objectInfo.objectType &&
-					row.objectInfo.object.objectName == objectInfo.object.objectName
+				(row) => row.objectKey == objectKey
 			);
 			if (objectEditorClose) {
 				if (objectEditorClose.objectKey == objectKeyActive) {
@@ -63,7 +61,7 @@ export default function useEditorGroup() {
 				}
 			}
 
-			deleteObjectEditorAction(objectInfo.);
+			deleteObjectEditorAction(objectKey);
 		},
 		[objectsEditor, objectKeyActive]
 	);

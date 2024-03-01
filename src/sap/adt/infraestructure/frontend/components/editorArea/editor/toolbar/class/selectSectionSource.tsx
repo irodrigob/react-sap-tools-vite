@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import {
 	Select,
 	SelectContent,
@@ -21,6 +21,8 @@ interface Props {
 const SelectSectionSource: FC<Props> = ({ sectionSource, onChangeSection }) => {
 	const { getI18nText } = useTranslations();
 	const [sectionSelected, setSectionSelected] = useState(CLASS_DEFAULT_SECTION);
+
+	const handleChangeValue = useCallback((value: string) => {}, []);
 
 	return (
 		<>

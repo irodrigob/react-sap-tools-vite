@@ -1,29 +1,26 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import SelectSectionSource from "./selectSectionSource";
 import { useAppSelector } from "shared/storage/useStore";
-import useEditor from "sap/adt/infraestructure/frontend/hooks/useEditor";
-import { ADTObjectEditor } from "sap/adt/infraestructure/types/adt";
-import { INIT_OBJECT_EDITOR } from "sap/adt/infraestructure/constants/editorConstants";
+import useToolbar from "sap/adt/infraestructure/frontend/hooks/useToolbar";
 
 const ClassToolbar = () => {
-	const { objectKeyActive } = useAppSelector((state) => state.ADT);
-	const { getObjectEditorActive } = useEditor();
+	const { objectKeyActive, objectEditorActive } = useAppSelector(
+		(state) => state.ADT
+	);
+	const { changeSectionSource } = useToolbar();
 
-	const [objectEditor, setObjectEditor] =
-		useState<ADTObjectEditor>(INIT_OBJECT_EDITOR);
-	useEffect(() => {
-		setObjectEditor(getObjectEditorActive());
-	}, [objectKeyActive]);
-
-	const changeSectionSource = useCallback((section: string) => {
-		console.log(section);
-	}, []);
+	const handlerChangeSectionSource = useCallback(
+		(section: string) => {
+			changeSectionSource(objectEditorActive, section);
+		},
+		[objectKeyActive]
+	);
 
 	return (
 		<div className="flex items-center justify-center">
 			<SelectSectionSource
-				sectionSource={objectEditor.sectionSource as string}
-				onChangeSection={changeSectionSource}
+				sectionSource={objectEditorActive.sectionSource as string}
+				onChangeSection={handlerChangeSectionSource}
 			/>
 		</div>
 	);
