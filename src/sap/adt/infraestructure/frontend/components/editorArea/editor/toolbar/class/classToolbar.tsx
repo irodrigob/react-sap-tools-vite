@@ -13,7 +13,7 @@ const ClassToolbar = () => {
 		(section: string) => {
 			changeSectionSource(objectEditorActive, section);
 		},
-		[objectKeyActive]
+		[objectKeyActive, objectEditorActive]
 	);
 
 	return (

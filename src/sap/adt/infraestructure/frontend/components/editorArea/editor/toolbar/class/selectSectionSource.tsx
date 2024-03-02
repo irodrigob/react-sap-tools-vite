@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC } from "react";
 import {
 	Select,
 	SelectContent,
@@ -7,22 +7,14 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import {
-	CLASS_SECTION_SOURCE,
-	CLASS_DEFAULT_SECTION,
-} from "sap/adt/infraestructure/constants/editorConstants";
 import { useTranslations } from "translations/i18nContext";
-import useEditor from "sap/adt/infraestructure/frontend/hooks/useEditor";
-
+import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants";
 interface Props {
 	onChangeSection: (section: string) => void;
 	sectionSource: string;
 }
 const SelectSectionSource: FC<Props> = ({ sectionSource, onChangeSection }) => {
 	const { getI18nText } = useTranslations();
-	const [sectionSelected, setSectionSelected] = useState(CLASS_DEFAULT_SECTION);
-
-	const handleChangeValue = useCallback((value: string) => {}, []);
 
 	return (
 		<>
@@ -45,13 +37,13 @@ const SelectSectionSource: FC<Props> = ({ sectionSource, onChangeSection }) => {
 					/>
 				</SelectTrigger>
 				<SelectContent>
-					{Object.keys(CLASS_SECTION_SOURCE).map((k: any) => {
+					{ADT_OBJECT_TYPES.CLASSES.EDITOR.SECTION_SOURCES.map((row: any) => {
 						return (
 							<SelectItem
-								value={k}
-								key={k}
+								value={row.SECTION}
+								key={row.SECTION}
 							>
-								{getI18nText(CLASS_SECTION_SOURCE[k])}
+								{getI18nText(row.LABEL)}
 							</SelectItem>
 						);
 					})}

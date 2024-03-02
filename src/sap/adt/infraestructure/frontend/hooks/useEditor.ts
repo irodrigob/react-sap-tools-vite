@@ -15,7 +15,6 @@ import {
 } from "sap/adt/infraestructure/types/adt";
 import { useAppSelector } from "shared/storage/useStore";
 import { ADTClassContent } from "sap/adt/domain/entities/classContent";
-import { CLASS_DEFAULT_SECTION } from "sap/adt/infraestructure/constants/editorConstants";
 import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants";
 
 export default function useEditor() {
@@ -24,6 +23,7 @@ export default function useEditor() {
 		setLoadingObjectAction,
 		setContentObjectAction,
 		setObjectEditorActiveAction,
+		updateObjectEditorAction,
 	} = useAdtStore();
 	const { getDataForConnection } = useSAPGeneral();
 	const { showResultError, showMessage } = useMessages();
@@ -104,10 +104,22 @@ export default function useEditor() {
 
 	const getDefaultSectionSource = useCallback((objectType: string): string => {
 		if (objectType.includes(ADT_OBJECT_TYPES.CLASSES.OBJECT_TYPE))
-			return CLASS_DEFAULT_SECTION;
+			return ADT_OBJECT_TYPES.CLASSES.EDITOR.DEFAULT_SECTION;
 
 		return "";
 	}, []);
+	/**
+	 * Actualiza los datos del objeto pasado al modelo prinicipal, y si
+	 * la clave es igual a la activa también actualiza el objeto activo
+	 */
+	const updateModelObjectEditor = useCallback(
+		(objectEditor: ADTObjectEditor) => {
+			if (objectKeyActive == objectEditor.objectKey)
+				setObjectEditorActiveAction(objectEditor);
+			updateObjectEditorAction(objectEditor);
+		},
+		[objectKeyActive]
+	);
 
 	return {
 		getObjectContent,
@@ -115,5 +127,6 @@ export default function useEditor() {
 		getObjectEditorActive,
 		buildObjectKey,
 		getDefaultSectionSource,
+		updateModelObjectEditor,
 	};
 }

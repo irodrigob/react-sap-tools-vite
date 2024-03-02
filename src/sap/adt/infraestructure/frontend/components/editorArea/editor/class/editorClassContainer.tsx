@@ -1,13 +1,16 @@
 import { FC } from "react";
+import Editor from "@monaco-editor/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ADTObjectEditor } from "sap/adt/infraestructure/types/adt";
 import { useTranslations } from "translations/i18nContext";
+import { useAppSelector } from "shared/storage/useStore";
 
 interface Props {
 	objectEditor: ADTObjectEditor;
 }
 const EditorClassContainer: FC<Props> = ({ objectEditor }) => {
 	const { getI18nText } = useTranslations();
+	const { objectEditorActive } = useAppSelector((state) => state.ADT);
 	return (
 		<Tabs defaultValue="globalClass">
 			<div className="">

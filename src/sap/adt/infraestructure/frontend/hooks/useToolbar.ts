@@ -1,10 +1,9 @@
 import { useCallback } from "react";
-import useAdtStore from "./useAdtStore";
 import { ADTObjectEditor } from "sap/adt/infraestructure/types/adt";
+import useEditor from "./useEditor";
 
 export default function useToolbar() {
-	const { setObjectEditorActiveAction, updateObjectEditorAction } =
-		useAdtStore();
+	const { updateModelObjectEditor } = useEditor();
 	/**
 	 * Cambia la sección de codigo fuente del editor pasado por parametro
 	 */
@@ -15,8 +14,7 @@ export default function useToolbar() {
 				sectionSource: sectionSource,
 			};
 
-			setObjectEditorActiveAction(newObjectEditor);
-			updateObjectEditorAction(newObjectEditor);
+			updateModelObjectEditor(newObjectEditor);
 		},
 		[]
 	);
