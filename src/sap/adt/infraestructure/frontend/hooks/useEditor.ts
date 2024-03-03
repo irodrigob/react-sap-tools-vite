@@ -36,10 +36,7 @@ export default function useEditor() {
 		(objectInfo: ADTObjectInfoEditor) => {
 			let objectKey = buildObjectKey(objectInfo);
 			// Si el objeto existe se indica que se va cargar los datos y en caso contrario se añade
-			if (checkObjectExist(objectInfo)) {
-				setLoadingObjectAction(objectKey);
-			} else {
-			}
+			if (checkObjectExist(objectInfo)) setLoadingObjectAction(objectKey);
 
 			let objectController = new SAPAdtObjectController(objectInfo.objectType);
 			objectController
@@ -54,9 +51,10 @@ export default function useEditor() {
 							objectKey,
 							response.getValue() as ADTClassContent
 						);
-						// Si no hay registros o solo hay uno en el array de objetos en el editor fuerzo la lectura del editor
-						// activo porque la primera que se lee en un objeto no hay manera que se lea de manera automática sin hacer esta solución
-						if (objectsEditor.length <= 1)
+						// Si no hay registros en el array de objetos en el editor fuerzo la actualizacion del objeto activo.
+						// Se hace porque la primera no hay ningun estado, objectKeyActive, actualizado hasta que no finalice el montaje del componente.
+						// Con lo cual no se puede hacer de manera automática
+						if (objectsEditor.length == 0)
 							setObjectEditorActiveAction(objectKey);
 					} else {
 						let error = response.getErrorValue();

@@ -374,6 +374,7 @@
 		},
 		"editor": {
 			"objectTypeNotImplemented": "El tipo de objeto {{objectTypeDesc}} no esta implementado",
+			"loadingContent": "Cargando {{objectName}}",
 			"classes": {
 				"tabGlobalClass": "Global class",
 				"tabClassLocalTypes": "Class-relevant local Types",

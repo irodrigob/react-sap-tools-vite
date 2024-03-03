@@ -22,7 +22,7 @@ export const ADT_OBJECT_TYPES = {
 				{
 					SECTION: "testClass",
 					LABEL: "adtIde.editor.classes.tabTestClasses",
-					SOURCE_URI: "",
+					SOURCE_URI: "includes/testclasses",
 				},
 				{
 					SECTION: "macros",

@@ -29,7 +29,7 @@ const SelectSectionSource: FC<Props> = ({ sectionSource, onChangeSection }) => {
 				key="selectClassSource"
 				onValueChange={onChangeSection}
 			>
-				<SelectTrigger className="w-[180px]">
+				<SelectTrigger className="w-[13rem]">
 					<SelectValue
 						placeholder={getI18nText(
 							"adtIde.editor.classes.placeHolderSectionSource"
