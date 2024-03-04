@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { FC } from "react";
 import {
 	ResizableHandle,
@@ -10,7 +11,12 @@ import EditorToolbarContainer from "./editor/toolbar/editorToolbarContainer";
 
 const EditorAreaContainer: FC = () => {
 	return (
-		<ResizablePanelGroup direction="vertical">
+		<ResizablePanelGroup
+			direction="vertical"
+			onLayout={(sizes: number[]) => {
+				console.log(sizes);
+			}}
+		>
 			<ResizablePanel defaultSize={90}>
 				<div className="flex flex-col">
 					<EditorToolbarContainer />

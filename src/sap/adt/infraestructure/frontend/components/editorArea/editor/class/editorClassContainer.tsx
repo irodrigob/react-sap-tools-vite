@@ -1,16 +1,13 @@
 import { FC, useEffect, useState } from "react";
-import Editor from "@monaco-editor/react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ADTObjectEditor } from "sap/adt/infraestructure/types/adt";
-import { useTranslations } from "translations/i18nContext";
 import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants";
 import { ADTClassSourceInclude } from "sap/adt/domain/entities/classContent";
+import ABAPEditor from "shared/frontend/components/abapEditor/abapEditor";
 
 interface Props {
 	objectEditor: ADTObjectEditor;
 }
 const EditorClassContainer: FC<Props> = ({ objectEditor }) => {
-	const { getI18nText } = useTranslations();
 	const [sourceInclude, setSourceInclude] = useState<ADTClassSourceInclude>();
 
 	useEffect(() => {
@@ -32,12 +29,7 @@ const EditorClassContainer: FC<Props> = ({ objectEditor }) => {
 
 	return (
 		<>
-			<Editor
-				height="80vh"
-				defaultLanguage="abap"
-				defaultValue={sourceInclude?.contentSource}
-				theme="vs-dark"
-			/>
+			<ABAPEditor content={sourceInclude?.contentSource as string} />
 		</>
 	);
 };

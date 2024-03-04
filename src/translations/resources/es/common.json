@@ -383,7 +383,8 @@
 				"tabMacros": "Macros",
 				"labelSectionSource": "Sección:",
 				"placeHolderSectionSource": "Sección código fuente"
-			}
+			},
+			"readOnlyMessage": "Pulse el boton <strong>Editar/Visualizar</strong> para poder modificar"
 		}
 	},
 	"messageManager": {

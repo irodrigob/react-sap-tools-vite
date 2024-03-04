@@ -4,7 +4,7 @@ import useEditorGroup from "sap/adt/infraestructure/frontend/hooks/useEditorGrou
 import EditorMain from "./editor/editorMain";
 
 export default function EditorGroupContainer() {
-	const { objectsEditor, objectKeyActive } = useAppSelector(
+	const { objectsEditor, objectKeyActive, objectEditorActive } = useAppSelector(
 		(state) => state.ADT
 	);
 	const { closeTab, selectTab } = useEditorGroup();
