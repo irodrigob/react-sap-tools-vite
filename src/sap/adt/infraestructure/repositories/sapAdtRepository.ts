@@ -16,8 +16,10 @@ import {
 	SEARCH_OBJECT_SINGLE_TYPE,
 	PACKAGE_CONTENT,
 	CLASS_CONTENT,
+	READ_OBJECT_STRUCTURE,
 } from "./graphqlSchema";
 import { ADTObjectVersion } from "sap/adt/infraestructure/types/adt";
+import { ADTObjectStructure } from "sap/adt/domain/entities/objectStructure";
 
 export default class SAPAdtRepository
 	extends graphQLRepository
@@ -160,5 +162,29 @@ export default class SAPAdtRepository
 			},
 		});
 		return response.data.adtClassContent;
+	}
+	/**
+	 * Devuelve el contenido de una clase
+	 * @param dataConnection Datos del conexión
+	 * @param objectUri URL de la clase
+	 * @param Objectversion Versión de la clase
+	 */
+	async getObjectStructure(
+		dataConnection: DataConnectionSystem,
+		objectUri: string
+	): Promise<ADTObjectStructure> {
+		const response = await this._apolloClient.query({
+			query: READ_OBJECT_STRUCTURE,
+			fetchPolicy: "network-only",
+			variables: {
+				system: dataConnection.host,
+				sap_user: dataConnection.sap_user,
+				sap_password: dataConnection.sap_password,
+				client: dataConnection.client,
+				language: dataConnection.language,
+				objectUri: objectUri,
+			},
+		});
+		return response.data.adtReadObjectStructure;
 	}
 }

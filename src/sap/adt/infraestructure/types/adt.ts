@@ -10,6 +10,7 @@ import {
 	AdtPackageContents,
 	AdtPackageObject,
 } from "sap/adt/domain/entities/packageContent";
+import { ADTObjectStructure } from "@/sap/adt/domain/entities/objectStructure";
 import { ADTClassContent } from "sap/adt/domain/entities/classContent";
 
 export enum ADTObjectVersion {
@@ -65,5 +66,10 @@ export type ResponsePackageContent =
 
 export type ResponseAdtObjectContent =
 	| Result<ADTClassContent | undefined>
+	| Result<ErrorGeneral>
+	| Result<ErrorGraphql>;
+
+export type ResponseObjectStructure =
+	| Result<ADTObjectStructure>
 	| Result<ErrorGeneral>
 	| Result<ErrorGraphql>;

@@ -10,6 +10,7 @@ import {
 	ADTObjectContent,
 } from "sap/adt/infraestructure/types/adt";
 import { INIT_OBJECT_EDITOR } from "sap/adt/infraestructure/constants/editorConstants";
+import { DEFAULT_SIZE_EDITOR_AREA } from "sap/adt/infraestructure/constants/editorConstants";
 
 export interface ADTRedux {
 	favoritePackages: ADTFavoritePackages;
@@ -17,6 +18,7 @@ export interface ADTRedux {
 	objectKeyActive: string;
 	objectKeyPrevious: string;
 	objectEditorActive: ADTObjectEditor;
+	heightEditor: number;
 }
 
 const initialState: ADTRedux = {
@@ -25,6 +27,7 @@ const initialState: ADTRedux = {
 	objectKeyActive: "",
 	objectKeyPrevious: "",
 	objectEditorActive: INIT_OBJECT_EDITOR,
+	heightEditor: DEFAULT_SIZE_EDITOR_AREA.HEIGHT_EDITOR,
 };
 
 export const ADTSlice = createSlice({
@@ -142,6 +145,9 @@ export const ADTSlice = createSlice({
 			if (index != -1)
 				state.objectsEditor[index].sectionSource = action.payload.sectionSource;
 		},
+		setHeightEditor(state, action: PayloadAction<number>) {
+			state.heightEditor = action.payload;
+		},
 	},
 });
 
@@ -162,6 +168,7 @@ export const {
 	setObjectEditorActive,
 	setSectionSource,
 	updateObjectEditor,
+	setHeightEditor,
 } = ADTSlice.actions;
 
 export default ADTSlice.reducer;

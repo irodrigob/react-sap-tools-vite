@@ -3,17 +3,18 @@ import ADTClassObject from "sap/adt/application/adtClassApplication";
 import {
 	ADTObjectVersion,
 	ResponseAdtObjectContent,
+	ResponseObjectStructure,
 } from "sap/adt/infraestructure/types/adt";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 import { Result } from "shared/core/Result";
 import ErrorGeneral from "shared/errors/errorGeneral";
 import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants";
+import AdtBaseObject from "sap/adt/application/adtBaseObject";
 
 export default class SAPAdtObjectController {
-	private objectContent: SAPAdtObjectContentInterface | undefined;
+	private objectContent: SAPAdtObjectContentInterface;
 	constructor(objectType: string) {
-		if (objectType.includes(ADT_OBJECT_TYPES.CLASSES.OBJECT_TYPE))
-			this.objectContent = new ADTClassObject();
+		this.objectContent = this.getInstanceObject(objectType);
 	}
 	/**
 	 * Devuelve el contenido de una clase
@@ -27,13 +28,33 @@ export default class SAPAdtObjectController {
 		objectUri: string,
 		objectversion?: ADTObjectVersion
 	): Promise<ResponseAdtObjectContent> {
-		if (this.objectContent)
-			return this.objectContent.getObjectContent(
-				dataConnection,
-				objectUri,
-				objectversion
-			);
+		return this.objectContent.getObjectContent(
+			dataConnection,
+			objectUri,
+			objectversion
+		);
+	}
+	/**
+	 * Devuelve la estructura de un objeto.
+	 * En el caso de clases devuelve los metodos, tipos de datos, etc..
+	 * @param dataConnection Datosd de conexión
+	 * @param objectUri URL del objeto
+	 */
+	getObjectReadStructure(
+		dataConnection: DataConnectionSystem,
+		objectUri: string
+	): Promise<ResponseObjectStructure> {
+		return this.objectContent.getObjectReadStructure(dataConnection, objectUri);
+	}
+	/**
+	 * Devuelve la instancia de la clase según el tipo de objeto
+	 * @param objectType Tipo de objeto
+	 * @returns Clase instanciada del objeto
+	 */
+	private getInstanceObject(objectType: string) {
+		if (objectType.includes(ADT_OBJECT_TYPES.CLASSES.OBJECT_TYPE))
+			return new ADTClassObject();
 
-		return Result.fail<ErrorGeneral>(ErrorGeneral.create("Not implemented"));
+		return new AdtBaseObject();
 	}
 }

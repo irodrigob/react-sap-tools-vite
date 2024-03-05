@@ -185,3 +185,38 @@ export const CLASS_CONTENT = gql`
 		}
 	}
 `;
+
+export const READ_OBJECT_STRUCTURE = gql`
+	query Query(
+		$system: String!
+		$sap_user: String!
+		$sap_password: String!
+		$language: String!
+		$client: String!
+		$objectUri: String!
+	) {
+		adtReadObjectStructure(
+			system: $system
+			sap_user: $sap_user
+			sap_password: $sap_password
+			language: $language
+			client: $client
+			objectUri: $objectUri
+		) {
+			name
+			type
+			typeDesc
+			structureElements {
+				name
+				type
+				typeDesc
+				visibility
+				blockInfo {
+					block
+					startPos
+					endPos
+				}
+			}
+		}
+	}
+`;

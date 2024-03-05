@@ -45,8 +45,8 @@ export default function useEditor() {
 					objectInfo.object.objectUri
 				)
 				.then((response) => {
+					setLoadingObjectAction(objectKey);
 					if (response.isSuccess) {
-						setLoadingObjectAction(objectKey);
 						setContentObjectAction(
 							objectKey,
 							response.getValue() as ADTClassContent

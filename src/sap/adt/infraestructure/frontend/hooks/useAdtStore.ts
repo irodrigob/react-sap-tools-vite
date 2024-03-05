@@ -1,10 +1,9 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import {
 	ADTFavoritePackage,
 	ADTFavoritePackages,
 } from "sap/adt/domain/entities/favoritePackage";
-import { useAppSelector } from "shared/storage/useStore";
 import {
 	addFavoritePackage,
 	deleteFavoritePackage,
@@ -22,6 +21,7 @@ import {
 	setObjectEditorActive,
 	setSectionSource,
 	updateObjectEditor,
+	setHeightEditor,
 } from "sap/adt/infraestructure/storage/adtSlice";
 import {
 	PackageContentStorage,
@@ -32,7 +32,6 @@ import {
 
 export default function useAdtStore() {
 	const dispatch = useDispatch();
-	const { objectKeyActive } = useAppSelector((state) => state.ADT);
 
 	const addFavoritePackageAction = useCallback(
 		(favoritePackage: ADTFavoritePackage) => {
@@ -107,6 +106,9 @@ export default function useAdtStore() {
 		},
 		[]
 	);
+	const setHeightEditorAction = useCallback((size: number) => {
+		dispatch(setHeightEditor(size));
+	}, []);
 	const clearVariables = useCallback(() => {
 		setFavoritePackagesAction([]);
 		setObjectsEditorAction([]);
@@ -132,5 +134,6 @@ export default function useAdtStore() {
 		setObjectEditorActiveAction,
 		setSectionSourceAction,
 		updateObjectEditorAction,
+		setHeightEditorAction,
 	};
 }

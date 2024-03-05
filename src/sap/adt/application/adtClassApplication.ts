@@ -1,7 +1,6 @@
 import { ApolloError } from "@apollo/client";
 import { Result } from "shared/core/Result";
 import ErrorGraphql from "shared/errors/ErrorGraphql";
-import { SAPAdtObjectContentInterface } from "sap/adt/domain/interfaces/sapAdtObjectContent";
 import AdtBaseObject from "./adtBaseObject";
 import {
 	ADTObjectVersion,
@@ -9,13 +8,8 @@ import {
 } from "sap/adt/infraestructure/types/adt";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 import { ADTClassContent } from "sap/adt/domain/entities/classContent";
-import EditorClassContainer from "sap/adt/infraestructure/frontend/components/editorArea/editor/class/editorClassContainer";
-import { FC, ReactNode } from "react";
 
-export default class ADTClassObject
-	extends AdtBaseObject
-	implements SAPAdtObjectContentInterface
-{
+export default class ADTClassObject extends AdtBaseObject {
 	/**
 	 * Devuelve el contenido de una clase
 	 */
