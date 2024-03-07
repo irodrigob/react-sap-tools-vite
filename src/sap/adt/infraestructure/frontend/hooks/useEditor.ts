@@ -16,14 +16,16 @@ import {
 import { useAppSelector } from "shared/storage/useStore";
 import { ADTClassContent } from "sap/adt/domain/entities/classContent";
 import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants";
+import { ADTObjectStructure } from "sap/adt/domain/entities/objectStructure";
 
 export default function useEditor() {
 	const adtController = new SAPAdtController();
 	const {
 		setLoadingObjectAction,
-		setContentObjectAction,
+		setContentObjectAction: setObjectContentAction,
 		setObjectEditorActiveAction,
 		updateObjectEditorAction,
+		setObjectStructureAction,
 	} = useAdtStore();
 	const { getDataForConnection } = useSAPGeneral();
 	const { showResultError, showMessage } = useMessages();
@@ -47,7 +49,7 @@ export default function useEditor() {
 				.then((response) => {
 					setLoadingObjectAction(objectKey);
 					if (response.isSuccess) {
-						setContentObjectAction(
+						setObjectContentAction(
 							objectKey,
 							response.getValue() as ADTClassContent
 						);
@@ -56,6 +58,42 @@ export default function useEditor() {
 						// Con lo cual no se puede hacer de manera automática
 						if (objectsEditor.length == 0)
 							setObjectEditorActiveAction(objectKey);
+
+						// Se lanza el proceso de lectura de la estructura del objeto
+						getObjectStructure(objectInfo);
+					} else {
+						let error = response.getErrorValue();
+						if (error instanceof ErrorGeneral)
+							showMessage(
+								getI18nText("adtIde.editor.objectTypeNotImplemented", {
+									objectTypeDesc: objectInfo.objectTypeDesc,
+								}),
+								MessageType.warning
+							);
+						else showResultError(response.getErrorValue() as ErrorGraphql);
+					}
+				});
+		},
+		[objectsEditor]
+	);
+	/**
+	 * Carga la estructura (variables, tipos de datos y su posición) de ub objeto
+	 */
+	const getObjectStructure = useCallback(
+		(objectInfo: ADTObjectInfoEditor) => {
+			let objectKey = buildObjectKey(objectInfo);
+			let objectController = new SAPAdtObjectController(objectInfo.objectType);
+			objectController
+				.getObjectStructure(
+					getDataForConnection("base"),
+					objectInfo.object.objectUri
+				)
+				.then((response) => {
+					if (response.isSuccess) {
+						setObjectStructureAction(
+							objectKey,
+							response.getValue() as ADTObjectStructure
+						);
 					} else {
 						let error = response.getErrorValue();
 						if (error instanceof ErrorGeneral)

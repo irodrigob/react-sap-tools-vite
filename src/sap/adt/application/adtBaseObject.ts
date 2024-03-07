@@ -26,7 +26,7 @@ export default class AdtBaseObject implements SAPAdtObjectContentInterface {
 	): Promise<ResponseAdtObjectContent> {
 		return Result.fail<ErrorGeneral>(ErrorGeneral.create("Not implemented"));
 	}
-	async getObjectReadStructure(
+	async getObjectStructure(
 		dataConnection: DataConnectionSystem,
 		objectUri: string
 	): Promise<ResponseObjectStructure> {

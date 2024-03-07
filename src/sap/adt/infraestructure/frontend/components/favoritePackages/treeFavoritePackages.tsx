@@ -9,35 +9,33 @@ import {
 	ADTFavoritePackages,
 	ADTFavoritePackage,
 } from "sap/adt/domain/entities/favoritePackage";
-import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
 import EliminateFavorite from "shared/frontend/icons/eliminate-Favorite";
 import PopupDeleteFavoritePackage from "./popupDeleteFavoritePackage";
 import PackageContentContainer from "./packageContent/packageContentContainer";
 import { INIT_FAVORITE_PACKAGE } from "sap/adt/infraestructure/constants/treeConstants";
-import useFavoritePackages from "@/sap/adt/infraestructure/frontend/hooks/useFavoritePackages";
+import useFavoritePackages from "sap/adt/infraestructure/frontend/hooks/useFavoritePackages";
+import { useAppSelector } from "shared/storage/useStore";
 
 interface Props {
 	favoritePackages: ADTFavoritePackages;
 }
 
 const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
-	const [treeAttributesMap, setTreeAttributesMap] = useState<TreeAttributeMap>(
-		{}
-	);
 	const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 	const [packageSelected, setPackageSelected] = useState<ADTFavoritePackage>(
 		INIT_FAVORITE_PACKAGE
 	);
 	const { getPackageContent, expandCollapseNode } = useFavoritePackages();
+	const { treeAttributesMap } = useAppSelector((state) => state.ADT);
+
 	const handlerExpandPackage = useCallback(
 		(rowFavoritePackage: ADTFavoritePackage) => {
-			setTreeAttributesMap(
-				expandCollapseNode(rowFavoritePackage.packageName, treeAttributesMap)
-			);
+			expandCollapseNode(rowFavoritePackage.packageName);
+
 			if (!rowFavoritePackage.loadedContent)
 				getPackageContent(rowFavoritePackage.packageName);
 		},
-		[favoritePackages]
+		[favoritePackages, treeAttributesMap]
 	);
 	return (
 		<>

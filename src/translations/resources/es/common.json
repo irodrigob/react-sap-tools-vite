@@ -372,6 +372,9 @@
 				"noData": "No hay objetos"
 			}
 		},
+		"outline": {
+			"titleCollapsed": "Outline"
+		},
 		"editor": {
 			"objectTypeNotImplemented": "El tipo de objeto {{objectTypeDesc}} no esta implementado",
 			"loadingContent": "Cargando {{objectName}}",

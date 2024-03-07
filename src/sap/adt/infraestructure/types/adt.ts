@@ -10,7 +10,7 @@ import {
 	AdtPackageContents,
 	AdtPackageObject,
 } from "sap/adt/domain/entities/packageContent";
-import { ADTObjectStructure } from "@/sap/adt/domain/entities/objectStructure";
+import { ADTObjectStructure } from "sap/adt/domain/entities/objectStructure";
 import { ADTClassContent } from "sap/adt/domain/entities/classContent";
 
 export enum ADTObjectVersion {
@@ -35,6 +35,7 @@ export type ADTObjectEditor = {
 	objectKey: string;
 	loadingContent: boolean;
 	objectContent?: ADTObjectContent;
+	objectStructure?: ADTObjectStructure;
 	sectionSource?: string;
 };
 export type ADTObjectsEditor = ADTObjectEditor[];

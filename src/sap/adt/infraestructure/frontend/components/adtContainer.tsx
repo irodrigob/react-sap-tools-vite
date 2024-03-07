@@ -7,7 +7,8 @@ import { useEffect } from "react";
 import FavoritePackagesContainer from "sap/adt/infraestructure/frontend/components/favoritePackages/favoritePackagesContainer";
 import { useAppSelector } from "shared/storage/useStore";
 import useAdt from "sap/adt/infraestructure/frontend/hooks/useAdt";
-import EditorAreaContainer from "./editorArea/editorAreaContainer";
+import EditorAreaContainer from "sap/adt/infraestructure/frontend/components/editorArea/editorAreaContainer";
+import OutlineObjectContainer from "@/sap/adt/infraestructure/frontend/components/outline/outlineObjectContainer";
 
 export default function AdtContainer() {
 	const { systemChanged, applicationChanged } = useAppSelector(
@@ -31,6 +32,7 @@ export default function AdtContainer() {
 				className="border-r-2"
 			>
 				<FavoritePackagesContainer />
+				<OutlineObjectContainer />
 			</ResizablePanel>
 			<ResizableHandle withHandle />
 			<ResizablePanel>

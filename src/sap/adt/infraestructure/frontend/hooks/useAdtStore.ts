@@ -14,7 +14,7 @@ import {
 	addObjectEditor,
 	deleteObjectEditor,
 	setLoadingObject,
-	setContentObject,
+	setContentObject as setObjectContent,
 	setObjectKeyActive,
 	setObjectsEditor,
 	setObjectKeyPrevious,
@@ -22,6 +22,8 @@ import {
 	setSectionSource,
 	updateObjectEditor,
 	setHeightEditor,
+	setObjectStructure,
+	setAttributesMap,
 } from "sap/adt/infraestructure/storage/adtSlice";
 import {
 	PackageContentStorage,
@@ -29,6 +31,8 @@ import {
 	ADTObjectContent,
 	ADTObjectsEditor,
 } from "sap/adt/infraestructure/types/adt";
+import { ADTObjectStructure } from "sap/adt/domain/entities/objectStructure";
+import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
 
 export default function useAdtStore() {
 	const dispatch = useDispatch();
@@ -69,9 +73,15 @@ export default function useAdtStore() {
 	const setLoadingObjectAction = useCallback((objectKey: string) => {
 		dispatch(setLoadingObject(objectKey));
 	}, []);
-	const setContentObjectAction = useCallback(
+	const setObjectContentAction = useCallback(
 		(objectKey: string, content: ADTObjectContent) => {
-			dispatch(setContentObject({ objectKey: objectKey, content: content }));
+			dispatch(setObjectContent({ objectKey: objectKey, content: content }));
+		},
+		[]
+	);
+	const setObjectStructureAction = useCallback(
+		(objectKey: string, content: ADTObjectStructure) => {
+			dispatch(setObjectStructure({ objectKey: objectKey, content: content }));
 		},
 		[]
 	);
@@ -109,6 +119,12 @@ export default function useAdtStore() {
 	const setHeightEditorAction = useCallback((size: number) => {
 		dispatch(setHeightEditor(size));
 	}, []);
+	const setAttributesMapAction = useCallback(
+		(treeAttributes: TreeAttributeMap) => {
+			dispatch(setAttributesMap(treeAttributes));
+		},
+		[]
+	);
 	const clearVariables = useCallback(() => {
 		setFavoritePackagesAction([]);
 		setObjectsEditorAction([]);
@@ -127,7 +143,7 @@ export default function useAdtStore() {
 		addObjectEditorAction,
 		deleteObjectEditorAction,
 		setLoadingObjectAction,
-		setContentObjectAction,
+		setContentObjectAction: setObjectContentAction,
 		setObjectKeyActiveAction,
 		setObjectsEditorAction,
 		setObjectKeyPreviousAction,
@@ -135,5 +151,7 @@ export default function useAdtStore() {
 		setSectionSourceAction,
 		updateObjectEditorAction,
 		setHeightEditorAction,
+		setObjectStructureAction,
+		setAttributesMapAction,
 	};
 }

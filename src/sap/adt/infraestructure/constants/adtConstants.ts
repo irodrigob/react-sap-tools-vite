@@ -1,6 +1,12 @@
 export const ADT_OBJECT_TYPES = {
 	CLASSES: {
 		OBJECT_TYPE: "CLAS",
+		SUBTYPES: {
+			DATA_CONSTANT: "CLAS/OA",
+			METHOD: "CLAS/OM",
+			TYPES: "CLAS/OT",
+			INTERFACE: "CLAS/OR",
+		},
 		EDITOR: {
 			DEFAULT_SECTION: "globalClass",
 			SECTION_SOURCES: [

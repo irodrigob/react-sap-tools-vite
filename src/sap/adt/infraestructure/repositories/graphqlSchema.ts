@@ -211,6 +211,7 @@ export const READ_OBJECT_STRUCTURE = gql`
 				type
 				typeDesc
 				visibility
+				sourceUri
 				blockInfo {
 					block
 					startPos

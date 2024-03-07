@@ -9,6 +9,7 @@ export type ADTStructureElement = {
 	type: string;
 	typeDesc: string;
 	visibility?: string;
+	sourceUri: string;
 	blockInfo: ADTBlockInfoElements;
 };
 export type ADTStructureElements = ADTStructureElement[];

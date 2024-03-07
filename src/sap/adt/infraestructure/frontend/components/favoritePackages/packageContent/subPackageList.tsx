@@ -1,14 +1,14 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import {
 	ChevronRightIcon,
 	ChevronDownIcon,
 	ArchiveIcon,
 } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
-import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
 import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
 import PackageContent from "./packageContent";
 import useFavoritePackages from "@/sap/adt/infraestructure/frontend/hooks/useFavoritePackages";
+import { useAppSelector } from "shared/storage/useStore";
 
 interface Props {
 	packageParent: string;
@@ -17,9 +17,8 @@ interface Props {
 
 const SubPackageList: FC<Props> = ({ packageParent, content }) => {
 	const { expandCollapseNode } = useFavoritePackages();
-	const [treeAttributesMap, setTreeAttributesMap] = useState<TreeAttributeMap>(
-		{}
-	);
+	const { treeAttributesMap } = useAppSelector((state) => state.ADT);
+
 	return (
 		<>
 			{content
@@ -37,9 +36,7 @@ const SubPackageList: FC<Props> = ({ packageParent, content }) => {
 											variant="ghost"
 											size="icon"
 											onClick={() => {
-												setTreeAttributesMap(
-													expandCollapseNode(row.objectName, treeAttributesMap)
-												);
+												expandCollapseNode(row.objectName);
 											}}
 											className="h-2"
 										>

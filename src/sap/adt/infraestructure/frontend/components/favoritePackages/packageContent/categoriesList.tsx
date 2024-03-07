@@ -1,23 +1,20 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { ChevronRightIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { AdtPackageCategories } from "sap/adt/domain/entities/packageContent";
-import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
-import useTreeFavoritePackages from "sap/adt/infraestructure/frontend/hooks/useTreeFavoritePackages";
 import ObjectTypesList from "./objectTypesList";
 import ObjectsList from "./objectList";
 import { CATEGORIES_SHOW_OBJECTLIST } from "sap/adt/infraestructure/constants/adtConstants";
 import useFavoritePackages from "@/sap/adt/infraestructure/frontend/hooks/useFavoritePackages";
+import { useAppSelector } from "shared/storage/useStore";
 
 interface Props {
 	packageName: string;
 	categories: AdtPackageCategories;
 }
 const CategoriesList: FC<Props> = ({ packageName, categories }) => {
+	const { treeAttributesMap } = useAppSelector((state) => state.ADT);
 	const { expandCollapseNode } = useFavoritePackages();
-	const [treeAttributesMap, setTreeAttributesMap] = useState<TreeAttributeMap>(
-		{}
-	);
 
 	return (
 		<>
@@ -44,9 +41,7 @@ const CategoriesList: FC<Props> = ({ packageName, categories }) => {
 											variant="ghost"
 											size="icon"
 											onClick={() => {
-												setTreeAttributesMap(
-													expandCollapseNode(nodeKey, treeAttributesMap)
-												);
+												expandCollapseNode(nodeKey);
 											}}
 											className="h-2"
 										>
@@ -73,8 +68,7 @@ const CategoriesList: FC<Props> = ({ packageName, categories }) => {
 											<ObjectsList
 												packageName={packageName}
 												category={row.category}
-												objectType={row.objectTypes[0].objectType}
-												objects={row.objectTypes[0].objects}
+												objectType={row.objectTypes[0]}
 											/>
 										) : (
 											<ObjectTypesList

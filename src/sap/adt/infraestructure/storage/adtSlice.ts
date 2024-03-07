@@ -11,6 +11,8 @@ import {
 } from "sap/adt/infraestructure/types/adt";
 import { INIT_OBJECT_EDITOR } from "sap/adt/infraestructure/constants/editorConstants";
 import { DEFAULT_SIZE_EDITOR_AREA } from "sap/adt/infraestructure/constants/editorConstants";
+import { ADTObjectStructure } from "sap/adt/domain/entities/objectStructure";
+import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
 
 export interface ADTRedux {
 	favoritePackages: ADTFavoritePackages;
@@ -19,6 +21,7 @@ export interface ADTRedux {
 	objectKeyPrevious: string;
 	objectEditorActive: ADTObjectEditor;
 	heightEditor: number;
+	treeAttributesMap: TreeAttributeMap;
 }
 
 const initialState: ADTRedux = {
@@ -28,6 +31,7 @@ const initialState: ADTRedux = {
 	objectKeyPrevious: "",
 	objectEditorActive: INIT_OBJECT_EDITOR,
 	heightEditor: DEFAULT_SIZE_EDITOR_AREA.HEIGHT_EDITOR,
+	treeAttributesMap: {},
 };
 
 export const ADTSlice = createSlice({
@@ -94,6 +98,19 @@ export const ADTSlice = createSlice({
 			if (index != -1)
 				state.objectsEditor[index].objectContent = action.payload.content;
 		},
+		setObjectStructure(
+			state,
+			action: PayloadAction<{
+				objectKey: string;
+				content: ADTObjectStructure;
+			}>
+		) {
+			let index = state.objectsEditor.findIndex(
+				(row) => row.objectKey == action.payload.objectKey
+			);
+			if (index != -1)
+				state.objectsEditor[index].objectStructure = action.payload.content;
+		},
 		setObjectsEditor(state, action: PayloadAction<ADTObjectsEditor>) {
 			state.objectsEditor = action.payload;
 		},
@@ -148,6 +165,9 @@ export const ADTSlice = createSlice({
 		setHeightEditor(state, action: PayloadAction<number>) {
 			state.heightEditor = action.payload;
 		},
+		setAttributesMap(state, action: PayloadAction<TreeAttributeMap>) {
+			state.treeAttributesMap = action.payload;
+		},
 	},
 });
 
@@ -169,6 +189,8 @@ export const {
 	setSectionSource,
 	updateObjectEditor,
 	setHeightEditor,
+	setObjectStructure,
+	setAttributesMap,
 } = ADTSlice.actions;
 
 export default ADTSlice.reducer;

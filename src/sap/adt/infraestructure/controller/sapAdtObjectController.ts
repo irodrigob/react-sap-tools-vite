@@ -6,8 +6,6 @@ import {
 	ResponseObjectStructure,
 } from "sap/adt/infraestructure/types/adt";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
-import { Result } from "shared/core/Result";
-import ErrorGeneral from "shared/errors/errorGeneral";
 import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants";
 import AdtBaseObject from "sap/adt/application/adtBaseObject";
 
@@ -40,11 +38,11 @@ export default class SAPAdtObjectController {
 	 * @param dataConnection Datosd de conexión
 	 * @param objectUri URL del objeto
 	 */
-	getObjectReadStructure(
+	getObjectStructure(
 		dataConnection: DataConnectionSystem,
 		objectUri: string
 	): Promise<ResponseObjectStructure> {
-		return this.objectContent.getObjectReadStructure(dataConnection, objectUri);
+		return this.objectContent.getObjectStructure(dataConnection, objectUri);
 	}
 	/**
 	 * Devuelve la instancia de la clase según el tipo de objeto

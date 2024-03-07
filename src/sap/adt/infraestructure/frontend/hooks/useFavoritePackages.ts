@@ -13,6 +13,9 @@ import { ADTObjectInfoEditor } from "sap/adt/infraestructure/types/adt";
 
 export default function useFavoritePackages() {
 	const adtController = new SAPAdtController();
+	const { objectsEditor, treeAttributesMap } = useAppSelector(
+		(state) => state.ADT
+	);
 	const { getDataForConnection } = useSAPGeneral();
 	const { showResultError } = useMessages();
 	const {
@@ -21,9 +24,9 @@ export default function useFavoritePackages() {
 		setContentPackageAction,
 		addObjectEditorAction,
 		setObjectKeyActiveAction,
-		setObjectEditorActiveAction,
+		setAttributesMapAction,
 	} = useAdtStore();
-	const { objectsEditor } = useAppSelector((state) => state.ADT);
+
 	const {
 		getObjectContent,
 		checkObjectExist,
@@ -32,19 +35,19 @@ export default function useFavoritePackages() {
 	} = useEditor();
 
 	const expandCollapseNode = useCallback(
-		(node: string, treeAttributeMap: TreeAttributeMap): TreeAttributeMap => {
-			let newTreeAttributes = { ...treeAttributeMap };
+		(node: string): TreeAttributeMap => {
+			let newTreeAttributes = structuredClone(treeAttributesMap);
 			if (newTreeAttributes[node])
 				newTreeAttributes[node].expanded = !newTreeAttributes[node].expanded;
 			else
 				newTreeAttributes = {
-					...treeAttributeMap,
+					...treeAttributesMap,
 					[node]: { expanded: true },
 				};
-
+			setAttributesMapAction(newTreeAttributes);
 			return newTreeAttributes;
 		},
-		[]
+		[treeAttributesMap]
 	);
 
 	const getPackageContent = useCallback((packageName: string) => {

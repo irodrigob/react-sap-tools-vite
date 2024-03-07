@@ -1,6 +1,5 @@
 import ToolbarFavoritePackages from "./toolbarFavoritePackages";
 import CollapsibleCustom from "@/shared/frontend/components/collapsibleCustom";
-import "@ui5/webcomponents-icons/dist/delete";
 import { useTranslations } from "translations/i18nContext";
 import { useAppSelector } from "shared/storage/useStore";
 import TreeFavoritePackages from "./treeFavoritePackages";

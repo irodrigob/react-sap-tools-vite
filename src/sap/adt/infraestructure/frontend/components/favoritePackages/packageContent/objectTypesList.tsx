@@ -1,10 +1,10 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { ChevronRightIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { AdtPackageObjectTypes } from "sap/adt/domain/entities/packageContent";
-import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
 import ObjectsList from "./objectList";
 import useFavoritePackages from "@/sap/adt/infraestructure/frontend/hooks/useFavoritePackages";
+import { useAppSelector } from "shared/storage/useStore";
 
 interface Props {
 	packageName: string;
@@ -12,10 +12,9 @@ interface Props {
 	objectTypes: AdtPackageObjectTypes;
 }
 const ObjectTypesList: FC<Props> = ({ packageName, category, objectTypes }) => {
+	const { treeAttributesMap } = useAppSelector((state) => state.ADT);
+
 	const { expandCollapseNode } = useFavoritePackages();
-	const [treeAttributesMap, setTreeAttributesMap] = useState<TreeAttributeMap>(
-		{}
-	);
 	return (
 		<div className="ml-3">
 			{objectTypes.map((row) => {
@@ -34,9 +33,7 @@ const ObjectTypesList: FC<Props> = ({ packageName, category, objectTypes }) => {
 											variant="ghost"
 											size="icon"
 											onClick={() => {
-												setTreeAttributesMap(
-													expandCollapseNode(nodeKey, treeAttributesMap)
-												);
+												expandCollapseNode(nodeKey);
 											}}
 											className="h-2"
 										>

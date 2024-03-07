@@ -23,7 +23,7 @@ export interface SAPAdtObjectContentInterface {
 	 * @param dataConnection Datosd de conexión
 	 * @param objectUri URL del objeto
 	 */
-	getObjectReadStructure(
+	getObjectStructure(
 		dataConnection: DataConnectionSystem,
 		objectUri: string
 	): Promise<ResponseObjectStructure>;
