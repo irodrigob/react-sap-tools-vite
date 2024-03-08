@@ -34,22 +34,6 @@ export default function useFavoritePackages() {
 		getDefaultSectionSource,
 	} = useEditor();
 
-	const expandCollapseNode = useCallback(
-		(node: string): TreeAttributeMap => {
-			let newTreeAttributes = structuredClone(treeAttributesMap);
-			if (newTreeAttributes[node])
-				newTreeAttributes[node].expanded = !newTreeAttributes[node].expanded;
-			else
-				newTreeAttributes = {
-					...treeAttributesMap,
-					[node]: { expanded: true },
-				};
-			setAttributesMapAction(newTreeAttributes);
-			return newTreeAttributes;
-		},
-		[treeAttributesMap]
-	);
-
 	const getPackageContent = useCallback((packageName: string) => {
 		setLoadingContentPackageAction(packageName);
 		adtController
@@ -73,7 +57,7 @@ export default function useFavoritePackages() {
 			if (!checkObjectExist(objectInfo)) {
 				let objectKey = buildObjectKey(objectInfo);
 
-				if (objectsEditor.length == 0) setObjectKeyActiveAction(objectKey);
+				setObjectKeyActiveAction(objectKey);
 
 				addObjectEditorAction({
 					objectInfo: objectInfo,
@@ -82,12 +66,12 @@ export default function useFavoritePackages() {
 					sectionSource: getDefaultSectionSource(objectInfo.objectType),
 				});
 
-				// Lectura del contenido del objeto
-				getObjectContent(objectInfo);
+				// Lectura del contenido del objeto y se le indica que el objeto a leer es el activo.
+				getObjectContent(objectInfo, true);
 			}
 		},
 		[objectsEditor]
 	);
 
-	return { getPackageContent, expandCollapseNode, processObjectSelected };
+	return { getPackageContent, processObjectSelected };
 }

@@ -35,7 +35,7 @@ export default function useEditor() {
 	);
 
 	const getObjectContent = useCallback(
-		(objectInfo: ADTObjectInfoEditor) => {
+		(objectInfo: ADTObjectInfoEditor, isObjectActive: boolean = false) => {
 			let objectKey = buildObjectKey(objectInfo);
 			// Si el objeto existe se indica que se va cargar los datos y en caso contrario se añade
 			if (checkObjectExist(objectInfo)) setLoadingObjectAction(objectKey);
@@ -53,14 +53,12 @@ export default function useEditor() {
 							objectKey,
 							response.getValue() as ADTClassContent
 						);
-						// Si no hay registros en el array de objetos en el editor fuerzo la actualizacion del objeto activo.
-						// Se hace porque la primera no hay ningun estado, objectKeyActive, actualizado hasta que no finalice el montaje del componente.
-						// Con lo cual no se puede hacer de manera automática
-						if (objectsEditor.length == 0)
-							setObjectEditorActiveAction(objectKey);
+
+						// Se actualiza los datos del objeto activo
+						if (isObjectActive) setObjectEditorActiveAction(objectKey);
 
 						// Se lanza el proceso de lectura de la estructura del objeto
-						getObjectStructure(objectInfo);
+						getObjectStructure(objectInfo, isObjectActive);
 					} else {
 						let error = response.getErrorValue();
 						if (error instanceof ErrorGeneral)
@@ -77,10 +75,12 @@ export default function useEditor() {
 		[objectsEditor]
 	);
 	/**
-	 * Carga la estructura (variables, tipos de datos y su posición) de ub objeto
+	 * Carga la estructura (variables, tipos de datos y su posición) de ub objeto.
+	 * El parámetro me sirve para indicar si se lee el contenido del objeto activo para
+	 * que se lancen procesos
 	 */
 	const getObjectStructure = useCallback(
-		(objectInfo: ADTObjectInfoEditor) => {
+		(objectInfo: ADTObjectInfoEditor, isObjectActive: boolean = false) => {
 			let objectKey = buildObjectKey(objectInfo);
 			let objectController = new SAPAdtObjectController(objectInfo.objectType);
 			objectController
@@ -94,6 +94,8 @@ export default function useEditor() {
 							objectKey,
 							response.getValue() as ADTObjectStructure
 						);
+
+						if (isObjectActive) setObjectEditorActiveAction(objectKey);
 					} else {
 						let error = response.getErrorValue();
 						if (error instanceof ErrorGeneral)
@@ -107,7 +109,7 @@ export default function useEditor() {
 					}
 				});
 		},
-		[objectsEditor]
+		[objectsEditor, objectKeyActive]
 	);
 	/**
 	 * Verifica si un objeto ya esta insertado en el modelo

@@ -5,7 +5,7 @@ import { AdtPackageCategories } from "sap/adt/domain/entities/packageContent";
 import ObjectTypesList from "./objectTypesList";
 import ObjectsList from "./objectList";
 import { CATEGORIES_SHOW_OBJECTLIST } from "sap/adt/infraestructure/constants/adtConstants";
-import useFavoritePackages from "@/sap/adt/infraestructure/frontend/hooks/useFavoritePackages";
+import useTree from "sap/adt/infraestructure/frontend/hooks/useTree";
 import { useAppSelector } from "shared/storage/useStore";
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 }
 const CategoriesList: FC<Props> = ({ packageName, categories }) => {
 	const { treeAttributesMap } = useAppSelector((state) => state.ADT);
-	const { expandCollapseNode } = useFavoritePackages();
+	const { expandCollapseNode } = useTree();
 
 	return (
 		<>

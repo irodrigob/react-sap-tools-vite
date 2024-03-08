@@ -22,9 +22,6 @@ export default function useEditorGroup() {
 	 */
 	const closeTab = useCallback(
 		(objectKey: string) => {
-			// Debido a como esta montando el cierre dentro del trigger del compontente, cuando se cierra una pestaña que no es la activa
-			// esta se activa y se cierra a la vez, haciendo que no quede ninguna pestaña activa.
-
 			// Busco la pestaña que se cierra
 			let objectEditorClose = objectsEditor.find(
 				(row) => row.objectKey == objectKey

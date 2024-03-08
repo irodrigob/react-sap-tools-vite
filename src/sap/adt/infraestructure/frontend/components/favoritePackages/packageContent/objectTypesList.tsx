@@ -3,7 +3,7 @@ import { ChevronRightIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { AdtPackageObjectTypes } from "sap/adt/domain/entities/packageContent";
 import ObjectsList from "./objectList";
-import useFavoritePackages from "@/sap/adt/infraestructure/frontend/hooks/useFavoritePackages";
+import useTree from "sap/adt/infraestructure/frontend/hooks/useTree";
 import { useAppSelector } from "shared/storage/useStore";
 
 interface Props {
@@ -13,8 +13,8 @@ interface Props {
 }
 const ObjectTypesList: FC<Props> = ({ packageName, category, objectTypes }) => {
 	const { treeAttributesMap } = useAppSelector((state) => state.ADT);
+	const { expandCollapseNode } = useTree();
 
-	const { expandCollapseNode } = useFavoritePackages();
 	return (
 		<div className="ml-3">
 			{objectTypes.map((row) => {

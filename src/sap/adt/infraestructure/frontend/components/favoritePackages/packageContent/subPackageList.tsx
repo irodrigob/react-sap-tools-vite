@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
 import PackageContent from "./packageContent";
-import useFavoritePackages from "@/sap/adt/infraestructure/frontend/hooks/useFavoritePackages";
+import useTree from "sap/adt/infraestructure/frontend/hooks/useTree";
 import { useAppSelector } from "shared/storage/useStore";
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const SubPackageList: FC<Props> = ({ packageParent, content }) => {
-	const { expandCollapseNode } = useFavoritePackages();
+	const { expandCollapseNode } = useTree();
 	const { treeAttributesMap } = useAppSelector((state) => state.ADT);
 
 	return (

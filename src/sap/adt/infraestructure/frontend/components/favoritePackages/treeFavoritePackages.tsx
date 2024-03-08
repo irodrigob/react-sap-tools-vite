@@ -15,6 +15,7 @@ import PackageContentContainer from "./packageContent/packageContentContainer";
 import { INIT_FAVORITE_PACKAGE } from "sap/adt/infraestructure/constants/treeConstants";
 import useFavoritePackages from "sap/adt/infraestructure/frontend/hooks/useFavoritePackages";
 import { useAppSelector } from "shared/storage/useStore";
+import useTree from "sap/adt/infraestructure/frontend/hooks/useTree";
 
 interface Props {
 	favoritePackages: ADTFavoritePackages;
@@ -25,8 +26,9 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 	const [packageSelected, setPackageSelected] = useState<ADTFavoritePackage>(
 		INIT_FAVORITE_PACKAGE
 	);
-	const { getPackageContent, expandCollapseNode } = useFavoritePackages();
+	const { getPackageContent } = useFavoritePackages();
 	const { treeAttributesMap } = useAppSelector((state) => state.ADT);
+	const { expandCollapseNode } = useTree();
 
 	const handlerExpandPackage = useCallback(
 		(rowFavoritePackage: ADTFavoritePackage) => {
