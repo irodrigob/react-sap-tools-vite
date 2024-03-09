@@ -21,9 +21,8 @@ import { ADTObjectStructure } from "sap/adt/domain/entities/objectStructure";
 export default function useEditor() {
 	const adtController = new SAPAdtController();
 	const {
-		setLoadingObjectAction,
-		setContentObjectAction: setObjectContentAction,
-		setObjectEditorActiveAction,
+		setLoadingContentObjectAction,
+		setObjectContentAction,
 		updateObjectEditorAction,
 		setObjectStructureAction,
 	} = useAdtStore();
@@ -38,7 +37,8 @@ export default function useEditor() {
 		(objectInfo: ADTObjectInfoEditor, isObjectActive: boolean = false) => {
 			let objectKey = buildObjectKey(objectInfo);
 			// Si el objeto existe se indica que se va cargar los datos y en caso contrario se añade
-			if (checkObjectExist(objectInfo)) setLoadingObjectAction(objectKey);
+			if (checkObjectExist(objectInfo))
+				setLoadingContentObjectAction(objectKey);
 
 			let objectController = new SAPAdtObjectController(objectInfo.objectType);
 			objectController
@@ -47,15 +47,12 @@ export default function useEditor() {
 					objectInfo.object.objectUri
 				)
 				.then((response) => {
-					setLoadingObjectAction(objectKey);
+					setLoadingContentObjectAction(objectKey);
 					if (response.isSuccess) {
 						setObjectContentAction(
 							objectKey,
 							response.getValue() as ADTClassContent
 						);
-
-						// Se actualiza los datos del objeto activo
-						if (isObjectActive) setObjectEditorActiveAction(objectKey);
 
 						// Se lanza el proceso de lectura de la estructura del objeto
 						getObjectStructure(objectInfo, isObjectActive);
@@ -94,8 +91,6 @@ export default function useEditor() {
 							objectKey,
 							response.getValue() as ADTObjectStructure
 						);
-
-						if (isObjectActive) setObjectEditorActiveAction(objectKey);
 					} else {
 						let error = response.getErrorValue();
 						if (error instanceof ErrorGeneral)
@@ -152,8 +147,6 @@ export default function useEditor() {
 	 */
 	const updateModelObjectEditor = useCallback(
 		(objectEditor: ADTObjectEditor) => {
-			if (objectKeyActive == objectEditor.objectKey)
-				setObjectEditorActiveAction(objectEditor);
 			updateObjectEditorAction(objectEditor);
 		},
 		[objectKeyActive]

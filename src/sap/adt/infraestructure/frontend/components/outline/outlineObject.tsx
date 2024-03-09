@@ -16,7 +16,8 @@ const OutlineObject: FC<Props> = ({ objectEditor }) => {
 	const nodeKey = `${PREFIX_TREENODE}${objectEditor.objectStructure?.name}`;
 
 	useEffect(() => {
-		if (!treeAttributesMap[nodeKey]) expandCollapseNode(nodeKey);
+		if (objectEditor.objectStructure?.name != "" && !treeAttributesMap[nodeKey])
+			expandCollapseNode(nodeKey);
 	}, [treeAttributesMap[nodeKey]]);
 
 	return (

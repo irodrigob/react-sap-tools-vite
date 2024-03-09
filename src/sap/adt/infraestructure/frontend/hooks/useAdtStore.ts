@@ -13,12 +13,11 @@ import {
 	setLoadedContentPackage,
 	addObjectEditor,
 	deleteObjectEditor,
-	setLoadingObject,
-	setContentObject as setObjectContent,
+	setLoadingContentObject,
+	setContentObject,
 	setObjectKeyActive,
 	setObjectsEditor,
 	setObjectKeyPrevious,
-	setObjectEditorActive,
 	setSectionSource,
 	updateObjectEditor,
 	setHeightEditor,
@@ -70,12 +69,12 @@ export default function useAdtStore() {
 	const deleteObjectEditorAction = useCallback((objectKey: string) => {
 		dispatch(deleteObjectEditor(objectKey));
 	}, []);
-	const setLoadingObjectAction = useCallback((objectKey: string) => {
-		dispatch(setLoadingObject(objectKey));
+	const setLoadingContentObjectAction = useCallback((objectKey: string) => {
+		dispatch(setLoadingContentObject(objectKey));
 	}, []);
 	const setObjectContentAction = useCallback(
 		(objectKey: string, content: ADTObjectContent) => {
-			dispatch(setObjectContent({ objectKey: objectKey, content: content }));
+			dispatch(setContentObject({ objectKey: objectKey, content: content }));
 		},
 		[]
 	);
@@ -93,17 +92,10 @@ export default function useAdtStore() {
 	);
 	const setObjectKeyActiveAction = useCallback((objectKey: string) => {
 		dispatch(setObjectKeyActive(objectKey));
-		setObjectEditorActiveAction(objectKey); // Actualizo el registro con el objeto activo
 	}, []);
 	const setObjectKeyPreviousAction = useCallback((objectKey: string) => {
 		dispatch(setObjectKeyPrevious(objectKey));
 	}, []);
-	const setObjectEditorActiveAction = useCallback(
-		(objectKeyOrContent: string | ADTObjectEditor) => {
-			dispatch(setObjectEditorActive(objectKeyOrContent));
-		},
-		[]
-	);
 	const setSectionSourceAction = useCallback(
 		(objectKey: string, sectionSource: string) => {
 			dispatch(setSectionSource({ objectKey, sectionSource }));
@@ -129,7 +121,6 @@ export default function useAdtStore() {
 		setFavoritePackagesAction([]);
 		setObjectsEditorAction([]);
 		setObjectKeyActiveAction("");
-		setObjectEditorActiveAction("");
 	}, []);
 
 	return {
@@ -142,12 +133,11 @@ export default function useAdtStore() {
 		clearVariables,
 		addObjectEditorAction,
 		deleteObjectEditorAction,
-		setLoadingObjectAction,
-		setContentObjectAction: setObjectContentAction,
+		setLoadingContentObjectAction,
+		setObjectContentAction,
 		setObjectKeyActiveAction,
 		setObjectsEditorAction,
 		setObjectKeyPreviousAction,
-		setObjectEditorActiveAction,
 		setSectionSourceAction,
 		updateObjectEditorAction,
 		setHeightEditorAction,

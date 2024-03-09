@@ -3,18 +3,17 @@ import CollapsibleCustom from "@/shared/frontend/components/collapsibleCustom";
 import { useTranslations } from "translations/i18nContext";
 import OutlineObject from "./outlineObject";
 import { useMemo } from "react";
-import { ADTObjectEditor } from "sap/adt/infraestructure/types/adt";
+import useEditor from "sap/adt/infraestructure/frontend/hooks/useEditor";
 
 export default function OutlineObjectContainer() {
 	const { getI18nText } = useTranslations();
+	const { getObjectEditorActive } = useEditor();
 	const { objectsEditor, objectKeyActive } = useAppSelector(
 		(state) => state.ADT
 	);
 
 	const objectEditorActive = useMemo(() => {
-		return objectsEditor.find(
-			(row) => row.objectKey == objectKeyActive
-		) as ADTObjectEditor;
+		return getObjectEditorActive();
 	}, [objectKeyActive, objectsEditor]);
 
 	return (

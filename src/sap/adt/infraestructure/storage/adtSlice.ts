@@ -19,7 +19,6 @@ export interface ADTRedux {
 	objectsEditor: ADTObjectsEditor;
 	objectKeyActive: string;
 	objectKeyPrevious: string;
-	objectEditorActive: ADTObjectEditor;
 	heightEditor: number;
 	treeAttributesMap: TreeAttributeMap;
 }
@@ -29,7 +28,6 @@ const initialState: ADTRedux = {
 	objectsEditor: [],
 	objectKeyActive: "",
 	objectKeyPrevious: "",
-	objectEditorActive: INIT_OBJECT_EDITOR,
 	heightEditor: DEFAULT_SIZE_EDITOR_AREA.HEIGHT_EDITOR,
 	treeAttributesMap: {},
 };
@@ -77,7 +75,7 @@ export const ADTSlice = createSlice({
 		addObjectEditor(state, action: PayloadAction<ADTObjectEditor>) {
 			state.objectsEditor.push(action.payload);
 		},
-		setLoadingObject(state, action: PayloadAction<string>) {
+		setLoadingContentObject(state, action: PayloadAction<string>) {
 			let index = state.objectsEditor.findIndex(
 				(row) => row.objectKey == action.payload
 			);
@@ -133,21 +131,6 @@ export const ADTSlice = createSlice({
 		setObjectKeyPrevious(state, action: PayloadAction<string>) {
 			state.objectKeyPrevious = action.payload;
 		},
-		setObjectEditorActive(
-			state,
-			action: PayloadAction<string | ADTObjectEditor>
-		) {
-			if (typeof action.payload == "string") {
-				let objectEditor = state.objectsEditor.find(
-					(row) => row.objectKey == action.payload
-				);
-				state.objectEditorActive = objectEditor
-					? objectEditor
-					: INIT_OBJECT_EDITOR;
-			} else {
-				state.objectEditorActive = action.payload as ADTObjectEditor;
-			}
-		},
 
 		setSectionSource(
 			state,
@@ -180,12 +163,11 @@ export const {
 	setLoadedContentPackage,
 	addObjectEditor,
 	deleteObjectEditor,
-	setLoadingObject,
+	setLoadingContentObject,
 	setContentObject,
 	setObjectsEditor,
 	setObjectKeyActive,
 	setObjectKeyPrevious,
-	setObjectEditorActive,
 	setSectionSource,
 	updateObjectEditor,
 	setHeightEditor,

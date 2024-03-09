@@ -2,8 +2,13 @@ import { FC } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Edit from "shared/frontend/icons/edit";
+import { ADTObjectEditor } from "sap/adt/infraestructure/types/adt";
 
-const EditorToolbar: FC = () => {
+interface Props {
+	objectEditor: ADTObjectEditor;
+}
+
+const EditorToolbar: FC<Props> = ({ objectEditor }) => {
 	return (
 		<div className="mb-1 flex flex-col ml-1">
 			<div className="mt-4 mb-4 ml-4">
