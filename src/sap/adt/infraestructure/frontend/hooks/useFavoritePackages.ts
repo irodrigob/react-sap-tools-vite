@@ -63,11 +63,12 @@ export default function useFavoritePackages() {
 					objectInfo: objectInfo,
 					loadingContent: true,
 					objectKey: objectKey,
+					loadingStructure: false,
 					sectionSource: getDefaultSectionSource(objectInfo.objectType),
 				});
 
 				// Lectura del contenido del objeto y se le indica que el objeto a leer es el activo.
-				getObjectContent(objectInfo, true);
+				getObjectContent(objectInfo);
 			}
 		},
 		[objectsEditor]

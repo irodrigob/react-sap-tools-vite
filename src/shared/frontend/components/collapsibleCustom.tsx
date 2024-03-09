@@ -55,7 +55,7 @@ const CollapsibleCustom: FC<Props> = (props: Props) => {
 					{contentCollapsed}
 				</div>
 			)}
-			<CollapsibleContent className="space-y-2">
+			<CollapsibleContent className="space-y-2 overflow-auto">
 				{contentExpanded}
 			</CollapsibleContent>
 		</Collapsible>

@@ -373,7 +373,8 @@
 			}
 		},
 		"outline": {
-			"titleCollapsed": "Outline"
+			"titleCollapsed": "Outline",
+			"loadingContent": "Leyendo estructura"
 		},
 		"editor": {
 			"objectTypeNotImplemented": "El tipo de objeto {{objectTypeDesc}} no esta implementado",

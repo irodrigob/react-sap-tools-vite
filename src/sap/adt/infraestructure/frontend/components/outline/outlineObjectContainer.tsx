@@ -4,6 +4,7 @@ import { useTranslations } from "translations/i18nContext";
 import OutlineObject from "./outlineObject";
 import { useMemo } from "react";
 import useEditor from "sap/adt/infraestructure/frontend/hooks/useEditor";
+import { LoadingSpinner } from "shared/frontend/components/loadingSpinner";
 
 export default function OutlineObjectContainer() {
 	const { getI18nText } = useTranslations();
@@ -17,13 +18,21 @@ export default function OutlineObjectContainer() {
 	}, [objectKeyActive, objectsEditor]);
 
 	return (
-		<div>
+		<>
 			{objectEditorActive && (
 				<CollapsibleCustom
 					titleCollapsed={getI18nText("adtIde.outline.titleCollapsed")}
-					contentExpanded={<OutlineObject objectEditor={objectEditorActive} />}
+					contentExpanded={
+						objectEditorActive.loadingStructure ? (
+							<LoadingSpinner
+								text={getI18nText("adtIde.outline.loadingContent")}
+							/>
+						) : (
+							<OutlineObject objectEditor={objectEditorActive} />
+						)
+					}
 				/>
 			)}
-		</div>
+		</>
 	);
 }

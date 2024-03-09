@@ -9,7 +9,6 @@ import {
 	PackageContentStorage,
 	ADTObjectContent,
 } from "sap/adt/infraestructure/types/adt";
-import { INIT_OBJECT_EDITOR } from "sap/adt/infraestructure/constants/editorConstants";
 import { DEFAULT_SIZE_EDITOR_AREA } from "sap/adt/infraestructure/constants/editorConstants";
 import { ADTObjectStructure } from "sap/adt/domain/entities/objectStructure";
 import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
@@ -57,13 +56,6 @@ export const ADTSlice = createSlice({
 					!state.favoritePackages[index].loadingContent;
 			}
 		},
-		setContentPackage(state, action: PayloadAction<PackageContentStorage>) {
-			let index = state.favoritePackages.findIndex(
-				(row) => row.packageName == action.payload.packageName
-			);
-			if (index != -1)
-				state.favoritePackages[index].content = action.payload.content;
-		},
 		setLoadedContentPackage(state, action: PayloadAction<string>) {
 			let index = state.favoritePackages.findIndex(
 				(row) => row.packageName == action.payload
@@ -72,8 +64,12 @@ export const ADTSlice = createSlice({
 				state.favoritePackages[index].loadedContent =
 					!state.favoritePackages[index].loadedContent;
 		},
-		addObjectEditor(state, action: PayloadAction<ADTObjectEditor>) {
-			state.objectsEditor.push(action.payload);
+		setContentPackage(state, action: PayloadAction<PackageContentStorage>) {
+			let index = state.favoritePackages.findIndex(
+				(row) => row.packageName == action.payload.packageName
+			);
+			if (index != -1)
+				state.favoritePackages[index].content = action.payload.content;
 		},
 		setLoadingContentObject(state, action: PayloadAction<string>) {
 			let index = state.objectsEditor.findIndex(
@@ -82,6 +78,17 @@ export const ADTSlice = createSlice({
 			if (index != -1)
 				state.objectsEditor[index].loadingContent =
 					!state.objectsEditor[index].loadingContent;
+		},
+		setLoadingStructureObject(state, action: PayloadAction<string>) {
+			let index = state.objectsEditor.findIndex(
+				(row) => row.objectKey == action.payload
+			);
+			if (index != -1)
+				state.objectsEditor[index].loadingStructure =
+					!state.objectsEditor[index].loadingStructure;
+		},
+		addObjectEditor(state, action: PayloadAction<ADTObjectEditor>) {
+			state.objectsEditor.push(action.payload);
 		},
 		setContentObject(
 			state,
@@ -173,6 +180,7 @@ export const {
 	setHeightEditor,
 	setObjectStructure,
 	setAttributesMap,
+	setLoadingStructureObject,
 } = ADTSlice.actions;
 
 export default ADTSlice.reducer;

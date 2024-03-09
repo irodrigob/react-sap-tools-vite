@@ -34,6 +34,7 @@ export type ADTObjectEditor = {
 	objectInfo: ADTObjectInfoEditor;
 	objectKey: string;
 	loadingContent: boolean;
+	loadingStructure: boolean;
 	objectContent?: ADTObjectContent;
 	objectStructure?: ADTObjectStructure;
 	sectionSource?: string;

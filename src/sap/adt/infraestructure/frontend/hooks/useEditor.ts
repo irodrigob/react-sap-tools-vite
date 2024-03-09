@@ -25,6 +25,7 @@ export default function useEditor() {
 		setObjectContentAction,
 		updateObjectEditorAction,
 		setObjectStructureAction,
+		setLoadingStructureObjectAction,
 	} = useAdtStore();
 	const { getDataForConnection } = useSAPGeneral();
 	const { showResultError, showMessage } = useMessages();
@@ -34,7 +35,7 @@ export default function useEditor() {
 	);
 
 	const getObjectContent = useCallback(
-		(objectInfo: ADTObjectInfoEditor, isObjectActive: boolean = false) => {
+		(objectInfo: ADTObjectInfoEditor) => {
 			let objectKey = buildObjectKey(objectInfo);
 			// Si el objeto existe se indica que se va cargar los datos y en caso contrario se añade
 			if (checkObjectExist(objectInfo))
@@ -55,7 +56,7 @@ export default function useEditor() {
 						);
 
 						// Se lanza el proceso de lectura de la estructura del objeto
-						getObjectStructure(objectInfo, isObjectActive);
+						getObjectStructure(objectInfo);
 					} else {
 						let error = response.getErrorValue();
 						if (error instanceof ErrorGeneral)
@@ -77,15 +78,17 @@ export default function useEditor() {
 	 * que se lancen procesos
 	 */
 	const getObjectStructure = useCallback(
-		(objectInfo: ADTObjectInfoEditor, isObjectActive: boolean = false) => {
+		(objectInfo: ADTObjectInfoEditor) => {
 			let objectKey = buildObjectKey(objectInfo);
 			let objectController = new SAPAdtObjectController(objectInfo.objectType);
+			setLoadingStructureObjectAction(objectKey);
 			objectController
 				.getObjectStructure(
 					getDataForConnection("base"),
 					objectInfo.object.objectUri
 				)
 				.then((response) => {
+					setLoadingStructureObjectAction(objectKey);
 					if (response.isSuccess) {
 						setObjectStructureAction(
 							objectKey,

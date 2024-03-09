@@ -1,10 +1,12 @@
 import { FC, useEffect } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronRightIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { ADTObjectEditor } from "sap/adt/infraestructure/types/adt";
 import { useAppSelector } from "shared/storage/useStore";
 import { PREFIX_TREENODE } from "sap/adt/infraestructure/constants/outlineConstants";
 import useTree from "sap/adt/infraestructure/frontend/hooks/useTree";
+import OutlineObjectTypes from "./outlineObjectTypes";
 
 interface Props {
 	objectEditor: ADTObjectEditor;
@@ -31,7 +33,9 @@ const OutlineObject: FC<Props> = ({ objectEditor }) => {
 						<div className="flex-none">
 							<Button
 								variant="ghost"
-								onClick={() => {}}
+								onClick={() => {
+									expandCollapseNode(nodeKey);
+								}}
 								size="icon"
 								className="h-2"
 							>
@@ -48,6 +52,12 @@ const OutlineObject: FC<Props> = ({ objectEditor }) => {
 						</div>
 					</div>
 				</li>
+				<div key={`${nodeKey}_content`}>
+					{treeAttributesMap[nodeKey] &&
+						treeAttributesMap[nodeKey].expanded && (
+							<OutlineObjectTypes objectEditor={objectEditor} />
+						)}
+				</div>
 			</ul>
 		</>
 	);

@@ -23,6 +23,7 @@ import {
 	setHeightEditor,
 	setObjectStructure,
 	setAttributesMap,
+	setLoadingStructureObject,
 } from "sap/adt/infraestructure/storage/adtSlice";
 import {
 	PackageContentStorage,
@@ -84,6 +85,9 @@ export default function useAdtStore() {
 		},
 		[]
 	);
+	const setLoadingStructureObjectAction = useCallback((objectKey: string) => {
+		dispatch(setLoadingStructureObject(objectKey));
+	}, []);
 	const setObjectsEditorAction = useCallback(
 		(objectsEditor: ADTObjectsEditor) => {
 			dispatch(setObjectsEditor(objectsEditor));
@@ -143,5 +147,6 @@ export default function useAdtStore() {
 		setHeightEditorAction,
 		setObjectStructureAction,
 		setAttributesMapAction,
+		setLoadingStructureObjectAction,
 	};
 }
