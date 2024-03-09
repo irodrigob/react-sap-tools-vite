@@ -1,8 +1,9 @@
 import { useCallback, useMemo } from "react";
-//import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import TabList, {
-	TabDefinition,
-	TabDefinitionArray,
+import {
+	TabItem,
+	TabsList,
+	TabContent,
+	Tabs,
 } from "shared/frontend/components/tabs";
 import { useAppSelector } from "shared/storage/useStore";
 import useEditorGroup from "sap/adt/infraestructure/frontend/hooks/useEditorGroup";
@@ -21,93 +22,34 @@ export default function EditorGroupContainer() {
 		) as ADTObjectEditor;
 	}, [objectKeyActive, objectsEditor]);
 
-	const handlerTabChange = useCallback(
-		(tabSelected: TabDefinition) => {
-			selectTab(tabSelected.key);
-		},
-		[objectsEditor, objectKeyActive]
-	);
-	const handlerTabClose = useCallback(
-		(tabSelected: TabDefinition) => {
-			closeTab(tabSelected.key);
-		},
-		[objectsEditor, objectKeyActive]
-	);
-	const tabList = useMemo(() => {
-		let newTabList: TabDefinitionArray = [];
-
-		newTabList = objectsEditor.map((row) => {
-			return {
-				key: row.objectKey,
-				description: row.objectInfo.object.objectName,
-			};
-		});
-
-		return newTabList;
-	}, [objectsEditor]);
-
-	/*
-
-			{objectsEditor.length > 0 && (
-				<Tabs
-					defaultValue={objectKeyActive}
-					onValueChange={(value: string) => {
-						selectTab(value);
-					}}
-					orientation="horizontal"
-				>
-					<TabsList className="ml-1">
-						{objectsEditor.map((row) => {
-							return (
-								<TabsTrigger
-									value={row.objectKey}
-									key={row.objectKey}
-									data-state={
-										objectKeyActive == row.objectKey ? "active" : "inactive"
-									}
-									onCloseTab={() => {
-										closeTab(row.objectKey);
-									}}
-								>
-									{row.objectInfo.object.objectName}
-								</TabsTrigger>
-							);
-						})}
-					</TabsList>
-					{objectsEditor.map((row) => {
-						// El forceAmount lo hago para la pestaña activa porque cuando se cierra pestaña no se refresca intermamente,
-						// por ello hay que forzarlo
-						return (
-							<TabsContent
-								value={row.objectKey}
-								key={row.objectKey}
-								forceMount={objectKeyActive == row.objectKey ? true : undefined}
-								data-state={
-									objectKeyActive == row.objectKey ? "active" : "inactive"
-								}
-							>
-								<EditorMain objectEditor={row} />
-							</TabsContent>
-						);
-					})}
-				</Tabs>
-			)}
-	*/
 	return (
 		<>
 			{objectsEditor.length > 0 && (
-				<TabList
-					tabs={tabList}
-					defaultValue={objectKeyActive}
-					onTabChange={(tabSelected: TabDefinition) => {
-						selectTab(tabSelected.key);
-					}}
-					onCloseTab={(tabSelected: TabDefinition) => {
-						closeTab(tabSelected.key);
-					}}
-				/>
+				<Tabs>
+					<TabsList>
+						{objectsEditor.map((row) => {
+							return (
+								<TabItem
+									key={row.objectKey}
+									value={row.objectKey}
+									active={row.objectKey == objectKeyActive}
+									onSelectedTab={(tab: string) => {
+										selectTab(tab);
+									}}
+									onCloseTab={(tab: string) => {
+										closeTab(tab);
+									}}
+								>
+									{row.objectInfo.object.objectName}
+								</TabItem>
+							);
+						})}
+					</TabsList>
+					<TabContent>
+						<EditorMain objectEditor={objectEditorActive} />
+					</TabContent>
+				</Tabs>
 			)}
-			<p>{objectKeyActive}</p>
 		</>
 	);
 }
