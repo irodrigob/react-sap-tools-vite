@@ -8,6 +8,15 @@ export default function FavoritePackagesContainer() {
 	const { getI18nText } = useTranslations();
 	const { favoritePackages } = useAppSelector((state) => state.ADT);
 
+	/*
+<CollapsibleCustom
+			titleCollapsed={getI18nText("adtIde.favoritePackages.titleToolbar")}
+			headerToolbar={<ToolbarFavoritePackages />}
+			contentExpanded={
+				<TreeFavoritePackages favoritePackages={favoritePackages} />
+			}
+		/>
+	*/
 	return (
 		<CollapsibleCustom
 			titleCollapsed={getI18nText("adtIde.favoritePackages.titleToolbar")}

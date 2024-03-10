@@ -1,5 +1,4 @@
 import { FC, useEffect } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronRightIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { ADTObjectEditor } from "sap/adt/infraestructure/types/adt";
