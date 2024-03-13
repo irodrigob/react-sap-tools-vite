@@ -1,15 +1,20 @@
 import { FC } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { ADTStructureElements } from "sap/adt/domain/entities/objectStructure";
 import { PREFIX_TREENODE } from "sap/adt/infraestructure/constants/outlineConstants";
 import { ADTObjectEditor } from "sap/adt/infraestructure/types/adt";
+import AbapClass from "shared/frontend/icons/abapOutline/abapClass";
+import useOutline from "sap/adt/infraestructure/frontend/hooks/useOutline";
 
 interface Props {
 	elements: ADTStructureElements;
 	objectEditor: ADTObjectEditor;
 }
 
+const determineObjectType = (type: string) => {
+	return <AbapClass />;
+};
 const OutlineObjectTypesList: FC<Props> = ({ elements, objectEditor }) => {
+	const {} = useOutline();
 	return (
 		<ul className="list-none ml-9">
 			{Array.isArray(elements) &&
@@ -24,6 +29,7 @@ const OutlineObjectTypesList: FC<Props> = ({ elements, objectEditor }) => {
 								<div className="flex items-center flex-row">
 									<div className="shrink text-sm">
 										<div className="flex items-center flex-row space-x-2">
+											{determineObjectType(row.type)}
 											<span
 												className={`cursor-pointer`}
 												onClick={() => {}}

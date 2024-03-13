@@ -36,7 +36,7 @@ export default function AdtContainer() {
 				<ResizablePanelGroup direction="vertical">
 					<ResizablePanel
 						defaultSize={70}
-						className="hover:!overflow-y-auto"
+						className="scrollbar-thin scroll-smooth hover:!overflow-y-auto"
 						collapsible={true}
 					>
 						<FavoritePackagesContainer />
@@ -44,7 +44,7 @@ export default function AdtContainer() {
 					<ResizableHandle withHandle />
 					<ResizablePanel
 						defaultSize={30}
-						className="hover:!overflow-y-auto"
+						className="scrollbar-thin scroll-smooth hover:!overflow-y-auto"
 						collapsible={true}
 					>
 						<OutlineObjectContainer />
