@@ -43,6 +43,12 @@ export const ADT_OBJECT_TYPES = {
 	},
 };
 
+export const VISIBILITY = {
+	PUBLIC: "public",
+	PRIVATE: "private",
+	PROTECTED: "protected",
+};
+
 // Categorias que se tiene que enseñar directamente la lista de objetos
 export const CATEGORIES_SHOW_OBJECTLIST = ["message_classes", "transactions"];
 

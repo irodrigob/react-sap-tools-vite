@@ -1,0 +1,496 @@
+import * as React from "react";
+import { IconProps } from "shared/frontend/icons/types";
+
+/**
+ * Sacado de https://tailwindtoolbox.com/icons
+ */
+export const AbapMethodUnknow = React.forwardRef<SVGSVGElement, IconProps>(
+	({ color = "currentColor", ...props }, forwardedRef) => {
+		return (
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				xmlnsXlink="http://www.w3.org/1999/xlink"
+				width="16"
+				height="16"
+				version="1.1"
+			>
+				<defs>
+					<linearGradient id="linearGradient3895">
+						<stop
+							offset="0"
+							stopColor="#a8a8a7"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.453"
+							stopColor="#939392"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#cbcbcb"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient id="linearGradient3887">
+						<stop
+							offset="0"
+							stopColor="#838893"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.5"
+							stopColor="#6f7684"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#9a9b9c"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient id="linearGradient3837">
+						<stop
+							offset="0"
+							stopColor="#6f8db9"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#1b639e"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient id="linearGradient3829">
+						<stop
+							offset="0"
+							stopColor="#8297bc"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#6c81ad"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient id="linearGradient3047">
+						<stop
+							offset="0"
+							stopColor="#146d39"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#359b58"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient>
+						<stop
+							offset="0"
+							stopColor="#c9473e"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.254"
+							stopColor="#f35863"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#f6928e"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient
+						x1="12.339"
+						x2="12.339"
+						y1="1043.051"
+						y2="1048.051"
+						gradientTransform="translate(19.912 -20)"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient5103-3-7"
+					></linearGradient>
+					<linearGradient id="linearGradient5103-3-7">
+						<stop
+							offset="0"
+							stopColor="#96b956"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.267"
+							stopColor="#c6d560"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.517"
+							stopColor="#cfdc63"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#abca52"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient
+						x1="11.339"
+						x2="11.339"
+						y1="1064.051"
+						y2="1067.051"
+						gradientTransform="translate(19.912 -40)"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient8562"
+					></linearGradient>
+					<linearGradient id="linearGradient8562">
+						<stop
+							offset="0"
+							stopColor="#6994ad"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#005596"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient
+						x1="11.339"
+						x2="11.339"
+						y1="1064.051"
+						y2="1067.051"
+						gradientTransform="translate(19.912 -40)"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient3047"
+					></linearGradient>
+					<linearGradient
+						x1="52.178"
+						x2="56.178"
+						y1="-1019.767"
+						y2="-1019.767"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient3829"
+					></linearGradient>
+					<linearGradient
+						x1="53.178"
+						x2="53.178"
+						y1="-1022.267"
+						y2="-1017.267"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient3837"
+					></linearGradient>
+					<linearGradient>
+						<stop
+							offset="0"
+							stopColor="#96b956"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.267"
+							stopColor="#c6d560"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.517"
+							stopColor="#cfdc63"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#abca52"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient
+						x1="11.339"
+						x2="11.339"
+						y1="1064.051"
+						y2="1067.051"
+						gradientTransform="matrix(1 0 0 -1 -6.266 2108.63)"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient3047-8"
+					></linearGradient>
+					<linearGradient id="linearGradient3047-8">
+						<stop
+							offset="0"
+							stopColor="#146d39"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#359b58"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient
+						x1="52.178"
+						x2="56.178"
+						y1="-1019.767"
+						y2="-1019.767"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient3829-7"
+					></linearGradient>
+					<linearGradient id="linearGradient3829-7">
+						<stop
+							offset="0"
+							stopColor="#8297bc"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#6c81ad"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<mask maskUnits="userSpaceOnUse">
+						<g
+							fill="#fff"
+							fillOpacity="1"
+							stroke="none"
+							transform="matrix(1 0 0 -1 -46.178 2068.63) scale(1 -1)"
+						>
+							<path d="M48.178 -1022.267H58.178V-1017.267H48.178z"></path>
+							<path d="M49.178 -1021.267H57.178V-1018.267H49.178z"></path>
+							<path d="M50.178 -1020.267H51.178V-1019.267H50.178z"></path>
+							<path d="M52.178 -1020.267H56.178V-1019.267H52.178z"></path>
+						</g>
+					</mask>
+					<linearGradient>
+						<stop
+							offset="0"
+							stopColor="#96b956"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.267"
+							stopColor="#c6d560"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.517"
+							stopColor="#cfdc63"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#abca52"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient
+						x1="11.339"
+						x2="11.339"
+						y1="1064.051"
+						y2="1067.051"
+						gradientTransform="matrix(1 0 0 -1 -6.266 2108.63)"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient3047-2"
+					></linearGradient>
+					<linearGradient id="linearGradient3047-2">
+						<stop
+							offset="0"
+							stopColor="#146d39"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#359b58"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient
+						x1="10.545"
+						x2="10.545"
+						y1="1038.578"
+						y2="1052.323"
+						gradientTransform="translate(-2.01 -1.03)"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient4902-3"
+					></linearGradient>
+					<linearGradient id="linearGradient4902-3">
+						<stop
+							offset="0"
+							stopColor="#b28a30"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#7f703d"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient
+						x1="10.545"
+						x2="10.545"
+						y1="1038.578"
+						y2="1052.323"
+						gradientTransform="translate(-2.01 -1.03)"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient4902-3-2"
+					></linearGradient>
+					<linearGradient id="linearGradient4902-3-2">
+						<stop
+							offset="0"
+							stopColor="#b28a30"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#7f703d"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient>
+						<stop
+							offset="0"
+							stopColor="#96b956"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.267"
+							stopColor="#c6d560"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.517"
+							stopColor="#cfdc63"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#abca52"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<mask maskUnits="userSpaceOnUse">
+						<g
+							fill="#fff"
+							stroke="#fff"
+							display="inline"
+							mask="none"
+							transform="translate(-2 -1.01)"
+						>
+							<path
+								fillOpacity="1"
+								d="M3.488 1037.873h7.01l3.062 3.006v9.955H3.488z"
+								display="inline"
+							></path>
+							<path
+								fillOpacity="1"
+								d="M9.967 1037.41v3.911h3.978z"
+								display="inline"
+							></path>
+							<path
+								strokeDashoffset="0"
+								strokeLinecap="butt"
+								strokeLinejoin="miter"
+								strokeMiterlimit="4"
+								strokeOpacity="1"
+								strokeWidth="1"
+								d="M3.488 1037.873h6.947l3.062 3.006v9.955H3.488z"
+								display="inline"
+							></path>
+						</g>
+					</mask>
+					<linearGradient>
+						<stop
+							offset="0"
+							stopColor="#96b956"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.267"
+							stopColor="#c6d560"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.517"
+							stopColor="#cfdc63"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#abca52"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient
+						x1="11.339"
+						x2="11.339"
+						y1="1064.051"
+						y2="1067.051"
+						gradientTransform="matrix(1 0 0 -1 -6.266 2108.63)"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient3047-9"
+					></linearGradient>
+					<linearGradient id="linearGradient3047-9">
+						<stop
+							offset="0"
+							stopColor="#146d39"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#359b58"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<mask maskUnits="userSpaceOnUse">
+						<g
+							fill="#fff"
+							fillOpacity="1"
+							stroke="none"
+							transform="translate(4.027 2.018)"
+						>
+							<path
+								d="M1.52 1046.656l-.817-1.994.883-2.399 3.398.051v-1.531l3.781 2.432-3.781 3.002v-1.515H2.439z"
+								display="inline"
+							></path>
+							<path
+								d="M3.984 1046.82v-1.516h-.08c-1.711 0-1.904 1.299-1.904 2.075H1c-1.937-3.08-.677-6.063 1.848-6.088l1.136.023v-1.532c0-.652.74-.637 1.5 0l3.923 3.499-3.923 3.538c-.76.76-1.5.52-1.5 0zm1-1l2.986-2.539-2.986-2.498v1.531l-2.128.07c-1.657 0-2.277 2.339-1.392 3.425.478-.914.936-1.505 2.408-1.505h1.112z"
+								display="inline"
+							></path>
+						</g>
+					</mask>
+					<linearGradient
+						id="linearGradient3893"
+						x1="7.134"
+						x2="7.134"
+						y1="10.567"
+						y2="5.474"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient3887"
+					></linearGradient>
+					<linearGradient
+						id="linearGradient3901"
+						x1="9.344"
+						x2="9.344"
+						y1="10.813"
+						y2="5.254"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient3895"
+					></linearGradient>
+				</defs>
+				<g transform="translate(0 -1036.362)">
+					<g>
+						<path
+							fill="url(#linearGradient3901)"
+							fillOpacity="1"
+							stroke="url(#linearGradient3893)"
+							strokeDasharray="none"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							strokeMiterlimit="4"
+							strokeOpacity="1"
+							strokeWidth="1"
+							d="M10.518 8a3.518 3.518 0 11-7.036 0 3.518 3.518 0 117.036 0z"
+							transform="translate(1 1036.362)"
+						></path>
+					</g>
+				</g>
+			</svg>
+		);
+	}
+);
+
+export default AbapMethodUnknow;
