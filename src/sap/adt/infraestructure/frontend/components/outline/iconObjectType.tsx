@@ -12,6 +12,11 @@ import AbapMethodUnknow from "shared/frontend/icons/abapOutline/abapMethodUnknow
 import AbapTypePrivate from "shared/frontend/icons/abapOutline/abapTypePrivate";
 import AbapTypeProtected from "shared/frontend/icons/abapOutline/abapTypeProtected";
 import AbapTypePublic from "shared/frontend/icons/abapOutline/abapTypePublic";
+import AbapTypeGroup from "shared/frontend/icons/abapOutline/abapTypeGroup";
+import AbapType from "shared/frontend/icons/abapOutline/abapType";
+//import AbapTestSeam from "shared/frontend/icons/abapOutline/abapTestSeam";
+import AbapSoubrutine from "shared/frontend/icons/abapOutline/abapSubroutine";
+
 import {
 	ADT_OBJECT_TYPES,
 	VISIBILITY,
@@ -44,6 +49,14 @@ const IconObjectType: FC<Props> = ({ type, visibility }) => {
 				visibility == VISIBILITY.PROTECTED && <AbapTypeProtected />}
 			{type == ADT_OBJECT_TYPES.CLASSES.SUBTYPES.TYPES &&
 				visibility == VISIBILITY.PUBLIC && <AbapTypePublic />}
+			{type == ADT_OBJECT_TYPES.DICTIONARY.SUBTYPES.TYPE_GROUP && (
+				<AbapTypeGroup />
+			)}
+			{type == ADT_OBJECT_TYPES.DICTIONARY.SUBTYPES.TYPE && <AbapType />}
+			{type == ADT_OBJECT_TYPES.PROGRAM.SUBTYPES.SUBROUTINE && (
+				<AbapSoubrutine />
+			)}
+			{type == ADT_OBJECT_TYPES.PROGRAM.SUBTYPES.INCLUDE && <AbapInclude />}
 		</>
 	);
 };

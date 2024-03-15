@@ -48,7 +48,7 @@ export const ADT_OBJECT_TYPES = {
 		},
 	},
 	PROGRAM: {
-		SUBTYPES: { SUBROUTINE: "PROG/PU", INCLUDE: "PROG/I", MACRO: "PROG/PK" },
+		SUBTYPES: { SUBROUTINE: "PROG/PU" },
 	},
 };
 

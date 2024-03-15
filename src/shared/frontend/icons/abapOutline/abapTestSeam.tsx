@@ -1,0 +1,273 @@
+import * as React from "react";
+import { IconProps } from "shared/frontend/icons/types";
+
+/**
+ * Sacado de https://tailwindtoolbox.com/icons
+ */
+export const AbapTestSeam = React.forwardRef<SVGSVGElement, IconProps>(
+	({ color = "currentColor", ...props }, forwardedRef) => {
+		return (
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				xmlnsXlink="http://www.w3.org/1999/xlink"
+				width="16"
+				height="16"
+				version="1.1"
+			>
+				<defs>
+					<linearGradient id="linearGradient4284">
+						<stop
+							offset="0"
+							stopColor="#e00500"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#de645b"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient id="linearGradient4263">
+						<stop
+							offset="0"
+							stopColor="#97493b"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#c68f88"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient>
+						<stop
+							offset="0"
+							stopColor="#4f9e55"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.5"
+							stopColor="#418a4d"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#91c168"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+					<linearGradient
+						id="linearGradient4269"
+						x1="8.337"
+						x2="8.337"
+						y1="1042.106"
+						y2="1030.072"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient4263"
+					></linearGradient>
+					<linearGradient
+						id="linearGradient4290"
+						x1="660.678"
+						x2="658.973"
+						y1="813.061"
+						y2="809.379"
+						gradientTransform="matrix(.90325 0 0 .90357 -579.966 -729.045)"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient4284"
+					></linearGradient>
+					<linearGradient
+						id="linearGradient4290-6"
+						x1="660.678"
+						x2="658.973"
+						y1="813.061"
+						y2="809.379"
+						gradientTransform="matrix(.90325 0 0 .90357 -587.323 -729.296)"
+						gradientUnits="userSpaceOnUse"
+						xlinkHref="#linearGradient4284"
+					></linearGradient>
+					<linearGradient>
+						<stop
+							offset="0"
+							stopColor="#9a9a9e"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="0.5"
+							stopColor="#8f8f93"
+							stopOpacity="1"
+						></stop>
+						<stop
+							offset="1"
+							stopColor="#cfcfcf"
+							stopOpacity="1"
+						></stop>
+					</linearGradient>
+				</defs>
+				<g
+					display="inline"
+					opacity="1"
+					transform="translate(0 -1036.362)"
+				>
+					<image
+						width="16"
+						height="16"
+						x="-16"
+						y="1036.362"
+						imageRendering="optimizeSpeed"
+						preserveAspectRatio="none"
+						xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAi5JREFU OI2Fkt9L0wEUxT/fbxOaWelYbSI42sPmisrAh0gaaWaoBBnUgwpCkPQQQUEP9dR/IJFYQUiB+lQM fBlCraingkjz14a6uWlltNycm1/3Q28vuVzf0PN24Z5zz7n3KvxB0Dcsi6OfiU6NYXYdxXr8BPb6 8wo7QAH4Mvhckj++U2Ipp8RqJbm4yGZ9rK1TAfj4rEf22p243OcKRYO+YRnqapd4OCRbEQ+HZKir XYK+YYkHJ6S3xS0Br0f+dbDroq38frHZQnolgRb7RantEHPvfPycGAMUYjMBMB8kl0xQe/22LpIh 6p/EUl1DOhFnd1kZANnVFOlEHICof5KVXFqXPeD1yMaeElRz1WHWYlGymsZ6NgPAejZDVtNYi0Ux Wi0sjI5gdTjyxKF7N+V1TzdqKolqO9PA7PgI84MDRB508+FSMxuZDDlNY3Z8hJzRmJ/a2+KWwPs3 OE/X0fbwEc6mVkUB8Fa7ZFpyVDU2kpmcYsk/TcpRSa6omNQnH/uqawE4e+MWzqbWgj0YAJyrGs7H Twi/fYV/YR7z8goG0wEqbJUsrKepuXwFh7uOUvsR3RJVADU0R/m3r5x0uLh25y6nluO4Ozrzufdb Kv5LLkDEhITLkIiJ/K0DXo/0trh1t9+KbVUDXo8UvXyRr+1PB3Z87QIEm+tF6+8TAK2/T4IXGnRu 1G0VZoIYO67+nTod1LUYtuOroTk2HQCos3qBHTNFTIgIKApULun7fwPaNftOgpf8EwAAAABJRU5E rkJggg=="
+					></image>
+					<g
+						fill="url(#linearGradient4269)"
+						fillOpacity="1"
+						stroke="#b2665b"
+						strokeDasharray="none"
+						strokeMiterlimit="4"
+						strokeOpacity="1"
+						strokeWidth="1.501"
+						display="inline"
+						transform="matrix(-.66755 0 0 .66478 9.565 351.587)"
+					>
+						<g
+							style={{ lineHeight: "125%" }}
+							fill="url(#linearGradient4269)"
+							fillOpacity="1"
+							stroke="#b2665b"
+							strokeDasharray="none"
+							strokeMiterlimit="4"
+							strokeOpacity="1"
+							strokeWidth="1.501"
+							display="inline"
+							fontFamily="Sans"
+							fontSize="13.589"
+							fontStyle="normal"
+							fontWeight="normal"
+							letterSpacing="0"
+							transform="scale(-1 1)"
+							wordSpacing="0"
+						>
+							<circle
+								cx="388.125"
+								cy="468.237"
+								r="8.959"
+								fill="url(#linearGradient4269)"
+								fillOpacity="1"
+								stroke="#b2665b"
+								strokeDasharray="none"
+								strokeDashoffset="0"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								strokeMiterlimit="4"
+								strokeOpacity="1"
+								strokeWidth="2.24"
+								display="inline"
+								transform="matrix(.66884 0 0 .6714 -267.183 722.47)"
+							></circle>
+						</g>
+					</g>
+					<path
+						fill="#fff"
+						fillOpacity="1"
+						fillRule="evenodd"
+						stroke="#fff"
+						strokeLinecap="butt"
+						strokeLinejoin="miter"
+						strokeOpacity="1"
+						strokeWidth="1"
+						d="M2 1038.862h5"
+					></path>
+					<path
+						fill="#fff"
+						fillOpacity="1"
+						fillRule="evenodd"
+						stroke="#fff"
+						strokeLinecap="butt"
+						strokeLinejoin="miter"
+						strokeOpacity="1"
+						strokeWidth="1"
+						d="M4.5 1039.362v4.011"
+						display="inline"
+						opacity="1"
+					></path>
+				</g>
+				<g
+					fillOpacity="1"
+					strokeOpacity="1"
+				>
+					<path
+						fill="#caa094"
+						stroke="#964b3e"
+						strokeDasharray="none"
+						strokeLinecap="butt"
+						strokeLinejoin="miter"
+						strokeMiterlimit="4"
+						strokeWidth="0.499"
+						d="M6.533 8.075l3.49-.979 5.578-3.004s-.338 1.582-.896 1.932c-.557.351-5.7 3.108-5.7 3.108l-2.748.246z"
+						display="inline"
+						opacity="1"
+					></path>
+					<path
+						fill="#caa094"
+						stroke="#964b3e"
+						strokeDasharray="none"
+						strokeLinecap="butt"
+						strokeLinejoin="miter"
+						strokeMiterlimit="4"
+						strokeWidth="0.499"
+						d="M10.443 11.46l.274-3.763 1.794-6.28s-1.426.64-1.653 1.277c-.227.637-1.868 6.424-1.868 6.424l.278 2.867z"
+						display="inline"
+						opacity="1"
+					></path>
+					<ellipse
+						cx="12.735"
+						cy="-0.66"
+						fill="#caa094"
+						stroke="#881b03"
+						strokeWidth="1"
+						display="inline"
+						opacity="1"
+						rx="0.36"
+						ry="0.363"
+						transform="matrix(.75606 .6545 -.62178 .78319 0 0)"
+					></ellipse>
+					<ellipse
+						cx="16.153"
+						cy="3.859"
+						fill="none"
+						stroke="url(#linearGradient4290)"
+						strokeDasharray="none"
+						strokeDashoffset="0"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeMiterlimit="4"
+						strokeWidth="0.998"
+						display="inline"
+						opacity="1"
+						rx="1.729"
+						ry="1.877"
+						transform="matrix(.75534 .65534 -.62093 .78387 0 0)"
+					></ellipse>
+					<ellipse
+						cx="8.796"
+						cy="3.608"
+						fill="none"
+						stroke="url(#linearGradient4290-6)"
+						strokeDasharray="none"
+						strokeDashoffset="0"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeMiterlimit="4"
+						strokeWidth="0.998"
+						display="inline"
+						opacity="1"
+						rx="1.729"
+						ry="1.877"
+						transform="matrix(.75534 .65534 -.62093 .78387 0 0)"
+					></ellipse>
+				</g>
+			</svg>
+		);
+	}
+);
+
+export default AbapTestSeam;
