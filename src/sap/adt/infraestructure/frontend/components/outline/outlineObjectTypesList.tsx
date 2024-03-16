@@ -29,6 +29,11 @@ const OutlineObjectTypesList: FC<Props> = ({ elements, objectEditor }) => {
 											<IconObjectType
 												type={row.type}
 												visibility={row.visibility}
+												isEventHandlerMethod={row.isEventHandlerMethod}
+												isConstant={row.isConstant}
+												isConstructor={row.isConstructor}
+												isReadOnly={row.isReadOnly}
+												isRedefinition={row.isRedefinition}
 											/>
 											<span
 												className={`cursor-pointer`}

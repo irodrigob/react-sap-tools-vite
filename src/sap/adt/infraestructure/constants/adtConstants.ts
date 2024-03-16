@@ -6,6 +6,10 @@ export const ADT_OBJECT_TYPES = {
 			METHOD: "CLAS/OM",
 			TYPES: "CLAS/OT",
 			INTERFACE: "CLAS/OR",
+			MACRO: "CLAS/OK",
+			CLASS_INCLUDE_MACRO: "CLAS/OCN",
+			FRIEND: "CLAS/OF",
+			EVENT: "CLAS/OE",
 		},
 		EDITOR: {
 			DEFAULT_SECTION: "globalClass",
@@ -48,7 +52,15 @@ export const ADT_OBJECT_TYPES = {
 		},
 	},
 	PROGRAM: {
-		SUBTYPES: { SUBROUTINE: "PROG/PU", INCLUDE: "PROG/I", MACRO: "PROG/PK" },
+		SUBTYPES: {
+			SUBROUTINE: "PROG/PU",
+			INCLUDE: "PROG/I",
+			MACRO: "PROG/PK",
+			PROGRAM: "PROG/P",
+		},
+	},
+	FUNCTION: {
+		SUBTYPES: { GROUP: "FUGR/F", MODULE: "FUGR/FF" },
 	},
 };
 

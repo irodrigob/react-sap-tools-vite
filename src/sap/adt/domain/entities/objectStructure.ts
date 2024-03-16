@@ -10,6 +10,11 @@ export type ADTStructureElement = {
 	typeDesc: string;
 	visibility?: string;
 	sourceUri: string;
+	isEventHandlerMethod: boolean;
+	isConstructor: boolean;
+	isRedefinition: boolean;
+	isReadOnly: boolean;
+	isConstant: boolean;
 	blockInfo: ADTBlockInfoElements;
 };
 export type ADTStructureElements = ADTStructureElement[];
