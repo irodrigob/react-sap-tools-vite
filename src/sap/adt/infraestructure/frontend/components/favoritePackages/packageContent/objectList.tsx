@@ -4,6 +4,7 @@ import FileCode from "shared/frontend/icons/fileCode";
 import Database from "shared/frontend/icons/database";
 import { OBJECTTYPES_DEVELOP_EDIT } from "sap/adt/infraestructure/constants/adtConstants";
 import useFavoritePackages from "sap/adt/infraestructure/frontend/hooks/useFavoritePackages";
+import IconObjectType from "sap/adt/infraestructure/frontend/components/outline/iconObjectType";
 
 interface Props {
 	packageName: string;
@@ -37,7 +38,7 @@ const ObjectsList: FC<Props> = ({ packageName, category, objectType }) => {
 							<div className="flex items-center flex-row">
 								<div className="shrink text-sm">
 									<div className="flex items-center flex-row space-x-2">
-										{iconFromCategory(category)}
+										<IconObjectType type={objectType.objectType} />
 										<span
 											className={`${editorDeveloped ? "cursor-pointer" : ""}`}
 											onClick={() => {

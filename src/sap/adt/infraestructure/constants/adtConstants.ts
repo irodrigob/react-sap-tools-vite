@@ -10,6 +10,7 @@ export const ADT_OBJECT_TYPES = {
 			CLASS_INCLUDE_MACRO: "CLAS/OCN",
 			FRIEND: "CLAS/OF",
 			EVENT: "CLAS/OE",
+			CLASS: "CLAS/OC",
 		},
 		EDITOR: {
 			DEFAULT_SECTION: "globalClass",
@@ -42,6 +43,11 @@ export const ADT_OBJECT_TYPES = {
 			],
 		},
 	},
+	INTERFACES: {
+		SUBTYPES: {
+			INTERFACE: "INTF/OI",
+		},
+	},
 	PACKAGES: {
 		OBJECT_TYPE: "DEVC",
 	},
@@ -49,6 +55,11 @@ export const ADT_OBJECT_TYPES = {
 		SUBTYPES: {
 			TYPE_GROUP: "TYPE/DG",
 			TYPE: "TYPE/DGT",
+			DOMAIN: "DOMA/DD",
+			DATA_ELEMENT: "DTEL/DE",
+			STRUCTURE: "TABL/DS",
+			TABLE: "TABL/DT",
+			TABLE_TYPE: "TTYP/DA",
 		},
 	},
 	PROGRAM: {
@@ -74,4 +85,4 @@ export const VISIBILITY = {
 export const CATEGORIES_SHOW_OBJECTLIST = ["message_classes", "transactions"];
 
 // Tipos de objeto con el editor desarrollado
-export const OBJECTTYPES_DEVELOP_EDIT = ["CLAS/OC"];
+export const OBJECTTYPES_DEVELOP_EDIT = ["CLAS/OC", "INTF/OI"];
