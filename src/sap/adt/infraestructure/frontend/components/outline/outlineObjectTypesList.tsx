@@ -1,5 +1,9 @@
 import { FC } from "react";
-import { ADTStructureElements } from "sap/adt/domain/entities/objectStructure";
+import { useMonaco } from "@monaco-editor/react";
+import {
+	ADTStructureElement,
+	ADTStructureElements,
+} from "sap/adt/domain/entities/objectStructure";
 import { PREFIX_TREENODE } from "sap/adt/infraestructure/constants/outlineConstants";
 import { ADTObjectEditor } from "sap/adt/infraestructure/types/adt";
 import useOutline from "sap/adt/infraestructure/frontend/hooks/useOutline";
@@ -12,6 +16,14 @@ interface Props {
 
 const OutlineObjectTypesList: FC<Props> = ({ elements, objectEditor }) => {
 	const {} = useOutline();
+	const monaco = useMonaco();
+
+	const handlerObjectClick = (objectInfo: ADTStructureElement) => {
+		/*monaco?.Selection.fromPositions(
+			{ lineNumber: 17, column: 1 },
+			{ lineNumber: 17, column: 20 }
+		);*/
+	};
 	return (
 		<ul className="list-none ml-9">
 			{Array.isArray(elements) &&
@@ -37,7 +49,9 @@ const OutlineObjectTypesList: FC<Props> = ({ elements, objectEditor }) => {
 											/>
 											<span
 												className={`cursor-pointer`}
-												onClick={() => {}}
+												onClick={() => {
+													handlerObjectClick(row);
+												}}
 											>
 												{row.name}
 											</span>
