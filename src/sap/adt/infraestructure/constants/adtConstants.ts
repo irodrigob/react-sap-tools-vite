@@ -75,6 +75,7 @@ export const ADT_OBJECT_TYPES = {
 	},
 };
 
+// Visilidad de los métodos, atributos, etc.
 export const VISIBILITY = {
 	PUBLIC: "public",
 	PRIVATE: "private",
@@ -86,3 +87,16 @@ export const CATEGORIES_SHOW_OBJECTLIST = ["message_classes", "transactions"];
 
 // Tipos de objeto con el editor desarrollado
 export const OBJECTTYPES_DEVELOP_EDIT = ["CLAS/OC", "INTF/OI"];
+
+export const OBJECT_STRUCTURE = {
+	BLOCK_INFO: {
+		IDENTIFIER: {
+			DEFINITION: "definitionIdentifier",
+			IMPLEMENTATION: "implementationIdentifier",
+		},
+		BLOCK: {
+			DEFINITION: "definitionBlock",
+			IMPLEMENTATION: "implementationBlock",
+		},
+	},
+};

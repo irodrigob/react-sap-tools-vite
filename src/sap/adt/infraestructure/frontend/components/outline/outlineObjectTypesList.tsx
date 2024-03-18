@@ -1,13 +1,14 @@
 import { FC } from "react";
-import { useMonaco } from "@monaco-editor/react";
 import {
 	ADTStructureElement,
 	ADTStructureElements,
 } from "sap/adt/domain/entities/objectStructure";
 import { PREFIX_TREENODE } from "sap/adt/infraestructure/constants/outlineConstants";
+import { OBJECT_STRUCTURE } from "sap/adt/infraestructure/constants/adtConstants";
 import { ADTObjectEditor } from "sap/adt/infraestructure/types/adt";
 import useOutline from "sap/adt/infraestructure/frontend/hooks/useOutline";
 import IconObjectType from "./iconObjectType";
+import useAbapEditor from "shared/frontend/components/abapEditor/useAbapEditor";
 
 interface Props {
 	elements: ADTStructureElements;
@@ -16,13 +17,25 @@ interface Props {
 
 const OutlineObjectTypesList: FC<Props> = ({ elements, objectEditor }) => {
 	const {} = useOutline();
-	const monaco = useMonaco();
+	const { navigateToPosition } = useAbapEditor();
 
 	const handlerObjectClick = (objectInfo: ADTStructureElement) => {
-		/*monaco?.Selection.fromPositions(
-			{ lineNumber: 17, column: 1 },
-			{ lineNumber: 17, column: 20 }
-		);*/
+		// Busco primero la posicion donde empieza la deficion del objeto.
+		let blockPos = objectInfo.blockInfo.find(
+			(row) => row.block == OBJECT_STRUCTURE.BLOCK_INFO.IDENTIFIER.DEFINITION
+		);
+		// Si no existe busco por la definición
+		if (blockPos)
+			blockPos = objectInfo.blockInfo.find(
+				(row) => row.block == OBJECT_STRUCTURE.BLOCK_INFO.BLOCK.DEFINITION
+			);
+
+		if (blockPos) {
+			let positions = blockPos.startPos.split(",");
+			if (positions.length > 1) {
+				navigateToPosition(+positions[0], +positions[1]);
+			}
+		}
 	};
 	return (
 		<ul className="list-none ml-9">
