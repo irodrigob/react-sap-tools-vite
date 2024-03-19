@@ -72,8 +72,8 @@ const TabItem: FC<TabItemProps> = ({
 }) => {
 	const getClassnameTab = useCallback((isActive: boolean) => {
 		return isActive
-			? " p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500"
-			: " p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300";
+			? " pt-1 pl-2 pb-2 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500"
+			: " pt-1 pl-2 pb-2 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300";
 	}, []);
 
 	return (

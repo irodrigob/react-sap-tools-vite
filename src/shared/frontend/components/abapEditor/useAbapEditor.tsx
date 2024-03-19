@@ -18,16 +18,30 @@ export default function useAbapEditor() {
 					lineNumber: lineNumber,
 					column: column,
 				});
+
 				// Hace aparecer la linea pasada, con el método usado lo coloca al
 				// principio del editor.
-				//editor?.revealLine(lineNumber);
-				editor?.revealLinesNearTop(lineNumber, lineNumber);
+				editor?.revealLineNearTop(lineNumber);
+
 				// Activa el focus en el editor
 				editor.focus();
 			}
 		},
 		[monacoEditor]
 	);
+	const navigateToTop = useCallback(() => {
+		if (monacoEditor) {
+			let editor = monacoEditor?.getEditors()[0];
 
-	return { navigateToPosition };
+			editor.setScrollPosition({ scrollTop: 0 });
+			editor?.setPosition({
+				lineNumber: 1,
+				column: 1,
+			});
+
+			editor.focus();
+		}
+	}, [monacoEditor]);
+
+	return { navigateToPosition, navigateToTop };
 }

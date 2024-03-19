@@ -389,6 +389,12 @@
 				"placeHolderSectionSource": "Sección código fuente"
 			},
 			"readOnlyMessage": "Pulse el boton <strong>Editar/Visualizar</strong> para poder modificar"
+		},
+		"statusGroup": {
+			"tabs": {
+				"problems": "Problemas",
+				"elementInfo": "Info elemento"
+			}
 		}
 	},
 	"messageManager": {

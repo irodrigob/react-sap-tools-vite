@@ -10,7 +10,7 @@ interface Props {
 
 const EditorToolbar: FC<Props> = ({ objectEditor }) => {
 	return (
-		<div className="mb-1 flex flex-col ml-1">
+		<div className="flex flex-col ml-1">
 			<div className="mt-4 mb-4 ml-4">
 				<div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
 					<Button
