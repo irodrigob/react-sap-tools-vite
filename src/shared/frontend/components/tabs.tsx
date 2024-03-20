@@ -1,9 +1,10 @@
-import { FC, ReactNode, useCallback } from "react";
+import { FC, ReactNode, useCallback, useEffect, useState } from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 
 interface TabsProps {
 	children: ReactNode;
+	className?: string;
 }
 const Tabs: FC<TabsProps> = ({ ...props }) => {
 	return <section {...props}>{props.children}</section>;
@@ -13,40 +14,7 @@ interface TabsListProps {
 	children: ReactNode;
 }
 
-// activo: 	className="inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500"
-// normal: className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-
 const TabsList: FC<TabsListProps> = ({ children }) => {
-	/**
-	 * Efecto que detecta que cambia la pestaña activa por el valor por defecto. Sirve para dos motivos:
-	 * 1) Al inicio del componente si no hay nada activo o valor por defecto poner al menos la primera pestaña activa
-	 * 2) Si desde fuera del componente se cambia el valor que también cambie en este contro
-	 */
-	/*	useEffect(() => {
-		if (defaultValue != "") console.log(`Default value: ${defaultValue}`);
-
-		if (tabActive != defaultValue) {
-			if (defaultValue != "") setTabActive(defaultValue as string);
-			else if (tabs.length > 0) setTabActive(tabs[0].key);
-		}
-	}, [defaultValue, tabActive]);*/
-
-	/*
-	const handlerOnSelectTab = useCallback(
-		(tabSelected: TabDefinition) => () => {
-			setTabActive(tabSelected.key);
-
-			if (onTabChange) onTabChange(tabSelected);
-		},
-		[]
-	);
-	const handlerOnCloseTab = useCallback(
-		(tabSelected: TabDefinition) => () => {
-			if (onCloseTab) onCloseTab(tabSelected);
-		},
-		[]
-	);*/
-
 	return (
 		<ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
 			{children}
@@ -70,35 +38,53 @@ const TabItem: FC<TabItemProps> = ({
 	onSelectedTab,
 	...props
 }) => {
+	const [showCloseButton, setShowCloseButton] = useState("invisble");
+
 	const getClassnameTab = useCallback((isActive: boolean) => {
 		return isActive
-			? " pt-1 pl-2 pb-2 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500"
-			: " pt-1 pl-2 pb-2 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300";
+			? "pt-1 pb-2 border-b-2 rounded-t-lg text-blue-600 border-blue-600 active dark:text-blue-500 dark:border-blue-500"
+			: "pt-1 pb-2 border-b-2 rounded-t-lg border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300";
 	}, []);
 
+	useEffect(() => {
+		active && onCloseTab
+			? setShowCloseButton("visible")
+			: setShowCloseButton("invisible");
+	}, [active]);
+
 	return (
-		<li
-			{...props}
-			className={(cn("flex flex-row items-center"), getClassnameTab(active))}
+		<span
+			className="pl-2 mr-4"
+			onMouseOver={() => {
+				setShowCloseButton("visible");
+			}}
+			onMouseOut={() => {
+				if (!active) setShowCloseButton("invisible");
+			}}
 		>
-			<button
-				onClick={() => {
-					onSelectedTab(value);
-				}}
+			<li
+				{...props}
+				className={cn("flex flex-row items-center", getClassnameTab(active))}
 			>
-				{props.children}
-			</button>
-			{onCloseTab && (
 				<button
-					className="ml-4 h-4 w-4 hover:text-red-600"
 					onClick={() => {
-						onCloseTab(value);
+						onSelectedTab(value);
 					}}
 				>
-					<Cross2Icon />
+					{props.children}
 				</button>
-			)}
-		</li>
+				{onCloseTab && (
+					<button
+						className={cn("ml-4 h-4 w-4 hover:text-red-600", showCloseButton)}
+						onClick={() => {
+							onCloseTab(value);
+						}}
+					>
+						<Cross2Icon />
+					</button>
+				)}
+			</li>
+		</span>
 	);
 };
 

@@ -5,7 +5,7 @@ import {
 	ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import EditorGroupContainer from "./editorGroupContainer";
-import StatusGroupContainer from "./statusGroupContainer";
+import StatusGroupContainer from "../statusGroup/statusGroupContainer";
 import EditorToolbarContainer from "./editor/toolbar/editorToolbarContainer";
 import { DEFAULT_SIZE_EDITOR_AREA } from "sap/adt/infraestructure/constants/editorConstants";
 import useAdtStore from "sap/adt/infraestructure/frontend/hooks/useAdtStore";
@@ -32,10 +32,7 @@ const EditorAreaContainer: FC = () => {
 				</div>
 			</ResizablePanel>
 			<ResizableHandle withHandle />
-			<ResizablePanel
-				defaultSize={DEFAULT_SIZE_EDITOR_AREA.PANEL_STATUS}
-				className="border-t-0"
-			>
+			<ResizablePanel defaultSize={DEFAULT_SIZE_EDITOR_AREA.PANEL_STATUS}>
 				<StatusGroupContainer />
 			</ResizablePanel>
 		</ResizablePanelGroup>

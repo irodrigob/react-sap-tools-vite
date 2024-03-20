@@ -1,8 +1,8 @@
+import { useMemo } from "react";
 import { useAppSelector } from "shared/storage/useStore";
 import CollapsibleCustom from "@/shared/frontend/components/collapsibleCustom";
 import { useTranslations } from "translations/i18nContext";
 import OutlineObject from "./outlineObject";
-import { useMemo } from "react";
 import useEditor from "sap/adt/infraestructure/frontend/hooks/useEditor";
 import { LoadingSpinner } from "shared/frontend/components/loadingSpinner";
 
