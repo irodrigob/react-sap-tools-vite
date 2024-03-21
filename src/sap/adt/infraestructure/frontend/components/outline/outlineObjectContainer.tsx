@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useAppSelector } from "shared/storage/useStore";
-import CollapsibleCustom from "@/shared/frontend/components/collapsibleCustom";
 import { useTranslations } from "translations/i18nContext";
 import OutlineObject from "./outlineObject";
 import useEditor from "sap/adt/infraestructure/frontend/hooks/useEditor";
@@ -19,19 +18,11 @@ export default function OutlineObjectContainer() {
 
 	return (
 		<>
-			{objectEditorActive && (
-				<CollapsibleCustom
-					titleCollapsed={getI18nText("adtIde.outline.titleCollapsed")}
-					contentExpanded={
-						objectEditorActive.loadingStructure ? (
-							<LoadingSpinner
-								text={getI18nText("adtIde.outline.loadingContent")}
-							/>
-						) : (
-							<OutlineObject objectEditor={objectEditorActive} />
-						)
-					}
-				/>
+			{objectEditorActive && objectEditorActive.loadingStructure && (
+				<LoadingSpinner text={getI18nText("adtIde.outline.loadingContent")} />
+			)}
+			{objectEditorActive && !objectEditorActive.loadingStructure && (
+				<OutlineObject objectEditor={objectEditorActive} />
 			)}
 		</>
 	);

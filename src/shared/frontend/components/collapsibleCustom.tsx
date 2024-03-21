@@ -13,6 +13,7 @@ interface Props {
 	headerToolbar?: ReactNode;
 	contentExpanded?: ReactNode;
 	contentCollapsed?: ReactNode;
+	onCollapsed?: (value: boolean) => void;
 }
 const CollapsibleCustom: FC<Props> = (props: Props) => {
 	const {
@@ -21,6 +22,7 @@ const CollapsibleCustom: FC<Props> = (props: Props) => {
 		contentExpanded,
 		contentCollapsed,
 		defaultOpen,
+		onCollapsed,
 	} = props;
 	const [isOpen, setIsOpen] = useState<boolean>(
 		defaultOpen ? defaultOpen : true
@@ -30,8 +32,11 @@ const CollapsibleCustom: FC<Props> = (props: Props) => {
 	return (
 		<Collapsible
 			open={isOpen}
-			onOpenChange={setIsOpen}
-			className="space-y-1 rounded-md "
+			onOpenChange={(open: boolean) => {
+				if (onCollapsed) onCollapsed(open);
+				setIsOpen(open);
+			}}
+			className="space-y-1 rounded-md border-b-2"
 		>
 			<div className="flex items-center">
 				<CollapsibleTrigger asChild>
