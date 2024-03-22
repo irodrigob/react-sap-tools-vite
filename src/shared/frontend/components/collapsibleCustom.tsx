@@ -1,5 +1,9 @@
 import { FC, ReactNode, useState } from "react";
-import { CaretDownIcon, CaretUpIcon } from "@radix-ui/react-icons";
+import {
+	CaretDownIcon,
+	CaretUpIcon,
+	CaretRightIcon,
+} from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import {
 	Collapsible,
@@ -13,7 +17,7 @@ interface Props {
 	headerToolbar?: ReactNode;
 	contentExpanded?: ReactNode;
 	contentCollapsed?: ReactNode;
-	onCollapsed?: (value: boolean) => void;
+	onOpenChange?: (value: boolean) => void;
 }
 const CollapsibleCustom: FC<Props> = (props: Props) => {
 	const {
@@ -21,12 +25,11 @@ const CollapsibleCustom: FC<Props> = (props: Props) => {
 		headerToolbar,
 		contentExpanded,
 		contentCollapsed,
-		defaultOpen,
-		onCollapsed,
+		defaultOpen = false,
+		onOpenChange: onCollapsed,
 	} = props;
-	const [isOpen, setIsOpen] = useState<boolean>(
-		defaultOpen ? defaultOpen : true
-	);
+
+	const [isOpen, setIsOpen] = useState<boolean>(defaultOpen);
 	const { getI18nText } = useTranslations();
 
 	return (
@@ -36,7 +39,7 @@ const CollapsibleCustom: FC<Props> = (props: Props) => {
 				if (onCollapsed) onCollapsed(open);
 				setIsOpen(open);
 			}}
-			className="space-y-1 rounded-md border-b-2"
+			className="space-y-1 rounded-md border-t-1"
 		>
 			<div className="flex items-center">
 				<CollapsibleTrigger asChild>
@@ -45,7 +48,7 @@ const CollapsibleCustom: FC<Props> = (props: Props) => {
 						size="icon"
 					>
 						{isOpen && <CaretUpIcon className="h-5 w-5" />}
-						{!isOpen && <CaretDownIcon className="h-5 w-5" />}
+						{!isOpen && <CaretRightIcon className="h-5 w-5" />}
 						<span className="sr-only">
 							{getI18nText("collapsibleCustom.toggle")}
 						</span>

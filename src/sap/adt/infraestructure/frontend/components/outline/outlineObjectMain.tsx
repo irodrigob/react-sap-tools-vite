@@ -1,21 +1,25 @@
 import { FC } from "react";
-import { ResizablePanel } from "@/components/ui/resizable";
 import CollapsibleCustom from "@/shared/frontend/components/collapsibleCustom";
 import { useTranslations } from "translations/i18nContext";
 import OutlineObjectContainer from "./outlineObjectContainer";
 
 interface Props {
-	onCollapsed?: (value: boolean) => void;
+	onOpenChange?: (value: boolean) => void;
+	defaultOpen?: boolean;
 }
 
-const OutlineObjectMain: FC<Props> = ({ onCollapsed }) => {
+const OutlineObjectMain: FC<Props> = ({
+	onOpenChange: onCollapsed,
+	defaultOpen,
+}) => {
 	const { getI18nText } = useTranslations();
 
 	return (
 		<CollapsibleCustom
 			titleCollapsed={getI18nText("adtIde.outline.titleCollapsed")}
 			contentExpanded={<OutlineObjectContainer />}
-			onCollapsed={onCollapsed}
+			onOpenChange={onCollapsed}
+			defaultOpen={defaultOpen}
 		/>
 	);
 };

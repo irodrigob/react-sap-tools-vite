@@ -12,6 +12,7 @@ import {
 } from "sap/adt/domain/entities/packageContent";
 import { ADTObjectStructure } from "sap/adt/domain/entities/objectStructure";
 import { ADTClassContent } from "sap/adt/domain/entities/classContent";
+import { ADTObjectCheckRun } from "sap/adt/domain/entities/objectCheckRun";
 
 export enum ADTObjectVersion {
 	active = "active",
@@ -73,5 +74,10 @@ export type ResponseAdtObjectContent =
 
 export type ResponseObjectStructure =
 	| Result<ADTObjectStructure>
+	| Result<ErrorGeneral>
+	| Result<ErrorGraphql>;
+
+export type ResponseObjectCheckRun =
+	| Result<ADTObjectCheckRun>
 	| Result<ErrorGeneral>
 	| Result<ErrorGraphql>;

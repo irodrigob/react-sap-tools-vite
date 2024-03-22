@@ -7,10 +7,12 @@ import { useAppSelector } from "shared/storage/useStore";
 import TreeFavoritePackages from "./treeFavoritePackages";
 
 interface Props {
-	onCollapsed?: (value: boolean) => void;
+	onOpenChange?: (value: boolean) => void;
 }
 
-const FavoritePackagesContainer: FC<Props> = ({ onCollapsed }) => {
+const FavoritePackagesContainer: FC<Props> = ({
+	onOpenChange: onCollapsed,
+}) => {
 	const { getI18nText } = useTranslations();
 	const { favoritePackages } = useAppSelector((state) => state.ADT);
 
@@ -18,7 +20,8 @@ const FavoritePackagesContainer: FC<Props> = ({ onCollapsed }) => {
 		<CollapsibleCustom
 			titleCollapsed={getI18nText("adtIde.favoritePackages.titleToolbar")}
 			headerToolbar={<ToolbarFavoritePackages />}
-			onCollapsed={onCollapsed}
+			onOpenChange={onCollapsed}
+			defaultOpen={true}
 			contentExpanded={
 				<TreeFavoritePackages favoritePackages={favoritePackages} />
 			}

@@ -20,29 +20,7 @@ export default function AdtContainer() {
 			loadInitialData();
 		}
 	}, [systemChanged, applicationChanged]);
-	/* Nota Iván: El ResizablePanel pone por defecto el overflow-hidden y los componentes inferiores nunca sacan el scroll. La solución que he encontrado
- es forzar que tenga overflow.
-*/
 
-	/*
-
-	<ResizablePanelGroup direction="vertical">
-					<ResizablePanel
-						className="scrollbar-thin scroll-smooth hover:!overflow-y-auto"
-						collapsible={true}
-					>
-						<FavoritePackagesContainer />
-					</ResizablePanel>
-					<ResizableHandle withHandle />
-					<ResizablePanel
-						className="scrollbar-thin scroll-smooth hover:!overflow-y-auto"
-						collapsible={true}
-					>
-						<OutlineObjectMain />
-					</ResizablePanel>
-				</ResizablePanelGroup>
-
-	*/
 	return (
 		<ResizablePanelGroup
 			direction="horizontal"
