@@ -12,6 +12,8 @@ import {
 import { DEFAULT_SIZE_EDITOR_AREA } from "sap/adt/infraestructure/constants/editorConstants";
 import { ADTObjectStructure } from "sap/adt/domain/entities/objectStructure";
 import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
+import { ADTObjectCheckRun } from "sap/adt/domain/entities/objectCheckRun";
+import { ADTRepositoryCheckRuns } from "sap/adt/domain/entities/repositoryCheckRun";
 
 export interface ADTRedux {
 	favoritePackages: ADTFavoritePackages;
@@ -20,6 +22,7 @@ export interface ADTRedux {
 	objectKeyPrevious: string;
 	heightEditor: number;
 	treeAttributesMap: TreeAttributeMap;
+	repositoryCheckRun: ADTRepositoryCheckRuns;
 }
 
 const initialState: ADTRedux = {
@@ -29,6 +32,7 @@ const initialState: ADTRedux = {
 	objectKeyPrevious: "",
 	heightEditor: DEFAULT_SIZE_EDITOR_AREA.HEIGHT_EDITOR,
 	treeAttributesMap: {},
+	repositoryCheckRun: [],
 };
 
 export const ADTSlice = createSlice({
@@ -116,6 +120,19 @@ export const ADTSlice = createSlice({
 			if (index != -1)
 				state.objectsEditor[index].objectStructure = action.payload.content;
 		},
+		setObjectCheckRun(
+			state,
+			action: PayloadAction<{
+				objectKey: string;
+				content: ADTObjectCheckRun;
+			}>
+		) {
+			let index = state.objectsEditor.findIndex(
+				(row) => row.objectKey == action.payload.objectKey
+			);
+			if (index != -1)
+				state.objectsEditor[index].objectCheckRun = action.payload.content;
+		},
 		setObjectsEditor(state, action: PayloadAction<ADTObjectsEditor>) {
 			state.objectsEditor = action.payload;
 		},
@@ -158,6 +175,12 @@ export const ADTSlice = createSlice({
 		setAttributesMap(state, action: PayloadAction<TreeAttributeMap>) {
 			state.treeAttributesMap = action.payload;
 		},
+		setRepositoryCheckRun(
+			state,
+			action: PayloadAction<ADTRepositoryCheckRuns>
+		) {
+			state.repositoryCheckRun = action.payload;
+		},
 	},
 });
 
@@ -181,6 +204,8 @@ export const {
 	setObjectStructure,
 	setAttributesMap,
 	setLoadingStructureObject,
+	setObjectCheckRun,
+	setRepositoryCheckRun,
 } = ADTSlice.actions;
 
 export default ADTSlice.reducer;

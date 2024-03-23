@@ -4,6 +4,7 @@ import {
 	ResponseDeleteFavoritePackage,
 	ResponseFavoritePackages,
 	ResponsePackageContent,
+	ResponseRepositoryCheckRuns,
 } from "sap/adt/infraestructure/types/adt";
 import AdtApplication from "sap/adt/application/adtApplication";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
@@ -87,5 +88,14 @@ export default class SAPAdtController {
 		packageName: string
 	): Promise<ResponsePackageContent> {
 		return this.adtApplication.getPackageContent(dataConnection, packageName);
+	}
+	/**
+	 * Recupera los tipos de objeto que se pueden lanzar su validación
+	 * @param dataConnection Datos de conexión
+	 */
+	async repositoryCheckRun(
+		dataConnection: DataConnectionSystem
+	): Promise<ResponseRepositoryCheckRuns> {
+		return this.adtApplication.repositoryCheckRun(dataConnection);
 	}
 }

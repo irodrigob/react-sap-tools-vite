@@ -24,6 +24,8 @@ import {
 	setObjectStructure,
 	setAttributesMap,
 	setLoadingStructureObject,
+	setObjectCheckRun,
+	setRepositoryCheckRun,
 } from "sap/adt/infraestructure/storage/adtSlice";
 import {
 	PackageContentStorage,
@@ -33,6 +35,8 @@ import {
 } from "sap/adt/infraestructure/types/adt";
 import { ADTObjectStructure } from "sap/adt/domain/entities/objectStructure";
 import { TreeAttributeMap } from "sap/adt/infraestructure/types/tree";
+import { ADTObjectCheckRun } from "sap/adt/domain/entities/objectCheckRun";
+import { ADTRepositoryCheckRuns } from "sap/adt/domain/entities/repositoryCheckRun";
 
 export default function useAdtStore() {
 	const dispatch = useDispatch();
@@ -85,6 +89,12 @@ export default function useAdtStore() {
 		},
 		[]
 	);
+	const setObjectCheckRunAction = useCallback(
+		(objectKey: string, content: ADTObjectCheckRun) => {
+			dispatch(setObjectCheckRun({ objectKey: objectKey, content: content }));
+		},
+		[]
+	);
 	const setLoadingStructureObjectAction = useCallback((objectKey: string) => {
 		dispatch(setLoadingStructureObject(objectKey));
 	}, []);
@@ -121,10 +131,17 @@ export default function useAdtStore() {
 		},
 		[]
 	);
+	const setRepositoryCheckRunsAction = useCallback(
+		(repository: ADTRepositoryCheckRuns) => {
+			dispatch(setRepositoryCheckRun(repository));
+		},
+		[]
+	);
 	const clearVariables = useCallback(() => {
 		setFavoritePackagesAction([]);
 		setObjectsEditorAction([]);
 		setObjectKeyActiveAction("");
+		setRepositoryCheckRunsAction([]);
 	}, []);
 
 	return {
@@ -148,5 +165,7 @@ export default function useAdtStore() {
 		setObjectStructureAction,
 		setAttributesMapAction,
 		setLoadingStructureObjectAction,
+		setObjectCheckRunAction,
+		setRepositoryCheckRunsAction,
 	};
 }

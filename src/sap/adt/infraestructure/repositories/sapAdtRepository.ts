@@ -17,9 +17,13 @@ import {
 	PACKAGE_CONTENT,
 	CLASS_CONTENT,
 	READ_OBJECT_STRUCTURE,
+	OBJECT_CHECK,
+	REPOSITORY_CHECK_RUN,
 } from "./graphqlSchema";
 import { ADTObjectVersion } from "sap/adt/infraestructure/types/adt";
 import { ADTObjectStructure } from "sap/adt/domain/entities/objectStructure";
+import { ADTObjectCheckRun } from "sap/adt/domain/entities/objectCheckRun";
+import { ADTRepositoryCheckRuns } from "sap/adt/domain/entities/repositoryCheckRun";
 
 export default class SAPAdtRepository
 	extends graphQLRepository
@@ -186,5 +190,48 @@ export default class SAPAdtRepository
 			},
 		});
 		return response.data.adtReadObjectStructure;
+	}
+	/**
+	 * Verifica que el objeto, se le pasa la URL, es sintacticamete correcto.
+	 * @param dataConnection Datos de conexión
+	 * @param objectUri URL del objeto
+	 */
+	async objectCheck(
+		dataConnection: DataConnectionSystem,
+		objectUri: string
+	): Promise<ADTObjectCheckRun> {
+		const response = await this._apolloClient.query({
+			query: OBJECT_CHECK,
+			fetchPolicy: "network-only",
+			variables: {
+				system: dataConnection.host,
+				sap_user: dataConnection.sap_user,
+				sap_password: dataConnection.sap_password,
+				client: dataConnection.client,
+				language: dataConnection.language,
+				objectUri: objectUri,
+			},
+		});
+		return response.data.adtObjectCheck;
+	}
+	/**
+	 * Recupera los tipos de objeto que se pueden lanzar su validación
+	 * @param dataConnection Datos de conexión
+	 */
+	async repositoryCheckRun(
+		dataConnection: DataConnectionSystem
+	): Promise<ADTRepositoryCheckRuns> {
+		const response = await this._apolloClient.query({
+			query: REPOSITORY_CHECK_RUN,
+			fetchPolicy: "network-only",
+			variables: {
+				system: dataConnection.host,
+				sap_user: dataConnection.sap_user,
+				sap_password: dataConnection.sap_password,
+				client: dataConnection.client,
+				language: dataConnection.language,
+			},
+		});
+		return response.data.adtRepositoryCheckRun;
 	}
 }

@@ -13,6 +13,7 @@ import {
 import { ADTObjectStructure } from "sap/adt/domain/entities/objectStructure";
 import { ADTClassContent } from "sap/adt/domain/entities/classContent";
 import { ADTObjectCheckRun } from "sap/adt/domain/entities/objectCheckRun";
+import { ADTRepositoryCheckRuns } from "sap/adt/domain/entities/repositoryCheckRun";
 
 export enum ADTObjectVersion {
 	active = "active",
@@ -38,6 +39,7 @@ export type ADTObjectEditor = {
 	loadingStructure: boolean;
 	objectContent?: ADTObjectContent;
 	objectStructure?: ADTObjectStructure;
+	objectCheckRun?: ADTObjectCheckRun;
 	sectionSource?: string;
 };
 export type ADTObjectsEditor = ADTObjectEditor[];
@@ -79,5 +81,10 @@ export type ResponseObjectStructure =
 
 export type ResponseObjectCheckRun =
 	| Result<ADTObjectCheckRun>
+	| Result<ErrorGeneral>
+	| Result<ErrorGraphql>;
+
+export type ResponseRepositoryCheckRuns =
+	| Result<ADTRepositoryCheckRuns>
 	| Result<ErrorGeneral>
 	| Result<ErrorGraphql>;

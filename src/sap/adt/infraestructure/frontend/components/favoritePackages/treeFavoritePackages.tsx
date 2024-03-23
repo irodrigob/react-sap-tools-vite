@@ -76,18 +76,23 @@ const TreeFavoritePackages: FC<Props> = ({ favoritePackages }) => {
 									</div>
 									<div className="grow">
 										<div className="flex items-center justify-between flex-row-reverse">
-											<Button
-												variant="ghost"
-												size="icon"
-											>
-												<EliminateFavorite
-													className="h-5 w-5 text-red-500"
-													onClick={() => {
-														setPackageSelected(rowFavoritePackage);
-														setOpenDeleteDialog(true);
-													}}
-												/>
-											</Button>
+											{
+												// Si no hay ID es añadido manualmente y no se tiene que mostrar el icono
+												rowFavoritePackage._id != "" && (
+													<Button
+														variant="ghost"
+														size="icon"
+													>
+														<EliminateFavorite
+															className="h-5 w-5 text-red-500"
+															onClick={() => {
+																setPackageSelected(rowFavoritePackage);
+																setOpenDeleteDialog(true);
+															}}
+														/>
+													</Button>
+												)
+											}
 										</div>
 									</div>
 								</div>

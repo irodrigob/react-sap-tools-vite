@@ -4,6 +4,7 @@ import {
 	ADTObjectVersion,
 	ResponseAdtObjectContent,
 	ResponseObjectStructure,
+	ResponseObjectCheckRun,
 } from "sap/adt/infraestructure/types/adt";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
 import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants";
@@ -43,6 +44,17 @@ export default class SAPAdtObjectController {
 		objectUri: string
 	): Promise<ResponseObjectStructure> {
 		return this.objectContent.getObjectStructure(dataConnection, objectUri);
+	}
+	/**
+	 * Verifica que el objeto, se le pasa la URL, es sintacticamete correcto.
+	 * @param dataConnection Datos de conexión
+	 * @param objectUri URL del objeto
+	 */
+	async objectCheck(
+		dataConnection: DataConnectionSystem,
+		objectUri: string
+	): Promise<ResponseObjectCheckRun> {
+		return this.objectContent.objectCheck(dataConnection, objectUri);
 	}
 	/**
 	 * Devuelve la instancia de la clase según el tipo de objeto

@@ -8,6 +8,9 @@ import useMessages, {
 import { ADTFavoritePackages } from "sap/adt/domain/entities/favoritePackage";
 import useSAPGeneralStore from "sap/general/infraestructure/frontend/hooks/useSAPGeneralStore";
 import useAdtStore from "./useAdtStore";
+import { ResponseRepositoryCheckRuns } from "sap/adt/infraestructure/types/adt";
+import useSAPGeneral from "sap/general/infraestructure/frontend/hooks/useSAPGeneral";
+import { ADTRepositoryCheckRuns } from "@/sap/adt/domain/entities/repositoryCheckRun";
 
 export default function useAdt() {
 	const adtController = new SAPAdtController();
@@ -16,7 +19,10 @@ export default function useAdt() {
 	const { showMessage } = useMessages();
 	const { setSystemChangedAction, setApplicationChangedAction } =
 		useSAPGeneralStore();
-	const { setFavoritePackagesAction } = useAdtStore();
+	const { setFavoritePackagesAction, setRepositoryCheckRunsAction } =
+		useAdtStore();
+	const { getDataForConnection } = useSAPGeneral();
+
 	/**
 	 * Lectura inicial de datos
 	 */
@@ -25,6 +31,7 @@ export default function useAdt() {
 		setApplicationChangedAction(false);
 
 		loadFavoritePackages();
+		loadRepositoryCheckRun();
 	}, []);
 
 	/**
@@ -46,6 +53,20 @@ export default function useAdt() {
 				}
 			});
 	}, []);
+	/**
+	 * Obtiene los tipos de objetos del repository a los cuales se les puede validar su contenido.
+	 */
+	const loadRepositoryCheckRun = useCallback(() => {
+		adtController
+			.repositoryCheckRun(getDataForConnection("base"))
+			.then((reponse: ResponseRepositoryCheckRuns) => {
+				if (reponse.isSuccess) {
+					setRepositoryCheckRunsAction(
+						reponse.getValue() as ADTRepositoryCheckRuns
+					);
+				}
+			});
+	}, []);
 
-	return { loadInitialData };
+	return { loadInitialData, loadRepositoryCheckRun };
 }

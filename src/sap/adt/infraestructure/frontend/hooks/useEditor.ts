@@ -17,6 +17,7 @@ import { useAppSelector } from "shared/storage/useStore";
 import { ADTClassContent } from "sap/adt/domain/entities/classContent";
 import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants";
 import { ADTObjectStructure } from "sap/adt/domain/entities/objectStructure";
+import { ADTObjectCheckRun } from "@/sap/adt/domain/entities/objectCheckRun";
 
 export default function useEditor() {
 	const adtController = new SAPAdtController();
@@ -26,11 +27,12 @@ export default function useEditor() {
 		updateObjectEditorAction,
 		setObjectStructureAction,
 		setLoadingStructureObjectAction,
+		setObjectCheckRunAction,
 	} = useAdtStore();
 	const { getDataForConnection } = useSAPGeneral();
 	const { showResultError, showMessage } = useMessages();
 	const { getI18nText } = useTranslations();
-	const { objectsEditor, objectKeyActive } = useAppSelector(
+	const { objectsEditor, objectKeyActive, repositoryCheckRun } = useAppSelector(
 		(state) => state.ADT
 	);
 
@@ -57,6 +59,9 @@ export default function useEditor() {
 
 						// Se lanza el proceso de lectura de la estructura del objeto
 						getObjectStructure(objectInfo);
+
+						// Se lanza la verificación de sintaxis del objeto
+						objectCheckRun(objectInfo);
 					} else {
 						let error = response.getErrorValue();
 						if (error instanceof ErrorGeneral)
@@ -108,6 +113,39 @@ export default function useEditor() {
 				});
 		},
 		[objectsEditor, objectKeyActive]
+	);
+	/**
+	 * Realiza la verificación de sintaxis del objeto pasado
+	 */
+	const objectCheckRun = useCallback(
+		(objectInfo: ADTObjectInfoEditor) => {
+			if (
+				repositoryCheckRun.findIndex((row) =>
+					objectInfo.objectType.includes(row.type)
+				) != -1
+			) {
+				let objectKey = buildObjectKey(objectInfo);
+				let objectController = new SAPAdtObjectController(
+					objectInfo.objectType
+				);
+				objectController
+					.objectCheck(
+						getDataForConnection("base"),
+						objectInfo.object.objectUri
+					)
+					.then((response) => {
+						if (response.isSuccess) {
+							setObjectCheckRunAction(
+								objectKey,
+								response.getValue() as ADTObjectCheckRun
+							);
+						} else {
+							showResultError(response.getErrorValue() as ErrorGraphql);
+						}
+					});
+			}
+		},
+		[objectsEditor, objectKeyActive, repositoryCheckRun]
 	);
 	/**
 	 * Verifica si un objeto ya esta insertado en el modelo
@@ -162,5 +200,6 @@ export default function useEditor() {
 		buildObjectKey,
 		getDefaultSectionSource,
 		updateModelObjectEditor,
+		objectCheckRun,
 	};
 }

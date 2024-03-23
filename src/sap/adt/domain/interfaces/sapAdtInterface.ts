@@ -6,7 +6,9 @@ import {
 	ADTFavoritePackageDTO,
 } from "sap/adt/infraestructure/dto/favoritePackagesDTO";
 import { AdtPackageContents } from "sap/adt/domain/entities/packageContent";
-import { ADTClassContent } from "@/sap/adt/domain/entities/classContent";
+import { ADTClassContent } from "sap/adt/domain/entities/classContent";
+import { ADTObjectCheckRun } from "sap/adt/domain/entities/objectCheckRun";
+import { ADTRepositoryCheckRuns } from "sap/adt/domain/entities/repositoryCheckRun";
 
 export default interface SAPAdtInterface {
 	/**
@@ -71,4 +73,20 @@ export default interface SAPAdtInterface {
 		objectUri: string,
 		Objectversion?: ADTObjectVersion
 	): Promise<ADTClassContent>;
+	/**
+	 * Verifica que el objeto, se le pasa la URL, es sintacticamete correcto.
+	 * @param dataConnection Datos de conexión
+	 * @param objectUri URL del objeto
+	 */
+	objectCheck(
+		dataConnection: DataConnectionSystem,
+		objectUri: string
+	): Promise<ADTObjectCheckRun>;
+	/**
+	 * Recupera los tipos de objeto que se pueden lanzar su validación
+	 * @param dataConnection Datos de conexión
+	 */
+	repositoryCheckRun(
+		dataConnection: DataConnectionSystem
+	): Promise<ADTRepositoryCheckRuns>;
 }

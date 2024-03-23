@@ -226,3 +226,53 @@ export const READ_OBJECT_STRUCTURE = gql`
 		}
 	}
 `;
+
+export const OBJECT_CHECK = gql`
+	query Query(
+		$system: String!
+		$sap_user: String!
+		$sap_password: String!
+		$language: String!
+		$client: String!
+		$objectUri: String!
+	) {
+		adtObjectCheck(
+			system: $system
+			sap_user: $sap_user
+			sap_password: $sap_password
+			language: $language
+			client: $client
+			objectUri: $objectUri
+		) {
+			statusText
+			status
+			triggeringUri
+			messagesList {
+				shortText
+				type
+				pos
+				quickFix
+			}
+		}
+	}
+`;
+
+export const REPOSITORY_CHECK_RUN = gql`
+	query Query(
+		$system: String!
+		$sap_user: String!
+		$sap_password: String!
+		$language: String!
+		$client: String!
+	) {
+		adtRepositoryCheckRun(
+			system: $system
+			sap_user: $sap_user
+			sap_password: $sap_password
+			language: $language
+			client: $client
+		) {
+			type
+		}
+	}
+`;

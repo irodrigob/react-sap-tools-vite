@@ -7,8 +7,7 @@ import {
 	ResponseDeleteFavoritePackage,
 	ResponseFavoritePackages,
 	ResponsePackageContent,
-	ResponseAdtObjectContent,
-	ADTObjectVersion,
+	ResponseRepositoryCheckRuns,
 } from "sap/adt/infraestructure/types/adt";
 import SAPAdtRepository from "sap/adt/infraestructure/repositories/sapAdtRepository";
 import { DataConnectionSystem } from "systems/infraestructure/types/system";
@@ -18,6 +17,7 @@ import {
 } from "sap/adt/domain/entities/favoritePackage";
 import { ADTFavoritePackageDTO } from "sap/adt/infraestructure/dto/favoritePackagesDTO";
 import { INIT_FAVORITE_PACKAGE } from "sap/adt/infraestructure/constants/treeConstants";
+import { ADT_OBJECT_TYPES } from "sap/adt/infraestructure/constants/adtConstants";
 
 export default class AdtApplication {
 	private adtRepository: SAPAdtRepository;
@@ -120,6 +120,11 @@ export default class AdtApplication {
 					};
 				}
 			);
+			// Se añade el paquete principal local al principio
+			values.unshift({
+				...INIT_FAVORITE_PACKAGE,
+				packageName: ADT_OBJECT_TYPES.PACKAGES.MAIN_LOCAL_PACKAGE,
+			});
 			return Result.ok(values);
 		} catch (error) {
 			return Result.fail<ErrorGraphql>(
@@ -160,6 +165,29 @@ export default class AdtApplication {
 			);
 
 			return Result.ok(response);
+		} catch (error) {
+			return Result.fail<ErrorGraphql>(
+				ErrorGraphql.create(error as ApolloError)
+			);
+		}
+	}
+	/**
+	 * Recupera los tipos de objeto que se pueden lanzar su validación
+	 * @param dataConnection Datos de conexión
+	 */
+	async repositoryCheckRun(
+		dataConnection: DataConnectionSystem
+	): Promise<ResponseRepositoryCheckRuns> {
+		try {
+			let response = await this.adtRepository.repositoryCheckRun(
+				dataConnection
+			);
+			// Hay registros que vienen con "*" en ciertos tipo, lo quito porque no los necesito
+			let newValues = response.map((row) => {
+				return { type: row.type.replace("*", "") };
+			});
+
+			return Result.ok(newValues);
 		} catch (error) {
 			return Result.fail<ErrorGraphql>(
 				ErrorGraphql.create(error as ApolloError)

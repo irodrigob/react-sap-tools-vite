@@ -49,6 +49,7 @@ export const ADT_OBJECT_TYPES = {
 		},
 	},
 	PACKAGES: {
+		MAIN_LOCAL_PACKAGE: "$TMP",
 		OBJECT_TYPE: "DEVC",
 	},
 	DICTIONARY: {
