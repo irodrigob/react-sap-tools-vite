@@ -3,6 +3,7 @@ export type ADTObjectMessage = {
 	type: string;
 	pos: string;
 	quickFix: boolean;
+	sourceUri: string;
 };
 export type ADTObjectMessages = ADTObjectMessage[];
 

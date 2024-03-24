@@ -39,6 +39,7 @@ export default function StatusGroupContainer() {
 				</TabsList>
 				<TabContent>
 					<>{TABS.problems.key && <ProblemsContainer />}</>
+					<>{TABS.elementInfo.key && <></>}</>
 				</TabContent>
 			</Tabs>
 		</span>

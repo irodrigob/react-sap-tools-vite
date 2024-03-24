@@ -25,6 +25,7 @@ const ABAPEditor: FC<Props> = ({ content, readonly }) => {
 						value: getI18nText("adtIde.editor.readOnlyMessage"),
 						supportHtml: true,
 					},
+					fontFamily: "Consolas, 'Courier New', monospace",
 				}}
 			/>
 		</>

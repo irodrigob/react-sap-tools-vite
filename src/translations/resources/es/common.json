@@ -394,6 +394,18 @@
 			"tabs": {
 				"problems": "Problemas",
 				"elementInfo": "Info elemento"
+			},
+			"problemsSection": {
+				"messagesTable": {
+					"colType": "Tipo",
+					"colPosition": "Posición",
+					"colSection": "Sección",
+					"colMessage": "Mensaje"
+				},
+				"messageType": {
+					"lblError": "Error",
+					"lblWarning": "Warning"
+				}
 			}
 		}
 	},

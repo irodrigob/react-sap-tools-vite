@@ -252,6 +252,7 @@ export const OBJECT_CHECK = gql`
 				type
 				pos
 				quickFix
+				sourceUri
 			}
 		}
 	}

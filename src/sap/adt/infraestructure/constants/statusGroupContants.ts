@@ -8,3 +8,9 @@ export const TABS = {
 		i18nText: "adtIde.statusGroup.tabs.elementInfo",
 	},
 };
+export const PROBLEMS_TAB = {
+	MESSAGE_TYPE: {
+		ERROR: "E",
+		WARNING: "W",
+	},
+};

@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react";
+import { useCallback } from "react";
 import SAPAdtController from "sap/adt/infraestructure/controller/sapAdtController";
 import SAPAdtObjectController from "sap/adt/infraestructure/controller/sapAdtObjectController";
 import useAdtStore from "./useAdtStore";
