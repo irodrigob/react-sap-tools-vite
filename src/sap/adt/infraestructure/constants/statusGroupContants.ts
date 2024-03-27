@@ -14,3 +14,5 @@ export const PROBLEMS_TAB = {
 		WARNING: "W",
 	},
 };
+
+export const PREFIX_TREENODE = "problemsTab_";

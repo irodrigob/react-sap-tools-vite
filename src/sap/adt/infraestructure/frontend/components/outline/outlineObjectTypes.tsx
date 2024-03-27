@@ -50,7 +50,7 @@ const OutlineObjectTypes: FC<Props> = ({ objectEditor }) => {
 							className="hover:bg-slate-800"
 							key={nodeKey}
 						>
-							<div className="flex items-center flex-row">
+							<div className="flex items-center flex-row h-[2rem]">
 								<div className="flex-none">
 									<Button
 										variant="ghost"
@@ -58,7 +58,7 @@ const OutlineObjectTypes: FC<Props> = ({ objectEditor }) => {
 											expandCollapseNode(nodeKey);
 										}}
 										size="icon"
-										className="h-2"
+										className="hover:bg-slate-800"
 									>
 										{treeAttributesMap[nodeKey] &&
 										treeAttributesMap[nodeKey].expanded ? (
@@ -68,7 +68,7 @@ const OutlineObjectTypes: FC<Props> = ({ objectEditor }) => {
 										)}
 									</Button>
 								</div>
-								<div className="shrink text-sm w-52">{row}</div>
+								<div className="shrink text-sm ">{row}</div>
 							</div>
 						</li>
 						<div key={`${nodeKey}_content`}>

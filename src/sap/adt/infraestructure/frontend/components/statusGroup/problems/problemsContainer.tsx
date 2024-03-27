@@ -3,43 +3,45 @@ import { firstBy } from "thenby";
 import {
 	Table,
 	TableBody,
-	TableCaption,
 	TableCell,
 	TableHead,
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
+import { ChevronRightIcon, ChevronDownIcon } from "@radix-ui/react-icons";
+import { Button } from "@/components/ui/button";
 import { useAppSelector } from "shared/storage/useStore";
 import useEditor from "sap/adt/infraestructure/frontend/hooks/useEditor";
-import { PROBLEMS_TAB } from "sap/adt/infraestructure/constants/statusGroupContants";
+import {
+	PROBLEMS_TAB,
+	PREFIX_TREENODE,
+} from "sap/adt/infraestructure/constants/statusGroupContants";
 import { useTranslations } from "translations/i18nContext";
+import useTree from "sap/adt/infraestructure/frontend/hooks/useTree";
 
 export default function ProblemsContainer() {
-	const { getObjectEditorActive } = useEditor();
 	const { getI18nText } = useTranslations();
-	const { objectsEditor, objectKeyActive } = useAppSelector(
+	const { expandCollapseNode } = useTree();
+	const { treeAttributesMap, objectsEditor } = useAppSelector(
 		(state) => state.ADT
 	);
 
-	const objectMessages = useMemo(() => {
-		let objectActive = getObjectEditorActive();
-		if (objectActive)
-			return objectActive.objectCheckRun?.messagesList.sort(firstBy("type"));
-		else return [];
-	}, [objectKeyActive, objectsEditor]);
-
-	return (
-		<>
-			{objectMessages && objectMessages.length > 0 && (
+	/*
+{objectMessages && objectMessages.length > 0 && (
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>
+							<TableHead className="w-[10%]">
+								{getI18nText(
+									"adtIde.statusGroup.problemsSection.messagesTable.colSection"
+								)}
+							</TableHead>
+							<TableHead className="w-[7%]">
 								{getI18nText(
 									"adtIde.statusGroup.problemsSection.messagesTable.colType"
 								)}
 							</TableHead>
-							<TableHead>
+							<TableHead className="w-[60%]">
 								{getI18nText(
 									"adtIde.statusGroup.problemsSection.messagesTable.colMessage"
 								)}
@@ -47,11 +49,6 @@ export default function ProblemsContainer() {
 							<TableHead>
 								{getI18nText(
 									"adtIde.statusGroup.problemsSection.messagesTable.colPosition"
-								)}
-							</TableHead>
-							<TableHead>
-								{getI18nText(
-									"adtIde.statusGroup.problemsSection.messagesTable.colSection"
 								)}
 							</TableHead>
 						</TableRow>
@@ -80,6 +77,45 @@ export default function ProblemsContainer() {
 					</TableBody>
 				</Table>
 			)}
+
+	*/
+	return (
+		<>
+			<ul className="list-none ml-2">
+				{objectsEditor &&
+					objectsEditor.map((rowObjectEditor) => {
+						let nodeKey = `${PREFIX_TREENODE}_${rowObjectEditor.objectInfo.category}_${rowObjectEditor.objectInfo.objectType}_${rowObjectEditor.objectInfo.object.objectName}`;
+						return (
+							<li
+								className="hover:bg-slate-800"
+								key={nodeKey}
+							>
+								<div className="flex items-center flex-row align-middle content-center">
+									<div className="flex-none">
+										<Button
+											variant="ghost"
+											onClick={() => {
+												expandCollapseNode(nodeKey);
+											}}
+											size="icon"
+										>
+											{treeAttributesMap[nodeKey] &&
+											treeAttributesMap[nodeKey].expanded ? (
+												<ChevronDownIcon className="h-4 w-4" />
+											) : (
+												<ChevronRightIcon className="h-4 w-4" />
+											)}
+										</Button>
+									</div>
+									<div className="shrink text-sm w-52">
+										{rowObjectEditor.objectInfo.objectTypeDesc}{" "}
+										{rowObjectEditor.objectInfo.object.objectName}
+									</div>
+								</div>
+							</li>
+						);
+					})}
+			</ul>
 		</>
 	);
 }
